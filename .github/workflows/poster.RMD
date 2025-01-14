@@ -149,37 +149,82 @@ data_miss %>%
 
 ```
 
-```{r morefigs, out.width='80%', echo=FALSE,  warning=FALSE, fig.cap='Tile graph of the frequency of missing data within these variables', fig.height=5}
+```{r mytable4, echo=FALSE, warning=FALSE, fig.cap='Plot that shows the percentage of data thats unobserved', fig.height=9, fig.width=14}
+# Formating data
+
 library(readr)
 library(ggplot2)
 acupuncture <- read_csv("Data/acupuncture.csv",show_col_types = FALSE)
-acupuncture$sex<-as.factor(acupuncture$sex)
-acupuncture$migraine<-as.factor(acupuncture$migraine)
-acupuncture$group<-as.factor(acupuncture$group)
+acupuncture_miss <- acupuncture %>%
+  select(id, group, pk1, pk2, pk5) %>%
+  mutate(across(starts_with("pk"), ~ as.numeric(!is.na(.x)), .names = "missing_{.col}")) %>%
+  unite("miss_pattern", starts_with("missing_"), remove = FALSE) %>%
+  rowwise() %>% 
+  mutate(miss_count = sum(c_across(starts_with("missing_pain_")))) %>%
+  group_by(miss_pattern) %>%
+  mutate(pattern_freq = n()) %>%
+  ungroup() %>%
+  rowwise() %>%
+  mutate(miss_pattern = gsub("_", ", ", miss_pattern),
+         miss_pattern_label = paste0("Pattern: ", miss_pattern, ", (n=", pattern_freq , ")", collapse = "")) %>%
+  pivot_longer(starts_with("pk"), names_to = "time", names_prefix = "pk", 
+               values_to = "pk") %>%
+  mutate(
+    miss_obs = as.factor(if_else(is.na(pk),0,1)),
+    time_cont = case_when(
+      time==1 ~ 0,
+      time==2 ~ 1,
+      time==5 ~ 2
+    )) %>%
+  arrange(desc(miss_pattern), id) %>%
+  mutate(miss_pattern_label = factor(miss_pattern_label, levels = unique(miss_pattern_label)))
 
-pk5 <- ifelse(is.na(acupuncture$pk5) == 'FALSE', 1, 0)
-pk5_missing <- ifelse(is.na(acupuncture$pk5) == 'TRUE', 1, 0)
+# 1st plot
 
-pk2 <- ifelse(is.na(acupuncture$pk2) == 'FALSE', 1, 0)
-pk2_missing <- ifelse(is.na(acupuncture$pk2) == 'TRUE', 1, 0)
-Table1<-table(pk2_missing,pk5_missing)
-t1<- as.data.frame(Table1)
-pk5_missing<- as.data.frame(pk5_missing)
-pk2_missing<- as.data.frame(pk2_missing)
-ggplot(t1, aes(x = pk2_missing, y = pk5_missing, fill = Freq)) +
-  geom_tile() +
-  scale_fill_gradient(low = "lightpink", high = "deeppink") +
-  labs(title = "Missing Data Pattern: pk2 vs pk5", x = "pk2 Missing", y = "pk5 Missing", fill = "Frequency") +
-  theme_minimal()
+pct_format = scales::label_percent(accuracy = .1)
+
+acupuncture_miss %>%
+  group_by(time, miss_obs) %>%
+  summarise(count_pat = n()) %>%
+  group_by(time) %>%
+  mutate(total_pat = sum(count_pat), perc_pat = pct_format(count_pat/total_pat)) %>%
+  ungroup %>%
+  ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
+  geom_col() + 
+  stat_identity(geom = "text", colour = "white", size = 3.5,
+                aes(label =perc_pat), 
+                position = position_stack(vjust=0.5)) +
+  scale_fill_discrete(name = "Data Observed\nIndicator (R)", ) +
+  scale_x_discrete(name = "Time") +
+  scale_y_continuous(name = "Count (patients)") +
+  theme(text = element_text(size = 18),
+        axis.text.x = element_text(angle = 90, vjust = 0.5))
 ```
 
-```{r morefigs2, out.width='80%', echo=FALSE,  warning=FALSE, fig.cap='Bar Plot of missing data in pk2 & pk5', fig.height=5}
-ggplot(t1, aes(x = interaction(pk2_missing, pk5_missing), y = Freq, fill = interaction(pk2_missing, pk5_missing))) +
-  geom_bar(stat = "identity", show.legend = FALSE) +
-  scale_fill_manual(values = c("0.0" = "deeppink", "0.1" = "lightcoral", "1.0" = "maroon", "1.1" = "pink")) +
-  labs(title = "Missing Data Pattern: pk2 vs pk5", x = "Missing Data Combination (pk2, pk5)", y = "Frequency") +
-  theme_minimal() 
+```{r mytable5, echo=FALSE, warning=FALSE, fig.cap='Plot that shows the percentage of data thats unobserved', fig.height=9, fig.width=14}
+# 2nd plot
+
+acupuncture_miss %>%
+  group_by(time, miss_obs, group) %>%
+  summarise(count_pat = n()) %>%
+  group_by(time, group) %>%
+  mutate(total_pat = sum(count_pat), perc_pat = pct_format(count_pat/total_pat)) %>%
+  ungroup %>%
+  ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
+  geom_col() + 
+  facet_grid(.~group) + 
+  stat_identity(geom = "text", colour = "white", size = 3.5,
+                aes(label =perc_pat), 
+                position = position_stack(vjust=0.5)) +
+  scale_fill_discrete(name = "Data Observed\nIndicator (R)", ) +
+  scale_x_discrete(name = "Time") +
+  scale_y_continuous(name = "Count (patients)") +
+  theme(text = element_text(size = 18),
+        axis.text.x = element_text(angle = 90, vjust = 0.5))
 ```
+
+
+
 
 
 # Prediction
