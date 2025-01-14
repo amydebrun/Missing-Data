@@ -1,128 +1,81 @@
 ---
-title: Estimating Treatment Effects in Clinical Trials with Missing Data
+title: 
 author:
-  - name: Amy Browne 
+  - name: Brent Thorne
     affil: 1
-    email: a.browne47@universityofgalway.ie
-    main: true
-  - name: Kent Yip
+    orcid: '0000-0002-1099-3857'
+  - name: Another G. Author
     affil: 2
-    email: k.yip2@universityofgalway.ie
-    main: true
 affiliation:
   - num: 1
-    address: Unviersity of Galway
+    address: Department of Earth Science, Brock University
   - num: 2
-    address: xyz
-main_findings:
-  - '![](acuplot1.svg){.main_pic}'
-
+    address: Department of Graphics and Layouts, University of Posters; Canada
+column_numbers: 3
+logoright_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
+logoleft_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
 output: 
-  posterdown::posterdown_betterland:
+  posterdown::posterdown_html:
     self_contained: false
-    pandoc_args: --mathjax
-    highlight: haddock
-    number_sections: false
-link-citations: true
 bibliography: packages.bib
 ---
 
-```{r, include=FALSE}
-knitr::opts_chunk$set(results = 'asis',
-                      echo = FALSE,
-                      warning = FALSE,
-                      tidy = FALSE,
-                      message = FALSE,
-                      fig.align = 'center',
-                      out.width = "100%")
-options(knitr.table.format = "html") 
-```
-```{r}
-library(tidyverse)
-library(dplyr)
-library(ggplot2)
-acupuncture<-read.csv('acupuncture.csv')
-acupuncture$sex<-as.factor(acupuncture$sex)
-acupuncture$migraine<-as.factor(acupuncture$migraine)
-acupuncture$group<-as.factor(acupuncture$group)
-pk5 <- ifelse(is.na(acupuncture$pk5) == 'FALSE', 1, 0)
-pk5_missing <- ifelse(is.na(acupuncture$pk5) == 'TRUE', 1, 0)
-pk2 <- ifelse(is.na(acupuncture$pk2) == 'FALSE', 1, 0)
-pk2_missing <- ifelse(is.na(acupuncture$pk2) == 'TRUE', 1, 0)
-pk5_missing<- as.data.frame(pk5_missing)
-pk2_missing<- as.data.frame(pk2_missing)
-Table1<-table(pk2_missing,pk5_missing)
-t1<- as.data.frame(Table1)
-```
-```{r acuplot1, include=FALSE}
-svg('acuplot1.svg')
-ggplot(t1, aes(x = pk2_missing, y = pk5_missing, fill = Freq)) +
-  geom_tile() +
-  scale_fill_gradient(low = "lightpink", high = "deeppink") +
-  labs(title = "Missing Data Pattern: pk2 vs pk5", x = "pk2 Missing", y = "pk5 Missing", fill = "Frequency") +
-  theme_minimal()
-dev.off()
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 # Introduction
 
-This is the `posterdown_betterland` template for the {posterdown} package! I was inspired by the twitter thread of [Mike Morrison](https://mobile.twitter.com/mikemorrison/status/1110191245035479041) and wanted to apply the `#betterposter` concept to the reproducible (yet simple to use) functionality of the {posterdown} package [@R-posterdown]. If you're not an R user don't sweat as you do **NOT** need to use it at all! Feel free to use only the Markdown functionality of this package :)
+Welcome to `posterdown` ! This is my attempt to provide a semi-smooth workflow for those who wish to take their R Markdown skills to the conference world. Most features from R Markdown are available in this package such as Markdown section notation, figure captioning, and even citations like this one [@R-rmarkdown]. The rest of this example poster will show how you can insert typical conference poster features into your own document. 
 
-```{r, include=FALSE}
-knitr::write_bib(c('posterdown', 'rmarkdown','pagedown'), 'packages.bib')
-```
+## Objectives
+
+1. Easy to use reproducible poster design. 
+2. Integration with R Markdown.
+3. Easy transition from `posterdown` to `pagedown` report or manuscript documents [@R-pagedown].
 
 # Methods
 
-1. Last Observation Carried Forward
-2. Simple Imputation
-3. Mean Imputation
-4. Indicator Method 
-5. Multiple Imputation 
-
-# Datasets 
-
-We will be using these methods on 2 data sets that contain missing data. One set is the results of a clinical trial which aims to test the effect of acupuncture on chronic headache. 
-The other set are results from an RCT of the effects of Vitamin D and fish oil on chronic knee pain. 
+This package uses the same workflow approach as the R Markdown you know and love. Basically it goes from RMarkdown > Knitr > Markdown > Pandoc > HTML/CSS > PDF. You can even use the bibliography the same way [@R-posterdown].
 
 # Results
 
-Here you may have some figures to show off, bellow I have made a scatterplot with the infamous Iris dataset and I can even reference to the figure automatically like this, `Figure \@ref(fig:irisfigure)`, Figure \@ref(fig:irisfigure).
+Usually you want to have a nice table displaying some important results that you have calculated. In `posterdown` this is as easy as using the `kable` table formatting you are probably use to as per typical R Markdown formatting.
 
-```{r, irisfigure, fig.cap='Here is a caption for the figure. This can be added by using the "fig.cap" option in the r code chunk options, see this [link](https://yihui.name/knitr/options/#plots) from the legend himself, [Yihui Xie](https://twitter.com/xieyihui).', out.width="80%"}
-par(mar=c(2,2,0,1))
-plot(x = iris$Sepal.Length, y = iris$Sepal.Width,
-     col = iris$Species, pch = 19, xlab = "Sepal Length",
-     ylab = "Sepal Width")
+You can reference tables like so: Table \@ref(tab:mytable). Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam placerat augue at velit tincidunt semper. Donec elementum porta posuere. Nullam interdum, odio at tincidunt feugiat, turpis nisi blandit eros, eu posuere risus felis non quam. Nam eget lorem odio. Duis et aliquet orci. Phasellus nec viverra est.
+
+```{r mytable, out.width='80%'}
+knitr::kable(iris[1:10, 1:4], caption = 'Table caption.',align = 'c',"html")
 ```
 
-Maybe you want to show off some of that fancy code you spent so much time on to make that figure, well you can do that too! Just use the `echo=TRUE` option in the r code chunk options, Figure \@ref(fig:myprettycode)!
+Or with figures: Figure \@ref(fig:standard-plot), or Figure \@ref(fig:morefigs).
 
-```{r myprettycode, echo=FALSE,collapse=TRUE, fig.cap='Boxplots, so hot right now!', fig.height=3.5, out.width="80%"}
-#trim whitespace
-par(mar=c(2,2,0,0))
-#plot boxplots
-boxplot(iris$Sepal.Width~iris$Species,
-        col = "#008080", 
-        border = "#0b4545",
-        ylab = "Sepal Width (cm)",
-        xlab = "Species")
+```{r standard-plot, out.width='80%', fig.align='center', fig.cap='Great figure!', fig.height=5}
+plot(mtcars[1:2])
 ```
 
-How about a neat table of data? See, Table \@ref(tab:iristable):
+```{r morefigs, out.width='80%', echo=TRUE, fig.cap='Amazing, right?!', fig.height=5}
+data <- iris
 
-```{r, iristable}
-knitr::kable(
-  iris[1:8,1:5], format = "html",
-  caption = "A table made with the **knitr::kable** function.",
-  align = "c", col.names = c("Sepal <br> Length",
-                             "Sepal <br> Width",
-                             "Petal <br> Length",
-                             "Petal <br> Width",
-                             "Species"),
-  escape = FALSE)
+plot(x = data$Sepal.Length, 
+     y = data$Sepal.Width, 
+     col = data$Species,
+     pch = 19, 
+     xlab = "Sepal Length (cm)",
+     ylab = "Sepal Width (cm)")
+
+```
+
+# Next Steps
+
+Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
+
+# Conclusion
+
+Try `posterdown` out! Hopefully you like it!
+
+```{r, include=FALSE}
+knitr::write_bib(c('knitr','rmarkdown','posterdown','pagedown'), 'packages.bib')
 ```
 
 # References
-
-Test
