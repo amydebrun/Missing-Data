@@ -1,374 +1,117 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"$if(lang)$ lang="$lang$" xml:lang="$lang$"$endif$>
-<head>
-<meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="pandoc" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
+---
+title: Estimating Treatment Effects in Clinical Trials with Missing Data
+author:
+  - name: Amy Browne 
+    affil: 1
+    email: a.browne47@universityofgalway.ie
+    main: true
+  - name: Kent Yip
+    affil: 2
+    email: k.yip2@universityofgalway.ie
+    main: true
+affiliation:
+  - num: 1
+    address: Unviersity of Galway
+  - num: 2
+    address: xyz
+main_findings:
+  - "Make **better posters** with RMarkdown + **posterdown**."
+  - '![](https://raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png){.main_pic}'
+logoleft_name: '![](https://raw.githubusercontent.com/brentthorne/posterdown/master/images/qr-code-black.png){.main-img-left}'
+logoright_name: '![](https://raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png){.main-img-right}'
+output: 
+  posterdown::posterdown_betterland:
+    self_contained: false
+    pandoc_args: --mathjax
+    highlight: haddock
+    number_sections: false
+link-citations: true
+bibliography: packages.bib
+---
 
-$for(author-meta)$<meta name="author" content="$author-meta$" />$endfor$
-$if(date-meta)$<meta name="date" content="$date-meta$" />$endif$
-<title>$if(title-prefix)$$title-prefix$ - $endif$$pagetitle$</title>
+```{r, include=FALSE}
+knitr::opts_chunk$set(results = 'asis',
+                      echo = FALSE,
+                      warning = FALSE,
+                      tidy = FALSE,
+                      message = FALSE,
+                      fig.align = 'center',
+                      out.width = "100%")
+options(knitr.table.format = "html") 
+```
 
-$for(header-includes)$
-$header-includes$
-$endfor$
+```{r myplot, include=FALSE}
+svg('myplot.svg')
+plot(iris$Sepal.Length, iris$Sepal.Width)
+dev.off()
+```
 
-$if(highlightjs)$
-<link rel="stylesheet" href="$highlightjs$/$if(highlightjs-theme)$$highlightjs-theme$$else$default$endif$.css" $if(html5)$$else$type="text/css" $endif$/>
-<script src="$highlightjs$/highlight.js"></script>
-<script type="text/javascript">hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
-$endif$
+# Introduction
 
-$if(highlighting-css)$<style type="text/css">$highlighting-css$</style>$endif$
+This is the `posterdown_betterland` template for the {posterdown} package! I was inspired by the twitter thread of [Mike Morrison](https://mobile.twitter.com/mikemorrison/status/1110191245035479041) and wanted to apply the `#betterposter` concept to the reproducible (yet simple to use) functionality of the {posterdown} package [@R-posterdown]. If you're not an R user don't sweat as you do **NOT** need to use it at all! Feel free to use only the Markdown functionality of this package :)
 
-$for(css)$
-<link rel="stylesheet" href="$css$" $if(html5)$$else$type="text/css" $endif$/>
-$endfor$
+```{r, include=FALSE}
+knitr::write_bib(c('posterdown', 'rmarkdown','pagedown'), 'packages.bib')
+```
 
-<!--
-Font-awesome icons ie github or twitter
--->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/brands.css" integrity="sha384-n9+6/aSqa9lBidZMRCQHTHKJscPq6NW4pCQBiMmHdUCvPN8ZOg2zJJTkC7WIezWv" crossorigin="anonymous">
+## Objectives
 
-<!--
-Google fonts api stuff
--->
-<link href='https://fonts.googleapis.com/css?family=$if(main_fontfamily)$$main_fontfamily$$else$Special Elite$endif$' rel='stylesheet'>
-<link href='https://fonts.googleapis.com/css?family=$if(font_family)$$font_family$$else$Rasa$endif$' rel='stylesheet'>
+1. Pick a template layout.
+2. Write/ create your poster content distraction free.
+3. Let posterdown do its thing!
 
-<!--
-Here are the required style attributes for css to make this poster work :)
--->
-<style>
-@page {
-size: $if(poster_width)$$poster_width$$else$46in$endif$ $if(poster_height)$$poster_height$$else$32in$endif$;
-margin: 0;
-padding: 0;
-background-color: $if(body_bgcol)$$body_bgcol$$else$#ffffff$endif$;
-}
-body {
-margin: 0px;
-padding: 0px;
-width: $if(poster_width)$$poster_width$$else$46in$endif$;
-height: $if(poster_height)$$poster_height$$else$32in$endif$;
-text-align: justify;
-font-size: $if(body_textsize)$$body_textsize$$else$45px$endif$;
-background-color: $if(body_bgcol)$$body_bgcol$$else$#FFFFFF$endif$;
-color: $if(body_textcol)$$body_textcol$$else$#000000$endif$;
-}
-/* RMarkdown Class Styles */
-/* center align leaflet map,
-from https://stackoverflow.com/questions/52112119/center-leaflet-in-a-rmarkdown-document */
-.html-widget {
-margin: auto;
-position: sticky;
-margin-top: 2cm;
-margin-bottom: 2cm;
-}
-.leaflet.html-widget.html-widget-static-bound.leaflet-container.leaflet-touch.leaflet-fade-anim.leaflet-grab.leaflet-touch-drag.leaflet-touch-zoom {
-position: sticky;
-width: 100%;
-}
-pre.sourceCode.r {
-background-color: #dddddd40;
-border-radius: 4mm;
-padding: 4mm;
-width: 75%;
-margin: auto;
-margin-top: 1em;
-margin-bottom: 1em;
-/* align-items: center; */
-}
-code.sourceCode.r{
-background-color: transparent;
-font-size: 20pt;
-border-radius: 2mm;
-}
-code {
-font-size: 25pt;
-font-family: monospace;
-background-color: $if(secondary_colour)$$secondary_colour$24$else$#00808024$endif$;
-color: $if(primary_colour)$$primary_colour$$else$#0b4545$endif$;
-padding: 1.2mm;
-line-height: 1;
-border-radius: 2mm;
-}
-caption {
-margin-bottom: 10px;
-font-size: $if(caption_textsize)$$caption_textsize$$else$20pt$endif$;
-font-style: italic;
-}
+# Methods
 
-tbody tr:nth-child(odd) {
-    background-color: $if(primary_colour)$$primary_colour$$else$#0b4545$endif$20;
-}
-.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td{
-  border-spacing: 0;
-  font-size: 40%;
-  border-style: none;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  padding-right: 1em;
-  padding-left: 1em;
-  line-height: 1em;
-}
-table {
-  margin: auto;
-}
-th {
-  padding-left: 5mm;
-  padding-right: 5mm;
-}
-.caption {
-font-size: $if(caption_textzie)$$caption_textsize$$else$20pt$endif$;
-font-style: italic;
-padding-top: 0;
-}
-.references {
-font-size: $if(reference_textsize)$$reference_textsize$$else$20px$endif$;
-line-height: 90%;
-}
-/* Create three unequal columns that floats next to each other */
-.column {
-float: left;
-padding: 0px;
-}
-.outer {
-width: $if(poster_width)$$poster_width$$else$46in$endif$;
-height: $if(poster_height)$$poster_height$$else$32in$endif$;
--webkit-column-count: 2; /* Chrome, Safari, Opera */
--moz-column-count: 2; /* Firefox */
-column-count: 2;
--webkit-column-fill: auto;
--moz-column-fill: auto;
-column-fill: auto;
--webkit-column-rule-width: 50%;
--moz-column-rule-width: 50%;
-column-rule-width: 50%;
--webkit-column-rule-style: solid;
--moz-column-rule-style: solid;
-column-rule-style: solid;
--webkit-column-rule-color: black;
--moz-column-rule-color: black;
-column-rule-color: black;
--webkit-column-gap: 50%;
-background-color: $if(body_bgcol)$$body_bgcol$$else$#ffffff$endif$;
-font-family: $if(font_family)$$font_family$$else$Rasa$endif$;
-color: $if(body_textcol)$$body_textcol$$else$#000000$endif$;
-}
-span.citation {
-  color: $if(secondary_colour)$$secondary_colour$$else$#008080$endif$;
-  font-weight: bold;
-}
-a {
-text-decoration: none;
-color: $if(secondary_colour)$$secondary_colour$$else$#008080$endif$;
-}
-#title {
-font-size: $if(title_textsize)$$title_textsize$$else$125pt$endif$;
-text-align: left;
-margin: 0;
-line-height: 90%;
-border-bottom: 0;
-}
-#author {
-color: $if(author_textcol)$$author_textcol$$else$$if(primary_colour)$$primary_colour$$else$#0b4545$endif$$endif$;
-margin: 0;
-line-height: 90%;
-font-size: $if(author_textsize)$$author_textsize$$else$1.17em$endif$;
-}
-#affiliation {
-padding-top: 1em;
-color: $if(affiliation_textcol)$$affiliation_textcol$$else$#00000060$endif$;
-font-style: italic;
-font-size: $if(affiliation_textsize)$$affiliation_textsize$$else$25px$endif$;
-margin: 0;
-}
-sup {
-color: $if(accent_colour)$$accent_colour$$else$#cc0000$endif$;
-}
-.affiliation sup {
-font-size: 20px;
-}
-.author sup {
-font-size: 30px;
-}
-.author_extra {
-color: $if(secondary_colour)$$secondary_colour$$else$#008080$endif$;
-margin: 0;
-line-height: 85%;
-font-size: $if(authorextra_textsize)$$authorextra_textsize$$else$35px$endif$;
-}
-.outer h1 {
-text-align: center;
-margin-top: 0.5in;
-margin-bottom: 0.5in;
-}
-.outer h2 {
-text-align: center;
-}
-.outer p {
-color: $if(body_textcol)$$body_textcol$$else$#000000$endif$;
-}
-.outer ol {
-text-align: left;
-}
-.main {
-width: calc($if(poster_width)$$poster_width$$else$46in$endif$ / 2);
-height: $if(poster_height)$$poster_height$$else$32in$endif$;
-position: absolute;
-margin-left: calc($if(poster_width)$$poster_width$$else$46in$endif$ / 4);
-background-color: $if(primary_colour)$$primary_colour$$else$#0b4545$endif$;
-color: $if(main_textcol)$$main_textcol$$else$#FFFFFF90$endif$;
-font-family: $if(main_fontfamily)$$main_fontfamily$$else$Special Elite$endif$;
-background-image: linear-gradient($if(primary_colour)$$primary_colour$$else$#0b4545$endif$ 50%, $if(secondary_colour)$$secondary_colour$$else$#008080$endif$);
-}
-.main strong {
-color: $if(mainstrong_fontcol)$$mainstrong_fontcol$$else$#FFFFFF$endif$;
-}
-#main-img-left {
-width: $if(mainimage_leftsize)$$mainimage_leftsize$$else$20%$endif$;
-left: 0.5in;
-bottom: 0.2in;
-position: absolute;
-opacity: 0.5
-}
-#main-img-right {
-width: $if(mainimage_rightsize)$$mainimage_rightsize$$else$18%$endif$;
-right: 0.5in;
-bottom: 0.2in;
-position: absolute;
-opacity: 0.6
-}
-.main p {
-padding-top: 20%;
-font-size: $if(main_fonsize)$$main_textsize$$else$170px$endif$;
-text-align: left;
-}
-.fab {
-color: $if(affiliation_textcol)$$affiliation_textcol$$else$#00000060$endif$;
-font-size: 25px;
-}
-.twitter, i {
-color: $if(affiliation_textcol)$$affiliation_textcol$$else$#00000060$endif$;
-font-size: 35px;
-text-decoration: none;
-}
-a.email {
-text-decoration: none;
-color: $if(affiliation_textcol)$$affiliation_textcol$$else$#00000060$endif$;
-font-size: 35px;
-}
-.envelope {
-color: $if(affiliation_textcol)$$affiliation_textcol$$else$#00000060$endif$;
-font-size: 5px;
-text-decoration: none;
-}
-.poster_wrap {
-width: $if(poster_width)$$poster_width$$else$46in$endif$;
-height: $if(poster_height)$$poster_height$$else$32in$endif$;
-padding: 0cm;
-background-color: $if(body_bgcol)$$body_bgcol$$else$#ffffff$endif$;
-}
-span > #tab:mytable {
-  font-weight: bold;
-}
-.section {
-  padding-left: $if(column_padding)$$column_padding$$else$10mm$endif$;
-  padding-right: $if(column_padding)$$column_padding$$else$10mm$endif$;
-}
-.main p {
-  padding-left: $if(main_padding)$$column_padding$$else$30mm$endif$;
-  padding-right: $if(main_padding)$$column_padding$$else$30mm$endif$;
-}
-.main_pic {
-  width: $if(main_picwidth)$$main_picwidth$$else$50%$endif$;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-.orcid img {
-  width: 3%;
-}
-</style>
-</head>
-<body>
+I will show here how to include poster elements that may be useful, such as an equation using mathjax:
 
-$for(include-before)$
-$include-before$
-$endfor$
+$$
+E = mc^2
+$$
 
-<div class="poster_wrap">
-<div class="column outer">
+To reference a citation you can add your `.bib` file to the working directory and name it in the YAML metadata or generate an automated one as done here, then you only need to reference the label value in the `.bib` file. For example this package is built on top of the wonderful {pagedown} package and I will cite it at the end of this sentance using this in the rmd `[@R-pagedown]` [@R-pagedown].
+
+To get a better understanding of how to include features like these please refer to the {posterdown} [wiki](https://github.com/posterdown/wiki).
+
+**_Now on to the results!_**
+
 <br>
-<div class="title section">
-$if(title)$
-<h1 id="title">$title$</h1>
-<br>
-$else$$endif$
-$if(author)$
-<h3 id="author" class="author">
 
-$for(author)$
-$if(author.main)$
-$author.name$<sup> $author.affil$$if(author.orcid)$, <a class="orcid" src="https://orcid.org/$author.orcid$"><img src="https://raw.githubusercontent.com/brentthorne/posterdown/master/images/orcid.jpg"></a>$else$$endif$</sup><br>
-$if(author.twitter)$<a class="twitter" href="https://mobile.twitter.com/$author.twitter$"><i class="fab fa-twitter"></i>&nbsp;&nbsp;@$author.twitter$</a><br>
-$else$$endif$
-$if(author.email)$
-<a class='envelope'><i class="fas fa-envelope"></i></a> $author.email$ <br>
-$else$$endif$
-$else$$endif$
-$sep$ $endfor$
-</h3>
-$else$$endif$
+# Results
 
-$if(author)$
-<h5 id="author_extra" class="author_extra">
-$for(author)$
-$if(author.main)$
-$else$
-$author.name$<sup>$author.affil$$if(author.orcid)$, <a class="orcid" src="https://orcid.org/$author.orcid$"><img src="https://raw.githubusercontent.com/brentthorne/posterdown/master/images/orcid.jpg"></a>$else$$endif$</sup>
-$endif$
-$sep$ $endfor$
-</h5>
-$else$$endif$
+Here you may have some figures to show off, bellow I have made a scatterplot with the infamous Iris dataset and I can even reference to the figure automatically like this, `Figure \@ref(fig:irisfigure)`, Figure \@ref(fig:irisfigure).
 
-<p id="affiliation" class="affiliation">
-$for(affiliation)$<sup>$affiliation.num$</sup> $affiliation.address$$sep$<br> $endfor$
-</p>
+```{r, irisfigure, fig.cap='Here is a caption for the figure. This can be added by using the "fig.cap" option in the r code chunk options, see this [link](https://yihui.name/knitr/options/#plots) from the legend himself, [Yihui Xie](https://twitter.com/xieyihui).', out.width="80%"}
+par(mar=c(2,2,0,1))
+plot(x = iris$Sepal.Length, y = iris$Sepal.Width,
+     col = iris$Species, pch = 19, xlab = "Sepal Length",
+     ylab = "Sepal Width")
+```
 
-</div>
-$body$
+Maybe you want to show off some of that fancy code you spent so much time on to make that figure, well you can do that too! Just use the `echo=TRUE` option in the r code chunk options, Figure \@ref(fig:myprettycode)!
 
-</div>
-<div class="main">
-<p>$for(main_findings)$$main_findings$$sep$<br><br> $endfor$</p>
-<img id="main-img-left" src='$if(logoleft_name)$$logoleft_name$$else$$endif$'>
-<img id="main-img-right" src='$if(logoright_name)$$logoright_name$$else$$endif$'>
-</div>
-</div>
+```{r myprettycode, echo=FALSE,collapse=TRUE, fig.cap='Boxplots, so hot right now!', fig.height=3.5, out.width="80%"}
+#trim whitespace
+par(mar=c(2,2,0,0))
+#plot boxplots
+boxplot(iris$Sepal.Width~iris$Species,
+        col = "#008080", 
+        border = "#0b4545",
+        ylab = "Sepal Width (cm)",
+        xlab = "Species")
+```
 
-$if(math)$
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-(function () {
-var script = document.createElement("script");
-script.type = "text/javascript";
-var src = "$if(mathjax)$$mathjax$$endif$";
-if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-if (location.protocol !== "file:" && /^https?:/.test(src))
-src = src.replace(/^https?:/, '');
-script.src = src;
-document.getElementsByTagName("head")[0].appendChild(script);
-})();
-</script>
-$endif$
+How about a neat table of data? See, Table \@ref(tab:iristable):
 
-$for(include-after)$
-$include-after$
-$endfor$
+```{r, iristable}
+knitr::kable(
+  iris[1:8,1:5], format = "html",
+  caption = "A table made with the **knitr::kable** function.",
+  align = "c", col.names = c("Sepal <br> Length",
+                             "Sepal <br> Width",
+                             "Petal <br> Length",
+                             "Petal <br> Width",
+                             "Species"),
+  escape = FALSE)
+```
 
-</body>
-</html>
+# References
