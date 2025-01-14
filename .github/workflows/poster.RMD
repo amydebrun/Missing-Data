@@ -17,7 +17,7 @@ output:
 bibliography: packages.bib
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
@@ -52,10 +52,10 @@ Or with figures: Figure \@ref(fig:standard-plot), or Figure \@ref(fig:morefigs).
 plot(mtcars[1:2])
 ```
 
-```{r morefigs, out.width='80%', echo=TRUE, fig.cap='Amazing, right?!', fig.height=5}
-data <- iris
-
-acupuncture<-read.csv('acupuncture.csv')
+```{r morefigs, out.width='80%', echo=FALSE, fig.cap='Tile graph of the frequency of missing data within these variables', fig.height=5}
+library(readr)
+library(ggplot2)
+acupuncture <- read_csv("Data/acupuncture.csv")
 acupuncture$sex<-as.factor(acupuncture$sex)
 acupuncture$migraine<-as.factor(acupuncture$migraine)
 acupuncture$group<-as.factor(acupuncture$group)
@@ -66,7 +66,7 @@ pk5_missing <- ifelse(is.na(acupuncture$pk5) == 'TRUE', 1, 0)
 pk2 <- ifelse(is.na(acupuncture$pk2) == 'FALSE', 1, 0)
 pk2_missing <- ifelse(is.na(acupuncture$pk2) == 'TRUE', 1, 0)
 Table1<-table(pk2_missing,pk5_missing)
-
+t1<- as.data.frame(Table1)
 pk5_missing<- as.data.frame(pk5_missing)
 pk2_missing<- as.data.frame(pk2_missing)
 ggplot(t1, aes(x = pk2_missing, y = pk5_missing, fill = Freq)) +
@@ -76,6 +76,15 @@ ggplot(t1, aes(x = pk2_missing, y = pk5_missing, fill = Freq)) +
   theme_minimal()
 
 ```
+
+```{r morefigs2, out.width='80%', echo=FALSE, fig.cap='Bar Plot of missing data in pk2 & pk5', fig.height=5}
+ggplot(t1, aes(x = interaction(pk2_missing, pk5_missing), y = Freq, fill = interaction(pk2_missing, pk5_missing))) +
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  scale_fill_manual(values = c("0.0" = "deeppink", "0.1" = "lightcoral", "1.0" = "maroon", "1.1" = "pink")) +
+  labs(title = "Missing Data Pattern: pk2 vs pk5", x = "Missing Data Combination (pk2, pk5)", y = "Frequency") +
+  theme_minimal() 
+```
+
 
 # Next Steps
 
@@ -90,3 +99,34 @@ knitr::write_bib(c('knitr','rmarkdown','posterdown','pagedown'), 'packages.bib')
 ```
 
 # References
+
+```{r}
+data<- acupuncture %>%
+  select(id, pk1, pk2, pk5, migraine) 
+
+data_miss <- data %>%
+  select(id, pk2, pk5, starts_with("pk2_")) %>%
+  mutate(across(starts_with("pk2_"), ~ as.numeric(!is.na(.x)), .names = "missing_{.col}")) %>%
+  unite("miss_pattern", starts_with("missing_"), remove = FALSE) %>%
+  rowwise() %>% 
+  mutate(miss_count = sum(c_across(starts_with("missing_pk2_")))) %>%
+  group_by(miss_pattern) %>%
+  mutate(pattern_freq = n()) %>%
+  ungroup() %>%
+  rowwise() %>%
+  mutate(miss_pattern = gsub("_", ", ", miss_pattern),
+         miss_pattern_label = paste0("Pattern: ", miss_pattern, ", (n=", pattern_freq , ")", collapse = "")) %>%
+  pivot_longer(starts_with("pain_"), names_to = "time", names_prefix = "pain_", 
+               values_to = "pain") %>%
+  mutate(
+    miss_obs = as.factor(if_else(is.na(pain),0,1)),
+    time_cont = case_when(
+    time=="base" ~ 0,
+    time=="3mths" ~ 1,
+    time=="1yr" ~ 2,
+  )) %>%
+  arrange(desc(miss_pattern), id) %>%
+  mutate(miss_pattern_label = factor(miss_pattern_label, levels = unique(miss_pattern_label)),
+         group_vitd = factor(vitdactive, levels = c(0,1), labels = c("Placebo","Vitamin D")),
+         group_oil = factor(fishoilactive, levels = c(0,1), labels = c("Placebo","Fish Oil")))
+```
