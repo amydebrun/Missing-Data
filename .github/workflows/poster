@@ -15,10 +15,8 @@ affiliation:
   - num: 2
     address: xyz
 main_findings:
-  - "Make **better posters** with RMarkdown + **posterdown**."
-  - '![](https://raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png){.main_pic}'
-logoleft_name: '![](https://raw.githubusercontent.com/brentthorne/posterdown/master/images/qr-code-black.png){.main-img-left}'
-logoright_name: '![](https://raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png){.main-img-right}'
+  - '![](acuplot1.svg){.main_pic}'
+
 output: 
   posterdown::posterdown_betterland:
     self_contained: false
@@ -39,10 +37,23 @@ knitr::opts_chunk$set(results = 'asis',
                       out.width = "100%")
 options(knitr.table.format = "html") 
 ```
-
-```{r myplot, include=FALSE}
-svg('myplot.svg')
-plot(iris$Sepal.Length, iris$Sepal.Width)
+```{r}
+library(tidyverse)
+library(dplyr)
+acupuncture<-read.csv('acupuncture.csv')
+acupuncture$sex<-as.factor(acupuncture$sex)
+acupuncture$migraine<-as.factor(acupuncture$migraine)
+acupuncture$group<-as.factor(acupuncture$group)
+pk5_missing<- as.data.frame(pk5_missing)
+pk2_missing<- as.data.frame(pk2_missing)
+```
+```{r acuplot1, include=FALSE}
+svg('acuplot1.svg')
+ggplot(t1, aes(x = pk2_missing, y = pk5_missing, fill = Freq)) +
+  geom_tile() +
+  scale_fill_gradient(low = "lightpink", high = "deeppink") +
+  labs(title = "Missing Data Pattern: pk2 vs pk5", x = "pk2 Missing", y = "pk5 Missing", fill = "Frequency") +
+  theme_minimal()
 dev.off()
 ```
 
@@ -54,27 +65,18 @@ This is the `posterdown_betterland` template for the {posterdown} package! I was
 knitr::write_bib(c('posterdown', 'rmarkdown','pagedown'), 'packages.bib')
 ```
 
-## Objectives
-
-1. Pick a template layout.
-2. Write/ create your poster content distraction free.
-3. Let posterdown do its thing!
-
 # Methods
 
-I will show here how to include poster elements that may be useful, such as an equation using mathjax:
+1. Last Observation Carried Forward
+2. Simple Imputation
+3. Mean Imputation
+4. Indicator Method 
+5. Multiple Imputation 
 
-$$
-E = mc^2
-$$
+# Datasets 
 
-To reference a citation you can add your `.bib` file to the working directory and name it in the YAML metadata or generate an automated one as done here, then you only need to reference the label value in the `.bib` file. For example this package is built on top of the wonderful {pagedown} package and I will cite it at the end of this sentance using this in the rmd `[@R-pagedown]` [@R-pagedown].
-
-To get a better understanding of how to include features like these please refer to the {posterdown} [wiki](https://github.com/posterdown/wiki).
-
-**_Now on to the results!_**
-
-<br>
+We will be using these methods on 2 data sets that contain missing data. One set is the results of a clinical trial which aims to test the effect of acupuncture on chronic headache. 
+The other set are results from an RCT of the effects of Vitamin D and fish oil on chronic knee pain. 
 
 # Results
 
