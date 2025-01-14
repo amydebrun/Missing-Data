@@ -21,38 +21,39 @@ bibliography: packages.bib
 knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
 library(haven)
-library(gt)
 library(scales)
 ```
 
 # Introduction
 
-Welcome to `posterdown` ! This is my attempt to provide a semi-smooth workflow for those who wish to take their R Markdown skills to the conference world. Most features from R Markdown are available in this package such as Markdown section notation, figure captioning, and even citations like this one [@R-rmarkdown]. The rest of this example poster will show how you can insert typical conference poster features into your own document. 
+Missing data is often overlooked when analysing and reporting clinical trial results. There is little investigation conducted on the implications of simply ignoring missing data. We do know however that ignoring missing data can produce biased results and reduce statistical power. This is why its important to acknowledge the unobserved data and prioritize handling the data to increase precision and reduce bias. 
 
-# Methods
+# Missingness Mechanisms
 
-1. Last Observation Carried Forward
-2. Mean Imputation
-3. Multiple Imputation
-4. Indicator Method 
+Missing Completely at Random (MCAR) - Missing data is independent of the study 
+Missing at Random - Uncertainty as to how the data is missing
+Missing Not at Random - Data informatively missing  
 
-# Methods
+# Techniques to Handle Missing Data
 
-This package uses the same workflow approach as the R Markdown you know and love. Basically it goes from RMarkdown > Knitr > Markdown > Pandoc > HTML/CSS > PDF. You can even use the bibliography the same way [@R-posterdown].
+1. Simple Imputation
+2. Last Observation Carried Forward
+3. Mean Imputation
+4. Multiple Imputation
+5. Missing Data Indicator 
 
-# Graphs
+# Visualising Missing Data
 
-Usually you want to have a nice table displaying some important results that you have calculated. In `posterdown` this is as easy as using the `kable` table formatting you are probably use to as per typical R Markdown formatting.
+The following graphs visualise the frequency of missingness within two clinical trial data sets. 
+The first set 
 
-You can reference tables like so: Table \@ref(tab:mytable). Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam placerat augue at velit tincidunt semper. Donec elementum porta posuere. Nullam interdum, odio at tincidunt feugiat, turpis nisi blandit eros, eu posuere risus felis non quam. Nam eget lorem odio. Duis et aliquet orci. Phasellus nec viverra est.
-
-```{r mytable, out.width='80%'}
+```{r mytable, echo=FALSE, fig.cap='Plot that shows the percentage of data thats unobserved', fig.height=9, fig.width=14}
 
 # Formating data
 
-data_vitalkp <- read_sas("~/Documents/Documents/Work/Galway/Cirriculum/HDS5015 Statistical Computing for Biomedical Data/Github/HDS5106/.github/workflows/Data/vitalkneepain111623.sas7bdat", 
+data_vitalkp <- read_sas("Data/vitalkneepain111623.sas7bdat", 
                          NULL)
-data_main <- read_sas("~/Documents/Documents/Work/Galway/Cirriculum/HDS5015 Statistical Computing for Biomedical Data/Github/HDS5106/.github/workflows/Data/VITAL_trial_NEJM_2022.sas7bdat", 
+data_main <- read_sas("Data/VITAL_trial_NEJM_2022.sas7bdat", 
                       NULL)
 
 data_combined <- data_main %>%
@@ -90,10 +91,10 @@ data_miss <- data_combined %>%
 ## Ploting
 
 pct_format = scales::label_percent(accuracy = .1)
-
+suppressMessages(
 data_miss %>%
   group_by(time, miss_obs) %>%
-  summarise(count_pat = n()) %>%
+  summarise(count_pat = n(), .groups="keep") %>%
   group_by(time) %>%
   mutate(total_pat = sum(count_pat), perc_pat = pct_format(count_pat/total_pat)) %>%
   ungroup %>%
@@ -107,12 +108,16 @@ data_miss %>%
   scale_y_continuous(name = "Count (patients)") +
   theme(text = element_text(size = 18),
         axis.text.x = element_text(angle = 90, vjust = 0.5))
+)
+```
+
+```{r mytable2, echo=FALSE, warning=FALSE, fig.cap='Plot that shows the percentage of data thats unobserved', fig.height=9, fig.width=15}
 
 ## Second plot
-
+suppressMessages(
 data_miss %>%
   group_by(time, miss_obs, group_vitd, group_oil) %>%
-  summarise(count_pat = n()) %>%
+  summarise(count_pat = n(), .groups="keep") %>%
   group_by(time, group_vitd, group_oil) %>%
   mutate(total_pat = sum(count_pat), perc_pat = pct_format(count_pat/total_pat)) %>%
   ungroup %>%
@@ -127,12 +132,15 @@ data_miss %>%
   scale_y_continuous(name = "Count (patients)") +
   theme(text = element_text(size = 18),
         axis.text.x = element_text(angle = 90, vjust = 0.5))
+)
+```
+
+```{r mytable3, echo=FALSE, warning=FALSE, fig.cap='Plot that shows the percentage of data thats unobserved', fig.height=9, fig.width=14}
 
 ## Third plot
-
-ggplot(filter(data_miss, pattern_freq >= 10, miss_count > 2, time_cont > 0), aes(x = time_cont, y = pain)) +
+  ggplot(filter(data_miss, pattern_freq >= 10, miss_count > 2, time_cont > 0), aes(x = time_cont, y = pain)) +
   geom_point(aes(colour=group_oil), alpha = 0.2, size = 3, position = position_jitter(w = 0.1, h = 0)) +
-  geom_smooth(aes(colour=group_oil), method = "loess", linewidth = 2) +
+  geom_smooth(aes(colour=group_oil, quiet=TRUE), method = "loess", linewidth = 2) +
   facet_wrap(~miss_pattern_label) +
   scale_x_continuous(name = "Time (year)" ) +
   scale_y_continuous(name = "Pain Score" ) +
@@ -141,16 +149,10 @@ ggplot(filter(data_miss, pattern_freq >= 10, miss_count > 2, time_cont > 0), aes
 
 ```
 
-Or with figures: Figure \@ref(fig:standard-plot), or Figure \@ref(fig:morefigs).
-
-```{r standard-plot, out.width='80%', fig.align='center', fig.cap='Great figure!', fig.height=5}
-plot(mtcars[1:2])
-```
-
-```{r morefigs, out.width='80%', echo=FALSE, fig.cap='Tile graph of the frequency of missing data within these variables', fig.height=5}
+```{r morefigs, out.width='80%', echo=FALSE,  warning=FALSE, fig.cap='Tile graph of the frequency of missing data within these variables', fig.height=5}
 library(readr)
 library(ggplot2)
-acupuncture <- read_csv("Data/acupuncture.csv")
+acupuncture <- read_csv("Data/acupuncture.csv",show_col_types = FALSE)
 acupuncture$sex<-as.factor(acupuncture$sex)
 acupuncture$migraine<-as.factor(acupuncture$migraine)
 acupuncture$group<-as.factor(acupuncture$group)
@@ -169,10 +171,9 @@ ggplot(t1, aes(x = pk2_missing, y = pk5_missing, fill = Freq)) +
   scale_fill_gradient(low = "lightpink", high = "deeppink") +
   labs(title = "Missing Data Pattern: pk2 vs pk5", x = "pk2 Missing", y = "pk5 Missing", fill = "Frequency") +
   theme_minimal()
-
 ```
 
-```{r morefigs2, out.width='80%', echo=FALSE, fig.cap='Bar Plot of missing data in pk2 & pk5', fig.height=5}
+```{r morefigs2, out.width='80%', echo=FALSE,  warning=FALSE, fig.cap='Bar Plot of missing data in pk2 & pk5', fig.height=5}
 ggplot(t1, aes(x = interaction(pk2_missing, pk5_missing), y = Freq, fill = interaction(pk2_missing, pk5_missing))) +
   geom_bar(stat = "identity", show.legend = FALSE) +
   scale_fill_manual(values = c("0.0" = "deeppink", "0.1" = "lightcoral", "1.0" = "maroon", "1.1" = "pink")) +
@@ -181,9 +182,7 @@ ggplot(t1, aes(x = interaction(pk2_missing, pk5_missing), y = Freq, fill = inter
 ```
 
 
-# Next Steps
-
-Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
+# Prediction
 
 # Conclusion
 
@@ -195,33 +194,3 @@ knitr::write_bib(c('knitr','rmarkdown','posterdown','pagedown'), 'packages.bib')
 
 # References
 
-```{r}
-data<- acupuncture %>%
-  select(id, pk1, pk2, pk5, migraine) 
-
-data_miss <- data %>%
-  select(id, pk2, pk5, starts_with("pk2_")) %>%
-  mutate(across(starts_with("pk2_"), ~ as.numeric(!is.na(.x)), .names = "missing_{.col}")) %>%
-  unite("miss_pattern", starts_with("missing_"), remove = FALSE) %>%
-  rowwise() %>% 
-  mutate(miss_count = sum(c_across(starts_with("missing_pk2_")))) %>%
-  group_by(miss_pattern) %>%
-  mutate(pattern_freq = n()) %>%
-  ungroup() %>%
-  rowwise() %>%
-  mutate(miss_pattern = gsub("_", ", ", miss_pattern),
-         miss_pattern_label = paste0("Pattern: ", miss_pattern, ", (n=", pattern_freq , ")", collapse = "")) %>%
-  pivot_longer(starts_with("pain_"), names_to = "time", names_prefix = "pain_", 
-               values_to = "pain") %>%
-  mutate(
-    miss_obs = as.factor(if_else(is.na(pain),0,1)),
-    time_cont = case_when(
-    time=="base" ~ 0,
-    time=="3mths" ~ 1,
-    time=="1yr" ~ 2,
-  )) %>%
-  arrange(desc(miss_pattern), id) %>%
-  mutate(miss_pattern_label = factor(miss_pattern_label, levels = unique(miss_pattern_label)),
-         group_vitd = factor(vitdactive, levels = c(0,1), labels = c("Placebo","Vitamin D")),
-         group_oil = factor(fishoilactive, levels = c(0,1), labels = c("Placebo","Fish Oil")))
-```
