@@ -1,19 +1,16 @@
 ---
-title: 
+title: Estimating Treatment Effects in Clinical Trials with Missing Data
 author:
-  - name: Brent Thorne
+  - name: Amy Browne
     affil: 1
-    orcid: '0000-0002-1099-3857'
-  - name: Another G. Author
+  - name: Tsz Mang Yip
     affil: 2
 affiliation:
   - num: 1
-    address: Department of Earth Science, Brock University
+    address: University of Galway, Ireland
   - num: 2
-    address: Department of Graphics and Layouts, University of Posters; Canada
+    address: 
 column_numbers: 3
-logoright_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
-logoleft_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
 output: 
   posterdown::posterdown_html:
     self_contained: false
@@ -28,17 +25,18 @@ knitr::opts_chunk$set(echo = FALSE)
 
 Welcome to `posterdown` ! This is my attempt to provide a semi-smooth workflow for those who wish to take their R Markdown skills to the conference world. Most features from R Markdown are available in this package such as Markdown section notation, figure captioning, and even citations like this one [@R-rmarkdown]. The rest of this example poster will show how you can insert typical conference poster features into your own document. 
 
-## Objectives
+# Methods
 
-1. Easy to use reproducible poster design. 
-2. Integration with R Markdown.
-3. Easy transition from `posterdown` to `pagedown` report or manuscript documents [@R-pagedown].
+1. Last Observation Carried Forward
+2. Mean Imputation
+3. Multiple Imputation
+4. Indicator Method 
 
 # Methods
 
 This package uses the same workflow approach as the R Markdown you know and love. Basically it goes from RMarkdown > Knitr > Markdown > Pandoc > HTML/CSS > PDF. You can even use the bibliography the same way [@R-posterdown].
 
-# Results
+# Graphs
 
 Usually you want to have a nice table displaying some important results that you have calculated. In `posterdown` this is as easy as using the `kable` table formatting you are probably use to as per typical R Markdown formatting.
 
@@ -57,12 +55,25 @@ plot(mtcars[1:2])
 ```{r morefigs, out.width='80%', echo=TRUE, fig.cap='Amazing, right?!', fig.height=5}
 data <- iris
 
-plot(x = data$Sepal.Length, 
-     y = data$Sepal.Width, 
-     col = data$Species,
-     pch = 19, 
-     xlab = "Sepal Length (cm)",
-     ylab = "Sepal Width (cm)")
+acupuncture<-read.csv('acupuncture.csv')
+acupuncture$sex<-as.factor(acupuncture$sex)
+acupuncture$migraine<-as.factor(acupuncture$migraine)
+acupuncture$group<-as.factor(acupuncture$group)
+
+pk5 <- ifelse(is.na(acupuncture$pk5) == 'FALSE', 1, 0)
+pk5_missing <- ifelse(is.na(acupuncture$pk5) == 'TRUE', 1, 0)
+
+pk2 <- ifelse(is.na(acupuncture$pk2) == 'FALSE', 1, 0)
+pk2_missing <- ifelse(is.na(acupuncture$pk2) == 'TRUE', 1, 0)
+Table1<-table(pk2_missing,pk5_missing)
+
+pk5_missing<- as.data.frame(pk5_missing)
+pk2_missing<- as.data.frame(pk2_missing)
+ggplot(t1, aes(x = pk2_missing, y = pk5_missing, fill = Freq)) +
+  geom_tile() +
+  scale_fill_gradient(low = "lightpink", high = "deeppink") +
+  labs(title = "Missing Data Pattern: pk2 vs pk5", x = "pk2 Missing", y = "pk5 Missing", fill = "Frequency") +
+  theme_minimal()
 
 ```
 
