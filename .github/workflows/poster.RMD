@@ -40,6 +40,7 @@ options(knitr.table.format = "html")
 ```{r}
 library(tidyverse)
 library(dplyr)
+library(ggplot2)
 acupuncture<-read.csv('acupuncture.csv')
 acupuncture$sex<-as.factor(acupuncture$sex)
 acupuncture$migraine<-as.factor(acupuncture$migraine)
