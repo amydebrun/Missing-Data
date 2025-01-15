@@ -12,12 +12,13 @@ poster_height: "594mm"
 poster_width: "841mm"
 column_numbers: 4
 column_margins: "0.5in"	
+sectitle_textsize: "40pt"
 primary_colour:	"#33CCFF"	
 secondary_colour:	"#6699FF"	
 accent_colour:	"#000033"	
 author_textcol: "white"
-title_textsize: "80pt"
-author_textsize: "60pt"
+title_textsize: "60pt"
+author_textsize: "40pt"
 body_textsize: "25pt"
 output: 
   posterdown::posterdown_html:
@@ -126,7 +127,7 @@ data_miss %>%
   mutate(total_pat = sum(count_pat), perc_pat = pct_format(count_pat/total_pat)) %>%
   ungroup %>%
   ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
-  geom_col() + 
+  geom_col() + ggtitle("Pattern of Missing Data over time in Knee Pain trial") + 
   stat_identity(geom = "text", colour = "white", size = 10,
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
@@ -138,7 +139,6 @@ data_miss %>%
         legend.position = "top")
 )
 ```
-
 ```{r mytable2, echo=FALSE, warning=FALSE, fig.cap='Data Observed (dark purple), Missing Data (light purple)', fig.height=9, fig.width=15}
 
 ## Second plot
