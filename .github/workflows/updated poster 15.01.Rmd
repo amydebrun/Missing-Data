@@ -12,11 +12,11 @@ poster_height: "594mm"
 poster_width: "841mm"
 column_numbers: 4
 column_margins: "0.5in"	
-primary_colour:	"#a80050"	# Secondary colour use for poster design.
-secondary_colour:	"#84003d"	# Main colour used for poster design.
-accent_colour:	"#e6007e"	# A third colour option.
+primary_colour:	"#33CCFF"	
+secondary_colour:	"#6699FF"	
+accent_colour:	"#000033"	
 author_textcol: "white"
-title_textsize: "90pt"
+title_textsize: "80pt"
 author_textsize: "60pt"
 body_textsize: "25pt"
 output: 
@@ -53,6 +53,8 @@ options(knitr.table.format = "html")
 library(tidyverse)
 library(plotly)
 library(kableExtra)
+library(haven)
+library(scales)
 ```
 
 # Outline
@@ -65,19 +67,14 @@ Missing data is often overlooked when analysing and reporting clinical trial res
 - Missing at Random - Uncertainty as to how the data is missing
 - Missing Not at Random - Data is informatively missing  
 
-# Data Sources and Datasets
-
-# Visualising Missing Data
+# Our Data
 
 The following graphs visualise the frequency of missingness within two clinical trial data sets.
 
-#### 
 
 # Vitamin D and Fish Oil Trial
 
 ```{r}
-
-# Formating data
 
 data_vitalkp <- read_sas("Data/vitalkneepain111623.sas7bdat", 
                          NULL)
@@ -130,19 +127,19 @@ data_miss %>%
   ungroup %>%
   ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
   geom_col() + 
-  stat_identity(geom = "text", colour = "white", size = 3.5,
+  stat_identity(geom = "text", colour = "white", size = 10,
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
-  scale_fill_manual(name = "Data Observed\nIndicator (R)", values=c("mediumpurple1", "slateblue3")) +
+  scale_fill_manual(name = "Data Observed", values=c("mediumpurple1", "slateblue3")) +
   scale_x_discrete(name = "Time") +
   scale_y_continuous(name = "Count (patients)") +
   theme(text = element_text(size = 18),
         axis.text.x = element_text(angle = 90, vjust = 0.5),
-        legend.position = "none")
+        legend.position = "top")
 )
 ```
 
-```{r mytable2, echo=FALSE, warning=FALSE, fig.cap='', fig.height=9, fig.width=15}
+```{r mytable2, echo=FALSE, warning=FALSE, fig.cap='Data Observed (dark purple), Missing Data (light purple)', fig.height=9, fig.width=15}
 
 ## Second plot
 suppressMessages(
@@ -153,30 +150,30 @@ data_miss %>%
   mutate(total_pat = sum(count_pat), perc_pat = pct_format(count_pat/total_pat)) %>%
   ungroup %>%
   ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
-  geom_col() + 
+  geom_col() + ggtitle("Proportions of missing data from baseline to year 4") +
   facet_grid(group_vitd~group_oil) + 
-  stat_identity(geom = "text", colour = "white", size = 3.5,
+  stat_identity(geom = "text", colour = "white", size = 10,
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
   scale_fill_manual(values=c("mediumpurple1", "slateblue3")) +
   scale_x_discrete(name = "Time") +
   scale_y_continuous(name = "Count (patients)") +
   theme(text = element_text(size = 18),
-        axis.text.x = element_text(angle = 90, vjust = 0.5))
+        axis.text.x = element_text(angle = 90, vjust = 0.5), legend.position = "none")
 )
 ```
  
-```{r mytable3, echo=FALSE, warning=FALSE, message=FAlSE, fig.cap='', fig.height=9, fig.width=14}
+```{r mytable3, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='', fig.height=9, fig.width=14}
 
 ## Third plot
-  ggplot(filter(data_miss, pattern_freq >= 10, miss_count > 2, time_cont > 0), aes(x = time_cont, y = pain)) +
+  ggplot(filter(data_miss, pattern_freq >= 10, miss_count > 2, time_cont > 0), aes(x = time_cont, y = pain)) + ggtitle("Missing data pattern over time") +
   geom_point(aes(colour=group_oil), alpha = 0.2, size = 3, position = position_jitter(w = 0.1, h = 0)) +
-  geom_smooth(aes(colour=group_oil, quiet=TRUE), method = "loess", linewidth = 2) +
+  geom_smooth(aes(colour=group_oil), method = "loess", linewidth = 2) +
   facet_wrap(~miss_pattern_label) +
   scale_x_continuous(name = "Time (year)" ) +
   scale_y_continuous(name = "Pain Score" )  +
-  scale_colour_manual(values=c("mediumpurple1", "slateblue3"))
-  theme(text = element_text(size = 18), legend.postition="none")
+  scale_colour_manual(name="Treatment Group",values=c("blue", "yellow")) +
+  theme(text = element_text(size = 18), legend.position="top")
 
 ```
 
@@ -214,67 +211,64 @@ acupuncture_miss <- acupuncture %>%
   arrange(desc(miss_pattern), id) %>%
   mutate(miss_pattern_label = factor(miss_pattern_label, levels = unique(miss_pattern_label)))
 ```
-```{r mytable4, echo=FALSE, warning=FALSE, fig.cap='', fig.height=9, fig.width=14}
+```{r mytable4, echo=FALSE, warning=FALSE, fig.cap='1-Baseline, 2- 3 Months, 5- 1 Year', fig.height=9, fig.width=14}
 # 1st plot
 
 pct_format = scales::label_percent(accuracy = .1)
 
 acupuncture_miss %>%
   group_by(time, miss_obs) %>%
-  summarise(count_pat = n()) %>%
+  summarise(count_pat = n(), .groups = "keep") %>%
   group_by(time) %>%
   mutate(total_pat = sum(count_pat), perc_pat = pct_format(count_pat/total_pat)) %>%
   ungroup %>%
   ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
-  geom_col() + 
-  stat_identity(geom = "text", colour = "white", size = 3.5,
+  geom_col() + ggtitle("Proportions of Missing Data over time") +
+  stat_identity(geom = "text", colour = "white", size = 10,
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
-  scale_fill_manual(values=c("lightsteelblue","royalblue")) + 
+  scale_fill_manual(name="Data Observed",values=c("lightsteelblue","royalblue")) + 
   scale_x_discrete(name = "Time") +
   scale_y_continuous(name = "Count (patients)") +
   theme(text = element_text(size = 18),
-        axis.text.x = element_text(angle = 90, vjust = 0.5), legend.position = "none")
+        axis.text.x = element_text(angle = 90, vjust = 0.5), legend.position = "top")
 ```
 
-```{r mytable5, echo=FALSE, warning=FALSE, fig.cap='', fig.height=9, fig.width=14}
+```{r mytable5, echo=FALSE, warning=FALSE, fig.cap='Light Blue = Missing, Darker Blue = Observed', fig.height=9, fig.width=14}
 # 2nd plot
 
 acupuncture_miss %>%
   group_by(time, miss_obs, group) %>%
-  summarise(count_pat = n()) %>%
+  summarise(count_pat = n(), .groups="keep") %>%
   group_by(time, group) %>%
   mutate(total_pat = sum(count_pat), perc_pat = pct_format(count_pat/total_pat)) %>%
   ungroup %>%
-  ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
+  ggplot(aes(x = time, fill = miss_obs, y = count_pat)) + ggtitle("Proportions of Missing Data within Treatment Groups over time (0=Control, 1=Acupuncture") +
   geom_col() + 
   facet_grid(.~group) + 
-  stat_identity(geom = "text", colour = "white", size = 3.5,
+  stat_identity(geom = "text", colour = "white", size = 10,
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
-  scale_fill_manual(name = "Data Observed\nIndicator (R)", values=c("lightsteelblue","royalblue")) + 
+  scale_fill_manual(name = "Data Observed", values=c("lightsteelblue","royalblue")) + 
   scale_x_discrete(name = "Time") +
   scale_y_continuous(name = "Count (patients)") +
   theme(text = element_text(size = 18),
         axis.text.x = element_text(angle = 90, vjust = 0.5),legend.position = "none")
 ```
-We plan to conduct further analysis using:
 
--   Variable discombobulation [^3]
--   Expand our minds with explosive machine learning [^4].
-
-[^3]: Massey et al. 2005 doi: 15.36.413
-
-[^4]: Smith et al. 1991 doi: 12.36.486
-
-We will use the `plasticanalysis` package for this.
 
 ####
 
-#Future Research
+# Data Handling Techniques
+1. Last Observation Carried Forward; Replacing the missing data with the last value that was observed [^1]
+2. Simple Imputation; Replacing the missing data with a calcualted statistic of the observed data (such as mean or median)
+3. Indicator Method; Using a statistical model of the observations, a dummy variable is created to indicate missing or observed.
+4. Multiple Imputation; The observed data is used to create a distribution, from which K values are drawn to form K data sets. Each data set is analysed then combined to form an overall effect. 
 
 # GitHub
 
 The code and datasets for this project can be viewed at our GitHub repository here: <https://github.com/>
 
 # References
+
+[^1]: Carpenter & Kenward, Missing data in randomised controlled trials — a practical guide
