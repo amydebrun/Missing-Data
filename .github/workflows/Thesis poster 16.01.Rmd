@@ -189,6 +189,7 @@ data_miss %>%
 library(readr)
 library(ggplot2)
 acupuncture <- read_csv("Data/acupuncture.csv",show_col_types = FALSE)
+acupuncture$group <- as.factor(acupuncture$group)
 acupuncture_miss <- acupuncture %>%
   select(id, group, pk1, pk2, pk5) %>%
   mutate(across(starts_with("pk"), ~ as.numeric(!is.na(.x)), .names = "missing_{.col}")) %>%
@@ -258,6 +259,17 @@ acupuncture_miss %>%
         axis.text.x = element_text(angle = 90, vjust = 0.5),legend.position = "none")
 ```
 
+```{r mytable6, echo=FALSE, warning=FALSE, fig.cap='Proportions of missing data(light blue) within treatment groups over time', fig.height=9, fig.width=14}
+## Third plot
+ggplot(filter(acupuncture_miss), aes(x = time_cont, y = pk)) + 
+  geom_point(aes(colour=group), alpha = 0.2, size = 3, position = position_jitter(w = 0.1, h = 0)) +
+  geom_smooth(aes(colour=group), method = "loess", linewidth = 2) +
+  facet_wrap(~miss_pattern_label) +
+  scale_x_continuous(name = "Time (year)" ) +
+  scale_y_continuous(name = "Pain Score" )  +
+  scale_colour_manual(name="Treatment Group",values=c("blue", "yellow")) +
+  theme(text = element_text(size = 18), legend.position="top")
+```
 
 ####
 
