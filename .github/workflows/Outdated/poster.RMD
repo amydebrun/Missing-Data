@@ -1,0 +1,241 @@
+---
+title: Estimating Treatment Effects in Clinical Trials with Missing Data
+author:
+  - name: Amy Browne
+    affil: 1
+  - name: Tsz Mang Yip
+    affil: 2
+affiliation:
+  - num: 1
+    address: University of Galway, Ireland
+  - num: 2
+    address: 
+column_numbers: 3
+output: 
+  posterdown::posterdown_html:
+    self_contained: false
+bibliography: packages.bib
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(haven)
+library(scales)
+```
+
+# Introduction
+
+Missing data is often overlooked when analysing and reporting clinical trial results. There is little investigation conducted on the implications of simply ignoring missing data. We do know however that ignoring missing data can produce biased results and reduce statistical power. This is why its important to acknowledge the unobserved data and prioritize handling the data to increase precision and reduce bias. 
+
+# Missingness Mechanisms
+
+Missing Completely at Random (MCAR) - Missing data is independent of the study 
+Missing at Random - Uncertainty as to how the data is missing
+Missing Not at Random - Data informatively missing  
+
+# Techniques to Handle Missing Data
+
+1. Simple Imputation
+2. Last Observation Carried Forward
+3. Mean Imputation
+4. Multiple Imputation
+5. Missing Data Indicator 
+
+# Visualising Missing Data
+
+The following graphs visualise the frequency of missingness within two clinical trial data sets. 
+The first set 
+
+```{r mytable, echo=FALSE, fig.cap='Plot that shows the percentage of data thats unobserved', fig.height=9, fig.width=14}
+
+# Formating data
+
+data_vitalkp <- read_sas("Data/vitalkneepain111623.sas7bdat", 
+                         NULL)
+data_main <- read_sas("Data/VITAL_trial_NEJM_2022.sas7bdat", 
+                      NULL)
+
+data_combined <- data_main %>%
+  select(Subject_ID, vitdactive, fishoilactive) %>%
+  right_join(data_vitalkp, by = "Subject_ID")
+
+data_miss <- data_combined %>%
+  select(Subject_ID, tkrf, vitdactive, fishoilactive, starts_with("pain_")) %>%
+  mutate(across(starts_with("pain_"), ~ as.numeric(!is.na(.x)), .names = "missing_{.col}")) %>%
+  unite("miss_pattern", starts_with("missing_"), remove = FALSE) %>%
+  rowwise() %>% 
+  mutate(miss_count = sum(c_across(starts_with("missing_pain_")))) %>%
+  group_by(miss_pattern) %>%
+  mutate(pattern_freq = n()) %>%
+  ungroup() %>%
+  rowwise() %>%
+  mutate(miss_pattern = gsub("_", ", ", miss_pattern),
+         miss_pattern_label = paste0("Pattern: ", miss_pattern, ", (n=", pattern_freq , ")", collapse = "")) %>%
+  pivot_longer(starts_with("pain_"), names_to = "time", names_prefix = "pain_", 
+               values_to = "pain") %>%
+  mutate(
+    miss_obs = as.factor(if_else(is.na(pain),0,1)),
+    time_cont = case_when(
+      time=="base" ~ 0,
+      time=="yr1" ~ 1,
+      time=="yr2" ~ 2,
+      time=="yr3" ~ 3,
+      time=="yr4" ~ 4
+    )) %>%
+  arrange(desc(miss_pattern), Subject_ID) %>%
+  mutate(miss_pattern_label = factor(miss_pattern_label, levels = unique(miss_pattern_label)),
+         group_vitd = factor(vitdactive, levels = c(0,1), labels = c("Placebo","Vitamin D")),
+         group_oil = factor(fishoilactive, levels = c(0,1), labels = c("Placebo","Fish Oil")))
+
+## Ploting
+
+pct_format = scales::label_percent(accuracy = .1)
+suppressMessages(
+data_miss %>%
+  group_by(time, miss_obs) %>%
+  summarise(count_pat = n(), .groups="keep") %>%
+  group_by(time) %>%
+  mutate(total_pat = sum(count_pat), perc_pat = pct_format(count_pat/total_pat)) %>%
+  ungroup %>%
+  ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
+  geom_col() + 
+  stat_identity(geom = "text", colour = "white", size = 3.5,
+                aes(label =perc_pat), 
+                position = position_stack(vjust=0.5)) +
+  scale_fill_discrete(name = "Data Observed\nIndicator (R)", ) +
+  scale_x_discrete(name = "Time") +
+  scale_y_continuous(name = "Count (patients)") +
+  theme(text = element_text(size = 18),
+        axis.text.x = element_text(angle = 90, vjust = 0.5))
+)
+```
+
+```{r mytable2, echo=FALSE, warning=FALSE, fig.cap='Plot that shows the percentage of data thats unobserved', fig.height=9, fig.width=15}
+
+## Second plot
+suppressMessages(
+data_miss %>%
+  group_by(time, miss_obs, group_vitd, group_oil) %>%
+  summarise(count_pat = n(), .groups="keep") %>%
+  group_by(time, group_vitd, group_oil) %>%
+  mutate(total_pat = sum(count_pat), perc_pat = pct_format(count_pat/total_pat)) %>%
+  ungroup %>%
+  ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
+  geom_col() + 
+  facet_grid(group_vitd~group_oil) + 
+  stat_identity(geom = "text", colour = "white", size = 3.5,
+                aes(label =perc_pat), 
+                position = position_stack(vjust=0.5)) +
+  scale_fill_discrete(name = "Data Observed\nIndicator (R)", ) +
+  scale_x_discrete(name = "Time") +
+  scale_y_continuous(name = "Count (patients)") +
+  theme(text = element_text(size = 18),
+        axis.text.x = element_text(angle = 90, vjust = 0.5))
+)
+```
+
+```{r mytable3, echo=FALSE, warning=FALSE, fig.cap='Plot that shows the percentage of data thats unobserved', fig.height=9, fig.width=14}
+
+## Third plot
+  ggplot(filter(data_miss, pattern_freq >= 10, miss_count > 2, time_cont > 0), aes(x = time_cont, y = pain)) +
+  geom_point(aes(colour=group_oil), alpha = 0.2, size = 3, position = position_jitter(w = 0.1, h = 0)) +
+  geom_smooth(aes(colour=group_oil, quiet=TRUE), method = "loess", linewidth = 2) +
+  facet_wrap(~miss_pattern_label) +
+  scale_x_continuous(name = "Time (year)" ) +
+  scale_y_continuous(name = "Pain Score" ) +
+  scale_colour_discrete(name = "Randomised Group" ) +
+  theme(text = element_text(size = 18))
+
+```
+
+```{r mytable4, echo=FALSE, warning=FALSE, fig.cap='Plot that shows the percentage of data thats unobserved', fig.height=9, fig.width=14}
+# Formating data
+
+library(readr)
+library(ggplot2)
+acupuncture <- read_csv("Data/acupuncture.csv",show_col_types = FALSE)
+acupuncture_miss <- acupuncture %>%
+  select(id, group, pk1, pk2, pk5) %>%
+  mutate(across(starts_with("pk"), ~ as.numeric(!is.na(.x)), .names = "missing_{.col}")) %>%
+  unite("miss_pattern", starts_with("missing_"), remove = FALSE) %>%
+  rowwise() %>% 
+  mutate(miss_count = sum(c_across(starts_with("missing_pain_")))) %>%
+  group_by(miss_pattern) %>%
+  mutate(pattern_freq = n()) %>%
+  ungroup() %>%
+  rowwise() %>%
+  mutate(miss_pattern = gsub("_", ", ", miss_pattern),
+         miss_pattern_label = paste0("Pattern: ", miss_pattern, ", (n=", pattern_freq , ")", collapse = "")) %>%
+  pivot_longer(starts_with("pk"), names_to = "time", names_prefix = "pk", 
+               values_to = "pk") %>%
+  mutate(
+    miss_obs = as.factor(if_else(is.na(pk),0,1)),
+    time_cont = case_when(
+      time==1 ~ 0,
+      time==2 ~ 1,
+      time==5 ~ 2
+    )) %>%
+  arrange(desc(miss_pattern), id) %>%
+  mutate(miss_pattern_label = factor(miss_pattern_label, levels = unique(miss_pattern_label)))
+
+# 1st plot
+
+pct_format = scales::label_percent(accuracy = .1)
+
+acupuncture_miss %>%
+  group_by(time, miss_obs) %>%
+  summarise(count_pat = n()) %>%
+  group_by(time) %>%
+  mutate(total_pat = sum(count_pat), perc_pat = pct_format(count_pat/total_pat)) %>%
+  ungroup %>%
+  ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
+  geom_col() + 
+  stat_identity(geom = "text", colour = "white", size = 3.5,
+                aes(label =perc_pat), 
+                position = position_stack(vjust=0.5)) +
+  scale_fill_discrete(name = "Data Observed\nIndicator (R)", ) +
+  scale_x_discrete(name = "Time") +
+  scale_y_continuous(name = "Count (patients)") +
+  theme(text = element_text(size = 18),
+        axis.text.x = element_text(angle = 90, vjust = 0.5))
+```
+
+```{r mytable5, echo=FALSE, warning=FALSE, fig.cap='Plot that shows the percentage of data thats unobserved', fig.height=9, fig.width=14}
+# 2nd plot
+
+acupuncture_miss %>%
+  group_by(time, miss_obs, group) %>%
+  summarise(count_pat = n()) %>%
+  group_by(time, group) %>%
+  mutate(total_pat = sum(count_pat), perc_pat = pct_format(count_pat/total_pat)) %>%
+  ungroup %>%
+  ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
+  geom_col() + 
+  facet_grid(.~group) + 
+  stat_identity(geom = "text", colour = "white", size = 3.5,
+                aes(label =perc_pat), 
+                position = position_stack(vjust=0.5)) +
+  scale_fill_discrete(name = "Data Observed\nIndicator (R)", ) +
+  scale_x_discrete(name = "Time") +
+  scale_y_continuous(name = "Count (patients)") +
+  theme(text = element_text(size = 18),
+        axis.text.x = element_text(angle = 90, vjust = 0.5))
+```
+
+
+
+
+
+# Prediction
+
+# Conclusion
+
+Try `posterdown` out! Hopefully you like it!
+
+```{r, include=FALSE}
+knitr::write_bib(c('knitr','rmarkdown','posterdown','pagedown'), 'packages.bib')
+```
+
+# References
+
