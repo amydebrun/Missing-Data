@@ -11,6 +11,7 @@ affiliation:
 poster_height: "594mm"
 poster_width: "841mm"
 column_numbers: 4
+font_family: "Arial"
 column_margins: "0.3in"	
 sectitle_textsize: "35pt"
 primary_colour:	"#a80050"
@@ -134,17 +135,17 @@ data_miss %>%
   stat_identity(geom = "text", colour = "white", size = 10,
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
-  scale_fill_manual(name = "Data Observed", values=c("mediumpurple1", "slateblue3")) +
-  scale_x_discrete(name = "Time (years)") +
+scale_fill_manual(name="",values=c("olivedrab", "lawngreen"), labels=c("Missing Data", "Measured Data")) +
+  scale_x_discrete(name = "Time", labels = c("base" = "Baseline", "yr1" = "Year 1", "yr2" = "Year 2", "yr3" = "Year 3", "yr4"="Year 4")) + 
   scale_y_continuous(name = "Number of Patients") +
   theme(text = element_text(size = 18),
-        axis.text.x = element_text(angle = 90, vjust = 0.5),
-        legend.position = "top")
+        axis.text.x = element_text(angle = 0, vjust = 0.5),
+        legend.position = "top", legend.text=element_text(size=20))
 )
 ```
 
 
-```{r mytable2, echo=FALSE, warning=FALSE, fig.cap='Proportions of missing data(light purple) overtime within treatment groups. Proportions are similar within each group.', fig.height=9, fig.width=15}
+```{r mytable2, echo=FALSE, warning=FALSE, fig.cap='Proportions of missing data(dark green) overtime within treatment groups. Proportions are similar within each group.', fig.height=9, fig.width=15}
 
 ## Second plot
 suppressMessages(
@@ -160,11 +161,11 @@ data_miss %>%
   stat_identity(geom = "text", colour = "white", size = 10,
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
-  scale_fill_manual(values=c("mediumpurple1", "slateblue3")) +
-  scale_x_discrete(name = "Time") +
+  scale_fill_manual(name="Data",values=c("olivedrab", "lawngreen"), labels=c("Missing", "Measured"))+
+  scale_x_discrete(name = "Time", labels = c("base" = "Baseline", "yr1" = "Year 1", "yr2" = "Year 2", "yr3" = "Year 3", "yr4"="Year 4")) + 
   scale_y_continuous(name = "Number of Patients") +
   theme(text = element_text(size = 18),
-        axis.text.x = element_text(angle = 90, vjust = 0.5), legend.position = "none")
+        axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "none")
 )
 ```
  
@@ -177,7 +178,7 @@ data_miss %>%
   facet_wrap(~miss_pattern_label) +
   scale_x_continuous(name = "Time (year)" ) +
   scale_y_continuous(name = "Pain Score" )  +
-  scale_colour_manual(name="Treatment Group",values=c("blue", "yellow")) +
+  scale_colour_manual(name="Treatment Group",values=c("springgreen", "maroon")) +
   theme(text = element_text(size = 18), legend.position="top")
 
 ```
@@ -216,7 +217,7 @@ acupuncture_miss <- acupuncture %>%
   arrange(desc(miss_pattern), id) %>%
   mutate(miss_pattern_label = factor(miss_pattern_label, levels = unique(miss_pattern_label)))
 ```
-```{r mytable4, echo=FALSE, warning=FALSE, fig.cap='Proportions of Missing data over time in longitudinal trial (Vickers et al. 2004)', fig.height=9, fig.width=14}
+```{r mytable4, echo=FALSE, warning=FALSE, fig.cap='Proportions of Missing data over time in longitudinal trial (Vickers et al. 2004)', fig.height=6, fig.width=14}
 # 1st plot
 
 pct_format = scales::label_percent(accuracy = .1)
@@ -232,14 +233,14 @@ acupuncture_miss %>%
   stat_identity(geom = "text", colour = "white", size = 10,
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
-  scale_fill_manual(name="Data Observed",values=c("lightsteelblue","royalblue")) + 
-  scale_x_discrete(name = "Time") +
+  scale_fill_manual(name="",values=c("olivedrab", "lawngreen"), labels=c("Missing Data", "Measured Data")) + 
+  scale_x_discrete(name = "Time", labels = c("1" = "Baseline", "2" = "3 Months", "5" = "12 Months")) +
   scale_y_continuous(name = "Number of Patients") +
   theme(text = element_text(size = 18),
-        axis.text.x = element_text(angle = 90, vjust = 0.5), legend.position = "top")
+        axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "top", legend.text=element_text(size=20))
 ```
 
-```{r mytable5, echo=FALSE, warning=FALSE, fig.cap='Proportions of missing data(light blue) within treatment groups over time', fig.height=9, fig.width=14}
+```{r mytable5, echo=FALSE, warning=FALSE, fig.cap='Proportions of missing data(dark green) within treatment groups over time', fig.height=6, fig.width=14}
 # 2nd plot
 
 acupuncture_miss %>%
@@ -250,21 +251,49 @@ acupuncture_miss %>%
   ungroup %>%
   ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
   geom_col() + 
-  facet_grid(.~group) + 
+  facet_grid(.~group, labeller=labeller(group=c("0" = "Placebo", "1" = "Acupuncture"))) + 
   stat_identity(geom = "text", colour = "white", size = 10,
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
-  scale_fill_manual(name = "Data Observed", values=c("lightsteelblue","royalblue")) + 
-  scale_x_discrete(name = "Time") +
+  scale_fill_manual(name="Data",values=c("olivedrab", "lawngreen"), labels=c("Missing", "Measured")) + 
+ scale_x_discrete(name = "Time", labels = c("1" = "Baseline", "2" = "3 Months", "5" = "12 Months")) +
   scale_y_continuous(name = "Number of Patients") +
   theme(text = element_text(size = 18),
-        axis.text.x = element_text(angle = 90, vjust = 0.5),legend.position = "none")
+        axis.text.x = element_text(angle = 0, vjust = 0.5),legend.position = "none",strip.text.x=element_text(size=20))
+```
+
+```{r mytable6, echo=FALSE, warning=FALSE, fig.cap='Missing data (dark green) pattern over time ', fig.height=6, fig.width=14}
+## Third plot
+
+acupuncture_miss_count <- acupuncture_miss %>%
+  select(id, miss_pattern, pk, time_cont, group, miss_obs) %>%
+  group_by(group, miss_pattern, miss_obs, time_cont) %>%
+  summarise(pattern_count = n(), .groups="keep") %>%
+  ungroup %>%
+  mutate(pattern_perc = round(pattern_count/sum(pattern_count)*100*5,1))
+
+
+ggplot(acupuncture_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
+  geom_tile(color = "white") + 
+  geom_text(data = filter(acupuncture_miss_count, time_cont == 2), 
+            aes(x = time_cont+1, label = paste0(pattern_count," (", pattern_perc, "%)")), size = 5.5) +
+  facet_grid(~group, scales = "free", switch = "y",labeller=labeller(group=c("0" = "Placebo", "1" = "Acupuncture"))) +
+  theme_bw() +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.spacing.x = unit(1, "lines"),
+        text = element_text(size = 18),
+        axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "none",strip.text.x=element_text(size=20)) +
+  coord_cartesian(xlim = c(-0.5, 3.2), clip = 'off') +
+  scale_y_discrete(name = "Missing Data Pattern") +
+  scale_fill_manual(name = "", labels=c("Missing","Measured"), values=c("olivedrab","lawngreen")) +
+  scale_x_continuous(name = "Time", breaks = c(0.1,1.1,2.1,3.1), 
+                     labels = c("Baseline","3 Months","12 Months","Patients \n(%)")) 
 ```
 
 
 ####
 
-# Data Handling Techniques [^3]
+# Common Analysis for Data with Missing Observations [^3]
 1. Last Observation Carried Forward; Replacing the missing data with the last value that was observed 
 2. Simple Imputation; Replacing the missing data with a calculated statistic of the observed data (such as mean or median)
 3. Indicator Method; Using a statistical model of the observations, a dummy variable is created to indicate missing or observed.
