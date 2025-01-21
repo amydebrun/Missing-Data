@@ -123,7 +123,7 @@ data_miss <- data_combined %>%
          group_oil = factor(fishoilactive, levels = c(0,1), labels = c("Placebo","Fish Oil")))
 ```
 
-```{r mytable, echo=FALSE, fig.cap='Proportions of Missing Data over time in longitudinal trial (MacFarlane et al. 2020)', fig.height=6, fig.width=14}
+```{r mytable, echo=FALSE, fig.cap='Proportions of Missing Data over time in longitudinal trial (MacFarlane et al. 2020)', fig.height=5, fig.width=14}
 ## Ploting
 
 pct_format = scales::label_percent(accuracy = .1)
@@ -149,7 +149,7 @@ scale_fill_manual(name="",values=c("olivedrab", "lawngreen"), labels=c("Missing 
 ```
 
 
-```{r mytable2, echo=FALSE, warning=FALSE, fig.cap='Proportions of missing data(dark green) overtime within treatment groups. Proportions are similar within each group.', fig.height=6, fig.width=14}
+```{r mytable2, echo=FALSE, warning=FALSE, fig.cap='Proportions of missing data(dark green) overtime within treatment groups. Proportions are similar within each group.', fig.height=5, fig.width=14}
 
 ## Second plot
 suppressMessages(
@@ -173,7 +173,7 @@ data_miss %>%
 )
 ```
  
-```{r mytable3, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='The missing data patterns grouped by fish oil intake. 0/1 indicating data missing/observed. Differences in patterns can be observed.', fig.height=6, fig.width=14}
+```{r mytable3, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='The missing data patterns grouped by fish oil intake. Differences in patterns can be observed.', fig.height=8, fig.width=14}
 
 ## Third plot
 data_miss_count <- data_miss %>%
@@ -192,13 +192,13 @@ ggplot(data_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.spacing.x = unit(1, "lines"),
         text = element_text(size = 18),
-        axis.text.x = element_text(angle = 90, vjust = 0.5)) +
+        axis.text.x = element_text(angle = 90, vjust = 0.5) , legend.position = "top") +
   coord_cartesian(xlim = c(-0.5, 6.2), clip = 'off') +
   scale_y_discrete(name = "Missing Data Pattern") +
   scale_fill_discrete(name = "Data Observed\nIndicator (R)", ) +
   scale_x_continuous(name = "Time", breaks = c(0,1,2,3,4,5), 
                      labels = c("Baseline","Year 1","Year 2","Year 3","Year 4","Patient Count\n(%)")) +
-  scale_fill_manual(name="Treatment Group",values=c("olivedrab", "lawngreen"))
+  scale_fill_manual(name="",labels=c("Missing Data","Measured Data"),values=c("olivedrab", "lawngreen"))
 ```
 
 # Acupuncture Trial
