@@ -40,7 +40,7 @@ div.poster_title{
     break-after: column;
 }
 div.footnotes {
-    font-size: 18pt;
+    font-size: 10pt;
 }
 ```
 
@@ -64,7 +64,7 @@ library(scales)
 
 # Outline
 
-Missing data is often overlooked when analysing and reporting clinical trial results. Excluding observations on the basis of missing data can produce biased results and reduce statistical power. It is important to plan for and describe the occurrence of missing data and consider how such missing data should be incorporated in any analysis estimating a treatment in order to increase precision and reduce bias. 
+Missing data is often overlooked when analysing and reporting clinical trial results. Excluding observations on the basis of missing data can produce biased results and reduce statistical power. It is important to plan for and describe the occurrence of missing data and consider how such missing data should be incorporated in any analysis estimating a treatment in order to increase precision and reduce bias. A key statistical consideration in longitudinal trials is the non-independence of repeated observations from the same patient, which must be accounted for in any analysis.
 
 # Missingness Mechanisms
 
@@ -72,10 +72,14 @@ Missing data is often overlooked when analysing and reporting clinical trial res
 - Missing at Random - Uncertainty as to how the data is missing
 - Missing Not at Random - Data is informatively missing  
 
-# Our Data
+# Project Aims
+This project investigates missing data analysis methods in two longitudinal RCT datasets. As the first part of the project, we are visualizing the proportion and patterns of missing values for each dataset.
 
-The following graphs visualise the frequency of missingness within two clinical trial data sets. The first data set contains results of a longitudinal Randomised Control Trial which aimed to test the effectiveness of in taking Fish oil or Vitamin D on Knee Pain (MacFarlane et al., 2020)[^1] 
-The following data set are results from another longitudinal randomised control trial in which the effectiveness of acupuncture on chronic headache was investigated (Vickers et al.,2004) [^2].
+The first dataset is from a 2x2 factorial RCT testing the effects of Fish Oil and Vitamin D on knee pain and their role in preventing cancer and cardiovascular disease (MacFarlane et al., 2020) [^1]. Over 20,000 healthy participants were randomized into four treatment groups, followed at one-year intervals for five years, with the primary endpoint being cardiovascular events.
+
+The second dataset comes from an RCT evaluating acupuncture's effectiveness on chronic headaches, mainly migraines (Vickers et al., 2004) [^2]. A total of 401 patients were randomized to receive up to 12 acupuncture treatments over three months, with outcomes such as headache score, SF-36 health status, and medication use measured at baseline, three months, and 12 months.
+
+####
 
 # Vitamin D and Fish Oil Trial
 
@@ -119,7 +123,7 @@ data_miss <- data_combined %>%
          group_oil = factor(fishoilactive, levels = c(0,1), labels = c("Placebo","Fish Oil")))
 ```
 
-```{r mytable, echo=FALSE, fig.cap='Proportions of Missing Data over time in longitudinal trial (MacFarlane et al. 2020)', fig.height=9, fig.width=14}
+```{r mytable, echo=FALSE, fig.cap='Proportions of Missing Data over time in longitudinal trial (MacFarlane et al. 2020)', fig.height=6, fig.width=14}
 ## Ploting
 
 pct_format = scales::label_percent(accuracy = .1)
@@ -145,19 +149,19 @@ scale_fill_manual(name="",values=c("olivedrab", "lawngreen"), labels=c("Missing 
 ```
 
 
-```{r mytable2, echo=FALSE, warning=FALSE, fig.cap='Proportions of missing data(dark green) overtime within treatment groups. Proportions are similar within each group.', fig.height=9, fig.width=15}
+```{r mytable2, echo=FALSE, warning=FALSE, fig.cap='Proportions of missing data(dark green) overtime within treatment groups. Proportions are similar within each group.', fig.height=6, fig.width=14}
 
 ## Second plot
 suppressMessages(
 data_miss %>%
-  group_by(time, miss_obs, group_vitd, group_oil) %>%
+  group_by(time, miss_obs, group_oil) %>%
   summarise(count_pat = n(), .groups="keep") %>%
-  group_by(time, group_vitd, group_oil) %>%
+  group_by(time, group_oil) %>%
   mutate(total_pat = sum(count_pat), perc_pat = pct_format(count_pat/total_pat)) %>%
   ungroup %>%
   ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
   geom_col() +
-  facet_grid(group_vitd~group_oil) + 
+  facet_grid(~group_oil) + 
   stat_identity(geom = "text", colour = "white", size = 10,
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
@@ -169,7 +173,7 @@ data_miss %>%
 )
 ```
  
-```{r mytable3, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='Patients Pain Scores with different data patterns, suggesting responses may differ with missing data', fig.height=9, fig.width=14}
+```{r mytable3, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='The missing data patterns grouped by fish oil intake. 0/1 indicating data missing/observed. Differences in patterns can be observed.', fig.height=6, fig.width=14}
 
 ## Third plot
 data_miss_count <- data_miss %>%
@@ -183,7 +187,7 @@ ggplot(data_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
   geom_tile(color = "white") + 
   geom_text(data = filter(data_miss_count, time_cont == 4), 
             aes(x = time_cont+1.5, label = paste0(pattern_count," (", pattern_perc, "%)")), size = 4) +
-  facet_grid(group_vitd~group_oil, scales = "free", switch = "y") +
+  facet_grid(~group_oil, scales = "free", switch = "y") +
   theme_bw() +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.spacing.x = unit(1, "lines"),
@@ -196,8 +200,6 @@ ggplot(data_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
                      labels = c("Baseline","Year 1","Year 2","Year 3","Year 4","Patient Count\n(%)")) +
   scale_fill_manual(name="Treatment Group",values=c("olivedrab", "lawngreen"))
 ```
-
-#### 
 
 # Acupuncture Trial
 
@@ -304,20 +306,23 @@ ggplot(acupuncture_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_
                      labels = c("Baseline","3 Months","12 Months","Patients \n(%)")) 
 ```
 
-
 ####
 
 # Common Analysis for Data with Missing Observations [^3]
-1. Last Observation Carried Forward; Replacing the missing data with the last value that was observed 
-2. Simple Imputation; Replacing the missing data with a calculated statistic of the observed data (such as mean or median)
-3. Indicator Method; Using a statistical model of the observations, a dummy variable is created to indicate missing or observed.
-4. Multiple Imputation; The observed data is used to create a distribution, from which K values are drawn to form K data sets. Each data set is analysed then combined to form an overall effect. 
+1. Complete case study, participants with missing data are simply excluded.
+2. Simple imputation methods(last/baseline observation carried forward)
+3. Weigh estimate (not suit in both data set due to non-monotonicity)
+4. Multi-imputation & MLE
 
-# GitHub
+# Next step
 
-The code and datasets for this project can be viewed at our GitHub repository here: <https://github.com/amydebrun/Missing-Data.git>
+You should mention that, for both datasets, the standard or reference analysis will be via maximum-likelihood, with no imputation. This will involve using linear mixed-effects models to capture the longitudinal aspect. For your work extending this via sensitivity analyses, imputation of one kind or another will be employed in conjunction with a linear mixed-effects model.
+
+Multiple imputation methods will need to consider the longitudinal aspect of the data (observations are correlated within patient). This is a key aspect of the particular design of both trials (as above) and is what makes your project more interesting, beyond a basic multiple imputation approach.
+
 
 # References
 [^1]: MacFarlane, L. A. et al.,(2020). The Effects of Vitamin D and Marine Omega-3 Fatty Acid Supplementation on Chronic Knee Pain in Older US Adults: Results From a Randomized Trial. Arthritis & rheumatology (Hoboken, N.J.), 72(11), 1836–1844. https://doi.org/10.1002/art.41416
 [^2]: Vickers, A. J. et al., (2004). Acupuncture for chronic headache in primary care: large, pragmatic, randomised trial. BMJ (Clinical research ed.), 328(7442), 744. https://doi.org/10.1136/bmj.38029.421863.EB
 [^3]: Carpenter, J., & Kenward, M. (2007). Missing data in randomised controlled trials: a practical guide. Health Technology Assessment Methodology Programme. 
+The code and datasets for this project can be viewed at our GitHub repository here: <https://github.com/amydebrun/Missing-Data.git>
