@@ -172,15 +172,29 @@ data_miss %>%
 ```{r mytable3, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='Patients Pain Scores with different data patterns, suggesting responses may differ with missing data', fig.height=9, fig.width=14}
 
 ## Third plot
-  ggplot(filter(data_miss, pattern_freq >= 10, miss_count > 2, time_cont > 0), aes(x = time_cont, y = pain)) + 
-  geom_point(aes(colour=group_oil), alpha = 0.2, size = 3, position = position_jitter(w = 0.1, h = 0)) +
-  geom_smooth(aes(colour=group_oil), method = "loess", linewidth = 2) +
-  facet_wrap(~miss_pattern_label) +
-  scale_x_continuous(name = "Time (year)" ) +
-  scale_y_continuous(name = "Pain Score" )  +
-  scale_colour_manual(name="Treatment Group",values=c("springgreen", "maroon")) +
-  theme(text = element_text(size = 18), legend.position="top")
+data_miss_count <- data_miss %>%
+  select(Subject_ID, miss_pattern, pain, time_cont, group_vitd, group_oil, miss_obs) %>%
+  group_by(group_vitd, group_oil, miss_pattern, miss_obs, time_cont) %>%
+  summarise(pattern_count = n()) %>%
+  ungroup %>%
+  mutate(pattern_perc = round(pattern_count/sum(pattern_count)*100*5,1))
 
+ggplot(data_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
+  geom_tile(color = "white") + 
+  geom_text(data = filter(data_miss_count, time_cont == 4), 
+            aes(x = time_cont+1.5, label = paste0(pattern_count," (", pattern_perc, "%)")), size = 4) +
+  facet_grid(group_vitd~group_oil, scales = "free", switch = "y") +
+  theme_bw() +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.spacing.x = unit(1, "lines"),
+        text = element_text(size = 18),
+        axis.text.x = element_text(angle = 90, vjust = 0.5)) +
+  coord_cartesian(xlim = c(-0.5, 6.2), clip = 'off') +
+  scale_y_discrete(name = "Missing Data Pattern") +
+  scale_fill_discrete(name = "Data Observed\nIndicator (R)", ) +
+  scale_x_continuous(name = "Time", breaks = c(0,1,2,3,4,5), 
+                     labels = c("Baseline","Year 1","Year 2","Year 3","Year 4","Patient Count\n(%)")) +
+  scale_fill_manual(name="Treatment Group",values=c("olivedrab", "lawngreen"))
 ```
 
 #### 
