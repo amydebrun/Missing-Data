@@ -3,10 +3,8 @@ title: Estimating Treatment Effects in Longitudinal Clinical Trials with Missing
 author:
   - name: Amy Browne
   - name: Tsz Mang Yip
-    affil: 1
 affiliation:
-  - num: 1
-    address: School of Mathematical and Statistical Sciences, University of Galway
+  - address: School of Mathematical and Statistical Sciences, University of Galway
 
 poster_height: "594mm"
 poster_width: "841mm"
@@ -123,7 +121,7 @@ data_miss <- data_combined %>%
          group_oil = factor(fishoilactive, levels = c(0,1), labels = c("Placebo","Fish Oil")))
 ```
 
-```{r mytable, echo=FALSE, fig.cap='Proportions of Missing Data over time in longitudinal trial (MacFarlane et al. 2020)', fig.height=5, fig.width=14}
+```{r mytable, echo=FALSE, fig.height=6, fig.width=14}
 ## Ploting
 
 pct_format = scales::label_percent(accuracy = .1)
@@ -147,9 +145,9 @@ scale_fill_manual(name="",values=c("olivedrab", "lawngreen"), labels=c("Missing 
         legend.position = "top", legend.text=element_text(size=20))
 )
 ```
+Figure 1. Proportions of Missing Data over time in longitudinal trial (MacFarlane et al. 2020)
 
-
-```{r mytable2, echo=FALSE, warning=FALSE, fig.cap='Proportions of missing data(dark green) overtime within treatment groups. Proportions are similar within each group.', fig.height=5, fig.width=14}
+```{r mytable2, echo=FALSE, warning=FALSE, fig.height=6, fig.width=14}
 
 ## Second plot
 suppressMessages(
@@ -173,12 +171,14 @@ data_miss %>%
 )
 ```
  
-```{r mytable3, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='The missing data patterns grouped by fish oil intake. Differences in patterns can be observed.', fig.height=8, fig.width=14}
+Figure 2. Proportions of missing data(dark green) overtime within treatment groups. Proportions are similar within each group.
+ 
+```{r mytable3, echo=FALSE, warning=FALSE, message=FALSE, fig.height=10, fig.width=14}
 
 ## Third plot
 data_miss_count <- data_miss %>%
-  select(Subject_ID, miss_pattern, pain, time_cont, group_vitd, group_oil, miss_obs) %>%
-  group_by(group_vitd, group_oil, miss_pattern, miss_obs, time_cont) %>%
+  select(Subject_ID, miss_pattern, pain, time_cont, group_oil, miss_obs) %>%
+  group_by(group_oil, miss_pattern, miss_obs, time_cont) %>%
   summarise(pattern_count = n()) %>%
   ungroup %>%
   mutate(pattern_perc = round(pattern_count/sum(pattern_count)*100*5,1))
@@ -200,6 +200,10 @@ ggplot(data_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
                      labels = c("Baseline","Year 1","Year 2","Year 3","Year 4","Patient Count\n(%)")) +
   scale_fill_manual(name="",labels=c("Missing Data","Measured Data"),values=c("olivedrab", "lawngreen"))
 ```
+
+Figure 3. The missing data patterns grouped by fish oil intake. Differences in patterns can be observed.
+
+####
 
 # Acupuncture Trial
 
