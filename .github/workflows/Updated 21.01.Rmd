@@ -3,8 +3,10 @@ title: Estimating Treatment Effects in Longitudinal Clinical Trials with Missing
 author:
   - name: Amy Browne
   - name: Tsz Mang Yip
+    affil: 1
 affiliation:
-  - address: School of Mathematical and Statistical Sciences, University of Galway
+  - num: 1
+    address: School of Mathematical and Statistical Sciences, University of Galway
 
 poster_height: "594mm"
 poster_width: "841mm"
@@ -121,9 +123,7 @@ data_miss <- data_combined %>%
          group_oil = factor(fishoilactive, levels = c(0,1), labels = c("Placebo","Fish Oil")))
 ```
 
-```{r mytable, echo=FALSE, fig.height=6, fig.width=14}
-## Ploting
-
+```{r mytable, echo=FALSE, fig.height=5, fig.width=14}
 pct_format = scales::label_percent(accuracy = .1)
 suppressMessages(
 data_miss %>%
@@ -134,22 +134,20 @@ data_miss %>%
   ungroup %>%
   ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
   geom_col() +  
-  stat_identity(geom = "text", colour = "white", size = 10,
+  stat_identity(geom = "text", colour = "white", size = 8,
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
 scale_fill_manual(name="",values=c("olivedrab", "lawngreen"), labels=c("Missing Data", "Measured Data")) +
   scale_x_discrete(name = "Time", labels = c("base" = "Baseline", "yr1" = "Year 1", "yr2" = "Year 2", "yr3" = "Year 3", "yr4"="Year 4")) + 
   scale_y_continuous(name = "Number of Patients") +
-  theme(text = element_text(size = 18),
+  theme(text = element_text(size = 24),
         axis.text.x = element_text(angle = 0, vjust = 0.5),
         legend.position = "top", legend.text=element_text(size=20))
 )
 ```
-Figure 1. Proportions of Missing Data over time in longitudinal trial (MacFarlane et al. 2020)
+Figure1. The proportions of missing data (represented in dark green) at different time points. The observed missing data pattern is non-monotonic.
 
 ```{r mytable2, echo=FALSE, warning=FALSE, fig.height=6, fig.width=14}
-
-## Second plot
 suppressMessages(
 data_miss %>%
   group_by(time, miss_obs, group_oil) %>%
@@ -160,22 +158,20 @@ data_miss %>%
   ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
   geom_col() +
   facet_grid(~group_oil) + 
-  stat_identity(geom = "text", colour = "white", size = 10,
+  stat_identity(geom = "text", colour = "white", size = 5,
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
   scale_fill_manual(name="Data",values=c("olivedrab", "lawngreen"), labels=c("Missing", "Measured"))+
   scale_x_discrete(name = "Time", labels = c("base" = "Baseline", "yr1" = "Year 1", "yr2" = "Year 2", "yr3" = "Year 3", "yr4"="Year 4")) + 
   scale_y_continuous(name = "Number of Patients") +
-  theme(text = element_text(size = 18),
-        axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "none")
+  theme(text = element_text(size = 24),
+        axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "top")
 )
 ```
  
-Figure 2. Proportions of missing data(dark green) overtime within treatment groups. Proportions are similar within each group.
+Figure2. Proportions of missing data (dark green) over time in different groups (Fish Oil vs. Placebo) are shown. Similar proportions of missing data were observed between the two groups.
  
-```{r mytable3, echo=FALSE, warning=FALSE, message=FALSE, fig.height=10, fig.width=14}
-
-## Third plot
+```{r mytable3, echo=FALSE, warning=FALSE, message=FALSE, fig.height=9, fig.width=14}
 data_miss_count <- data_miss %>%
   select(Subject_ID, miss_pattern, pain, time_cont, group_oil, miss_obs) %>%
   group_by(group_oil, miss_pattern, miss_obs, time_cont) %>%
@@ -201,15 +197,13 @@ ggplot(data_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
   scale_fill_manual(name="",labels=c("Missing Data","Measured Data"),values=c("olivedrab", "lawngreen"))
 ```
 
-Figure 3. The missing data patterns grouped by fish oil intake. Differences in patterns can be observed.
+Figure3. The missing data patterns (where 0 represents missing data and 1 represents observed data) between the groups (Fish Oil vs. Placebo) are displayed. Some differences in the patterns can be observed, suggesting that the data may not be missing completely at random. This observation warrants further investigation in the subsequent steps."
 
 ####
 
 # Acupuncture Trial
 
 ```{r}
-# Formating data
-
 library(readr)
 library(ggplot2)
 acupuncture <- read_csv("Data/acupuncture.csv",show_col_types = FALSE)
@@ -237,9 +231,8 @@ acupuncture_miss <- acupuncture %>%
   arrange(desc(miss_pattern), id) %>%
   mutate(miss_pattern_label = factor(miss_pattern_label, levels = unique(miss_pattern_label)))
 ```
-```{r mytable4, echo=FALSE, warning=FALSE, fig.cap='Proportions of Missing data over time in longitudinal trial (Vickers et al. 2004)', fig.height=6, fig.width=14}
-# 1st plot
 
+```{r mytable4, echo=FALSE, warning=FALSE, fig.height=6, fig.width=14}
 pct_format = scales::label_percent(accuracy = .1)
 
 acupuncture_miss %>%
@@ -260,9 +253,9 @@ acupuncture_miss %>%
         axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "top", legend.text=element_text(size=20))
 ```
 
-```{r mytable5, echo=FALSE, warning=FALSE, fig.cap='Proportions of missing data(dark green) within treatment groups over time', fig.height=6, fig.width=14}
-# 2nd plot
+Figure4. Proportions of Missing data over time in longitudinal trial (Vickers et al. 2004)
 
+```{r mytable5, echo=FALSE, warning=FALSE, fig.height=6, fig.width=14}
 acupuncture_miss %>%
   group_by(time, miss_obs, group) %>%
   summarise(count_pat = n(), .groups="keep") %>%
@@ -282,9 +275,9 @@ acupuncture_miss %>%
         axis.text.x = element_text(angle = 0, vjust = 0.5),legend.position = "none",strip.text.x=element_text(size=20))
 ```
 
-```{r mytable6, echo=FALSE, warning=FALSE, fig.cap='Missing data (dark green) pattern over time ', fig.height=6, fig.width=14}
-## Third plot
+Figure5. Proportions of missing data(dark green) within treatment groups over time
 
+```{r mytable6, echo=FALSE, warning=FALSE, fig.height=6, fig.width=14}
 acupuncture_miss_count <- acupuncture_miss %>%
   select(id, miss_pattern, pk, time_cont, group, miss_obs) %>%
   group_by(group, miss_pattern, miss_obs, time_cont) %>%
@@ -310,15 +303,23 @@ ggplot(acupuncture_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_
                      labels = c("Baseline","3 Months","12 Months","Patients \n(%)")) 
 ```
 
+Figure6. Missing data (dark green) pattern over time
+
 ####
 
 # Common Analysis for Data with Missing Observations [^3]
-1. Complete case study, participants with missing data are simply excluded.
-2. Simple imputation methods(last/baseline observation carried forward)
-3. Weigh estimate (not suit in both data set due to non-monotonicity)
-4. Multi-imputation & MLE
+
+1. Complete Case Analysis: Only includes participants with no missing data in the analysis, ignoring cases with any missing values.
+2. Simple Imputation: Replaces missing values with a single estimate, such as: Last Observation Carried Forward (LOCF) & Baseline Observation Carried Forward (BOCF).
+3. Weighted Estimation: Applies weights to account for the likelihood of data being missing, such as inverse probability weighting (IPW).
+4. Mix-effect model:Uses likelihood-based methods to estimate parameters while accounting for missing data
+5. Multiple Imputation:Replaces missing data with multiple plausible values, generating multiple datasets for analysis and combining the results for inference.
 
 # Next step
+
+We will use mix-effect model as the major method for both dataset.
+
+No way to know what was the original method used. But we will use simple method like LOCF to mimic for comparison
 
 You should mention that, for both datasets, the standard or reference analysis will be via maximum-likelihood, with no imputation. This will involve using linear mixed-effects models to capture the longitudinal aspect. For your work extending this via sensitivity analyses, imputation of one kind or another will be employed in conjunction with a linear mixed-effects model.
 
@@ -329,4 +330,4 @@ Multiple imputation methods will need to consider the longitudinal aspect of the
 [^1]: MacFarlane, L. A. et al.,(2020). The Effects of Vitamin D and Marine Omega-3 Fatty Acid Supplementation on Chronic Knee Pain in Older US Adults: Results From a Randomized Trial. Arthritis & rheumatology (Hoboken, N.J.), 72(11), 1836–1844. https://doi.org/10.1002/art.41416
 [^2]: Vickers, A. J. et al., (2004). Acupuncture for chronic headache in primary care: large, pragmatic, randomised trial. BMJ (Clinical research ed.), 328(7442), 744. https://doi.org/10.1136/bmj.38029.421863.EB
 [^3]: Carpenter, J., & Kenward, M. (2007). Missing data in randomised controlled trials: a practical guide. Health Technology Assessment Methodology Programme. 
-The code and datasets for this project can be viewed at our GitHub repository here: <https://github.com/amydebrun/Missing-Data.git>
+[^Github]: The code and datasets for this project can be viewed at our GitHub repository here: <https://github.com/amydebrun/Missing-Data.git>
