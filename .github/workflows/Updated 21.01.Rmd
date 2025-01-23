@@ -317,13 +317,13 @@ Figure 6. Missing data pattern (where 0 represents missing data and 1 represents
 
 ####
 
-# Common Analysis for Data with Missing Observations [^4]
+# Common Analysis For Data With Missing Observations [^4]
 
-1.⁠ ⁠Complete Case Analysis: Only includes participants with no missing data in the analysis, ignoring cases with any missing values. This method assumes the data is Missing Completely at Random. 
-2.⁠ ⁠Simple Imputation: Replaces missing values with a single estimate, such as Last Observation Carried Forward (LOCF) & Baseline Observation Carried Forward (BOCF).
-3.⁠ ⁠Weighted Estimation: Applies weights to account for the likelihood of data being missing, such as inverse probability weighting (IPW).
-4.⁠ ⁠Mix-effect model: Uses likelihood-based methods to estimate parameters while accounting for missing data. This method assumes the data is Missing at Random 
-5.⁠ ⁠Multiple Imputation: Replaces missing data with multiple plausible values, generating multiple datasets for analysis and combining the results for inference. This method assumes the data is Missing at Random. 
+1. Complete Case Analysis: Only includes participants with no missing data in the analysis, ignoring cases with any missing values.
+2. Simple Imputation: Replaces missing values with a single estimate, such as Last/baseline observation carried forward (LOCF/BOCF).
+3. Weighted Estimation: Applies weights to account for the likelihood of data being missing, such as inverse probability weighting (IPW).
+4. Mix-effect Model: Uses likelihood-based methods to estimate parameters while accounting for missing data.
+5. Multiple Imputation: Replaces missing data with multiple plausible values, generating multiple datasets for analysis and combining the result for inference.
 
 # Next step
 
