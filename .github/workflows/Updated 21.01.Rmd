@@ -3,9 +3,9 @@ title: Estimating Treatment Effects in Longitudinal Clinical Trials with Missing
 author:
   - name: Amy Browne
   - name: Tsz Mang Yip
-    affil: 1
+    affil: 
 affiliation:
-  - num: 1
+  - num: 
     address: School of Mathematical and Statistical Sciences, University of Galway
 
 poster_height: "594mm"
@@ -79,9 +79,9 @@ To account for missing data, it must be understood the causes of data being miss
 - Missing Not at Random - Data is informatively missing. This is due to the unobserved data itself. Participants in a study missing their appointments or withholding a true response is an example of data being missing not at random. This is the most difficult to account for. We must investigate the data distributions of patients with missing data and compare to full data distributions. 
 
 # Project Aims
-This project investigates missing data analysis methods in two longitudinal RCT data sets. As the first part of the project, we are visualizing the proportion and patterns of missing values for each data set. The trial are summarised in the following table: 
+This project investigates missing data analysis methods in two longitudinal RCT data sets. As the first part of the project, we are visualizing the proportion and patterns of missing values for each data set. The trials are summarised in the following table: 
 
-| Trial                  | Vitamin D & omega trial[^3]  | Acupuncture Trial[^2] |
+| Trial                  | Vitamin D & omega trial[^1]  | Acupuncture Trial[^2] |
 | -----------------------| -----------------------------| ----------------------------|
 | Sample Size            | 1398                         | 401                         |
 | Trial                  | 2x2 Longitudinal RCT         | Longitudinal RCT            |
@@ -89,10 +89,9 @@ This project investigates missing data analysis methods in two longitudinal RCT 
 | Independent Variable(s)| Vitamin D, Fish Oil          | Acupuncture treatment       |
 | Dependent Variable(s)  | Knee pain score              | Migraine severity score     |
 
-
 ####
 
-# Vitamin D and Fish Oil Trial
+# Vitamin D and Fish Oil Trial [^3]
 
 ```{r}
 
@@ -243,7 +242,7 @@ acupuncture_miss <- acupuncture %>%
   mutate(miss_pattern_label = factor(miss_pattern_label, levels = unique(miss_pattern_label)))
 ```
 
-```{r mytable4, echo=FALSE, warning=FALSE, fig.height=8, fig.width=14}
+```{r mytable4, echo=FALSE, warning=FALSE, fig.height=7, fig.width=14}
 pct_format = scales::label_percent(accuracy = .1)
 
 acupuncture_miss %>%
@@ -264,7 +263,7 @@ acupuncture_miss %>%
         axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "top", legend.text=element_text(size=20))
 ```
 
-Figure 4. Proportions of Missing data over time in Acupuncture trial 
+Figure 4. Proportions of Missing data (dark green) at different time in Acupuncture trial 
 
 ```{r mytable5, echo=FALSE, warning=FALSE, fig.height=8, fig.width=14}
 acupuncture_miss %>%
@@ -286,9 +285,9 @@ acupuncture_miss %>%
         axis.text.x = element_text(angle = 0, vjust = 0.5),legend.position = "none",strip.text.x=element_text(size=20))
 ```
 
-Figure 5. Proportions of missing data(dark green) within treatment groups over time. They are similar within both treatment groups, but higher percentage of data is missing in placebo group. 
+Figure 5. Proportions of missing data (dark green) within treatment groups over time. They are similar within both treatment groups, but higher percentage of data is missing in placebo group. 
 
-```{r mytable6, echo=FALSE, warning=FALSE, fig.height=8, fig.width=14}
+```{r mytable6, echo=FALSE, warning=FALSE, fig.height=7, fig.width=14}
 acupuncture_miss_count <- acupuncture_miss %>%
   select(id, miss_pattern, pk, time_cont, group, miss_obs) %>%
   group_by(group, miss_pattern, miss_obs, time_cont) %>%
@@ -314,28 +313,28 @@ ggplot(acupuncture_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_
                      labels = c("Baseline","3 Months","12 Months","Patients \n(%)")) 
 ```
 
-Figure 6. Missing data (dark green) pattern over time.
+Figure 6. Missing data pattern (where 0 represents missing data and 1 represents observed data) over time. Slight differences was observed.
 
 ####
 
-# Common Analysis for Data with Missing Observations [^3]
+# Common Analysis for Data with Missing Observations [^4]
 
-1. Complete Case Analysis: Only includes participants with no missing data in the analysis, ignoring cases with any missing values. This method assumes the data is Missing Completely at Random. 
-2. Simple Imputation: Replaces missing values with a single estimate, such as: Last Observation Carried Forward (LOCF) & Baseline Observation Carried Forward (BOCF).
-3. Weighted Estimation: Applies weights to account for the likelihood of data being missing, such as inverse probability weighting (IPW).
-4. Mix-effect model:Uses likelihood-based methods to estimate parameters while accounting for missing data. This method assumes the data is Missing at Random 
-5. Multiple Imputation:Replaces missing data with multiple plausible values, generating multiple datasets for analysis and combining the results for inference. This method assumes the data is Missing at Random. 
+1.⁠ ⁠Complete Case Analysis: Only includes participants with no missing data in the analysis, ignoring cases with any missing values. This method assumes the data is Missing Completely at Random. 
+2.⁠ ⁠Simple Imputation: Replaces missing values with a single estimate, such as Last Observation Carried Forward (LOCF) & Baseline Observation Carried Forward (BOCF).
+3.⁠ ⁠Weighted Estimation: Applies weights to account for the likelihood of data being missing, such as inverse probability weighting (IPW).
+4.⁠ ⁠Mix-effect model: Uses likelihood-based methods to estimate parameters while accounting for missing data. This method assumes the data is Missing at Random 
+5.⁠ ⁠Multiple Imputation: Replaces missing data with multiple plausible values, generating multiple datasets for analysis and combining the results for inference. This method assumes the data is Missing at Random. 
 
 # Next step
 
-To address this issue, we must conduct a sensitivity analysis on the data set. This begins with identifying which of the missing mechanism the missing data in the data sets are under. This can be done by investigating patterns in the data set.  
+We must conduct a sensitivity analysis of the data set to address this issue. This begins with finding which of the missing mechanisms the missing data in the data sets are under. This can be done by investigating patterns in the data set. 
 
-We will proceed to use a mixed-effects model as the primary method for analyzing both datasets. For the Acupuncture dataset, multiple imputation method may be beneficial due to the limited number of data collection time points.
+We will use a mixed-effects model as the primary method for analysing both datasets. For the Acupuncture dataset, the multiple imputation method may be beneficial due to the limited number of data collection time points.
 
-Although the original methods for handling missing data are unknown, we will also apply a simpler approach, such as Last Observation Carried Forward (LOCF), as a less statistically rigorous method to the datasets. Which unfortunately is more commonly used method than it should have been. We will compare the outcomes across methods to evaluate the extent to which the choice of missing data handling impacts our conclusions for both datasets
+Although the original methods for handling missing data are unknown, we will also apply a simpler approach, such as Last Observation Carried Forward (LOCF), as a less statistically rigorous method to the datasets. Which unfortunately is a more commonly used method than it should have been. We will compare the outcomes across methods to evaluate how much the choice of missing data handling affects our conclusions for both datasets.
 
 # References
-[^1]: MacFarlane, L. A. et al.,(2020). The Effects of Vitamin D and Marine Omega-3 Fatty Acid Supplementation on Chronic Knee Pain in Older US Adults: Results From a Randomized Trial. Arthritis & rheumatology (Hoboken, N.J.), 72(11), 1836–1844. https://doi.org/10.1002/art.41416
+[^1]: MacFarlane, L. A. et al., (2020). The Effects of Vitamin D and Marine Omega-3 Fatty Acid Supplementation on Chronic Knee Pain in Older US Adults: Results from a Randomized Trial. Arthritis & rheumatology (Hoboken, N.J.), 72(11), 1836–1844. https://doi.org/10.1002/art.41416
 [^2]: Vickers, A. J. et al., (2004). Acupuncture for chronic headache in primary care: large, pragmatic, randomised trial. BMJ (Clinical research ed.), 328(7442), 744. https://doi.org/10.1136/bmj.38029.421863.EB
-[^3]: Carpenter, J., & Kenward, M. (2007). Missing data in randomised controlled trials: a practical guide. Health Technology Assessment Methodology Programme. 
-[^Github]: The code and datasets for this project can be viewed at our GitHub repository here: <https://github.com/amydebrun/Missing-Data.git>
+[^3]: GitHub: The code and datasets for this project can be viewed at our GitHub repository here: <https://github.com/amydebrun/Missing-Data.git>
+[^4]: Carpenter, J., & Kenward, M. (2007). Missing data in randomised controlled trials: a practical guide. Health Technology Assessment Methodology Programme. 
