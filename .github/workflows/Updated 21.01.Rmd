@@ -169,7 +169,7 @@ data_miss %>%
   stat_identity(geom = "text", colour = "white", size = 5,
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
-  scale_fill_manual(name="Data",values=c("olivedrab", "lawngreen"), labels=c("Missing", "Measured"))+
+  scale_fill_manual(name="",values=c("olivedrab", "lawngreen"), labels=c("Missing", "Measured"))+
   scale_x_discrete(name = "Time", labels = c("base" = "Baseline", "yr1" = "Year 1", "yr2" = "Year 2", "yr3" = "Year 3", "yr4"="Year 4")) + 
   scale_y_continuous(name = "Number of Patients") +
   theme(text = element_text(size = 24),
