@@ -42,6 +42,7 @@ div.poster_title{
 div.footnotes {
     font-size: 10pt;
 }
+
 ```
 
 <!-- Don't change anything above, except the title and author names, unless you know what you are doing. -->
@@ -68,16 +69,23 @@ Missing data is often overlooked when analysing and reporting clinical trial res
 
 # Missingness Mechanisms
 
-- Missing Completely at Random (MCAR) - Missing data is independent of the study 
-- Missing at Random - Uncertainty as to how the data is missing
-- Missing Not at Random - Data is informatively missing  
+To account for missing data, it must be understood the causes of data being missing. There are three mechanisms of missing data that when applied will decide which data handling methods are valid to use. 
+
+- Missing Completely at Random (MCAR) - Missing data is independent of the study. This can occur due to illness/death, a treatment malfunction - nothing to do with the results of the research. This is the only verifiable missingness mechanism. 
+- Missing at Random - Uncertainty as to how the data is missing. Data is missing not due to the observed values but potential variables in the study. 
+- Missing Not at Random - Data is informatively missing. This is due to the unobserved data itself. Participants in a study missing their appointments or withholding a true response is an example of data being missing not at random. This is the most difficult to account for. We must investigate the data distributions of patients with missing data and compare to full data distributions. 
 
 # Project Aims
-This project investigates missing data analysis methods in two longitudinal RCT datasets. As the first part of the project, we are visualizing the proportion and patterns of missing values for each dataset.
+This project investigates missing data analysis methods in two longitudinal RCT data sets. As the first part of the project, we are visualizing the proportion and patterns of missing values for each data set. The trial are summarised in the following table: 
 
-The first dataset is from a 2x2 factorial RCT testing the effects of Fish Oil and Vitamin D on knee pain and their role in preventing cancer and cardiovascular disease (MacFarlane et al., 2020) [^1]. Over 20,000 healthy participants were randomized into four treatment groups, followed at one-year intervals for five years, with the primary endpoint being cardiovascular events.
+| Trial                  | Vitamin D & Fish Oil Trial   | Acupuncture Trial           |
+| -----------------------| -----------------------------| ----------------------------|
+| Sample Size            | 20,000+                      | 401                         |
+| Trial                  | Longitudinal RCT             | Longitudinal RCT            |
+| Follow-up              | 1 year intervals for 5 years | Baseline, 3 months, 1 year  |
+| Independent Variable(s)| Vitamin D, Fish Oil          | Acupuncture treatment       |
+| Dependent Variable(s)  | Knee pain score              | Migraine severity score     |
 
-The second dataset comes from an RCT evaluating acupuncture's effectiveness on chronic headaches, mainly migraines (Vickers et al., 2004) [^2]. A total of 401 patients were randomized to receive up to 12 acupuncture treatments over three months, with outcomes such as headache score, SF-36 health status, and medication use measured at baseline, three months, and 12 months.
 
 ####
 
@@ -145,7 +153,7 @@ scale_fill_manual(name="",values=c("olivedrab", "lawngreen"), labels=c("Missing 
         legend.position = "top", legend.text=element_text(size=20))
 )
 ```
-Figure1. The proportions of missing data (represented in dark green) at different time points. The observed missing data pattern is non-monotonic.
+Figure 1. The proportions of missing data (represented in dark green) at different time points. The observed missing data pattern is non-monotonic.
 
 ```{r mytable2, echo=FALSE, warning=FALSE, fig.height=6, fig.width=14}
 suppressMessages(
@@ -169,7 +177,7 @@ data_miss %>%
 )
 ```
  
-Figure2. Proportions of missing data (dark green) over time in different groups (Fish Oil vs. Placebo) are shown. Similar proportions of missing data were observed between the two groups.
+Figure 2. Proportions of missing data (dark green) over time in different groups (Fish Oil vs. Placebo) are shown. Similar proportions of missing data were observed between the two groups.
  
 ```{r mytable3, echo=FALSE, warning=FALSE, message=FALSE, fig.height=9, fig.width=14}
 data_miss_count <- data_miss %>%
@@ -253,7 +261,7 @@ acupuncture_miss %>%
         axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "top", legend.text=element_text(size=20))
 ```
 
-Figure4. Proportions of Missing data over time in longitudinal trial (Vickers et al. 2004)
+Figure 4. Proportions of Missing data over time in longitudinal trial (Vickers et al. 2004)
 
 ```{r mytable5, echo=FALSE, warning=FALSE, fig.height=6, fig.width=14}
 acupuncture_miss %>%
@@ -275,7 +283,7 @@ acupuncture_miss %>%
         axis.text.x = element_text(angle = 0, vjust = 0.5),legend.position = "none",strip.text.x=element_text(size=20))
 ```
 
-Figure5. Proportions of missing data(dark green) within treatment groups over time
+Figure 5. Proportions of missing data(dark green) within treatment groups over time
 
 ```{r mytable6, echo=FALSE, warning=FALSE, fig.height=6, fig.width=14}
 acupuncture_miss_count <- acupuncture_miss %>%
@@ -303,27 +311,26 @@ ggplot(acupuncture_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_
                      labels = c("Baseline","3 Months","12 Months","Patients \n(%)")) 
 ```
 
-Figure6. Missing data (dark green) pattern over time
+Figure 6. Missing data (dark green) pattern over time
 
 ####
 
 # Common Analysis for Data with Missing Observations [^3]
 
-1. Complete Case Analysis: Only includes participants with no missing data in the analysis, ignoring cases with any missing values.
+1. Complete Case Analysis: Only includes participants with no missing data in the analysis, ignoring cases with any missing values. This method assumes the data is Missing Completely at Random. 
 2. Simple Imputation: Replaces missing values with a single estimate, such as: Last Observation Carried Forward (LOCF) & Baseline Observation Carried Forward (BOCF).
 3. Weighted Estimation: Applies weights to account for the likelihood of data being missing, such as inverse probability weighting (IPW).
-4. Mix-effect model:Uses likelihood-based methods to estimate parameters while accounting for missing data
-5. Multiple Imputation:Replaces missing data with multiple plausible values, generating multiple datasets for analysis and combining the results for inference.
+4. Mix-effect model:Uses likelihood-based methods to estimate parameters while accounting for missing data. This method assumes the data is Missing at Random 
+5. Multiple Imputation:Replaces missing data with multiple plausible values, generating multiple datasets for analysis and combining the results for inference. This method assumes the data is Missing at Random. 
 
 # Next step
 
-We will use mix-effect model as the major method for both dataset.
+To address this issue, we must conduct a sensitivity analysis on the data set. This begins with identifying which of the missing mechanism the missing data in the data sets are under. This can be done by investigating patterns in the data set.  
 
-No way to know what was the original method used. But we will use simple method like LOCF to mimic for comparison
+We will proceed to use a mixed-effects model as the primary method for analyzing both datasets. For the Acupuncture dataset, multiple imputation method may be beneficial due to the limited number of data collection time points.
 
-You should mention that, for both datasets, the standard or reference analysis will be via maximum-likelihood, with no imputation. This will involve using linear mixed-effects models to capture the longitudinal aspect. For your work extending this via sensitivity analyses, imputation of one kind or another will be employed in conjunction with a linear mixed-effects model.
+Although the original methods for handling missing data are unknown, we will also apply a simpler approach, such as Last Observation Carried Forward (LOCF), as a less statistically rigorous method to the datasets. Which unfortunately is more commonly used method than it should have been. We will compare the outcomes across methods to evaluate the extent to which the choice of missing data handling impacts our conclusions for both datasets
 
-Multiple imputation methods will need to consider the longitudinal aspect of the data (observations are correlated within patient). This is a key aspect of the particular design of both trials (as above) and is what makes your project more interesting, beyond a basic multiple imputation approach.
 
 
 # References
