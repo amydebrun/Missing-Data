@@ -42,6 +42,9 @@ div.poster_title{
 div.footnotes {
     font-size: 10pt;
 }
+table {
+ font-size: 13pt;
+}
 
 ```
 
@@ -78,10 +81,10 @@ To account for missing data, it must be understood the causes of data being miss
 # Project Aims
 This project investigates missing data analysis methods in two longitudinal RCT data sets. As the first part of the project, we are visualizing the proportion and patterns of missing values for each data set. The trial are summarised in the following table: 
 
-| Trial                  | Vitamin D & Fish Oil Trial   | Acupuncture Trial           |
+| Trial                  | Vitamin D & omega trial[^3]  | Acupuncture Trial[^2] |
 | -----------------------| -----------------------------| ----------------------------|
-| Sample Size            | 20,000+                      | 401                         |
-| Trial                  | Longitudinal RCT             | Longitudinal RCT            |
+| Sample Size            | 1398                         | 401                         |
+| Trial                  | 2x2 Longitudinal RCT         | Longitudinal RCT            |
 | Follow-up              | 1 year intervals for 5 years | Baseline, 3 months, 1 year  |
 | Independent Variable(s)| Vitamin D, Fish Oil          | Acupuncture treatment       |
 | Dependent Variable(s)  | Knee pain score              | Migraine severity score     |
@@ -169,11 +172,11 @@ data_miss %>%
   stat_identity(geom = "text", colour = "white", size = 5,
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
-  scale_fill_manual(name="",values=c("olivedrab", "lawngreen"), labels=c("Missing", "Measured"))+
+  scale_fill_manual(name="",values=c("olivedrab", "lawngreen"))+
   scale_x_discrete(name = "Time", labels = c("base" = "Baseline", "yr1" = "Year 1", "yr2" = "Year 2", "yr3" = "Year 3", "yr4"="Year 4")) + 
   scale_y_continuous(name = "Number of Patients") +
   theme(text = element_text(size = 24),
-        axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "top")
+        axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "none")
 )
 ```
  
@@ -196,7 +199,7 @@ ggplot(data_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.spacing.x = unit(1, "lines"),
         text = element_text(size = 18),
-        axis.text.x = element_text(angle = 90, vjust = 0.5) , legend.position = "top") +
+        axis.text.x = element_text(angle = 90, vjust = 0.5) , legend.position = "none") +
   coord_cartesian(xlim = c(-0.5, 6.2), clip = 'off') +
   scale_y_discrete(name = "Missing Data Pattern") +
   scale_fill_discrete(name = "Data Observed\nIndicator (R)", ) +
@@ -240,7 +243,7 @@ acupuncture_miss <- acupuncture %>%
   mutate(miss_pattern_label = factor(miss_pattern_label, levels = unique(miss_pattern_label)))
 ```
 
-```{r mytable4, echo=FALSE, warning=FALSE, fig.height=6, fig.width=14}
+```{r mytable4, echo=FALSE, warning=FALSE, fig.height=8, fig.width=14}
 pct_format = scales::label_percent(accuracy = .1)
 
 acupuncture_miss %>%
@@ -261,9 +264,9 @@ acupuncture_miss %>%
         axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "top", legend.text=element_text(size=20))
 ```
 
-Figure 4. Proportions of Missing data over time in longitudinal trial (Vickers et al. 2004)
+Figure 4. Proportions of Missing data over time in Acupuncture trial 
 
-```{r mytable5, echo=FALSE, warning=FALSE, fig.height=6, fig.width=14}
+```{r mytable5, echo=FALSE, warning=FALSE, fig.height=8, fig.width=14}
 acupuncture_miss %>%
   group_by(time, miss_obs, group) %>%
   summarise(count_pat = n(), .groups="keep") %>%
@@ -283,9 +286,9 @@ acupuncture_miss %>%
         axis.text.x = element_text(angle = 0, vjust = 0.5),legend.position = "none",strip.text.x=element_text(size=20))
 ```
 
-Figure 5. Proportions of missing data(dark green) within treatment groups over time
+Figure 5. Proportions of missing data(dark green) within treatment groups over time. They are similar within both treatment groups, but higher percentage of data is missing in placebo group. 
 
-```{r mytable6, echo=FALSE, warning=FALSE, fig.height=6, fig.width=14}
+```{r mytable6, echo=FALSE, warning=FALSE, fig.height=8, fig.width=14}
 acupuncture_miss_count <- acupuncture_miss %>%
   select(id, miss_pattern, pk, time_cont, group, miss_obs) %>%
   group_by(group, miss_pattern, miss_obs, time_cont) %>%
@@ -311,7 +314,7 @@ ggplot(acupuncture_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_
                      labels = c("Baseline","3 Months","12 Months","Patients \n(%)")) 
 ```
 
-Figure 6. Missing data (dark green) pattern over time
+Figure 6. Missing data (dark green) pattern over time.
 
 ####
 
@@ -330,8 +333,6 @@ To address this issue, we must conduct a sensitivity analysis on the data set. T
 We will proceed to use a mixed-effects model as the primary method for analyzing both datasets. For the Acupuncture dataset, multiple imputation method may be beneficial due to the limited number of data collection time points.
 
 Although the original methods for handling missing data are unknown, we will also apply a simpler approach, such as Last Observation Carried Forward (LOCF), as a less statistically rigorous method to the datasets. Which unfortunately is more commonly used method than it should have been. We will compare the outcomes across methods to evaluate the extent to which the choice of missing data handling impacts our conclusions for both datasets
-
-
 
 # References
 [^1]: MacFarlane, L. A. et al.,(2020). The Effects of Vitamin D and Marine Omega-3 Fatty Acid Supplementation on Chronic Knee Pain in Older US Adults: Results From a Randomized Trial. Arthritis & rheumatology (Hoboken, N.J.), 72(11), 1836–1844. https://doi.org/10.1002/art.41416
