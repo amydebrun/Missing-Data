@@ -327,11 +327,9 @@ Figure 6. Missing data pattern (where 0 represents missing data and 1 represents
 
 # Next step
 
-We must conduct a sensitivity analysis of the data set to address this issue. This begins with finding which of the missing mechanisms the missing data in the data sets are under. This can be done by investigating patterns in the data set. 
-
-We will use a mixed-effects model as the primary method for analysing both datasets. For the Acupuncture dataset, the multiple imputation method may be beneficial due to the limited number of data collection time points.
-
-Although the original methods for handling missing data are unknown, we will also apply a simpler approach, such as Last Observation Carried Forward (LOCF), as a less statistically rigorous method to the datasets. Which unfortunately is a more commonly used method than it should have been. We will compare the outcomes across methods to evaluate how much the choice of missing data handling affects our conclusions for both datasets.
+- We will use a mixed-effects model and multiple imputation (MI) as the primary methods for analyzing both datasets.
+- Both methods assume the data are Missing at Random (MAR). A sensitivity analysis will be conducted to test this assumption.
+- Mean imputation methods like LOCF/WOCF/BOCF are commonly used, often ad-hoc with unclear assumptions about the missing data mechanism, and tend to result in incorrect inference regarding quantities or parameters of interest. However, we will also conduct analysis in this way to see the impact on our dataset.
 
 # References
 [^1]: MacFarlane, L. A. et al., (2020). The Effects of Vitamin D and Marine Omega-3 Fatty Acid Supplementation on Chronic Knee Pain in Older US Adults: Results from a Randomized Trial. Arthritis & rheumatology (Hoboken, N.J.), 72(11), 1836–1844. https://doi.org/10.1002/art.41416
