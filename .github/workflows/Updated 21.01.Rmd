@@ -74,14 +74,15 @@ Missing data is often overlooked when analysing and reporting clinical trial res
 
 To account for missing data, it must be understood the causes of data being missing. There are three mechanisms of missing data that when applied will decide which data handling methods are valid to use. 
 
-- Missing Completely at Random (MCAR) - Missing data is unrelated to making inference about the treatment effect. This can occur due to illness/death or a treatment malfunction - nothing to do with the results of the research. This is the best case scenario as the results remain unbiased and the intervention effect unchanged.  
-- Missing at Random - Missing data is systematically related to the observed variables but not the unobserved variables. For example, males may be unwilling to answer survey questions about mental health due to gender stereotypes, but not due to their mental health status. [^5]
-- Missing Not at Random - Missing data is related to the unobserved data itself. People with a gambling addiction may avoid answering survey questions about their spending habits, leaving data missing not at random. This is the most difficult to account for. We must investigate the data distributions of patients with missing data and compare to full data distributions. 
+- Missing Completely at Random (MCAR) - Missing data is unrelated to making inference about the treatment effect. This is the best case scenario as the results remain unbiased and the intervention effect unchanged.  
+- Missing at Random - Missing data is systematically related to the observed variables but not the unobserved variables. [^5]
+- Missing Not at Random - Missing data is related to the unobserved data itself. We must investigate the data distributions of patients with missing data and compare to full data distributions. 
 
 # Project Aims
-This project investigates missing data analysis methods in two longitudinal RCT data sets. As the first part of the project, we are visualizing the proportion and patterns of missing values for each data set. The trials are summarised in the following table: 
 
-| Trial                  | Vitamin D & omega trial[^1]  | Acupuncture Trial[^2] |
+This project investigates missing data analysis methods in two longitudinal RCT data sets. The trials are summarised in the following table:
+
+| Trial                  | Vitamin D & omega trial[^1]  | Acupuncture Trial[^2]       |
 | -----------------------| -----------------------------| ----------------------------|
 | Sample Size            | 1398                         | 401                         |
 | Trial                  | 2x2 Longitudinal RCT         | Longitudinal RCT            |
