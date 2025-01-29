@@ -208,7 +208,7 @@ ggplot(data_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
   scale_fill_manual(name="",labels=c("Missing Data","Measured Data"),values=c("olivedrab", "lawngreen"))
 ```
 
-Figure 3. The missing data patterns (where 0 represents missing data and 1 represents observed data) between the groups (Fish Oil vs. Placebo) are displayed. Some differences in the patterns can be observed, suggesting that the data may not be missing completely at random. This observation warrants further investigation in the subsequent steps.
+Figure 3. The missing data patterns (where 0 represents missing data and 1 represents observed data) between the groups (Fish Oil vs. Placebo) are displayed. Some differences in the patterns can be observed.
 
 ####
 
