@@ -32,11 +32,16 @@ LOCF_acupuncture<-as.data.frame(na.locf(acupuncture, fromLast=TRUE))
 ```
 
 ```{r}
-#treatment effect
+#treatment effect for acupuncture LOCF
 library(sjPlot)
 acu_model<- lm(pk2~group+sex+migraine+pk1+chronicity, data=acupuncture)
 LOCF_acu_model<- lm(pk2~group+sex+migraine+pk1+chronicity, data=LOCF_acupuncture)
 tab_model(acu_model, LOCF_acu_model)
+```
+
+```{r}
+#treatment effect for vital LOCF
+
 ```
 
 
@@ -63,7 +68,10 @@ mice(
 )
 ```
 ```{r}
-
-
+library(sjPlot)
+acu_mice<- mice(acupuncture, m = 5, method = 'pmm', seed = 123)
+acu_mice_model <- with(acu_mice, lm(pk2~group+sex+migraine+pk1+chronicity))
+pooled_model<- pool(acu_mice_model)
+summary(pooled_model)
 ```
 
