@@ -8,6 +8,9 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(mice)
+library(sjPlot)
+library(zoo)
+library(nlme)
 ```
 
 ## R Markdown
@@ -23,27 +26,25 @@ head(data_main)
 ## Last Observation Carried Forward
 
 ```{r} 
-#locf function on vital data
-library(zoo)
+#locf function on vital data zoo package
 LOCF_vital<-as.data.frame(na.locf(data_main, fromLast=TRUE))
 ```
 
 ```{r}
-#locf function on acupuncture data
+#locf function on acupuncture data zoo package
 LOCF_acupuncture<-as.data.frame(na.locf(acupuncture, fromLast=TRUE))
 ```
 
 ```{r}
 #treatment effect for acupuncture LOCF
-library(sjPlot)
 acu_model<- lm(pk2~group+sex+migraine+pk1+chronicity, data=acupuncture)
 LOCF_acu_model<- lm(pk2~group+sex+migraine+pk1+chronicity, data=LOCF_acupuncture)
-tab_model(acu_model, LOCF_acu_model)
 ```
 
 ```{r}
 #treatment effect for vital LOCF
-
+data_main$
+vital_model<- aov(pain_yrX~vitdactive*fishoilactive+sex+ageyr, data=data_main)
 ```
 
 
@@ -54,14 +55,14 @@ tab_model(acu_model, LOCF_acu_model)
 completerows<- complete.cases(acupuncture)
 acu_complete<- as.data.frame(acupuncture[completerows, , drop=FALSE])
 acu_complete_model<-lm(pk2~group+sex+migraine+pk1+chronicity, data=acu_complete)
-tab_model(acu_model, acu_complete_model)
 ```
 
 
 ## MICE package
 
 ```{r, message=FALSE}
-library(sjPlot)
+#Multiple imputation chained equations on acuncture data
+
 acu_mice<- mice(acupuncture, m = 5, method = 'pmm', seed = 123)
 acu_mice_model <- with(acu_mice, lm(pk2~group+sex+migraine+pk1+chronicity))
 acu_pooled_model<- pool(acu_mice_model)
@@ -71,6 +72,7 @@ summary(acu_pooled_model)
 stripplot(acu_mice, pch=1, cex=1.2)
 ```
 ```{r}
+#table of complete case, locf and regular model for acupuncture 
 tab_model(acu_model, acu_complete_model, LOCF_acu_model )
 ```
 
