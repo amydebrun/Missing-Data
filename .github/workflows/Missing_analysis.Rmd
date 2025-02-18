@@ -17,17 +17,26 @@ library(nlme)
 
 
 ```{r}
+data_vitalkp <- read_sas("Data/vitalkneepain111623.sas7bdat", 
+                         NULL)
 data_main <- read_sas("Data/VITAL_trial_NEJM_2022.sas7bdat", 
                       NULL)
+
+data_vital<- data_main %>%
+  select(Subject_ID, vitdactive, fishoilactive, sex, ageyr) %>%
+  right_join(data_vitalkp, by = "Subject_ID")
+
+head(data_vital)
+
 acupuncture <- read_csv("Data/acupuncture.csv",show_col_types = FALSE)
-head(data_main)
+
 ```
 
 ## Last Observation Carried Forward
 
 ```{r} 
 #locf function on vital data zoo package
-LOCF_vital<-as.data.frame(na.locf(data_main, fromLast=TRUE))
+LOCF_vital<-as.data.frame(na.locf(data_vital, fromLast=TRUE))
 ```
 
 ```{r}
@@ -43,8 +52,8 @@ LOCF_acu_model<- lm(pk2~group+sex+migraine+pk1+chronicity, data=LOCF_acupuncture
 
 ```{r}
 #treatment effect for vital LOCF
-data_main$
-vital_model<- aov(pain_yrX~vitdactive*fishoilactive+sex+ageyr, data=data_main)
+
+vital_model<- lme(pain_yr4~vitdactive*fishoilactive+sex+ageyr+pain_base, data=data_vital, random=pain_base|)
 ```
 
 
