@@ -11,6 +11,8 @@ library(mice)
 library(sjPlot)
 library(zoo)
 library(nlme)
+library(tidyverse)
+library(haven)
 ```
 
 ## R Markdown
@@ -61,8 +63,7 @@ vital_model<- lme(pain_yr4~vitdactive*fishoilactive+sex+ageyr+pain_base, data=da
 
 ```{r}
 #complete case on acupuncture
-completerows<- complete.cases(acupuncture)
-acu_complete<- as.data.frame(acupuncture[completerows, , drop=FALSE])
+acu_complete<- as.data.frame(acupuncture[complete.cases(acupuncture), , drop=FALSE])
 acu_complete_model<-lm(pk2~group+sex+migraine+pk1+chronicity, data=acu_complete)
 ```
 
@@ -70,8 +71,7 @@ acu_complete_model<-lm(pk2~group+sex+migraine+pk1+chronicity, data=acu_complete)
 ## MICE package
 
 ```{r, message=FALSE}
-#Multiple imputation chained equations on acuncture data
-
+#Multiple imputation chained equations on acupuncture data
 acu_mice<- mice(acupuncture, m = 5, method = 'pmm', seed = 123)
 acu_mice_model <- with(acu_mice, lm(pk2~group+sex+migraine+pk1+chronicity))
 acu_pooled_model<- pool(acu_mice_model)
@@ -80,6 +80,7 @@ summary(acu_pooled_model)
 ```{r}
 stripplot(acu_mice, pch=1, cex=1.2)
 ```
+
 ```{r}
 #table of complete case, locf and regular model for acupuncture 
 tab_model(acu_model, acu_complete_model, LOCF_acu_model )
