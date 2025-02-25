@@ -85,3 +85,19 @@ stripplot(acu_mice, pch=1, cex=1.2)
 tab_model(acu_model, acu_complete_model, LOCF_acu_model )
 ```
 
+```{r}
+LOCF <- function(x) {
+  v <- !is.na(x)
+  c(NA, x[v])[cumsum(v)+1]
+}
+```
+
+```{r}
+LOCF <- function(x) {
+    LOCF <- max(which(!is.na(x)))
+    x[LOCF:length(x)] <- x[LOCF]
+    return(x)
+}
+data.frame(lapply(acupuncture, LOCF))
+```
+
