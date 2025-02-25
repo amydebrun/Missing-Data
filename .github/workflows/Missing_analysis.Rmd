@@ -181,4 +181,7 @@ modelsummary(vitDmodels,output="table.html")
 ```
 
 
+```{r}
+tab_model(acu_LME, acu_LME2)
+```
 
