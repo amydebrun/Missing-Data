@@ -24,13 +24,14 @@ data_vitalkp <- read_sas("Data/vitalkneepain111623.sas7bdat",
                          NULL)
 data_main <- read_sas("Data/VITAL_trial_NEJM_2022.sas7bdat", 
                       NULL)
+view(data_main)
 
 data_vital<- data_main %>%
-  dplyr::select(Subject_ID, vitdactive, fishoilactive, sex, ageyr) %>%
+  dplyr::select(Subject_ID, vitdactive, fishoilactive, sex, ageyr, ) %>%
   right_join(data_vitalkp, by = "Subject_ID")
 
 acupuncture <- read_csv("Data/acupuncture.csv",show_col_types = FALSE)
-
+head(acupuncture)
 ```
 ## data from wide to long 
 
@@ -88,8 +89,7 @@ LOCF_acupuncture<-as.data.frame(na.locf(acupuncture, fromLast=TRUE))
 
 ```{r}
 #treatment effect for acupuncture LOCF
-acu_model<- lm(pk2~group+sex+migraine+pk1+chronicity, data=acupuncture)
-LOCF_acu_model<- lm(pk2~group+sex+migraine+pk1+chronicity, data=LOCF_acupuncture)
+
 ```
 
 ```{r}
@@ -98,34 +98,7 @@ LOCF_acu_model<- lm(pk2~group+sex+migraine+pk1+chronicity, data=LOCF_acupuncture
 vital_model<- lme(pain_yr4~vitdactive*fishoilactive+sex+ageyr+pain_base, data=data_vital, random=pain_base|)
 ```
 
-
-## Complete Case Analysis
-
-```{r}
-#complete case on acupuncture
-acu_complete<- as.data.frame(acupuncture[complete.cases(acupuncture), , drop=FALSE])
-acu_complete_model<-lm(pk2~group+sex+migraine+pk1+chronicity, data=acu_complete)
-```
-
-
-## MICE package
-
-```{r, message=FALSE}
-#Multiple imputation chained equations on acupuncture data
-acu_mice<- mice(acupuncture, m = 5, method = 'pmm', seed = 123)
-acu_mice_model <- with(acu_mice, lm(pk2~group+sex+migraine+pk1+chronicity))
-acu_pooled_model<- pool(acu_mice_model)
-summary(acu_pooled_model)
-```
-```{r}
-stripplot(acu_mice, pch=1, cex=1.2)
-```
-
-```{r}
-#table of complete case, locf and regular model for acupuncture 
-tab_model(acu_model, acu_complete_model, LOCF_acu_model )
-```
-
+functions
 ```{r}
 LOCF <- function(x) {
   v <- !is.na(x)
@@ -141,4 +114,54 @@ LOCF <- function(x) {
 }
 data.frame(lapply(acupuncture, LOCF))
 ```
+
+## Complete Case Analysis - just use linear model as it removes rows with NA values 
+
+```{r}
+#complete case on acupuncture
+acu_complete<- lm(pk5~group+sex+migraine+pk1+chronicity, data=acupuncture)
+LOCF_acu_model<- lm(pk5~group+sex+migraine+pk1+chronicity, data=LOCF_acupuncture)
+```
+
+
+## MICE package
+
+```{r, message=FALSE}
+#Multiple imputation chained equations on acupuncture data
+acu_mice<- mice(acupuncture, m = 5, method = 'pmm', seed = 123)
+acu_mice_model <- with(acu_mice, lm(pk5~group+sex+migraine+pk1+chronicity))
+acu_pooled_model<- pool(acu_mice_model)
+summary(acu_pooled_model)
+```
+```{r}
+stripplot(acu_mice, pch=1, cex=1.2)
+```
+
+```{r}
+#table of complete case, locf and regular model for acupuncture 
+tab_model(acu_complete, LOCF_acu_model )
+```
+
+
+## Mixed Effects Model
+
+```{r warning=FALSE, message=FALSE}
+ggplot(data_vital, aes(x=pain_base, y=pain_yr4)) + geom_point() + geom_smooth()
+ggplot(data_vital, aes(x=as.factor(unikneepain), y=pain_yr4)) + geom_boxplot() 
+ggplot(data_vital, aes(x=as.factor(bikneepain), y=pain_yr4)) + geom_boxplot() 
+ggplot(data_vital, aes(x=as.factor(KneesReplacedV2), y=pain_yr4)) + geom_boxplot() 
+head(data_vital)
+library(lme4)
+acu_LME<- lmer(pk5 ~ group+sex+migraine+pk1+chronicity + (chronicity| practice_id), data=acupuncture)
+acu_LME2<- lmer(pk5 ~ group+sex+migraine+pk1+chronicity + (pk1| group), data=acupuncture)
+
+vitD_LME<-lmer(pain_yr4~vitdactive+sex+ageyr+pain_base+bikneepain + (pain_base|bikneepain), data=data_vital)
+summary(vitD_LME)
+
+fishoil_LME<-lmer(pain_yr4~fishoilactive+sex+ageyr+pain_base+bikneepain + (pain_base|bikneepain), data=data_vital)
+
+tab_model(fishoil_LME, vitD_LME)
+
+```
+
 
