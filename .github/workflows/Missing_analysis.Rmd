@@ -88,14 +88,15 @@ LOCF_acupuncture<-as.data.frame(na.locf(acupuncture, fromLast=TRUE))
 ```
 
 ```{r}
-#treatment effect for acupuncture LOCF
-
+#models from zoo package locf
+LOCF_fishoil_model<- lm(pain_yr4~fishoilactive+sex+ageyr+pain_base, data=LOCF_vital)
+LOCF_vitD_model<-lm(pain_yr4~vitdactive+sex+ageyr+pain_base, data=LOCF_vital)
 ```
 
 ```{r}
 #treatment effect for vital LOCF
 
-vital_model<- lme(pain_yr4~vitdactive*fishoilactive+sex+ageyr+pain_base, data=data_vital, random=pain_base|)
+
 ```
 
 functions
@@ -152,16 +153,21 @@ ggplot(data_vital, aes(x=as.factor(bikneepain), y=pain_yr4)) + geom_boxplot()
 ggplot(data_vital, aes(x=as.factor(KneesReplacedV2), y=pain_yr4)) + geom_boxplot() 
 head(data_vital)
 library(lme4)
+
+```
+```{r message=FALSE, warning=FALSE}
 acu_LME<- lmer(pk5 ~ group+sex+migraine+pk1+chronicity + (chronicity| practice_id), data=acupuncture)
 acu_LME2<- lmer(pk5 ~ group+sex+migraine+pk1+chronicity + (pk1| group), data=acupuncture)
 
 vitD_LME<-lmer(pain_yr4~vitdactive+sex+ageyr+pain_base+bikneepain + (pain_base|bikneepain), data=data_vital)
-summary(vitD_LME)
+
 
 fishoil_LME<-lmer(pain_yr4~fishoilactive+sex+ageyr+pain_base+bikneepain + (pain_base|bikneepain), data=data_vital)
 
-tab_model(fishoil_LME, vitD_LME)
+tab_model(fishoil_LME, LOCF_fishoil_model)
+tab_model(vitD_LME, LOCF_vitD_model)
 
 ```
+
 
 
