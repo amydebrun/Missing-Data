@@ -160,12 +160,23 @@ acu_LME<- lmer(pk5 ~ group+sex+migraine+pk1+chronicity + (chronicity| practice_i
 acu_LME2<- lmer(pk5 ~ group+sex+migraine+pk1+chronicity + (pk1| group), data=acupuncture)
 
 vitD_LME<-lmer(pain_yr4~vitdactive+sex+ageyr+pain_base+bikneepain + (pain_base|bikneepain), data=data_vital)
-
-
 fishoil_LME<-lmer(pain_yr4~fishoilactive+sex+ageyr+pain_base+bikneepain + (pain_base|bikneepain), data=data_vital)
 
 tab_model(fishoil_LME, LOCF_fishoil_model)
 tab_model(vitD_LME, LOCF_vitD_model)
+
+```
+
+```{r}
+library(modelsummary)
+fishmodels<-list(fishoil_LME, LOCF_fishoil_model)
+vitDmodels<-list(vitD_LME, LOCF_vitD_model)
+
+acumodels<-list(acu_complete, acu_LME, LOCF_acu_model)
+modelsummary(acumodels, output="table.html")
+
+modelsummary(fishmodels, output="table.html")
+modelsummary(vitDmodels,output="table.html")
 
 ```
 
