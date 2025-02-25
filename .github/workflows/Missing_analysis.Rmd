@@ -13,6 +13,7 @@ library(zoo)
 library(nlme)
 library(tidyverse)
 library(haven)
+library(dplyr)
 ```
 
 ## R Markdown
@@ -25,14 +26,53 @@ data_main <- read_sas("Data/VITAL_trial_NEJM_2022.sas7bdat",
                       NULL)
 
 data_vital<- data_main %>%
-  select(Subject_ID, vitdactive, fishoilactive, sex, ageyr) %>%
+  dplyr::select(Subject_ID, vitdactive, fishoilactive, sex, ageyr) %>%
   right_join(data_vitalkp, by = "Subject_ID")
-
-head(data_vital)
 
 acupuncture <- read_csv("Data/acupuncture.csv",show_col_types = FALSE)
 
 ```
+## data from wide to long 
+
+```{r warning=FALSE}##
+head(acupuncture)
+acu_long <- reshape(acupuncture, 
+                    varying = c('age', 'sex', 'migraine', 'chronicity', 'acupuncturist', 
+                              'practice_id', 'group', 'pk1', 'pk2', 'pk5', 'f1', 'f2', 'f5'),
+                    v.names = 'value', 
+                    times = c('age', 'sex', 'migraine', 'chronicity', 'acupuncturist', 
+                              'practice_id', 'group', 'pk1', 'pk2', 'pk5', 'f1', 'f2', 'f5'),
+                    direction = 'long'
+
+vital_long<-reshape(data_vital, 
+                    varying = c('vitdactive', 'fishoilactive', 'sex', 'ageyr', 'pain_base', 
+                                'stiffness_base', 'function_base', 'pain_yr1', 'stiffness_yr1', 'function_yr1', 'pain_yr2', 'stiffness_yr2', 'function_yr2','pain_yr3', 'stiffness_yr3', 'function_yr3', 'pain_yr4', 'stiffness_yr4', 'function_yr4', 'KneesReplacedV2','unikneepain','bikneepain','kneepainfreq','tylenolbase','nsaidsbase','strongerbase','tkrf'),
+                    v.names = 'value', 
+                    times = c('vitdactive', 'fishoilactive', 'sex', 'ageyr', 'pain_base', 
+                                'stiffness_base', 'function_base', 'pain_yr1', 'stiffness_yr1', 'function_yr1', 'pain_yr2', 'stiffness_yr2', 'function_yr2','pain_yr3', 'stiffness_yr3', 'function_yr3', 'pain_yr4', 'stiffness_yr4', 'function_yr4', 'KneesReplacedV2','unikneepain','bikneepain','kneepainfreq','tylenolbase','nsaidsbase','strongerbase','tkrf'),
+                    direction = 'long')
+
+```
+```{r warning=FALSE}
+library(reshape2)
+
+acu_long <- melt(acupuncture, 
+                 id.vars = c("id", "age", "sex"), 
+                 variable.name = "variable", 
+                 value.name = "value")  
+
+acu_long <- acu_long[order(acu_long$id), ]
+acu_long
+
+vital_long <- melt(data_vital, 
+                 id.vars = c("Subject_ID", "ageyr", "sex"),  
+                 variable.name = "variable", 
+                 value.name = "value")  
+vital_long <- vital_long[order(vital_long$Subject_ID), ]
+vital_long
+```
+
+
 
 ## Last Observation Carried Forward
 
