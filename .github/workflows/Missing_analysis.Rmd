@@ -77,6 +77,23 @@ vital_long
 
 ## Last Observation Carried Forward
 
+```{r}
+#LOCF function
+LOCF <- function(data, columns){
+  for (col in columns) {
+    for (i in 1:nrow(data)) {  
+      if (is.na(data[i, col])) {
+        data[i, col] <- data[i, col - 1]  
+      }
+    }
+  }
+  return(data)  
+}
+
+acu_LOCF <- acupuncture
+acu_LOCF <- LOCF(data = acu_LOCF, columns = c(10,11))
+```
+
 ```{r} 
 #locf function on vital data zoo package
 LOCF_vital<-as.data.frame(na.locf(data_vital, fromLast=TRUE))
