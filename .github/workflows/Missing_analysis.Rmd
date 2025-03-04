@@ -36,60 +36,47 @@ acu_wide <- read_csv("Data/acupuncture.csv",show_col_types = FALSE)
 
 
 ```{r message=FALSE}
-a<-acupuncture %>%
+a<-acu_wide %>%
   pivot_longer(
-    cols = c('pk1', 'pk2', 'pk5'), 
-    names_to = c('pk'),
+    cols = c('pk2', 'pk5'), 
+    names_to = c('pk_time'),
     names_repair = "unique"
   )
 
 acu_long<-a %>%
   pivot_longer(
-    cols = c('f1', 'f2', 'f5'), 
-    names_to = c('f'),
+    cols = c('f2', 'f5'), 
+    names_to = c('freq_time'),
     names_repair = "unique"
   )
-acu_long
+colnames(acu_long)[12]<-"pk_score"
+colnames(acu_long)[14]<-"freq_score"
 
-
-v<-data_vital%>%
+v<-vital_wide%>%
     pivot_longer(
-    cols = c('pain_base','pain_yr1','pain_yr2', 'pain_yr3', 'pain_yr4'), 
-    names_to = c('pain_'),
+    cols = c('pain_yr1','pain_yr2', 'pain_yr3', 'pain_yr4'), 
+    names_to = c('pain_time'),
     names_repair = "unique"
   )
 x<-v%>%
     pivot_longer(
-    cols = c( 'stiffness_base','stiffness_yr1', 'stiffness_yr2', 'stiffness_yr3', 'stiffness_yr4'), 
-    names_to = c('stiffness_'),
+    cols = c('stiffness_yr1', 'stiffness_yr2', 'stiffness_yr3', 'stiffness_yr4'), 
+    names_to = c('stiffness_time'),
     names_repair = "unique"
     )
 vital_long<-x%>%
     pivot_longer(
-    cols = c( 'function_base','function_yr1', 'function_yr2', 'function_yr3', 'function_yr4'), 
-    names_to = c('function_'),
+    cols = c('function_yr1', 'function_yr2', 'function_yr3', 'function_yr4'), 
+    names_to = c('function_time'),
     names_repair = "unique"
     )
+colnames(vital_long)[18]<-"pain_score"
+colnames(vital_long)[20]<-"stiffness_score"
+colnames(vital_long)[22]<-"function_score"
+head(acu_long)
 head(vital_long)
 ```
 
-```{r warning=FALSE}
-head(acupuncture)
-acu_long <- reshape(acupuncture, 
-                    varying = c('pk1', 'pk2', 'pk5', 'f1', 'f2', 'f5'),
-                    v.names = 'value', 
-                    times = c('pk1', 'pk2', 'pk5', 'f1', 'f2', 'f5'),
-                    direction = 'long'
-
-vital_long<-reshape(data_vital, 
-                    varying = c('vitdactive', 'fishoilactive', 'sex', 'ageyr', 'pain_base', 
-                                'stiffness_base', 'function_base', 'pain_yr1', 'stiffness_yr1', 'function_yr1', 'pain_yr2', 'stiffness_yr2', 'function_yr2','pain_yr3', 'stiffness_yr3', 'function_yr3', 'pain_yr4', 'stiffness_yr4', 'function_yr4', 'KneesReplacedV2','unikneepain','bikneepain','kneepainfreq','tylenolbase','nsaidsbase','strongerbase','tkrf'),
-                    v.names = 'value', 
-                    times = c('vitdactive', 'fishoilactive', 'sex', 'ageyr', 'pain_base', 
-                                'stiffness_base', 'function_base', 'pain_yr1', 'stiffness_yr1', 'function_yr1', 'pain_yr2', 'stiffness_yr2', 'function_yr2','pain_yr3', 'stiffness_yr3', 'function_yr3', 'pain_yr4', 'stiffness_yr4', 'function_yr4', 'KneesReplacedV2','unikneepain','bikneepain','kneepainfreq','tylenolbase','nsaidsbase','strongerbase','tkrf'),
-                    direction = 'long')
-acu_long
-```
 
 ## Last Observation Carried Forward
 
@@ -106,19 +93,23 @@ LOCF <- function(data, columns){
   return(data)  
 }
 
-acu_LOCF <- acupuncture
+acu_LOCF <- acu_wide
 acu_LOCF <- LOCF(data = acu_LOCF, columns = c(10,11))
 head(acu_LOCF)
+
+vital_LOCF<- vital_wide
+vital_LOCF<- LOCF(data = vital_LOCF, columns = c(9, 10,11,15,16,17,18,19,20,22,23))
+head(vital_LOCF)
 ```
 
 ```{r} 
 #locf function on vital data zoo package
-LOCF_vital<-as.data.frame(na.locf(data_vital, fromLast=TRUE))
+LOCF_vital<-as.data.frame(na.locf(vital_wide, fromLast=TRUE))
 ```
 
 ```{r}
 #locf function on acupuncture data zoo package
-LOCF_acupuncture<-as.data.frame(na.locf(acupuncture, fromLast=TRUE))
+LOCF_acupuncture<-as.data.frame(na.locf(acu_wide, fromLast=TRUE))
 ```
 
 ```{r}
@@ -127,35 +118,13 @@ LOCF_fishoil_model<- lm(pain_yr4~fishoilactive+sex+ageyr+pain_base, data=LOCF_vi
 LOCF_vitD_model<-lm(pain_yr4~vitdactive+sex+ageyr+pain_base, data=LOCF_vital)
 ```
 
-```{r}
-#treatment effect for vital LOCF
-
-
-```
-
-functions
-```{r}
-LOCF <- function(x) {
-  v <- !is.na(x)
-  c(NA, x[v])[cumsum(v)+1]
-}
-```
-
-```{r}
-LOCF <- function(x) {
-    LOCF <- max(which(!is.na(x)))
-    x[LOCF:length(x)] <- x[LOCF]
-    return(x)
-}
-data.frame(lapply(acupuncture, LOCF))
-```
 
 ## Complete Case Analysis - just use linear model as it removes rows with NA values 
 
 ```{r}
 #complete case on acupuncture
-acu_complete<- lm(pk5~group+sex+migraine+pk1+chronicity, data=acupuncture)
-LOCF_acu_model<- lm(pk5~group+sex+migraine+pk1+chronicity, data=LOCF_acupuncture)
+acu_complete<- lm(pk_score~group*pk_time, data=acu_long)
+LOCF_acu_model<- lm(pk5~group*pk1, data=acu_LOCF)
 ```
 
 
@@ -163,13 +132,10 @@ LOCF_acu_model<- lm(pk5~group+sex+migraine+pk1+chronicity, data=LOCF_acupuncture
 
 ```{r, message=FALSE}
 #Multiple imputation chained equations on acupuncture data
-acu_mice<- mice(acupuncture, m = 5, method = 'pmm', seed = 123)
-acu_mice_model <- with(acu_mice, lm(pk5~group+sex+migraine+pk1+chronicity))
+acu_mice<- mice(acu_wide, m = 5, method = 'pmm', seed = 123)
+acu_mice_model <- with(acu_mice, lm(pk5~group+pk1))
 acu_pooled_model<- pool(acu_mice_model)
 summary(acu_pooled_model)
-```
-```{r}
-stripplot(acu_mice, pch=1, cex=1.2)
 ```
 
 ```{r}
@@ -180,42 +146,50 @@ tab_model(acu_complete, LOCF_acu_model )
 
 ## Mixed Effects Model
 
-```{r warning=FALSE, message=FALSE}
-ggplot(data_vital, aes(x=pain_base, y=pain_yr4)) + geom_point() + geom_smooth()
-ggplot(data_vital, aes(x=as.factor(unikneepain), y=pain_yr4)) + geom_boxplot() 
-ggplot(data_vital, aes(x=as.factor(bikneepain), y=pain_yr4)) + geom_boxplot() 
-ggplot(data_vital, aes(x=as.factor(KneesReplacedV2), y=pain_yr4)) + geom_boxplot() 
-head(data_vital)
-library(lme4)
-
-```
 ```{r message=FALSE, warning=FALSE}
-acu_LME<- lmer(pk5 ~ group+sex+migraine+pk1+chronicity + (chronicity| practice_id), data=acupuncture)
-acu_LME2<- lmer(pk5 ~ group+sex+migraine+pk1+chronicity + (pk1| group), data=acupuncture)
+library(lme4)
+acu_LME<- lmer(pk_score ~ group*pk_time + (1| id), data=acu_long)
+vitD_LME<-lmer(pain_score~vitdactive*pain_time + (1|Subject_ID), data=vital_long)
+fishoil_LME<-lmer(pain_score~fishoilactive*pain_time+ (1|Subject_ID), data=vital_long)
 
-vitD_LME<-lmer(pain_yr4~vitdactive+sex+ageyr+pain_base+bikneepain + (pain_base|bikneepain), data=data_vital)
-fishoil_LME<-lmer(pain_yr4~fishoilactive+sex+ageyr+pain_base+bikneepain + (pain_base|bikneepain), data=data_vital)
-
-tab_model(fishoil_LME, LOCF_fishoil_model)
-tab_model(vitD_LME, LOCF_vitD_model)
-
-```
-
-```{r}
-library(modelsummary)
-fishmodels<-list(fishoil_LME, LOCF_fishoil_model)
-vitDmodels<-list(vitD_LME, LOCF_vitD_model)
-
-acumodels<-list(acu_complete, acu_LME, LOCF_acu_model)
-modelsummary(acumodels, output="table.html")
-
-modelsummary(fishmodels, output="table.html")
-modelsummary(vitDmodels,output="table.html")
-
+summary(acu_LME) 
+summary(vitD_LME)
+summary(fishoil_LME)
 ```
 
 
-```{r}
-tab_model(acu_LME, acu_LME2)
+
+#extra code
+```{r warning=FALSE
+head(acupuncture)
+acu_long <- reshape(acupuncture, 
+                    varying = c('pk1', 'pk2', 'pk5', 'f1', 'f2', 'f5'),
+                    v.names = 'value', 
+                    times = c('pk1', 'pk2', 'pk5', 'f1', 'f2', 'f5'),
+                    direction = 'long'
+
+vital_long<-reshape(data_vital, 
+                    varying = c('vitdactive', 'fishoilactive', 'sex', 'ageyr', 'pain_base', 
+                                'stiffness_base', 'function_base', 'pain_yr1', 'stiffness_yr1', 'function_yr1', 'pain_yr2', 'stiffness_yr2', 'function_yr2','pain_yr3', 'stiffness_yr3', 'function_yr3', 'pain_yr4', 'stiffness_yr4', 'function_yr4', 'KneesReplacedV2','unikneepain','bikneepain','kneepainfreq','tylenolbase','nsaidsbase','strongerbase','tkrf'),
+                    v.names = 'value', 
+                    times = c('vitdactive', 'fishoilactive', 'sex', 'ageyr', 'pain_base', 
+                                'stiffness_base', 'function_base', 'pain_yr1', 'stiffness_yr1', 'function_yr1', 'pain_yr2', 'stiffness_yr2', 'function_yr2','pain_yr3', 'stiffness_yr3', 'function_yr3', 'pain_yr4', 'stiffness_yr4', 'function_yr4', 'KneesReplacedV2','unikneepain','bikneepain','kneepainfreq','tylenolbase','nsaidsbase','strongerbase','tkrf'),
+                    direction = 'long')
+acu_long
+
+functions
+```{r
+LOCF <- function(x) {
+  v <- !is.na(x)
+  c(NA, x[v])[cumsum(v)+1]
+}
 ```
 
+```{r
+LOCF <- function(x) {
+    LOCF <- max(which(!is.na(x)))
+    x[LOCF:length(x)] <- x[LOCF]
+    return(x)
+}
+data.frame(lapply(acupuncture, LOCF))
+```
