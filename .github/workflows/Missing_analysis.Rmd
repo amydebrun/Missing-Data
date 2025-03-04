@@ -24,25 +24,61 @@ data_vitalkp <- read_sas("Data/vitalkneepain111623.sas7bdat",
                          NULL)
 data_main <- read_sas("Data/VITAL_trial_NEJM_2022.sas7bdat", 
                       NULL)
-view(data_main)
 
-data_vital<- data_main %>%
+vital_wide<- data_main %>%
   dplyr::select(Subject_ID, vitdactive, fishoilactive, sex, ageyr, ) %>%
   right_join(data_vitalkp, by = "Subject_ID")
 
-acupuncture <- read_csv("Data/acupuncture.csv",show_col_types = FALSE)
-head(acupuncture)
+acu_wide <- read_csv("Data/acupuncture.csv",show_col_types = FALSE)
+
 ```
 ## data from wide to long 
 
-```{r warning=FALSE}##
+
+```{r message=FALSE}
+a<-acupuncture %>%
+  pivot_longer(
+    cols = c('pk1', 'pk2', 'pk5'), 
+    names_to = c('pk'),
+    names_repair = "unique"
+  )
+
+acu_long<-a %>%
+  pivot_longer(
+    cols = c('f1', 'f2', 'f5'), 
+    names_to = c('f'),
+    names_repair = "unique"
+  )
+acu_long
+
+
+v<-data_vital%>%
+    pivot_longer(
+    cols = c('pain_base','pain_yr1','pain_yr2', 'pain_yr3', 'pain_yr4'), 
+    names_to = c('pain_'),
+    names_repair = "unique"
+  )
+x<-v%>%
+    pivot_longer(
+    cols = c( 'stiffness_base','stiffness_yr1', 'stiffness_yr2', 'stiffness_yr3', 'stiffness_yr4'), 
+    names_to = c('stiffness_'),
+    names_repair = "unique"
+    )
+vital_long<-x%>%
+    pivot_longer(
+    cols = c( 'function_base','function_yr1', 'function_yr2', 'function_yr3', 'function_yr4'), 
+    names_to = c('function_'),
+    names_repair = "unique"
+    )
+head(vital_long)
+```
+
+```{r warning=FALSE}
 head(acupuncture)
 acu_long <- reshape(acupuncture, 
-                    varying = c('age', 'sex', 'migraine', 'chronicity', 'acupuncturist', 
-                              'practice_id', 'group', 'pk1', 'pk2', 'pk5', 'f1', 'f2', 'f5'),
+                    varying = c('pk1', 'pk2', 'pk5', 'f1', 'f2', 'f5'),
                     v.names = 'value', 
-                    times = c('age', 'sex', 'migraine', 'chronicity', 'acupuncturist', 
-                              'practice_id', 'group', 'pk1', 'pk2', 'pk5', 'f1', 'f2', 'f5'),
+                    times = c('pk1', 'pk2', 'pk5', 'f1', 'f2', 'f5'),
                     direction = 'long'
 
 vital_long<-reshape(data_vital, 
@@ -52,28 +88,8 @@ vital_long<-reshape(data_vital,
                     times = c('vitdactive', 'fishoilactive', 'sex', 'ageyr', 'pain_base', 
                                 'stiffness_base', 'function_base', 'pain_yr1', 'stiffness_yr1', 'function_yr1', 'pain_yr2', 'stiffness_yr2', 'function_yr2','pain_yr3', 'stiffness_yr3', 'function_yr3', 'pain_yr4', 'stiffness_yr4', 'function_yr4', 'KneesReplacedV2','unikneepain','bikneepain','kneepainfreq','tylenolbase','nsaidsbase','strongerbase','tkrf'),
                     direction = 'long')
-
-```
-```{r warning=FALSE}
-library(reshape2)
-
-acu_long <- melt(acupuncture, 
-                 id.vars = c("id", "age", "sex"), 
-                 variable.name = "variable", 
-                 value.name = "value")  
-
-acu_long <- acu_long[order(acu_long$id), ]
 acu_long
-
-vital_long <- melt(data_vital, 
-                 id.vars = c("Subject_ID", "ageyr", "sex"),  
-                 variable.name = "variable", 
-                 value.name = "value")  
-vital_long <- vital_long[order(vital_long$Subject_ID), ]
-vital_long
 ```
-
-
 
 ## Last Observation Carried Forward
 
@@ -92,6 +108,7 @@ LOCF <- function(data, columns){
 
 acu_LOCF <- acupuncture
 acu_LOCF <- LOCF(data = acu_LOCF, columns = c(10,11))
+head(acu_LOCF)
 ```
 
 ```{r} 
