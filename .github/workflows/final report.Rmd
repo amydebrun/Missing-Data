@@ -1,6 +1,6 @@
 ---
 title: "Report"
-author: "Amy, Kent"
+author: "Amy & Kent"
 date: "2025-03-10"
 output: 
   ams_article: default
@@ -9,4 +9,14 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+c The report should be structured similarly to an academic paper and include the project aims, background, and give greater detail on the methods results, the interpretation of results and conclusions, with an appropriate bibliography. It should be produced using R Markdown using a standard template (see below).
+
+## Project Aims
+## Background
+## Method
+## Results
+## Interpretation
+## Conclusions
+## Bibliography 
 
