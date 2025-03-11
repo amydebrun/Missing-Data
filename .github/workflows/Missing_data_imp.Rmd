@@ -223,11 +223,11 @@ head(vital_simp)
 
 ## MICE package with vital data
 
-```{r warning}
+```{r warning=FALSE}
 #multiple imputation 
 vital_mice <- mice(vital_wide, m = 5, method = 'pmm', seed = 123)
 vital_mice_data <- complete(vital_mice, action = "long", include = TRUE)
-vital_mice_data
+
 ```
 
 
@@ -248,7 +248,7 @@ tidy(fishoil_pooled_model)
 ## Mixed Effects Model
 
 ```{r}
-lmer(pain_score~vitdactive*time + (1|Subject_ID), data=vital_long)
+vitD_LME<-lmer(pain_score~vitdactive*time + (1|Subject_ID), data=vital_long)
 fishoil_LME<-lmer(pain_score~fishoilactive*time+ (1|Subject_ID), data=vital_long)
 summary(vitD_LME)
 summary(fishoil_LME)
