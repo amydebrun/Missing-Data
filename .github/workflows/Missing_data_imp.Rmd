@@ -58,20 +58,38 @@ LOCF <- function(data, columns){
 
 acu_LOCF <- LOCF(data = acu_wide, columns = c(10,11))
 head(acu_LOCF)
+
+# MEAN IMPUTATION FUNCTION 
+mean_impute <- function(data) {
+  data <- data.frame(
+    lapply(data, function(x) {
+      if (is.numeric(x)) {
+        return(ifelse(is.na(x), mean(x, na.rm = TRUE), x))
+      } else {
+        return(x)
+      }
+    })
+  )
+  return(data)
+}
+acu_imp<-mean_impute(acu_wide)
+head(acu_imp)
 ```
 
-```{r}
-# CAA
-acu_complete <- lm(pk_score ~ group + pk1 + time, data=acu_long)
-tidy(acu_complete)
+```{r warning=FALSE}
 
+# CAA
+acu_complete <- lm(pk_score ~ group + pk1 + time, data=acu_long) #wide data
+tidy(acu_complete)
+acu_complete_wide <- lm(pk5 ~ group + pk1, data=acu_wide)
+tidy(acu_complete_wide)
 # LOCF
-LOCF_acu_model<- lm(pk5 ~ group + pk1 + pk2, data=acu_LOCF)
+LOCF_acu_model<- lm(pk5 ~ group + pk1, data=acu_LOCF) #baseline only #wide data
 tidy(LOCF_acu_model)
 
 # MM
 acu_mice <- mice(acu_wide, m = 5, method = 'pmm', seed = 123)
-acu_mice_model <- with(acu_mice, lm(pk5 ~ group + pk1 + pk2))
+acu_mice_model <- with(acu_mice, lm(pk5 ~ group + pk1)) #baseline only
 acu_pooled_model<- pool(acu_mice_model)
 tidy(acu_pooled_model)
 
@@ -82,8 +100,8 @@ summary(acu_LME)
 
 |Method|coefficient|SE|p|
 |--|--|--|--|
-|CAA|-4.31|1.08|0.0324|
-|LOCF|-2.27|0.93|0.0152|
+|CAA|-4.316|1.08|0.0324|
+|LOCF|-4.334|1.086|0.00008|
 |MM|-1.61|1.13|0.154|
 |LMM|-5.63|1.67|N/A|
 
