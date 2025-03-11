@@ -44,6 +44,9 @@ acu_long <- acu_wide %>%
 
 head(acu_long)
 
+
+
+
 # LOCF function
 LOCF <- function(data, columns){
   for (col in columns) {
@@ -56,7 +59,9 @@ LOCF <- function(data, columns){
   return(data)  
 }
 
-acu_LOCF <- LOCF(data = acu_wide, columns = c(10,11))
+acu_filtered<- acu_long%>%
+  filter(time != "3m")
+acu_LOCF <- LOCF(data = acu_filtered, columns = c(10,11))
 head(acu_LOCF)
 
 # MEAN IMPUTATION FUNCTION 
@@ -72,40 +77,45 @@ mean_impute <- function(data) {
   )
   return(data)
 }
-acu_imp<-mean_impute(acu_wide)
-head(acu_imp)
+acu_simp<-mean_impute(acu_wide)
+head(acu_simp)
 ```
 
 ```{r warning=FALSE}
+acu_filtered<- acu_long%>%
+  filter(time != "3m")
 
-# CAA
-acu_complete <- lm(pk_score ~ group + pk1 + time, data=acu_long) #wide data
+# CAA with filtered data 
+acu_complete <- lm(pk_score ~ group + pk1 , data=acu_filtered)
 tidy(acu_complete)
-acu_complete_wide <- lm(pk5 ~ group + pk1, data=acu_wide)
-tidy(acu_complete_wide)
-# LOCF
-LOCF_acu_model<- lm(pk5 ~ group + pk1, data=acu_LOCF) #baseline only #wide data
+
+# LOCF with long filtered data
+LOCF_acu_model<- lm(pk_score ~ group + pk1, data=acu_LOCF) #baseline only #wide data
 tidy(LOCF_acu_model)
 
-# MM
+# MM with wide data to be transformed 
 acu_mice <- mice(acu_wide, m = 5, method = 'pmm', seed = 123)
-acu_mice_model <- with(acu_mice, lm(pk5 ~ group + pk1)) #baseline only
+acu_mice_model <- with(acu_mice, lm(pk5 ~ group + pk1)) #baseline only - to be used in linear mixed effects model 
 acu_pooled_model<- pool(acu_mice_model)
 tidy(acu_pooled_model)
 
-# LMM
+# LME with long data 
 acu_LME<- lmer(pk_score ~ group + time + (1| id), data = acu_long)
 summary(acu_LME)
 ```
 
 |Method|coefficient|SE|p|
 |--|--|--|--|
-|CAA|-4.316|1.08|0.0324|
-|LOCF|-4.334|1.086|0.00008|
-|MM|-1.61|1.13|0.154|
+|CAA|-4.5868409	|1.25177152|0.00029|
+|LOCF|-3.3682609	|1.02885179	|0.00115|
+|MM|-2.7799226|1.27952587|0.0305|
 |LMM|-5.63|1.67|N/A|
 
 ## Load data
+
+
+
+## VITAL DATA ANALYSIS
 
 ```{r}
 #Vital
@@ -116,36 +126,58 @@ vital_wide<- data_main %>%
   right_join(data_vitalkp, by = "Subject_ID")
 ```
 
-## data from wide to long 
+## VITAL DATA TO LONG FORMAT
 
 ```{r message=FALSE}
 # Vital
-v<-vital_wide%>%
+vital_long<-vital_wide%>%
     pivot_longer(
     cols = c('pain_yr1','pain_yr2', 'pain_yr3', 'pain_yr4'), 
     names_to = c('pain_time'),
-    names_repair = "unique"
-  )
-x<-v%>%
+    values_to = "pain_score"
+  ) %>%
     pivot_longer(
     cols = c('stiffness_yr1', 'stiffness_yr2', 'stiffness_yr3', 'stiffness_yr4'), 
     names_to = c('stiffness_time'),
+    values_to="stiffness_score",
     names_repair = "unique"
-    )
-vital_long<-x%>%
+    ) %>%
     pivot_longer(
     cols = c('function_yr1', 'function_yr2', 'function_yr3', 'function_yr4'), 
     names_to = c('function_time'),
+    values_to = "function_score",
     names_repair = "unique"
+    ) %>%
+  filter((pain_time == "pain_yr1" & stiffness_time == "stiffness_yr1" & function_time == "function_yr1")| (pain_time == "pain_yr2" & stiffness_time == "stiffness_yr2" & function_time == "function_yr2") | (pain_time == "pain_yr3" & stiffness_time == "stiffness_yr3" & function_time == "function_yr3") | (pain_time == "pain_yr4" & stiffness_time == "stiffness_yr4" & function_time == "function_yr4")) %>%
+  mutate( 
+    time=case_when(
+      pain_time == "pain_yr1" ~ "Year1",
+       pain_time == "pain_yr2" ~ "Year2",
+       pain_time == "pain_yr3" ~ "Year3",
+        pain_time == "pain_yr4" ~ "Year4",
+      stiffness_time == "stiffness_yr1" ~ "Year1",
+       stiffness_time == "stiffness_yr2" ~ "Year2",
+        stiffness_time == "stiffness_yr3" ~ "Year3",
+         stiffness_time == "stiffness_yr4" ~ "Year4",
+      function_time == "function_yr1" ~ "Year1",
+      function_time == "function_yr2" ~ "Year2",
+      function_time == "function_yr3" ~ "Year3",
+      function_time == "function_yr4" ~ "Year4"
     )
-colnames(vital_long)[18]<-"pain_score"
-colnames(vital_long)[20]<-"stiffness_score"
-colnames(vital_long)[22]<-"function_score"
-
+  ) %>%  select(-c(pain_time, stiffness_time, function_time))
+  
 head(vital_long)
 ```
 
 ## Complete Case Analysis - just use linear model as it removes rows with NA values 
+
+```{r}
+#CCA
+vitd_complete <- lm(pain_yr4 ~ vitdactive*pain_yr1, data=vital_wide) 
+fishoil_complete <- lm(pain_yr4 ~ fishoilactive*pain_yr1, data=vital_wide) 
+tidy(vitd_complete)
+tidy(fishoil_complete)
+```
 
 ## Last Observation Carried Forward
 
@@ -170,37 +202,78 @@ vital_LOCF<- LOCF(data = vital_LOCF, columns = c(9, 10,11,15,16,17,18,19,20,22,2
 head(vital_LOCF)
 ```
 
-## MICE package
+## SIMPLE MEAN IMPUTATION
+```{r}
+mean_impute <- function(data) {
+  data <- data.frame(
+    lapply(data, function(x) {
+      if (is.numeric(x)) {
+        return(ifelse(is.na(x), mean(x, na.rm = TRUE), x))
+      } else {
+        return(x)
+      }
+    })
+  )
+  return(data)
+}
+vital_simp<-mean_impute(vital_wide)
+head(vital_simp)
+```
+
+
+## MICE package with vital data
+
+```{r warning}
+#multiple imputation 
+vital_mice <- mice(vital_wide, m = 5, method = 'pmm', seed = 123)
+vital_mice_data <- complete(vital_mice, action = "long", include = TRUE)
+vital_mice_data
+```
+
+
+```{r warning}
+#vitaminD lm
+vitD_mice_model <- with(vital_mice, lm(pain_yr4 ~ vitdactive * pain_base)) #baseline only - to be used in linear mixed effects model 
+vitD_pooled_model<- pool(vitD_mice_model)
+tidy(vitD_pooled_model)
+
+#fishoil lm 
+fishoil_mice_model <- with(vital_mice, lm(pain_yr4 ~ fishoilactive * pain_base)) #baseline only - to be used in linear mixed effects model 
+fishoil_pooled_model<- pool(fishoil_mice_model)
+tidy(fishoil_pooled_model)
+
+```
+
 
 ## Mixed Effects Model
 
 ```{r}
-vitD_LME<-lmer(pain_score~vitdactive*pain_time + (1|Subject_ID), data=vital_long)
-fishoil_LME<-lmer(pain_score~fishoilactive*pain_time+ (1|Subject_ID), data=vital_long)
+lmer(pain_score~vitdactive*time + (1|Subject_ID), data=vital_long)
+fishoil_LME<-lmer(pain_score~fishoilactive*time+ (1|Subject_ID), data=vital_long)
 summary(vitD_LME)
 summary(fishoil_LME)
 ```
 
 
+## Mixed Effects models using MICE 
 
+```{r}
 
+#vitaminD lmer
+#vitD_mice_lme <- with(vital_mice, lmer(pain_yr4 ~ vitdactive * pain_base + (1|Subject_ID))) #baseline only - to be used in linear mixed effects model 
+#vitD_pooled_lme<- pool(vitD_mice_lme)
+#tidy(vitD_pooled_lme)
 
-
-
-
-
-
-
-
-
-
-
-
+#fishoil lmer
+#fishoil_mice_lme <- with(vital_mice, lmer(pain_yr4 ~ fishoilactive*pain_base + (1|Subject_ID))) #baseline only - to be used in linear mixed effects model 
+#fishoil_pooled_lme<- pool(fishoil_mice_lme)
+#tidy(fishoil_pooled_lme)
+```
 
 
 #EXTRA CODE
 
-```{r warning=FALSE}
+```{r warning=FALSE
 head(acupuncture)
 acu_long <- reshape(acupuncture, 
                     varying = c('pk1', 'pk2', 'pk5', 'f1', 'f2', 'f5'),
@@ -225,7 +298,7 @@ LOCF <- function(x) {
 }
 ```
 
-```{r}
+```{r
 LOCF <- function(x) {
     LOCF <- max(which(!is.na(x)))
     x[LOCF:length(x)] <- x[LOCF]
@@ -234,23 +307,23 @@ LOCF <- function(x) {
 data.frame(lapply(acupuncture, LOCF))
 ```
 
-```{r} 
+```{r
 #locf function on vital data zoo package
 LOCF_vital<-as.data.frame(na.locf(vital_wide, fromLast=TRUE))
 ```
 
-```{r}
+```{r
 #locf function on acupuncture data zoo package
 LOCF_acupuncture<-as.data.frame(na.locf(acu_wide, fromLast=TRUE))
 ```
 
-```{r}
+```{r
 #models from zoo package locf
 LOCF_fishoil_model<- lm(pain_yr4~fishoilactive+sex+ageyr+pain_base, data=LOCF_vital)
 LOCF_vitD_model<-lm(pain_yr4~vitdactive+sex+ageyr+pain_base, data=LOCF_vital)
 ```
 
-```{r}
+```{r
 #table of complete case, locf and regular model for acupuncture 
 tab_model(acu_complete, acu_LOCF )
 ```
