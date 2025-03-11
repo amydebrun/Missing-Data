@@ -104,6 +104,8 @@ acu_LME<- lmer(pk_score ~ group + time + (1| id), data = acu_long)
 summary(acu_LME)
 ```
 
+**updated table**
+
 |Method|coefficient|SE|p|
 |--|--|--|--|
 |CAA|-4.5868409	|1.25177152|0.00029|
