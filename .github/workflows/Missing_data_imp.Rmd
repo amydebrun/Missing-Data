@@ -82,18 +82,19 @@ head(acu_simp)
 ```
 
 ```{r warning=FALSE}
-acu_filtered<- acu_long%>%
-  filter(time != "3m")
 
 # CAA with filtered data 
-acu_complete <- lm(pk_score ~ group + pk1 , data=acu_filtered)
+acu_complete <- lm(
+  pk_score ~ group + pk1 , 
+  data = acu_long %>% filter(time != "3m")
+  )
 tidy(acu_complete)
 
 # LOCF with long filtered data
-LOCF_acu_model<- lm(pk_score ~ group + pk1, data=acu_LOCF) #baseline only #wide data
+LOCF_acu_model<- lm(pk_score ~ group + pk1, data = acu_LOCF) #baseline only #wide data
 tidy(LOCF_acu_model)
 
-# MM with wide data to be transformed 
+# MI with wide data to be transformed 
 acu_mice <- mice(acu_wide, m = 5, method = 'pmm', seed = 123)
 acu_mice_model <- with(acu_mice, lm(pk5 ~ group + pk1)) #baseline only - to be used in linear mixed effects model 
 acu_pooled_model<- pool(acu_mice_model)
@@ -108,31 +109,25 @@ summary(acu_LME)
 
 |Method|coefficient|SE|p|
 |--|--|--|--|
-|CAA|-4.5868409	|1.25177152|0.00029|
-|LOCF|-3.3682609	|1.02885179	|0.00115|
-|MM|-2.7799226|1.27952587|0.0305|
+|CAA|-4.59|1.25|0.000294|
+|LOCF|-3.37|1.03|0.00116|
+|MI|-2.70|1.26|0.0329|
 |LMM|-5.63|1.67|N/A|
-
-## Load data
-
-
 
 ## VITAL DATA ANALYSIS
 
 ```{r}
-#Vital
+# Import Vital
 data_vitalkp <- read_sas("Data/vitalkneepain111623.sas7bdat", NULL)
 data_main <- read_sas("Data/VITAL_trial_NEJM_2022.sas7bdat", NULL)
 vital_wide<- data_main %>%
   dplyr::select(Subject_ID, vitdactive, fishoilactive, sex, ageyr, ) %>%
-  right_join(data_vitalkp, by = "Subject_ID")
-```
+  right_join(data_vitalkp, by = "Subject_ID") %>%
+  select(1:20)
+vital_wide$sex <- factor(vital_wide$sex, labels = c("M", "F"))
 
-## VITAL DATA TO LONG FORMAT
-
-```{r message=FALSE}
-# Vital
-vital_long<-vital_wide%>%
+# Pivot Long
+vital_long <- vital_wide %>%
     pivot_longer(
     cols = c('pain_yr1','pain_yr2', 'pain_yr3', 'pain_yr4'), 
     names_to = c('pain_time'),
@@ -167,45 +162,9 @@ vital_long<-vital_wide%>%
       function_time == "function_yr4" ~ "Year4"
     )
   ) %>%  select(-c(pain_time, stiffness_time, function_time))
-  
 head(vital_long)
-```
 
-## Complete Case Analysis - just use linear model as it removes rows with NA values 
-
-```{r}
-#CCA
-vitd_complete <- lm(pain_yr4 ~ vitdactive*pain_yr1, data=vital_wide) 
-fishoil_complete <- lm(pain_yr4 ~ fishoilactive*pain_yr1, data=vital_wide) 
-tidy(vitd_complete)
-tidy(fishoil_complete)
-```
-
-## Last Observation Carried Forward
-
-```{r}
-#LOCF function
-LOCF <- function(data, columns){
-  for (col in columns) {
-    for (i in 1:nrow(data)) {  
-      if (is.na(data[i, col])) {
-        data[i, col] <- data[i, col - 1]  
-      }
-    }
-  }
-  return(data)  
-}
-```
-
-```{r}
-#Vital
-vital_LOCF<- vital_wide
-vital_LOCF<- LOCF(data = vital_LOCF, columns = c(9, 10,11,15,16,17,18,19,20,22,23))
-head(vital_LOCF)
-```
-
-## SIMPLE MEAN IMPUTATION
-```{r}
+# MOCF Function
 mean_impute <- function(data) {
   data <- data.frame(
     lapply(data, function(x) {
@@ -218,44 +177,75 @@ mean_impute <- function(data) {
   )
   return(data)
 }
-vital_simp<-mean_impute(vital_wide)
-head(vital_simp)
 ```
 
+## Vital - fishoil
 
-## MICE package with vital data
+```{r}
+#CCA
+fishoil_complete <- lm(pain_score ~ fishoilactive + pain_base, data = vital_long %>% filter(time == "Year4")) 
+tidy(fishoil_complete)
 
-```{r warning=FALSE}
-#multiple imputation 
+#MOCF
+vital_MOCF <- mean_impute(vital_wide)
+fishoil_MOCF <- lm(pain_yr4 ~ fishoilactive + pain_base, data = vital_MOCF)
+tidy(fishoil_MOCF)
+
+#MI
 vital_mice <- mice(vital_wide, m = 5, method = 'pmm', seed = 123)
 vital_mice_data <- complete(vital_mice, action = "long", include = TRUE)
-
-```
-
-
-```{r warning}
-#vitaminD lm
-vitD_mice_model <- with(vital_mice, lm(pain_yr4 ~ vitdactive * pain_base)) #baseline only - to be used in linear mixed effects model 
-vitD_pooled_model<- pool(vitD_mice_model)
-tidy(vitD_pooled_model)
-
 #fishoil lm 
 fishoil_mice_model <- with(vital_mice, lm(pain_yr4 ~ fishoilactive * pain_base)) #baseline only - to be used in linear mixed effects model 
 fishoil_pooled_model<- pool(fishoil_mice_model)
 tidy(fishoil_pooled_model)
 
-```
-
-
-## Mixed Effects Model
-
-```{r}
-vitD_LME<-lmer(pain_score~vitdactive*time + (1|Subject_ID), data=vital_long)
+#LMM
 fishoil_LME<-lmer(pain_score~fishoilactive*time+ (1|Subject_ID), data=vital_long)
-summary(vitD_LME)
 summary(fishoil_LME)
 ```
 
+**updated table**
+
+|Method|coefficient|SE|p|
+|--|--|--|--|
+|CAA|-0.0045|1.21|0.997|
+|LOCF|0.37|0.76|0.624|
+|MI|-0.83|3.02|0.788|
+|LMM|-1.76|1.30|N/A|
+
+## Vital - VitD
+
+```{r}
+#CAA
+vitd_complete <- lm(pain_score ~ vitdactive + pain_base, data = vital_long %>% filter(time == "Year4")) 
+tidy(vitd_complete)
+
+#MOCF
+vital_MOCF <- mean_impute(vital_wide)
+vitd_MOCF <- lm(pain_yr4 ~ vitdactive + pain_base, data = vital_MOCF)
+tidy(vitd_MOCF)
+
+#MI
+vital_mice <- mice(vital_wide, m = 5, method = 'pmm', seed = 123)
+vital_mice_data <- complete(vital_mice, action = "long", include = TRUE)
+#vitaminD lm
+vitD_mice_model <- with(vital_mice, lm(pain_yr4 ~ vitdactive * pain_base)) #baseline only - to be used in linear mixed effects model 
+vitD_pooled_model<- pool(vitD_mice_model)
+tidy(vitD_pooled_model)
+
+#LMM
+vitD_LME<-lmer(pain_score~vitdactive*time + (1|Subject_ID), data=vital_long)
+summary(vitD_LME)
+```
+
+**updated table**
+
+|Method|coefficient|SE|p|
+|--|--|--|--|
+|CAA|-0.71|1.46|0.554|
+|LOCF|-0.06|0.76|0.941|
+|MI|-1.78|2.51|0.485|
+|LMM|0.52|1.31|N/A|
 
 ## Mixed Effects models using MICE 
 
@@ -271,6 +261,24 @@ summary(fishoil_LME)
 #fishoil_pooled_lme<- pool(fishoil_mice_lme)
 #tidy(fishoil_pooled_lme)
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #EXTRA CODE
