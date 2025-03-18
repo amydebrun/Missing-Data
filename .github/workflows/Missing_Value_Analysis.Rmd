@@ -12,9 +12,9 @@ library(tidyverse)
 library(haven)
 library(lme4)
 library(broom.mixed)
-source("~/Documents/Documents/Work/Galway/Cirriculum/HDS5015 Statistical Computing for Biomedical Data/Github/HDS5106/.github/workflows/R scripts/Functions.R")
-source("~/Documents/Documents/Work/Galway/Cirriculum/HDS5015 Statistical Computing for Biomedical Data/Github/HDS5106/.github/workflows/R scripts/Acupuncture data formats.R")
-source("~/Documents/Documents/Work/Galway/Cirriculum/HDS5015 Statistical Computing for Biomedical Data/Github/HDS5106/.github/workflows/R scripts/VITAL data formats.R")
+#source("C:/Users/abrow/Documents/Missing-Data/.github/workflows/R scripts/Backup_Codes.R")
+source("C:/Users/abrow/Documents/Missing-Data/.github/workflows/R scripts/VITAL data formats.R")
+source("C:/Users/abrow/Documents/Missing-Data/.github/workflows/R scripts/Acupuncture data formats.R")
 ```
 
 To do
@@ -34,15 +34,21 @@ acu_simp<-mean_impute(acu_wide)
 
 # CAA with filtered data 
 acu_complete <- lm( pk5 ~ group + pk1 , data = acu_wide)
-tidy(acu_complete)
+summary(acu_complete)
+acu_complete_CI<- confint(acu_complete)
+acu_complete_CI
 
 # LOCF with long filtered data
 LOCF_acu_model<- lm(pk_score ~ group + pk1, data = acu_LOCF) #baseline only #wide data
+LOCF_acu_model_CI <- confint(LOCF_acu_model)
+LOCF_acu_model_CI
 tidy(LOCF_acu_model)
 
 #MOCF with long filtered data 
 acu_mean_model<-lm(pk5~group+pk1, data=acu_simp)
+acu_mean_model_CI<- confint(acu_mean_model)
 tidy(acu_mean_model)
+acu_mean_model_CI
 
 # MI with wide data to be transformed 
 acu_mice <- mice(acu_wide, m = 5, method = 'pmm', seed = 123)
@@ -52,7 +58,9 @@ tidy(acu_pooled_model)
 
 # LME with long data 
 acu_LME<- lmer(pk_score ~ group + time + (1| id), data = acu_long)
-summary(acu_LME)
+acu_LME_long_CI<-confint.merMod(acu_LME)
+tidy(acu_LME)
+acu_LME_long_CI
 ```
 
 **updated table**
@@ -145,14 +153,6 @@ vital_MI_LME_summary %>% filter(term %in% c("fishoilactive", "vitdactive"))
 |LMM|-1.76|1.30|N/A|
 
 
-
-
-
-
-
-
-
-
 ## Mixed Effects models using MICE 
 
 ```{r}
@@ -168,5 +168,27 @@ vital_MI_LME_summary %>% filter(term %in% c("fishoilactive", "vitdactive"))
 #tidy(fishoil_pooled_lme)
 ```
 
+
+## FOREST PLOT
+
+
+```{r}
+library(meta)
+
+acu_trtmt_data <- tibble(treatment  = c(-4.59, -3.37, -3.37, -5.63),
+                            lower = c(-7.05, -5.39, -5.79, -8.9),
+                            upper = c(-2.123, -1.35, -1.53, -2.35),
+                            method = c("Linear (No Imputation)", "Linear (Last Observation Carried Forward)", "Linear (Simple Mean Imputed)", "Linear Mixed Effect (No Imputation)"))
+
+ggplot(acu_trtmt_data, aes(x = treatment, y = method, xmin = lower, xmax = upper)) +
+  geom_point(size = 4, color = "deeppink") +
+  geom_errorbarh(aes(xmin = lower, xmax = upper), height = 0.4, color = "black") + 
+  labs(
+    x = "Treatment Effect",
+    y = "Method",
+    title = "") +
+  theme_minimal() 
+  
+```
 
 
