@@ -11,10 +11,16 @@ library(mice)
 library(tidyverse)
 library(haven)
 library(lme4)
-source("C:\\Users\\abrow\\Documents\\Missing-Data\\.github\\workflows\\R scripts\\Functions.R")
-source("C:\\Users\\abrow\\Documents\\Missing-Data\\.github\\workflows\\R scripts\\Acupuncture data formats.R")
-source("C:\\Users\\abrow\\Documents\\Missing-Data\\.github\\workflows\\R scripts\\VITAL data formats.R")
+source("~/Documents/Documents/Work/Galway/Cirriculum/HDS5015 Statistical Computing for Biomedical Data/Github/HDS5106/.github/workflows/R scripts/Functions.R")
+source("~/Documents/Documents/Work/Galway/Cirriculum/HDS5015 Statistical Computing for Biomedical Data/Github/HDS5106/.github/workflows/R scripts/Acupuncture data formats.R")
+source("~/Documents/Documents/Work/Galway/Cirriculum/HDS5015 Statistical Computing for Biomedical Data/Github/HDS5106/.github/workflows/R scripts/VITAL data formats.R")
 ```
+
+To do
+- Apply Neil's
+- Workout original MM method
+- Reformat Table
+- Get forest graph
 
 ## Acupuncture
 

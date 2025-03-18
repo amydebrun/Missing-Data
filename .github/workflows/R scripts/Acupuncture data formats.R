@@ -1,4 +1,3 @@
-
 # Acupuncture wide format
 acu_wide <- read_csv("Data/acupuncture.csv",show_col_types = FALSE)
 head(acu_wide)
