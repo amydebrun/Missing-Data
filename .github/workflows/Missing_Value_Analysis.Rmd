@@ -20,45 +20,50 @@ source("R scripts/Acupuncture data formats.R")
 To do
 - Apply Neil's
 - Workout original MM method
-- Reformat Table (LEME? MI? Estimand?)
+- Reformat Table
+  - Estimate
+    - Linear Model
+    - LME (Time No/Category/Continue)
+  - Missing Method
+    - Do Nothing
+    - Simple imputation
+    - MI
+  - Imputation Method
+    - TBD
 - Get forest graph
 
 ## Acupuncture
 
-```{r}
-acu_LOCF <- LOCF(data = acu_filtered, columns = c(10,11))
-acu_simp<-mean_impute(acu_wide)
-```
-
 ```{r warning=FALSE}
 
-# CAA with filtered data 
-acu_complete <- lm( pk5 ~ group + pk1 , data = acu_wide)
-summary(acu_complete)
-acu_complete_CI<- confint(acu_complete)
-acu_complete_CI
+# CAA
+acu_CAA <- lm(pk5 ~ group + pk1 , data = acu_wide)
+tidy(acu_CAA)
+acu_CAA_CI <- confint(acu_CAA)
+acu_CAA_CI
 
-# LOCF with long filtered data
-LOCF_acu_model<- lm(pk_score ~ group + pk1, data = acu_LOCF) #baseline only #wide data
-LOCF_acu_model_CI <- confint(LOCF_acu_model)
-LOCF_acu_model_CI
-tidy(LOCF_acu_model)
+# LOCF
+acu_LOCF_data <- LOCF(data = acu_wide, columns = c(10,11))
+acu_LOCF <- lm(pk5 ~ group + pk1, data = acu_LOCF_data)
+tidy(acu_LOCF)
+acu_LOCF_CI <- confint(acu_LOCF)
+acu_LOCF_CI
 
-#MOCF with long filtered data 
-acu_mean_model<-lm(pk5~group+pk1, data=acu_simp)
-acu_mean_model_CI<- confint(acu_mean_model)
-tidy(acu_mean_model)
-acu_mean_model_CI
+# Simple mean imputation
+acu_SPM_data <- mean_impute(acu_wide)
+acu_SPM <- lm(pk5 ~ group + pk1, data = acu_SPM_data)
+tidy(acu_SPM)
+acu_SPM_CI <- confint(acu_SPM)
+acu_SPM_CI
 
-# MI with wide data to be transformed 
+# MI with mice default method
+acu_MICE_default <- with(acu_mice, lm(pk5 ~ group + pk1)) 
+acu_MICE_default_pool <- pool(acu_MICE_default)
+tidy(acu_MICE_default_pool) #CI?
 
-acu_mice_model <- with(acu_mice, lm(pk5 ~ group + pk1)) #baseline only - to be used in linear mixed effects model 
-acu_pooled_model<- pool(acu_mice_model)
-tidy(acu_pooled_model)
-
-# LME with long data 
-acu_LME<- lmer(pk_score ~ group + time + (1| id), data = acu_long)
-acu_LME_long_CI<-confint.merMod(acu_LME)
+# LME with no imputation
+acu_LME <- lmer(pk_score ~ group + time + (1| id), data = acu_long) # it is right to + time?
+acu_LME_long_CI <- confint.merMod(acu_LME)
 tidy(acu_LME)
 acu_LME_long_CI
 ```

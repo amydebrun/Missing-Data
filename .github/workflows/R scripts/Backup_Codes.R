@@ -50,34 +50,129 @@ vital_long <- vital_wide %>%
 
 # Neil's Vital MI
 
-# Vital data wide 
-data_vitalkp <- read_sas("Data/vitalkneepain111623.sas7bdat", NULL)
-data_main <- read_sas("Data/VITAL_trial_NEJM_2022.sas7bdat", NULL)
-vital_wide <- data_main %>%
+  library(tidyverse)
+library(haven)
+library(mice)
+library(lme4)
+library(broom.mixed)
+
+
+# Load two data sources
+data_vitalkp <- read_sas("../Datasets/VITamin D and OmegA-3 TriaL/vitalkneepain111623.sas7bdat", 
+                         NULL)
+data_main <- read_sas("../Datasets/VITamin D and OmegA-3 TriaL/VITAL_trial_NEJM_2022.sas7bdat", 
+                      NULL)
+# Combine data
+data_combined <- data_main %>%
+  # We may wish to keep more variables than this from the "main trial" dataset
+  # This might improve the predictions in our imputations
+  # Will keep it simple for now
   select(Subject_ID, vitdactive, fishoilactive,
          sex, bmi, currsmk, ageyr, Aspirin) %>%
   right_join(data_vitalkp)
 
-# Vital data Long
-vital_long <- vital_wide %>%
+
+##############################################################################################
+
+# Convert observed dataset to long, in parallel, which means we can extract
+# pain, stiffness and function as 3 separate variables over 4 time points.
+# Note that the name of the score variable is before the "_" separator followed by the time value. 
+# It really is as simple as this!
+data_long <- data_combined %>%
   pivot_longer(cols = matches("_yr[[:digit:]]$"),
                names_to = c(".value", "time"), 
                names_sep = "_") %>%
+  # Create a continuous time variable
+  # If our time of interest  is at 4-years for an estimand of the treatment effect...
+  # Then we can "centre" the variable at 4-years so that the difference in intercepts
+  # represents the treatment effect, i.e. difference at time_contin_cent=0
   mutate(time_contin = as.integer(gsub("yr", "", time)),
          time_contin_cent = time_contin - 4)
 
-# MI
-vital_mice <- mice(vital_wide, m = 5, method = 'pmm', seed = 123)
-vital_mice_data <- complete(vital_mice, action = "long", include = TRUE)
+# Perform imputation on data in wide format: default algorithm(s) with 10 imputed datasets
+mi_obj <- mice(data_combined, m = 10)
 
-# Convert MI to long format
-vital_mice_data_long <- vital_mice_data %>%
+# Can perform single time-point analysis on MI data in the wide format here
+# For analysis relying on the use of long data format, we need to do some more work
+
+# Extract imputed datasets all in one data.frame (concatenated by row)
+# We will convert this expanded imputed dataset to long format
+mi_data <- complete(data = mi_obj, action = "long", include = TRUE)
+
+# Convert expanded imputed datasets from wide to long - using the same approach as above.
+mi_data_long <- mi_data %>%
   pivot_longer(cols = matches("_yr[[:digit:]]$"),
                names_to = c(".value", "time"), 
                names_sep = "_") %>%
   group_by(.imp) %>%
+  # Need to amend .id variable so that each row has a unique value within each imputed set
+  # Enables us to convert back to mids object
   mutate(.id = 1:n()) %>%
+  # Create a continuous time variable
+  # If our time of interest  is at 4-years for an estimand of the treatment effect...
+  # Then we can "centre" the variable at 4-years so that the difference in intercepts
+  # represents the treatment effect, i.e. difference at time_contin_cent=0
   mutate(time_contin = as.integer(gsub("yr", "", time)),
          time_contin_cent = time_contin - 4)
-# Convert long format back to mids objectives
-vital_mice_obj_long <- as.mids(vital_mice_data_long)
+
+# Convert expanded imputation dataset (in long format) back to mids object
+mi_obj_long <- as.mids(mi_data_long)
+
+
+
+##############################################################################################
+
+# Fit a LMEM on long-format data:
+# 1. on the observed (obs) data and 
+# 2. on the multiply imputed (mi) data as a mids object
+# For a factorial trial, we need to model *both* main effects of randomly-allocated 
+# treatment *in the same model* but without an interaction between randomised allocations
+
+# If the estimand is the difference in mean at year 4
+# Add a random intercept *and* random slope
+
+# MI data
+mi_lmem_fit1 <- with(mi_obj_long, 
+                     lmer(pain ~ fishoilactive * time_contin_cent + vitdactive * time_contin_cent + pain_base + 
+                            (time_contin_cent|Subject_ID)))
+mi_lmem_fit_pool1 <- pool(mi_lmem_fit1)
+mi_lmem_summary1 <- summary(mi_lmem_fit_pool1, conf.int = TRUE, conf.method = "Wald")
+
+
+# Observed data
+obs_lmem_fit1 <- lmer(pain ~ fishoilactive * time_contin_cent + vitdactive * time_contin_cent + pain_base + 
+                        (time_contin_cent|Subject_ID), 
+                      data = data_long)
+obs_lmem_summary1 <- tidy(obs_lmem_fit1, conf.int = TRUE, conf.method = "Wald")
+
+# If the estimand is the difference in mean across years 1 to 4
+# MI data
+mi_lmem_fit2 <- with(mi_obj_long, 
+                     lmer(pain ~ time_contin_cent + fishoilactive + vitdactive + pain_base + 
+                            (time_contin_cent|Subject_ID)))
+mi_lmem_fit_pool2 <- pool(mi_lmem_fit2)
+mi_lmem_summary2 <- summary(mi_lmem_fit_pool2, conf.int = TRUE, conf.method = "Wald")
+
+
+# Observed data
+obs_lmem_fit2 <- lmer(pain ~ time_contin_cent + fishoilactive + vitdactive + pain_base + 
+                        (time_contin_cent|Subject_ID), 
+                      data = data_long)
+obs_lmem_summary2 <- tidy(obs_lmem_fit2, conf.int = TRUE, conf.method = "Wald")
+
+##############################################################################################
+
+# Output parameters below - do some work on pulling these together into a standardised dataset
+# with (1) a point estimate, (2) standard error and (3+4) confidence interval bounds
+# so that they can be displayed in the same table and plotted
+
+# Parameters of interest (assuming focus is on difference in mean at year 4)
+mi_lmem_summary1 %>% filter(term %in% c("fishoilactive", "vitdactive"))
+obs_lmem_summary1 %>% filter(term %in% c("fishoilactive", "vitdactive"))
+
+# Parameters of interest (assuming focus is difference in mean across years 1 to 4)
+mi_lmem_summary2 %>% filter(term %in% c("fishoilactive", "vitdactive"))
+obs_lmem_summary2 %>% filter(term %in% c("fishoilactive", "vitdactive"))
+
+
+# Now, do similar for the acupuncture dataset!
