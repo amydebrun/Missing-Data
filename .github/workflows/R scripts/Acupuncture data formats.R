@@ -24,16 +24,12 @@ acu_long <- acu_wide %>%
   ) %>%
   select(-c(pk_time, freq_time))
 
-
-#Acupuncture filtered for LOCF
-acu_filtered<- acu_long%>%
-  filter(time != "3m")
-
-#MICE
+# MICE
 acu_mice <- mice(acu_wide, m = 5, method = 'pmm', seed = 123)
-acu_mice_data <- complete(data = acu_mice, action = "long", include = TRUE)
 
-acu_mice_data_long <- acu_mice_data %>%
+# MICE for LME
+acu_mice_data_wide <- complete(data = acu_mice, action = "long", include = TRUE)
+acu_mice_data_long <- acu_mice_data_wide %>%
   pivot_longer(
     cols = c('pk2', 'pk5'), 
     names_to = c('pk_time'),
@@ -55,6 +51,4 @@ acu_mice_data_long <- acu_mice_data %>%
   select(-c(pk_time, freq_time))%>%
   group_by(.imp) %>%
   mutate(.id = 1:n())
-
-
-acu_mi_obj_long <- as.mids(acu_mice_data_long)
+acu_mice_data_long_obj <- as.mids(acu_mice_data_long)
