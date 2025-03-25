@@ -12,13 +12,13 @@ library(tidyverse)
 library(haven)
 library(lme4)
 library(broom.mixed)
+library(meta)
 source("R scripts/Functions.R")
 source("R scripts/VITAL data formats.R")
 source("R scripts/Acupuncture data formats.R")
 ```
 
 To do
-- Apply Neil's
 - Workout original MM method
 - Reformat Table
   - Estimate
@@ -32,50 +32,77 @@ To do
     - TBD
 - Get forest graph
 
-## Acupuncture
+# Acupuncture
 
 ```{r warning=FALSE}
 
 # CAA
 acu_CAA <- lm(pk5 ~ group + pk1 , data = acu_wide)
-tidy(acu_CAA)
-acu_CAA_CI <- confint(acu_CAA)
-acu_CAA_CI
+acu_CAA_result <- tidy(acu_CAA, conf.int = TRUE, conf.method = "Wald") %>% 
+  filter(term == "group") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "CAA", .before = estimate)
 
 # LOCF
 acu_LOCF_data <- LOCF(data = acu_wide, columns = c(10,11))
 acu_LOCF <- lm(pk5 ~ group + pk1, data = acu_LOCF_data)
-tidy(acu_LOCF)
-acu_LOCF_CI <- confint(acu_LOCF)
-acu_LOCF_CI
+acu_LOCF_result <- tidy(acu_LOCF, conf.int = TRUE, conf.method = "Wald") %>% 
+  filter(term == "group") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "LOCF", .before = estimate)
 
 # Simple mean imputation
 acu_SPM_data <- mean_impute(acu_wide)
 acu_SPM <- lm(pk5 ~ group + pk1, data = acu_SPM_data)
-tidy(acu_SPM)
-acu_SPM_CI <- confint(acu_SPM)
-acu_SPM_CI
+acu_SPM_result <- tidy(acu_SPM, conf.int = TRUE, conf.method = "Wald") %>% 
+  filter(term == "group") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "SPM", .before = estimate)
 
 # MI with mice default method
-acu_MICE_default <- with(acu_mice, lm(pk5 ~ group + pk1)) 
-acu_MICE_default_pool <- pool(acu_MICE_default)
-tidy(acu_MICE_default_pool) #CI?
+acu_LM_MICE_default <- with(acu_mice, lm(pk5 ~ group + pk1)) 
+acu_LM_MICE_default_pool <- pool(acu_LM_MICE_default)
+acu_LM_MICE_default_result <- tidy(acu_LM_MICE_default_pool, conf.int = TRUE, conf.method = "Wald") %>% 
+  filter(term == "group") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "LM_MICE_default", .before = estimate)
 
 # LME with no imputation
-acu_LME <- lmer(pk_score ~ group + time + (1| id), data = acu_long) # it is right to + time?
-acu_LME_long_CI <- confint.merMod(acu_LME)
-tidy(acu_LME)
-acu_LME_long_CI
+acu_long$time <- relevel(factor(acu_long$time), ref = "3m")
+acu_LME <- lmer(pk_score ~ group + pk1 + (1| id), data = acu_long)
+acu_LME_result <- tidy(acu_LME, conf.int = TRUE, conf.method = "Wald") %>% 
+  filter(term == "group") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "LME", .before = estimate)
+
+# LME + MI with mice default
+acu_LME_MI_default <- with(acu_mice_data_obj_long, 
+                     lmer(pk_score ~ group + pk1 + (1|id), data = acu_long))
+acu_LME_MI_default_pool <- pool(acu_LME_MI_default)
+acu_LME_MI_default_result <- tidy(acu_LME_MI_default_pool, conf.int = TRUE, conf.method = "Wald") %>%
+  filter(term == "group") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "LME_MICE_default", .before = estimate)
+
+# Binding result table
+auc_result <- rbind(acu_CAA_result, 
+                    acu_LOCF_result,
+                    acu_SPM_result, 
+                    acu_MICE_default_result,
+                    acu_LME_result,
+                    acu_LME_MI_default_result)
+auc_result
+
+# Forest plot
+ggplot(auc_result, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
+  geom_point(size = 4, color = "deeppink") + geom_vline(xintercept = 0, linetype="dashed", color="red") +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color = "black") + 
+  labs(
+    x = "Treatment Effect",
+    y = "Method",
+    title = "Treatment effect with CI") +
+  theme_minimal() 
 ```
-
-**updated table**
-
-|Method|coefficient|SE|p|
-|--|--|--|--|
-|CAA|-4.59|1.25|0.000294|
-|LOCF|-3.37|1.03|0.00116|
-|MI|-2.70|1.26|0.0329|
-|LMM|-5.63|1.67|N/A|
 
 #MICE DATA PROCESSING ACUPUNCTURE
 
@@ -106,6 +133,7 @@ acu_lmem_fit_pool5 <- pool(acu_lmem_fit5)
 acu_lmem_summary5 <- summary(acu_lmem_fit_pool5, conf.int = TRUE, conf.method = "Wald")
 acu_lmem_summary5 %>% filter(term %in% "group")
 ```
+
 #Non imputed
 
 ```{r warning=FALSE}
@@ -135,8 +163,38 @@ confint(acu_lmem_fit5)
 ```
 
 
-## VITAL DATA ANALYSIS
+```{r}
+ACU_MICE_DATA <- tibble(estimate  = c(1.0071, -2.246864, -1.944244, -1.929348, -1.938256, -0.5887, -4.4087, -2.051, -2.049, -2.049),
+                            lower = c(-3.13397, -4.7174, -3.12579, -3.109794, -3.119116, -3.294, -6.445, -3.4454, -3.4442, -3.4572),
+                            upper = c(5.148172, 0.3763, -0.7626976, -0.7489025, -0.7573948, 4.471, -2.373, -0.656, -0.6556, -0.6782),
+                            model = c("1","2","3","4","5","1","2","3","4","5"),
+                            impute = c("imputed", "imputed", "imputed", "imputed", "imputed", "non-imputed","non-imputed","non-imputed","non-imputed","non-imputed"))
 
+ggplot(ACU_MICE_DATA, aes(x = estimate, y = model, xmin = lower, xmax = upper, colour=impute)) +
+  geom_point(size = 3) + geom_vline(xintercept = 0, linetype="dashed", color="red") +
+  geom_errorbarh(aes(xmin = lower, xmax = upper), height = 0.4) + scale_color_manual(name="MICE",values = c("imputed" = "lawngreen", "non-imputed" = "olivedrab"), labels=c("5 Imputed Datasets","Observed Data")) +
+  labs(
+    x = "Treatment Effect",
+    y = "Model",
+    title = "Estimated Treatment Effects with Wald 95% Confidence Intervals") + theme_minimal()
+#+ theme(
+   # plot.background = element_rect(fill = "#a80050", color = "transparent"),  
+   # panel.background = element_rect(fill = "white", color = "transparent"),
+   # legend.title = element_text(size = 12, face = "bold"),
+   # legend.background = element_rect(fill = "white", color = "transparent")  
+ # ) 
+```
+
+
+
+
+
+
+
+
+
+
+# VITAL DATA ANALYSIS
 
 ```{r}
 #CCA
@@ -171,65 +229,5 @@ vital_MI_LME_summary %>% filter(term %in% c("fishoilactive", "vitdactive"))
 vital_MI_SLR_summary %>% filter(term %in% c("fishoilactive", "vitdactive"))
 vital_LME_summary %>% filter(term %in% c("fishoilactive", "vitdactive"))
 vital_MI_LME_summary %>% filter(term %in% c("fishoilactive", "vitdactive"))
-```
-
-## Mixed Effects models using MICE 
-
-```{r}
-
-#vitaminD lmer
-#vitD_mice_lme <- with(vital_mice, lmer(pain_yr4 ~ vitdactive * pain_base + (1|Subject_ID))) #baseline only - to be used in linear mixed effects model 
-#vitD_pooled_lme<- pool(vitD_mice_lme)
-#tidy(vitD_pooled_lme)
-
-#fishoil lmer
-#fishoil_mice_lme <- with(vital_mice, lmer(pain_yr4 ~ fishoilactive*pain_base + (1|Subject_ID))) #baseline only - to be used in linear mixed effects model 
-#fishoil_pooled_lme<- pool(fishoil_mice_lme)
-#tidy(fishoil_pooled_lme)
-```
-
-
-## FOREST PLOT
-
-
-```{r}
-library(meta)
-
-acu_trtmt_data <- tibble(treatment  = c(-4.59, -3.37, -3.37, -5.63),
-                            lower = c(-7.05, -5.39, -5.79, -8.9),
-                            upper = c(-2.123, -1.35, -1.53, -2.35),
-                            method = c("Linear (No Imputation)", "Linear (Last Observation Carried Forward)", "Linear (Simple Mean Imputed)", "Linear Mixed Effect (No Imputation)"))
-
-ggplot(acu_trtmt_data, aes(x = treatment, y = method, xmin = lower, xmax = upper)) +
-  geom_point(size = 4, color = "deeppink") + geom_vline(xintercept = 0, linetype="dashed", color="red") +
-  geom_errorbarh(aes(xmin = lower, xmax = upper), height = 0.4, color = "black") + 
-  labs(
-    x = "Treatment Effect",
-    y = "Method",
-    title = "Treatment effect with CI") +
-  theme_minimal() 
-  
-```
-
-```{r}
-ACU_MICE_DATA <- tibble(estimate  = c(1.0071, -2.246864, -1.944244, -1.929348, -1.938256, -0.5887, -4.4087, -2.051, -2.049, -2.049),
-                            lower = c(-3.13397, -4.7174, -3.12579, -3.109794, -3.119116, -3.294, -6.445, -3.4454, -3.4442, -3.4572),
-                            upper = c(5.148172, 0.3763, -0.7626976, -0.7489025, -0.7573948, 4.471, -2.373, -0.656, -0.6556, -0.6782),
-                            model = c("1","2","3","4","5","1","2","3","4","5"),
-                            impute = c("imputed", "imputed", "imputed", "imputed", "imputed", "non-imputed","non-imputed","non-imputed","non-imputed","non-imputed"))
-
-ggplot(ACU_MICE_DATA, aes(x = estimate, y = model, xmin = lower, xmax = upper, colour=impute)) +
-  geom_point(size = 3) + geom_vline(xintercept = 0, linetype="dashed", color="red") +
-  geom_errorbarh(aes(xmin = lower, xmax = upper), height = 0.4) + scale_color_manual(name="MICE",values = c("imputed" = "lawngreen", "non-imputed" = "olivedrab"), labels=c("5 Imputed Datasets","Observed Data")) +
-  labs(
-    x = "Treatment Effect",
-    y = "Model",
-    title = "Estimated Treatment Effects with Wald 95% Confidence Intervals") + theme_minimal()
-#+ theme(
-   # plot.background = element_rect(fill = "#a80050", color = "transparent"),  
-   # panel.background = element_rect(fill = "white", color = "transparent"),
-   # legend.title = element_text(size = 12, face = "bold"),
-   # legend.background = element_rect(fill = "white", color = "transparent")  
- # ) 
 ```
 

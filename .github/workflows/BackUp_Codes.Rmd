@@ -1,5 +1,7 @@
+
 # Old Vitals
 
+```{r}
 #Vital data wide 
 data_vitalkp <- read_sas("Data/vitalkneepain111623.sas7bdat", NULL)
 data_main <- read_sas("Data/VITAL_trial_NEJM_2022.sas7bdat", NULL)
@@ -45,12 +47,12 @@ vital_long <- vital_wide %>%
       function_time == "function_yr4" ~ "Year4"
     )
   ) %>%  select(-c(pain_time, stiffness_time, function_time))
-
--------------------
+```  
 
 # Neil's Vital MI
 
-  library(tidyverse)
+```{r}
+library(tidyverse)
 library(haven)
 library(mice)
 library(lme4)
@@ -176,3 +178,40 @@ obs_lmem_summary2 %>% filter(term %in% c("fishoilactive", "vitdactive"))
 
 
 # Now, do similar for the acupuncture dataset!
+```
+
+
+# Mixed Effects models using MICE 
+
+```{r}
+
+#vitaminD lmer
+#vitD_mice_lme <- with(vital_mice, lmer(pain_yr4 ~ vitdactive * pain_base + (1|Subject_ID))) #baseline only - to be used in linear mixed effects model 
+#vitD_pooled_lme<- pool(vitD_mice_lme)
+#tidy(vitD_pooled_lme)
+
+#fishoil lmer
+#fishoil_mice_lme <- with(vital_mice, lmer(pain_yr4 ~ fishoilactive*pain_base + (1|Subject_ID))) #baseline only - to be used in linear mixed effects model 
+#fishoil_pooled_lme<- pool(fishoil_mice_lme)
+#tidy(fishoil_pooled_lme)
+```
+
+# Amy's Forest Plot
+
+```{r}
+acu_trtmt_data <- tibble(treatment  = c(-4.59, -3.37, -3.37, -5.63),
+                            lower = c(-7.05, -5.39, -5.79, -8.9),
+                            upper = c(-2.123, -1.35, -1.53, -2.35),
+                            method = c("Linear (No Imputation)", "Linear (Last Observation Carried Forward)", "Linear (Simple Mean Imputed)", "Linear Mixed Effect (No Imputation)"))
+
+ggplot(acu_trtmt_data, aes(x = treatment, y = method, xmin = lower, xmax = upper)) +
+  geom_point(size = 4, color = "deeppink") + geom_vline(xintercept = 0, linetype="dashed", color="red") +
+  geom_errorbarh(aes(xmin = lower, xmax = upper), height = 0.4, color = "black") + 
+  labs(
+    x = "Treatment Effect",
+    y = "Method",
+    title = "Treatment effect with CI") +
+  theme_minimal() 
+  
+```
+

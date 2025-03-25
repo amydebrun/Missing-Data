@@ -51,4 +51,4 @@ acu_mice_data_long <- acu_mice_data_wide %>%
   select(-c(pk_time, freq_time))%>%
   group_by(.imp) %>%
   mutate(.id = 1:n())
-acu_mice_data_long_obj <- as.mids(acu_mice_data_long)
+acu_mice_data_obj_long <- as.mids(acu_mice_data_long)

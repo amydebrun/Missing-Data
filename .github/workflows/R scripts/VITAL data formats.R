@@ -14,11 +14,9 @@ vital_long <- vital_wide %>%
   mutate(time_contin = as.integer(gsub("yr", "", time)),
          time_contin_cent = time_contin - 4)
 
-# MI
+# MICE FOR LME
 vital_mice <- mice(vital_wide, m = 5, method = 'pmm', seed = 123)
 vital_mice_data <- complete(vital_mice, action = "long", include = TRUE)
-
-# Convert MI to long format
 vital_mice_data_long <- vital_mice_data %>%
   pivot_longer(cols = matches("_yr[[:digit:]]$"),
                names_to = c(".value", "time"), 
