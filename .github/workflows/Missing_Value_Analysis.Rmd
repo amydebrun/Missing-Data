@@ -88,7 +88,7 @@ acu_LME_MI_default_result <- tidy(acu_LME_MI_default_pool, conf.int = TRUE, conf
 auc_result <- rbind(acu_CAA_result, 
                     acu_LOCF_result,
                     acu_SPM_result, 
-                    acu_MICE_default_result,
+                    acu_LM_MICE_default_result,
                     acu_LME_result,
                     acu_LME_MI_default_result)
 auc_result
