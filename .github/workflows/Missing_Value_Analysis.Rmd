@@ -68,8 +68,8 @@ acu_LM_MICE_default_result <- tidy(acu_LM_MICE_default_pool, conf.int = TRUE, co
   mutate(Method = "LM_MICE_default", .before = estimate)
 
 # LME with no imputation
-acu_long$time <- relevel(factor(acu_long$time), ref = "3m")
-acu_LME <- lmer(pk_score ~ group + pk1 + (1| id), data = acu_long)
+acu_long$time <- relevel(factor(acu_long$time), ref = "12m")
+acu_LME <- lmer(pk_score ~ group*time + pk1 + (1| id), data = acu_long)
 acu_LME_result <- tidy(acu_LME, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "group") %>%
   select(estimate, conf.low, conf.high) %>%
@@ -137,9 +137,9 @@ acu_lmem_summary5 %>% filter(term %in% "group")
 #Non imputed
 
 ```{r warning=FALSE}
-acu_lmem_fit1 <- with(acu_long, lmer(pk_score ~ group*pk1 + (1|id)))
-acu_lmem_summary1 <- summary(acu_lmem_fit1, conf.int = TRUE, conf.method = "Wald")
-confint(acu_lmem_fit1)
+#acu_lmem_fit1 <- with(acu_long, lmer(pk_score ~ group*pk1 + (1|id)))
+#acu_lmem_summary1 <- summary(acu_lmem_fit1, conf.int = TRUE, conf.method = "Wald")
+#confint(acu_lmem_fit1)
 
 acu_lmem_fit2 <- with(acu_long, lmer(pk_score ~ group+pk1 + (1|id)))
 acu_lmem_summary2 <- summary(acu_lmem_fit2, conf.int = TRUE, conf.method = "Wald")
