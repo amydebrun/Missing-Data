@@ -31,7 +31,6 @@ To do
   - Imputation Method
     - TBD
 - Get forest graph
-- summary table (gtsummary)
 
 # Acupuncture
 
@@ -50,7 +49,7 @@ acu_LOCF <- lm(pk5 ~ group + pk1, data = acu_LOCF_data)
 acu_LOCF_result <- tidy(acu_LOCF, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "group") %>%
   select(estimate, conf.low, conf.high) %>%
-  mutate(Method = "LOCF", .before = estimate)
+  mutate(Method = "LOCF_LR", .before = estimate)
 
 # Simple mean imputation
 acu_SPM_data <- mean_impute(acu_wide)
@@ -58,7 +57,7 @@ acu_SPM <- lm(pk5 ~ group + pk1, data = acu_SPM_data)
 acu_SPM_result <- tidy(acu_SPM, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "group") %>%
   select(estimate, conf.low, conf.high) %>%
-  mutate(Method = "SPM", .before = estimate)
+  mutate(Method = "MOCF_LR", .before = estimate)
 
 # MI with mice default method
 acu_LM_MICE_default <- with(acu_mice, lm(pk5 ~ group + pk1)) 
@@ -69,8 +68,8 @@ acu_LM_MICE_default_result <- tidy(acu_LM_MICE_default_pool, conf.int = TRUE, co
   mutate(Method = "LM_MICE_default", .before = estimate)
 
 # LME with no imputation
-acu_long$time <- relevel(factor(acu_long$time), ref = "12m")
-acu_LME <- lmer(pk_score ~ group*time + pk1 + (1| id), data = acu_long)
+acu_long$time <- relevel(factor(acu_long$time), ref = "3m")
+acu_LME <- lmer(pk_score ~ group + pk1 + (1| id), data = acu_long)
 acu_LME_result <- tidy(acu_LME, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "group") %>%
   select(estimate, conf.low, conf.high) %>%
@@ -85,150 +84,200 @@ acu_LME_MI_default_result <- tidy(acu_LME_MI_default_pool, conf.int = TRUE, conf
   select(estimate, conf.low, conf.high) %>%
   mutate(Method = "LME_MICE_default", .before = estimate)
 
-# Binding result table
-auc_result <- rbind(acu_CAA_result, 
+acu_result <- rbind(acu_CAA_result, 
                     acu_LOCF_result,
                     acu_SPM_result, 
                     acu_LM_MICE_default_result,
                     acu_LME_result,
                     acu_LME_MI_default_result)
-auc_result
 
-# Forest plot
-ggplot(auc_result, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
-  geom_point(size = 4, color = "deeppink") + geom_vline(xintercept = 0, linetype="dashed", color="red") +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color = "black") + 
-  labs(
-    x = "Treatment Effect",
-    y = "Method",
-    title = "Treatment effect with CI") +
-  theme_minimal() 
 ```
-
-#MICE DATA PROCESSING ACUPUNCTURE
-
-```{r}
-acu_lmem_fit1 <- with(acu_mi_obj_long, lmer(pk_score ~ group*pk1 + (1|id)))
-acu_lmem_fit_pool1 <- pool(acu_lmem_fit1)
-acu_lmem_summary1 <- summary(acu_lmem_fit_pool1, conf.int = TRUE, conf.method = "Wald")
-acu_lmem_summary1 %>% filter(term %in% "group")
-
-
-acu_lmem_fit2 <- with(acu_mi_obj_long, lmer(pk_score ~ group+pk1 + (1|id)))
-acu_lmem_fit_pool2 <- pool(acu_lmem_fit2)
-acu_lmem_summary2 <- summary(acu_lmem_fit_pool2, conf.int = TRUE, conf.method = "Wald")
-acu_lmem_summary2 %>% filter(term %in% "group")
-
-acu_lmem_fit3 <- with(acu_mi_obj_long, lmer(pk_score ~ group+freq_score*pk1 + (1|id)))
-acu_lmem_fit_pool3 <- pool(acu_lmem_fit3)
-acu_lmem_summary3 <- summary(acu_lmem_fit_pool3, conf.int = TRUE, conf.method = "Wald")
-acu_lmem_summary3 %>% filter(term %in% "group")
-
-acu_lmem_fit4 <- with(acu_mi_obj_long, lmer(pk_score ~ group+freq_score*pk1+migraine + (1|id)))
-acu_lmem_fit_pool4 <- pool(acu_lmem_fit4)
-acu_lmem_summary4 <- summary(acu_lmem_fit_pool4, conf.int = TRUE, conf.method = "Wald")
-acu_lmem_summary4 %>% filter(term %in% "group")
-
-acu_lmem_fit5 <- with(acu_mi_obj_long, lmer(pk_score ~ group+freq_score*pk1+pk1*chronicity + (1|id)))
-acu_lmem_fit_pool5 <- pool(acu_lmem_fit5)
-acu_lmem_summary5 <- summary(acu_lmem_fit_pool5, conf.int = TRUE, conf.method = "Wald")
-acu_lmem_summary5 %>% filter(term %in% "group")
-```
-
-#Non imputed
-
-```{r warning=FALSE}
-#acu_lmem_fit1 <- with(acu_long, lmer(pk_score ~ group*pk1 + (1|id)))
-#acu_lmem_summary1 <- summary(acu_lmem_fit1, conf.int = TRUE, conf.method = "Wald")
-#confint(acu_lmem_fit1)
-
-acu_lmem_fit2 <- with(acu_long, lmer(pk_score ~ group+pk1 + (1|id)))
-acu_lmem_summary2 <- summary(acu_lmem_fit2, conf.int = TRUE, conf.method = "Wald")
-acu_lmem_summary2$coefficients["group", ]
-confint(acu_lmem_fit2)
-
-acu_lmem_fit3 <- with(acu_long, lmer(pk_score ~ group+freq_score*pk1 + (1|id)))
-acu_lmem_summary3 <- summary(acu_lmem_fit3, conf.int = TRUE, conf.method = "Wald")
-acu_lmem_summary3$coefficients["group", ]
-confint(acu_lmem_fit3)
-
-acu_lmem_fit4 <- with(acu_long, lmer(pk_score ~ group+freq_score*pk1+migraine + (1|id)))
-acu_lmem_summary4 <- summary(acu_lmem_fit4, conf.int = TRUE, conf.method = "Wald")
-acu_lmem_summary4$coefficients["group", ] 
-confint(acu_lmem_fit4)
-
-acu_lmem_fit5 <- with(acu_long, lmer(pk_score ~ group+freq_score*pk1+pk1*chronicity + (1|id)))
-acu_lmem_summary5 <- summary(acu_lmem_fit4, conf.int = TRUE, conf.method = "Wald")
-acu_lmem_summary5$coefficients["group", ] 
-confint(acu_lmem_fit5)
-```
-
-
-```{r}
-ACU_MICE_DATA <- tibble(estimate  = c(1.0071, -2.246864, -1.944244, -1.929348, -1.938256, -0.5887, -4.4087, -2.051, -2.049, -2.049),
-                            lower = c(-3.13397, -4.7174, -3.12579, -3.109794, -3.119116, -3.294, -6.445, -3.4454, -3.4442, -3.4572),
-                            upper = c(5.148172, 0.3763, -0.7626976, -0.7489025, -0.7573948, 4.471, -2.373, -0.656, -0.6556, -0.6782),
-                            model = c("1","2","3","4","5","1","2","3","4","5"),
-                            impute = c("imputed", "imputed", "imputed", "imputed", "imputed", "non-imputed","non-imputed","non-imputed","non-imputed","non-imputed"))
-
-ggplot(ACU_MICE_DATA, aes(x = estimate, y = model, xmin = lower, xmax = upper, colour=impute)) +
-  geom_point(size = 3) + geom_vline(xintercept = 0, linetype="dashed", color="red") +
-  geom_errorbarh(aes(xmin = lower, xmax = upper), height = 0.4) + scale_color_manual(name="MICE",values = c("imputed" = "lawngreen", "non-imputed" = "olivedrab"), labels=c("5 Imputed Datasets","Observed Data")) +
-  labs(
-    x = "Treatment Effect",
-    y = "Model",
-    title = "Estimated Treatment Effects with Wald 95% Confidence Intervals") + theme_minimal()
-#+ theme(
-   # plot.background = element_rect(fill = "#a80050", color = "transparent"),  
-   # panel.background = element_rect(fill = "white", color = "transparent"),
-   # legend.title = element_text(size = 12, face = "bold"),
-   # legend.background = element_rect(fill = "white", color = "transparent")  
- # ) 
-```
-
-
-
-
-
-
-
-
-
 
 # VITAL DATA ANALYSIS
 
-```{r}
+```{r warning=FALSE}
+#FISHOIL GROUP
 #CCA
 vital_complete <- lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base, data = vital_wide) 
-vital_complete_summary <- tidy(vital_complete, conf.int = TRUE, conf.method = "Wald")
-
+vital_CAA_result_oil <- tidy(vital_complete, conf.int = TRUE, conf.method = "Wald") %>% 
+  filter(term == "fishoilactive") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "CAA", .before = estimate)
 #MOCF
 vital_MOCF <- mean_impute(vital_wide)
 vital_MOCF <- lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base, data = vital_MOCF)
-vital_MOCF_summary <- tidy(vital_MOCF, conf.int = TRUE, conf.method = "Wald")
+vital_MOCF_SLR_result_oil<- tidy(vital_MOCF, conf.int = TRUE, conf.method = "Wald")%>% 
+  filter(term == "fishoilactive") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "MOCF_LR", .before = estimate)
+
+# LOCF
+vital_LOCF_data <- LOCF(data = vital_wide, columns = c(5,6,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29))
+vital_LOCF <- lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base, data = vital_LOCF_data)
+vital_LOCF_result_oil <- tidy(vital_LOCF, conf.int = TRUE, conf.method = "Wald") %>% 
+  filter(term == "fishoilactive") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "LOCF_LR", .before = estimate)
 
 #MI+SLR
 vital_MI_SLR <- with(vital_mice, lm(pain_yr4 ~ fishoilactive + vitdactive  + pain_base ))
 vital_MI_SLR_pool <- pool(vital_MI_SLR)
-vital_MI_SLR_summary <- summary(vital_MI_SLR_pool, conf.int = TRUE, conf.method = "Wald")
+vital_MI_SLR_result_oil <- summary(vital_MI_SLR_pool, conf.int = TRUE, conf.method = "Wald")%>% 
+  filter(term == "fishoilactive") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "MICE_LR_default", .before = estimate)
 
 #LME
 vital_LME <- lmer(pain ~ fishoilactive * time_contin_cent + vitdactive * time_contin_cent + pain_base + 
                        (time_contin_cent|Subject_ID), 
                      data = vital_long)
-vital_LME_summary <- tidy(vital_LME, conf.int = TRUE, conf.method = "Wald")
+vital_LME_result_oil <- tidy(vital_LME, conf.int = TRUE, conf.method = "Wald")%>% 
+  filter(term == "fishoilactive") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "LME", .before = estimate)
 
 #MI+LME
 fishoil_MI_LME <- with(vital_mice_obj_long, 
                      lmer(pain ~ fishoilactive * time_contin_cent + vitdactive * time_contin_cent + pain_base + 
                             (time_contin_cent|Subject_ID)))
 vital_MI_LME_pool <- pool(fishoil_MI_LME)
-vital_MI_LME_summary <- summary(vital_MI_LME_pool, conf.int = TRUE, conf.method = "Wald")
+vital_MI_LME_result_oil <- tidy(vital_MI_LME_pool, conf.int = TRUE, conf.method = "Wald")%>% 
+  filter(term == "fishoilactive") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "MICE_LME_default", .before = estimate)
 
-vital_complete_summary %>% filter(term %in% c("fishoilactive", "vitdactive"))
-vital_MI_LME_summary %>% filter(term %in% c("fishoilactive", "vitdactive"))
-vital_MI_SLR_summary %>% filter(term %in% c("fishoilactive", "vitdactive"))
-vital_LME_summary %>% filter(term %in% c("fishoilactive", "vitdactive"))
-vital_MI_LME_summary %>% filter(term %in% c("fishoilactive", "vitdactive"))
+vital_result_oil <- rbind(
+  vital_MI_LME_result_oil,
+  vital_LME_result_oil,
+  vital_MI_SLR_result_oil,
+  vital_LOCF_result_oil,
+  vital_MOCF_SLR_result_oil,
+  vital_CAA_result_oil
+)
+
+fishoil_plot<-ggplot(vital_result_oil, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
+  geom_point(size = 4, color = "deeppink") + geom_vline(xintercept = 0, linetype="dashed", color="red") +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color = "black") + 
+  labs(
+    x = "Treatment Effect",
+    y = "Method",
+    title = "Treatment effect of fishoil with CI") +
+  theme_minimal() 
+
 ```
 
+
+```{r warning=FALSE}
+#VITAMIN D  GROUP
+#CCA
+vital_complete <- lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base, data = vital_wide) 
+vital_CAA_result_vitd <- tidy(vital_complete, conf.int = TRUE, conf.method = "Wald") %>% 
+  filter(term == "vitdactive") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "CAA", .before = estimate)
+
+#MOCF
+vital_MOCF <- mean_impute(vital_wide)
+vital_MOCF <- lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base, data = vital_MOCF)
+vital_MOCF_SLR_result_vitd<- tidy(vital_MOCF, conf.int = TRUE, conf.method = "Wald")%>% 
+  filter(term == "vitdactive") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "MOCF_LR", .before = estimate)
+
+# LOCF
+vital_LOCF <- lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base, data = vital_LOCF_data)
+vital_LOCF_result_vitd <- tidy(vital_LOCF, conf.int = TRUE, conf.method = "Wald") %>% 
+  filter(term == "vitdactive") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "LOCF_LR", .before = estimate)
+
+#MI+SLR
+vital_MI_SLR <- with(vital_mice, lm(pain_yr4 ~ fishoilactive + vitdactive  + pain_base ))
+vital_MI_SLR_pool <- pool(vital_MI_SLR)
+vital_MI_SLR_result_vitd <- summary(vital_MI_SLR_pool, conf.int = TRUE, conf.method = "Wald")%>% 
+  filter(term == "vitdactive") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "MICE_LR_default", .before = estimate)
+
+#LME
+vital_LME <- lmer(pain ~ fishoilactive * time_contin_cent + vitdactive * time_contin_cent + pain_base + 
+                       (time_contin_cent|Subject_ID), 
+                     data = vital_long)
+vital_LME_result_vitd <- tidy(vital_LME, conf.int = TRUE, conf.method = "Wald")%>% 
+  filter(term == "vitdactive") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "LME", .before = estimate)
+
+#MI+LME
+fishoil_MI_LME <- with(vital_mice_obj_long, 
+                     lmer(pain ~ fishoilactive * time_contin_cent + vitdactive * time_contin_cent + pain_base + 
+                            (time_contin_cent|Subject_ID)))
+vital_MI_LME_pool <- pool(fishoil_MI_LME)
+vital_MI_LME_result_vitd <- tidy(vital_MI_LME_pool, conf.int = TRUE, conf.method = "Wald")%>% 
+  filter(term == "vitdactive") %>%
+  select(estimate, conf.low, conf.high) %>%
+  mutate(Method = "MICE_LME_default", .before = estimate)
+
+vital_result_vitd <- rbind(
+  vital_MI_LME_result_vitd,
+  vital_LME_result_vitd,
+  vital_MI_SLR_result_vitd,
+  vital_LOCF_result_vitd,
+  vital_MOCF_SLR_result_vitd,
+  vital_CAA_result_vitd)
+
+vitd_plot<-ggplot(vital_result_vitd, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
+  geom_point(size = 4, color = "purple") + geom_vline(xintercept = 0, linetype="dashed", color="red") +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color = "black") + 
+  labs(
+    x = "Treatment Effect",
+    y = "Method",
+    title = "Treatment effect of vitamin D with CI") +
+  theme_minimal() 
+
+```
+
+## FOREST PLOTS OF RESULTS 
+
+```{r}
+vital_result_vitd$treatment <- "Vitamin D"
+vital_result_oil$treatment <- "Fish Oil"
+vital_result_all <- rbind(vital_result_vitd, vital_result_oil)
+ggplot(vital_result_all, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
+  geom_point(size = 4, aes(color = treatment)) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +
+  facet_wrap(~ treatment, scales = "free_x") +
+  labs(
+    x = "Treatment Effect",
+    y = "Method",
+    title = "Treatment Effects with 95% CI for Fish oil and Vitamin D treatment"
+  ) +
+  theme_minimal()+ theme(
+    legend.position = "none",
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),     
+    plot.background = element_rect(fill = "white", color = NA),       
+    strip.background = element_rect(fill = "lawngreen", color = "black"),
+    panel.spacing = unit(1, "lines")                                  
+  )+ scale_color_manual(values = c("Vitamin D" = "#a80050", "Fish Oil" = "#a80050"))
+
+
+# Forest plot
+acu_result$group<-"Acupuncture Treatment"
+ggplot(acu_result, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
+  geom_point(size = 4, color = "#a80050") + geom_vline(xintercept = 0, linetype="dashed", color="red") +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color = "black") + 
+  facet_wrap(~ group)+
+  labs(
+    x = "Treatment Effect",
+    y = "Method",
+    title = "Treatment effect with 95% Confidence Interval") +
+  theme_minimal() + theme(
+        strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+```
