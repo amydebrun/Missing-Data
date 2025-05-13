@@ -1,0 +1,115 @@
+---
+title: "exploaratory analysis"
+author: "Amy, Kent"
+date: "2025-05-13"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("R scripts/VITAL data formats.R")
+source("R scripts/Acupuncture data formats.R")
+```
+
+
+## Basics of Acupuncture dataset
+
+```{r}
+ggplot(acu_long, aes(x = age)) +
+  geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
+  labs(
+    title = "Distribution of Age in Acupuncture dataset",
+    x = "Age (years)",
+    y = "Count"
+  ) +
+  theme_minimal()
+
+ggplot(acu_long, aes(x = factor(sex, labels = c("Male", "Female")), fill = factor(sex, labels = c("Male", "Female")))) +
+  geom_bar(width=0.5,color="black") +
+  labs(
+    title = "Number of Males and Females participants",
+    x = "Sex",
+    y = "Count",
+    fill = "Sex"
+  ) + theme_minimal() + scale_fill_manual(values=c("lawngreen","lawngreen")) + theme(legend.position="none")
+
+```
+
+## Basics of VITAL dataset
+
+```{r}
+ggplot(vital_long, aes(x = ageyr)) +
+  geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
+  labs(
+    title = "Distribution of Age in VITAL dataset",
+    x = "Age (years)",
+    y = "Count"
+  ) +
+  theme_minimal()
+
+ggplot(vital_long, aes(x = factor(sex, labels = c("Male", "Female")), fill = factor(sex, labels = c("Male", "Female")))) +
+  geom_bar(width=0.5,color="black") +
+  labs(
+    title = "Number of Males and Females participants",
+    x = "Sex",
+    y = "Count",
+    fill = "Sex"
+  ) + theme_minimal() + scale_fill_manual(values=c("green","green")) + theme(legend.position="none")
+```
+
+## Seperated by fishoil & vitamin D
+
+```{r}
+#Age distribution of each group 
+
+vital_long %>%
+  filter(vitdactive == 1 | fishoilactive == 1) %>%
+  mutate(treatment = case_when(
+    vitdactive == 1 ~ "Vitamin D",
+    fishoilactive == 1 ~ "Fish Oil"
+  )) %>%
+  ggplot(aes(x = ageyr)) +
+  geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
+  facet_wrap(~ treatment, scales = "free_y") +  # Facet by treatment
+  labs(
+    title = "Distribution of Age for Vitamin D and Fish Oil Groups",
+    x = "Age (years)",
+    y = "Count"
+  ) +
+  theme_minimal()+ theme(
+        strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+```
+
+```{r}
+#sex in each group 
+vital_long %>%
+  filter(vitdactive == 1 | fishoilactive == 1) %>%
+  mutate(treatment = case_when(
+    vitdactive == 1 ~ "Vitamin D",
+    fishoilactive == 1 ~ "Fish Oil"
+  )) %>%
+  ggplot(aes(x = factor(sex, labels = c("Male", "Female")), fill = factor(sex, labels = c("Male", "Female")))) +
+  geom_bar(width = 0.5, color = "black") + 
+  facet_wrap(~ treatment, scales = "free_y") +
+  labs(
+    title = "Number of Male and Female Participants",
+    x = "Sex",
+    y = "Count",
+    fill = "Sex"
+  ) + 
+  theme_minimal() + 
+  scale_fill_manual(values = c("#a80050", "#a80050")) +  # Both Male and Female bars in same color
+  theme(
+    legend.position = "none",  # Remove legend
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  # Color strip background
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),  # Border around the panel
+    panel.background = element_rect(fill = "white", color = NA),  # White background
+    plot.background = element_rect(fill = "white", color = NA)  # Plot background
+  )
+```
+
+
