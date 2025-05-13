@@ -31,6 +31,7 @@ To do
   - Imputation Method
     - TBD
 - Get forest graph
+- gtsummary for summary graph
 
 # Acupuncture
 
@@ -84,6 +85,7 @@ acu_LME_MI_default_result <- tidy(acu_LME_MI_default_pool, conf.int = TRUE, conf
   select(estimate, conf.low, conf.high) %>%
   mutate(Method = "LME_MICE_default", .before = estimate)
 
+# Result table
 acu_result <- rbind(acu_CAA_result, 
                     acu_LOCF_result,
                     acu_SPM_result, 
@@ -93,17 +95,18 @@ acu_result <- rbind(acu_CAA_result,
 
 ```
 
-# VITAL DATA ANALYSIS
+# VITAL FISHOIL
 
 ```{r warning=FALSE}
-#FISHOIL GROUP
-#CCA
+
+# CCA
 vital_complete <- lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base, data = vital_wide) 
 vital_CAA_result_oil <- tidy(vital_complete, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "fishoilactive") %>%
   select(estimate, conf.low, conf.high) %>%
   mutate(Method = "CAA", .before = estimate)
-#MOCF
+
+# MOCF
 vital_MOCF <- mean_impute(vital_wide)
 vital_MOCF <- lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base, data = vital_MOCF)
 vital_MOCF_SLR_result_oil<- tidy(vital_MOCF, conf.int = TRUE, conf.method = "Wald")%>% 
@@ -119,7 +122,7 @@ vital_LOCF_result_oil <- tidy(vital_LOCF, conf.int = TRUE, conf.method = "Wald")
   select(estimate, conf.low, conf.high) %>%
   mutate(Method = "LOCF_LR", .before = estimate)
 
-#MI+SLR
+# MI+SLR
 vital_MI_SLR <- with(vital_mice, lm(pain_yr4 ~ fishoilactive + vitdactive  + pain_base ))
 vital_MI_SLR_pool <- pool(vital_MI_SLR)
 vital_MI_SLR_result_oil <- summary(vital_MI_SLR_pool, conf.int = TRUE, conf.method = "Wald")%>% 
@@ -127,7 +130,7 @@ vital_MI_SLR_result_oil <- summary(vital_MI_SLR_pool, conf.int = TRUE, conf.meth
   select(estimate, conf.low, conf.high) %>%
   mutate(Method = "MICE_LR_default", .before = estimate)
 
-#LME
+# LME
 vital_LME <- lmer(pain ~ fishoilactive * time_contin_cent + vitdactive * time_contin_cent + pain_base + 
                        (time_contin_cent|Subject_ID), 
                      data = vital_long)
@@ -136,7 +139,7 @@ vital_LME_result_oil <- tidy(vital_LME, conf.int = TRUE, conf.method = "Wald")%>
   select(estimate, conf.low, conf.high) %>%
   mutate(Method = "LME", .before = estimate)
 
-#MI+LME
+# MI+LME
 fishoil_MI_LME <- with(vital_mice_obj_long, 
                      lmer(pain ~ fishoilactive * time_contin_cent + vitdactive * time_contin_cent + pain_base + 
                             (time_contin_cent|Subject_ID)))
@@ -146,6 +149,7 @@ vital_MI_LME_result_oil <- tidy(vital_MI_LME_pool, conf.int = TRUE, conf.method 
   select(estimate, conf.low, conf.high) %>%
   mutate(Method = "MICE_LME_default", .before = estimate)
 
+# Result Table
 vital_result_oil <- rbind(
   vital_MI_LME_result_oil,
   vital_LME_result_oil,
@@ -155,28 +159,20 @@ vital_result_oil <- rbind(
   vital_CAA_result_oil
 )
 
-fishoil_plot<-ggplot(vital_result_oil, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
-  geom_point(size = 4, color = "deeppink") + geom_vline(xintercept = 0, linetype="dashed", color="red") +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color = "black") + 
-  labs(
-    x = "Treatment Effect",
-    y = "Method",
-    title = "Treatment effect of fishoil with CI") +
-  theme_minimal() 
-
 ```
 
+# VITAL VITAMIN D
 
 ```{r warning=FALSE}
-#VITAMIN D  GROUP
-#CCA
+
+# CCA
 vital_complete <- lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base, data = vital_wide) 
 vital_CAA_result_vitd <- tidy(vital_complete, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "vitdactive") %>%
   select(estimate, conf.low, conf.high) %>%
   mutate(Method = "CAA", .before = estimate)
 
-#MOCF
+# MOCF
 vital_MOCF <- mean_impute(vital_wide)
 vital_MOCF <- lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base, data = vital_MOCF)
 vital_MOCF_SLR_result_vitd<- tidy(vital_MOCF, conf.int = TRUE, conf.method = "Wald")%>% 
@@ -191,7 +187,7 @@ vital_LOCF_result_vitd <- tidy(vital_LOCF, conf.int = TRUE, conf.method = "Wald"
   select(estimate, conf.low, conf.high) %>%
   mutate(Method = "LOCF_LR", .before = estimate)
 
-#MI+SLR
+# MI+SLR
 vital_MI_SLR <- with(vital_mice, lm(pain_yr4 ~ fishoilactive + vitdactive  + pain_base ))
 vital_MI_SLR_pool <- pool(vital_MI_SLR)
 vital_MI_SLR_result_vitd <- summary(vital_MI_SLR_pool, conf.int = TRUE, conf.method = "Wald")%>% 
@@ -199,7 +195,7 @@ vital_MI_SLR_result_vitd <- summary(vital_MI_SLR_pool, conf.int = TRUE, conf.met
   select(estimate, conf.low, conf.high) %>%
   mutate(Method = "MICE_LR_default", .before = estimate)
 
-#LME
+# LME
 vital_LME <- lmer(pain ~ fishoilactive * time_contin_cent + vitdactive * time_contin_cent + pain_base + 
                        (time_contin_cent|Subject_ID), 
                      data = vital_long)
@@ -208,7 +204,7 @@ vital_LME_result_vitd <- tidy(vital_LME, conf.int = TRUE, conf.method = "Wald")%
   select(estimate, conf.low, conf.high) %>%
   mutate(Method = "LME", .before = estimate)
 
-#MI+LME
+# MI+LME
 fishoil_MI_LME <- with(vital_mice_obj_long, 
                      lmer(pain ~ fishoilactive * time_contin_cent + vitdactive * time_contin_cent + pain_base + 
                             (time_contin_cent|Subject_ID)))
@@ -218,6 +214,7 @@ vital_MI_LME_result_vitd <- tidy(vital_MI_LME_pool, conf.int = TRUE, conf.method
   select(estimate, conf.low, conf.high) %>%
   mutate(Method = "MICE_LME_default", .before = estimate)
 
+# Result table
 vital_result_vitd <- rbind(
   vital_MI_LME_result_vitd,
   vital_LME_result_vitd,
@@ -226,14 +223,7 @@ vital_result_vitd <- rbind(
   vital_MOCF_SLR_result_vitd,
   vital_CAA_result_vitd)
 
-vitd_plot<-ggplot(vital_result_vitd, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
-  geom_point(size = 4, color = "purple") + geom_vline(xintercept = 0, linetype="dashed", color="red") +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color = "black") + 
-  labs(
-    x = "Treatment Effect",
-    y = "Method",
-    title = "Treatment effect of vitamin D with CI") +
-  theme_minimal() 
+
 
 ```
 

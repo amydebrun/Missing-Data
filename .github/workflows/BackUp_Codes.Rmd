@@ -215,3 +215,25 @@ ggplot(acu_trtmt_data, aes(x = treatment, y = method, xmin = lower, xmax = upper
   
 ```
 
+# VITAL seperated graph
+
+```{r}
+fishoil_plot<-ggplot(vital_result_oil, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
+  geom_point(size = 4, color = "deeppink") + geom_vline(xintercept = 0, linetype="dashed", color="red") +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color = "black") + 
+  labs(
+    x = "Treatment Effect",
+    y = "Method",
+    title = "Treatment effect of fishoil with CI") +
+  theme_minimal()
+
+vitd_plot<-ggplot(vital_result_vitd, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
+  geom_point(size = 4, color = "purple") + geom_vline(xintercept = 0, linetype="dashed", color="red") +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color = "black") + 
+  labs(
+    x = "Treatment Effect",
+    y = "Method",
+    title = "Treatment effect of vitamin D with CI") +
+  theme_minimal() 
+```
+
