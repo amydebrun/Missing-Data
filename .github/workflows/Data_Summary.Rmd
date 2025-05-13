@@ -9,6 +9,8 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 source("R scripts/VITAL data formats.R")
 source("R scripts/Acupuncture data formats.R")
+library(dplyr)
+library(ggplot2)
 ```
 
 
@@ -33,6 +35,12 @@ ggplot(acu_long, aes(x = factor(sex, labels = c("Male", "Female")), fill = facto
     fill = "Sex"
   ) + theme_minimal() + scale_fill_manual(values=c("lawngreen","lawngreen")) + theme(legend.position="none")
 
+acu_long %>%
+  summarise(
+    missing_age = mean(is.na(age)) * 100,
+    missing_sex = mean(is.na(sex)) * 100
+  )
+
 ```
 
 ## Basics of VITAL dataset
@@ -55,6 +63,13 @@ ggplot(vital_long, aes(x = factor(sex, labels = c("Male", "Female")), fill = fac
     y = "Count",
     fill = "Sex"
   ) + theme_minimal() + scale_fill_manual(values=c("green","green")) + theme(legend.position="none")
+
+vital_long %>%
+  summarise(
+    missing_age = mean(is.na(ageyr)) * 100,
+    missing_sex = mean(is.na(sex)) * 100,
+    missing_bmi = mean(is.na(bmi)) * 100
+  )
 ```
 
 ## Seperated by fishoil & vitamin D

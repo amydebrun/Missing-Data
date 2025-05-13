@@ -223,13 +223,13 @@ vital_result_vitd <- rbind(
   vital_MOCF_SLR_result_vitd,
   vital_CAA_result_vitd)
 
-
-
 ```
 
 ## FOREST PLOTS OF RESULTS 
 
 ```{r}
+
+# VITAL Forest plot
 vital_result_vitd$treatment <- "Vitamin D"
 vital_result_oil$treatment <- "Fish Oil"
 vital_result_all <- rbind(vital_result_vitd, vital_result_oil)
@@ -243,17 +243,19 @@ ggplot(vital_result_all, aes(x = estimate, y = Method, xmin = conf.low, xmax = c
     y = "Method",
     title = "Treatment Effects with 95% CI for Fish oil and Vitamin D treatment"
   ) +
-  theme_minimal()+ theme(
+  theme_minimal() + 
+  theme(
     legend.position = "none",
     panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
     panel.background = element_rect(fill = "white", color = NA),     
     plot.background = element_rect(fill = "white", color = NA),       
     strip.background = element_rect(fill = "lawngreen", color = "black"),
     panel.spacing = unit(1, "lines")                                  
-  )+ scale_color_manual(values = c("Vitamin D" = "#a80050", "Fish Oil" = "#a80050"))
+  ) +
+  scale_color_manual(values = c("Vitamin D" = "#a80050", "Fish Oil" = "#a80050"))
 
 
-# Forest plot
+# ACU Forest plot
 acu_result$group<-"Acupuncture Treatment"
 ggplot(acu_result, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
   geom_point(size = 4, color = "#a80050") + geom_vline(xintercept = 0, linetype="dashed", color="red") +
@@ -263,7 +265,8 @@ ggplot(acu_result, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.hi
     x = "Treatment Effect",
     y = "Method",
     title = "Treatment effect with 95% Confidence Interval") +
-  theme_minimal() + theme(
+  theme_minimal() + 
+  theme(
         strip.background = element_rect(fill = "lawngreen", color = "black"),  
     panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
     panel.background = element_rect(fill = "white", color = NA),
