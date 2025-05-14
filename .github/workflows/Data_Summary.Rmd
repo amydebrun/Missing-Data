@@ -17,6 +17,7 @@ library(ggplot2)
 ## Basics of Acupuncture dataset
 
 ```{r}
+#distribution of age overall acupuncture 
 ggplot(acu_long, aes(x = age)) +
   geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
   labs(
@@ -25,27 +26,49 @@ ggplot(acu_long, aes(x = age)) +
     y = "Count"
   ) +
   theme_minimal()
+```
 
-ggplot(acu_long, aes(x = factor(sex, labels = c("Male", "Female")), fill = factor(sex, labels = c("Male", "Female")))) +
-  geom_bar(width=0.5,color="black") +
+```{r}
+
+#DISTRIBUTION SEX BY TREATMENT GROUP
+    
+ggplot(acu_long, aes(
+  x = factor(sex, labels = c("Male", "Female")),
+  fill = factor(sex, labels = c("Male", "Female"))
+)) +
+  geom_bar(width = 0.5, color = "black") + 
+  facet_wrap(~ group, 
+             scales = "fixed", 
+             labeller = labeller(group = c("0" = "Placebo", "1" = "Acupuncture"))) +
   labs(
-    title = "Number of Males and Females participants",
+    title = "Distribution of sex by Treatment Group",
     x = "Sex",
     y = "Count",
     fill = "Sex"
-  ) + theme_minimal() + scale_fill_manual(values=c("lawngreen","lawngreen")) + theme(legend.position="none")
+  ) + 
+  theme_minimal() + 
+  scale_fill_manual(values = c("Male" = "#a80050", "Female" = "#a80050")) +  
+  theme(
+    legend.position = "none",  
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),  
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)  
+  )
+```
 
+```{r}
 acu_long %>%
   summarise(
     missing_age = mean(is.na(age)) * 100,
     missing_sex = mean(is.na(sex)) * 100
   )
-
 ```
 
 ## Basics of VITAL dataset
 
-```{r}
+```{r warning=FALSE}
+#overall age 
 ggplot(vital_long, aes(x = ageyr)) +
   geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
   labs(
@@ -55,15 +78,29 @@ ggplot(vital_long, aes(x = ageyr)) +
   ) +
   theme_minimal()
 
+#overall bmi
+ggplot(vital_long, aes(x = bmi)) +
+  geom_histogram(binwidth = 1, fill = "lawngreen", color = "black", alpha = 0.8) +
+  labs(
+    title = "Distribution of BMI in VITAL dataset",
+    x = "Body Mass Index",
+    y = "Count"
+  ) +
+  theme_minimal()
+
+#overall sex
 ggplot(vital_long, aes(x = factor(sex, labels = c("Male", "Female")), fill = factor(sex, labels = c("Male", "Female")))) +
   geom_bar(width=0.5,color="black") +
   labs(
-    title = "Number of Males and Females participants",
+    title = "Distribution of Sex in Vital dataset",
     x = "Sex",
     y = "Count",
     fill = "Sex"
-  ) + theme_minimal() + scale_fill_manual(values=c("green","green")) + theme(legend.position="none")
+  ) + theme_minimal() + scale_fill_manual(values=c("green","lawngreen")) + theme(legend.position="none")
 
+```
+
+```{r}
 vital_long %>%
   summarise(
     missing_age = mean(is.na(ageyr)) * 100,
@@ -74,7 +111,7 @@ vital_long %>%
 
 ## Seperated by fishoil & vitamin D
 
-```{r}
+```{r warning=FALSE}
 #Age distribution of each group 
 
 vital_long %>%
@@ -85,10 +122,33 @@ vital_long %>%
   )) %>%
   ggplot(aes(x = ageyr)) +
   geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
-  facet_wrap(~ treatment, scales = "free_y") +  # Facet by treatment
+  facet_wrap(~ treatment, scales = "fixed") + 
   labs(
     title = "Distribution of Age for Vitamin D and Fish Oil Groups",
     x = "Age (years)",
+    y = "Count"
+  ) +
+  theme_minimal()+ theme(
+        strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+#BMI distribution of each group
+
+vital_long %>%
+  filter(vitdactive == 1 | fishoilactive == 1) %>%
+  mutate(treatment = case_when(
+    vitdactive == 1 ~ "Vitamin D",
+    fishoilactive == 1 ~ "Fish Oil"
+  )) %>%
+  ggplot(aes(x = bmi)) +
+  geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
+  facet_wrap(~ treatment, scales = "fixed") + 
+  labs(
+    title = "Distribution of BMI for Vitamin D and Fish Oil Groups",
+    x = "Body Mass Index",
     y = "Count"
   ) +
   theme_minimal()+ theme(
@@ -109,7 +169,7 @@ vital_long %>%
   )) %>%
   ggplot(aes(x = factor(sex, labels = c("Male", "Female")), fill = factor(sex, labels = c("Male", "Female")))) +
   geom_bar(width = 0.5, color = "black") + 
-  facet_wrap(~ treatment, scales = "free_y") +
+  facet_wrap(~ treatment, scales = "fixed") +
   labs(
     title = "Number of Male and Female Participants",
     x = "Sex",
@@ -117,14 +177,34 @@ vital_long %>%
     fill = "Sex"
   ) + 
   theme_minimal() + 
-  scale_fill_manual(values = c("#a80050", "#a80050")) +  # Both Male and Female bars in same color
+  scale_fill_manual(values = c("#a80050", "#a80050")) +  
   theme(
-    legend.position = "none",  # Remove legend
-    strip.background = element_rect(fill = "lawngreen", color = "black"),  # Color strip background
-    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),  # Border around the panel
-    panel.background = element_rect(fill = "white", color = NA),  # White background
-    plot.background = element_rect(fill = "white", color = NA)  # Plot background
+    legend.position = "none",  
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),  
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)  
   )
 ```
 
+
+##GTSUMMARY() 
+
+```{r}
+
+library(gtsummary)
+
+vital_long%>%
+  filter(vitdactive == 1 | fishoilactive == 1) %>%
+  mutate(treatment = case_when(
+    vitdactive == 1 ~ "Vitamin D",
+    fishoilactive == 1 ~ "Fish Oil"
+  )) %>%
+  select(sex, ageyr, bmi, treatment)%>%
+  tbl_summary(by=treatment)
+
+acu_long%>%
+  select(age, group)%>%
+  tbl_summary(by=group)
+```
 
