@@ -39,7 +39,7 @@ To do
 acu_CAA <- lm(pk5 ~ group + pk1 , data = acu_wide)
 acu_CAA_result <- tidy(acu_CAA, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "group") %>%
-  select(estimate, conf.low, conf.high) %>%
+  select(estimate, conf.low, conf.high, p.value) %>%
   mutate(Method = "CAA", .before = estimate)
 
 # LOCF
@@ -47,7 +47,7 @@ acu_LOCF_data <- LOCF(data = acu_wide, columns = c(10,11))
 acu_LOCF <- lm(pk5 ~ group + pk1, data = acu_LOCF_data)
 acu_LOCF_result <- tidy(acu_LOCF, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "group") %>%
-  select(estimate, conf.low, conf.high) %>%
+  select(estimate, conf.low, conf.high, p.value) %>%
   mutate(Method = "LOCF_LR", .before = estimate)
 
 # Simple mean imputation
@@ -55,7 +55,7 @@ acu_SPM_data <- mean_impute(acu_wide)
 acu_SPM <- lm(pk5 ~ group + pk1, data = acu_SPM_data)
 acu_SPM_result <- tidy(acu_SPM, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "group") %>%
-  select(estimate, conf.low, conf.high) %>%
+  select(estimate, conf.low, conf.high, p.value) %>%
   mutate(Method = "MOCF_LR", .before = estimate)
 
 # MI with mice default method
@@ -63,7 +63,7 @@ acu_LM_MICE_default <- with(acu_mice, lm(pk5 ~ group + pk1))
 acu_LM_MICE_default_pool <- pool(acu_LM_MICE_default)
 acu_LM_MICE_default_result <- tidy(acu_LM_MICE_default_pool, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "group") %>%
-  select(estimate, conf.low, conf.high) %>%
+  select(estimate, conf.low, conf.high, p.value) %>%
   mutate(Method = "LM_MICE_default", .before = estimate)
 
 # LME with no imputation
@@ -72,7 +72,8 @@ acu_LME <- lmer(pk_score ~ group + pk1 + (1| id), data = acu_long)
 acu_LME_result <- tidy(acu_LME, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "group") %>%
   select(estimate, conf.low, conf.high) %>%
-  mutate(Method = "LME", .before = estimate)
+  mutate(Method = "LME", .before = estimate) %>%
+  mutate(p.value = NA_real_)
 
 # LME + MI with mice default
 acu_LME_MI_default <- with(acu_mice_data_obj_long, 
@@ -80,7 +81,7 @@ acu_LME_MI_default <- with(acu_mice_data_obj_long,
 acu_LME_MI_default_pool <- pool(acu_LME_MI_default)
 acu_LME_MI_default_result <- tidy(acu_LME_MI_default_pool, conf.int = TRUE, conf.method = "Wald") %>%
   filter(term == "group") %>%
-  select(estimate, conf.low, conf.high) %>%
+  select(estimate, conf.low, conf.high, p.value) %>%
   mutate(Method = "LME_MICE_default", .before = estimate)
 
 ```
@@ -93,7 +94,7 @@ acu_LME_MI_default_result <- tidy(acu_LME_MI_default_pool, conf.int = TRUE, conf
 vital_complete <- lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base, data = vital_wide) 
 vital_CAA_result_oil <- tidy(vital_complete, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "fishoilactive") %>%
-  select(estimate, conf.low, conf.high) %>%
+  select(estimate, conf.low, conf.high, p.value) %>%
   mutate(Method = "CAA", .before = estimate)
 
 # MOCF
@@ -101,7 +102,7 @@ vital_MOCF <- mean_impute(vital_wide)
 vital_MOCF <- lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base, data = vital_MOCF)
 vital_MOCF_SLR_result_oil<- tidy(vital_MOCF, conf.int = TRUE, conf.method = "Wald")%>% 
   filter(term == "fishoilactive") %>%
-  select(estimate, conf.low, conf.high) %>%
+  select(estimate, conf.low, conf.high, p.value) %>%
   mutate(Method = "MOCF_LR", .before = estimate)
 
 # LOCF
@@ -109,7 +110,7 @@ vital_LOCF_data <- LOCF(data = vital_wide, columns = c(5,6,8,9,10,11,12,13,14,15
 vital_LOCF <- lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base, data = vital_LOCF_data)
 vital_LOCF_result_oil <- tidy(vital_LOCF, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "fishoilactive") %>%
-  select(estimate, conf.low, conf.high) %>%
+  select(estimate, conf.low, conf.high, p.value) %>%
   mutate(Method = "LOCF_LR", .before = estimate)
 
 # MI+SLR
@@ -117,7 +118,7 @@ vital_MI_SLR <- with(vital_mice, lm(pain_yr4 ~ fishoilactive + vitdactive  + pai
 vital_MI_SLR_pool <- pool(vital_MI_SLR)
 vital_MI_SLR_result_oil <- summary(vital_MI_SLR_pool, conf.int = TRUE, conf.method = "Wald")%>% 
   filter(term == "fishoilactive") %>%
-  select(estimate, conf.low, conf.high) %>%
+  select(estimate, conf.low, conf.high, p.value) %>%
   mutate(Method = "MICE_LR_default", .before = estimate)
 
 # LME
@@ -127,7 +128,8 @@ vital_LME <- lmer(pain ~ fishoilactive * time_contin_cent + vitdactive * time_co
 vital_LME_result_oil <- tidy(vital_LME, conf.int = TRUE, conf.method = "Wald")%>% 
   filter(term == "fishoilactive") %>%
   select(estimate, conf.low, conf.high) %>%
-  mutate(Method = "LME", .before = estimate)
+  mutate(Method = "LME", .before = estimate) %>%
+  mutate(p.value = NA_real_)
 
 # MI+LME
 fishoil_MI_LME <- with(vital_mice_obj_long, 
@@ -136,7 +138,7 @@ fishoil_MI_LME <- with(vital_mice_obj_long,
 vital_MI_LME_pool <- pool(fishoil_MI_LME)
 vital_MI_LME_result_oil <- tidy(vital_MI_LME_pool, conf.int = TRUE, conf.method = "Wald")%>% 
   filter(term == "fishoilactive") %>%
-  select(estimate, conf.low, conf.high) %>%
+  select(estimate, conf.low, conf.high, p.value) %>%
   mutate(Method = "MICE_LME_default", .before = estimate)
 
 ```
@@ -149,7 +151,7 @@ vital_MI_LME_result_oil <- tidy(vital_MI_LME_pool, conf.int = TRUE, conf.method 
 vital_complete <- lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base, data = vital_wide) 
 vital_CAA_result_vitd <- tidy(vital_complete, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "vitdactive") %>%
-  select(estimate, conf.low, conf.high) %>%
+  select(estimate, conf.low, conf.high, p.value) %>%
   mutate(Method = "CAA", .before = estimate)
 
 # MOCF
@@ -157,14 +159,14 @@ vital_MOCF <- mean_impute(vital_wide)
 vital_MOCF <- lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base, data = vital_MOCF)
 vital_MOCF_SLR_result_vitd<- tidy(vital_MOCF, conf.int = TRUE, conf.method = "Wald")%>% 
   filter(term == "vitdactive") %>%
-  select(estimate, conf.low, conf.high) %>%
+  select(estimate, conf.low, conf.high, p.value) %>%
   mutate(Method = "MOCF_LR", .before = estimate)
 
 # LOCF
 vital_LOCF <- lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base, data = vital_LOCF_data)
 vital_LOCF_result_vitd <- tidy(vital_LOCF, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "vitdactive") %>%
-  select(estimate, conf.low, conf.high) %>%
+  select(estimate, conf.low, conf.high, p.value) %>%
   mutate(Method = "LOCF_LR", .before = estimate)
 
 # MI+SLR
@@ -172,7 +174,7 @@ vital_MI_SLR <- with(vital_mice, lm(pain_yr4 ~ fishoilactive + vitdactive  + pai
 vital_MI_SLR_pool <- pool(vital_MI_SLR)
 vital_MI_SLR_result_vitd <- summary(vital_MI_SLR_pool, conf.int = TRUE, conf.method = "Wald")%>% 
   filter(term == "vitdactive") %>%
-  select(estimate, conf.low, conf.high) %>%
+  select(estimate, conf.low, conf.high, p.value) %>%
   mutate(Method = "MICE_LR_default", .before = estimate)
 
 # LME
@@ -182,7 +184,8 @@ vital_LME <- lmer(pain ~ fishoilactive * time_contin_cent + vitdactive * time_co
 vital_LME_result_vitd <- tidy(vital_LME, conf.int = TRUE, conf.method = "Wald")%>% 
   filter(term == "vitdactive") %>%
   select(estimate, conf.low, conf.high) %>%
-  mutate(Method = "LME", .before = estimate)
+  mutate(Method = "LME", .before = estimate) %>%
+  mutate(p.value = NA_real_)
 
 # MI+LME
 fishoil_MI_LME <- with(vital_mice_obj_long, 
@@ -191,27 +194,21 @@ fishoil_MI_LME <- with(vital_mice_obj_long,
 vital_MI_LME_pool <- pool(fishoil_MI_LME)
 vital_MI_LME_result_vitd <- tidy(vital_MI_LME_pool, conf.int = TRUE, conf.method = "Wald")%>% 
   filter(term == "vitdactive") %>%
-  select(estimate, conf.low, conf.high) %>%
+  select(estimate, conf.low, conf.high, p.value) %>%
   mutate(Method = "MICE_LME_default", .before = estimate)
 
 ```
 
 # Result and ordering
-- Reformat Table
-  - Estimate
-    - Linear Model
-    - LME (Time No/Category/Continue)
-  - Missing Method
-    - Do Nothing
-    - Simple imputation
-    - MI
-  - Imputation Method
-    - TBD
+
 ```{r}
 # Result table tools
+Method <- factor(c("CAA", "LOCF", "MOCF", "LM+MI+pmm", "LMEcat", "LMEcat+MI+pmm"),
+                 levels = rev(c("CAA", "LOCF", "MOCF", "LM+MI+pmm", "LMEcat", "LMEcat+MI+pmm")))
 
-Method <- factor(c("CAA", "LOCF", "MOCF", "LM+MI+pmm", "LMEtime", "LMEtime+MI+pmm"),
-                 levels = c("CAA", "LOCF", "MOCF", "LM+MI+pmm", "LMEtime", "LMEtime+MI+pmm"))
+properties <- data.frame(Estimate = c("LM", "LM", "LM", "LM", "LME + category time", "LME + category time"),
+                         Missing_method = c("N/A", "Simple", "Simple", "Multiple", "N/A", "Multiple"),
+                         Imputation_method = c("N/A", "Last", "Mean", "pmm", "N/A", "pmm"))
 
 # ACU Result table
 acu_result <- rbind(acu_CAA_result, 
@@ -220,7 +217,18 @@ acu_result <- rbind(acu_CAA_result,
                     acu_LM_MICE_default_result,
                     acu_LME_result,
                     acu_LME_MI_default_result)
+# Unify column names
 acu_result$Method <- Method
+# Unify decimal points
+acu_result <- acu_result %>%
+  mutate(
+    p.value = round(p.value, 5),
+    estimate = round(estimate, 2),
+    conf.low = round(conf.low, 2),
+    conf.high = round(conf.high, 2)
+  )
+# Combine and print table
+print(cbind(properties, acu_result))
 
 # Fish oil Result Table
 vital_result_oil <- rbind(vital_CAA_result_oil,
@@ -229,16 +237,38 @@ vital_result_oil <- rbind(vital_CAA_result_oil,
                           vital_MI_SLR_result_oil,
                           vital_LME_result_oil,
                           vital_MI_LME_result_oil)
+# Unify column names
 vital_result_oil$Method <- Method
+# Unify decimal points
+vital_result_oil <- vital_result_oil %>%
+  mutate(
+    p.value = round(p.value, 5),
+    estimate = round(estimate, 2),
+    conf.low = round(conf.low, 2),
+    conf.high = round(conf.high, 2)
+  )
+# Combine and print table
+print(cbind(properties, vital_result_oil))
 
 # VitD Result table
 vital_result_vitd <- rbind(vital_CAA_result_vitd,
                            vital_LOCF_result_vitd,
                            vital_MOCF_SLR_result_vitd,
                            vital_MI_SLR_result_vitd,
-                           vital_MI_LME_result_vitd,
-                           vital_LME_result_vitd)
+                           vital_LME_result_vitd,
+                           vital_MI_LME_result_vitd)
+# Unify column names
 vital_result_vitd$Method <- Method
+# Unify decimal points
+vital_result_vitd <- vital_result_vitd %>%
+  mutate(
+    p.value = round(p.value, 5),
+    estimate = round(estimate, 2),
+    conf.low = round(conf.low, 2),
+    conf.high = round(conf.high, 2)
+  )
+# Combine and print table
+print(cbind(properties, vital_result_vitd))
 ```
 
 # FOREST PLOTS OF RESULTS 
