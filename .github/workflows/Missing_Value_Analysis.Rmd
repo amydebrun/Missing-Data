@@ -30,8 +30,6 @@ To do
     - MI
   - Imputation Method
     - TBD
-- Get forest graph
-- gtsummary for summary graph
 
 # Acupuncture
 
@@ -84,14 +82,6 @@ acu_LME_MI_default_result <- tidy(acu_LME_MI_default_pool, conf.int = TRUE, conf
   filter(term == "group") %>%
   select(estimate, conf.low, conf.high) %>%
   mutate(Method = "LME_MICE_default", .before = estimate)
-
-# Result table
-acu_result <- rbind(acu_CAA_result, 
-                    acu_LOCF_result,
-                    acu_SPM_result, 
-                    acu_LM_MICE_default_result,
-                    acu_LME_result,
-                    acu_LME_MI_default_result)
 
 ```
 
@@ -149,16 +139,6 @@ vital_MI_LME_result_oil <- tidy(vital_MI_LME_pool, conf.int = TRUE, conf.method 
   select(estimate, conf.low, conf.high) %>%
   mutate(Method = "MICE_LME_default", .before = estimate)
 
-# Result Table
-vital_result_oil <- rbind(
-  vital_MI_LME_result_oil,
-  vital_LME_result_oil,
-  vital_MI_SLR_result_oil,
-  vital_LOCF_result_oil,
-  vital_MOCF_SLR_result_oil,
-  vital_CAA_result_oil
-)
-
 ```
 
 # VITAL VITAMIN D
@@ -214,18 +194,54 @@ vital_MI_LME_result_vitd <- tidy(vital_MI_LME_pool, conf.int = TRUE, conf.method
   select(estimate, conf.low, conf.high) %>%
   mutate(Method = "MICE_LME_default", .before = estimate)
 
-# Result table
-vital_result_vitd <- rbind(
-  vital_MI_LME_result_vitd,
-  vital_LME_result_vitd,
-  vital_MI_SLR_result_vitd,
-  vital_LOCF_result_vitd,
-  vital_MOCF_SLR_result_vitd,
-  vital_CAA_result_vitd)
-
 ```
 
-## FOREST PLOTS OF RESULTS 
+# Result and ordering
+- Reformat Table
+  - Estimate
+    - Linear Model
+    - LME (Time No/Category/Continue)
+  - Missing Method
+    - Do Nothing
+    - Simple imputation
+    - MI
+  - Imputation Method
+    - TBD
+```{r}
+# Result table tools
+
+Method <- factor(c("CAA", "LOCF", "MOCF", "LM+MI+pmm", "LMEtime", "LMEtime+MI+pmm"),
+                 levels = c("CAA", "LOCF", "MOCF", "LM+MI+pmm", "LMEtime", "LMEtime+MI+pmm"))
+
+# ACU Result table
+acu_result <- rbind(acu_CAA_result, 
+                    acu_LOCF_result,
+                    acu_SPM_result, 
+                    acu_LM_MICE_default_result,
+                    acu_LME_result,
+                    acu_LME_MI_default_result)
+acu_result$Method <- Method
+
+# Fish oil Result Table
+vital_result_oil <- rbind(vital_CAA_result_oil,
+                          vital_LOCF_result_oil,
+                          vital_MOCF_SLR_result_oil,
+                          vital_MI_SLR_result_oil,
+                          vital_LME_result_oil,
+                          vital_MI_LME_result_oil)
+vital_result_oil$Method <- Method
+
+# VitD Result table
+vital_result_vitd <- rbind(vital_CAA_result_vitd,
+                           vital_LOCF_result_vitd,
+                           vital_MOCF_SLR_result_vitd,
+                           vital_MI_SLR_result_vitd,
+                           vital_MI_LME_result_vitd,
+                           vital_LME_result_vitd)
+vital_result_vitd$Method <- Method
+```
+
+# FOREST PLOTS OF RESULTS 
 
 ```{r}
 
