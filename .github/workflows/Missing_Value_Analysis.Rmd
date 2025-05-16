@@ -23,7 +23,14 @@ To do
 - Sensitivity Analysis
 - Missing Indicator Regression
 - Time as continuous and as factor
-- Workout original MM method
+- Including BMI in Vital
+- Workout MM methods
+  - Linear regression
+  - LR + noise
+  - LR + noise + parameter uncertainty
+  - two predictor
+  - pmm
+  - to see what is the pitfall of pmm, use lad, baysian if suit
 - Reformat Table
   - Estimate
     - Linear Model
