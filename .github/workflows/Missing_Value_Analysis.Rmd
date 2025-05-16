@@ -13,12 +13,16 @@ library(haven)
 library(lme4)
 library(broom.mixed)
 library(meta)
+library(dplyr)
 source("R scripts/Functions.R")
 source("R scripts/VITAL data formats.R")
 source("R scripts/Acupuncture data formats.R")
 ```
 
 To do
+- Sensitivity Analysis
+- Missing Indicator Regression
+- Time as continuous and as factor
 - Workout original MM method
 - Reformat Table
   - Estimate
@@ -217,9 +221,8 @@ acu_result <- rbind(acu_CAA_result,
                     acu_LM_MICE_default_result,
                     acu_LME_result,
                     acu_LME_MI_default_result)
-# Unify column names
+
 acu_result$Method <- Method
-# Unify decimal points
 acu_result <- acu_result %>%
   mutate(
     p.value = round(p.value, 5),
@@ -227,7 +230,6 @@ acu_result <- acu_result %>%
     conf.low = round(conf.low, 2),
     conf.high = round(conf.high, 2)
   )
-# Combine and print table
 print(cbind(properties, acu_result))
 
 # Fish oil Result Table
@@ -237,9 +239,8 @@ vital_result_oil <- rbind(vital_CAA_result_oil,
                           vital_MI_SLR_result_oil,
                           vital_LME_result_oil,
                           vital_MI_LME_result_oil)
-# Unify column names
+
 vital_result_oil$Method <- Method
-# Unify decimal points
 vital_result_oil <- vital_result_oil %>%
   mutate(
     p.value = round(p.value, 5),
@@ -247,7 +248,6 @@ vital_result_oil <- vital_result_oil %>%
     conf.low = round(conf.low, 2),
     conf.high = round(conf.high, 2)
   )
-# Combine and print table
 print(cbind(properties, vital_result_oil))
 
 # VitD Result table
@@ -257,9 +257,8 @@ vital_result_vitd <- rbind(vital_CAA_result_vitd,
                            vital_MI_SLR_result_vitd,
                            vital_LME_result_vitd,
                            vital_MI_LME_result_vitd)
-# Unify column names
+
 vital_result_vitd$Method <- Method
-# Unify decimal points
 vital_result_vitd <- vital_result_vitd %>%
   mutate(
     p.value = round(p.value, 5),
@@ -267,7 +266,6 @@ vital_result_vitd <- vital_result_vitd %>%
     conf.low = round(conf.low, 2),
     conf.high = round(conf.high, 2)
   )
-# Combine and print table
 print(cbind(properties, vital_result_vitd))
 ```
 
@@ -320,3 +318,31 @@ ggplot(acu_result, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.hi
   )
 
 ```
+
+EXTRA: LOGISTIC REGRESSION TO TEST FOR MISSINGNESS MECHANISM 
+##ACUPUNCTURE
+```{r}
+variables_missing <- names(colSums(is.na(acu_long))[colSums(is.na(acu_long)) > 0])
+variables_missing
+acu_long
+acu_long_ind <- 
+  acu_long%>%
+  mutate(miss_ind_pk_score = ifelse(is.na(pk_score), 1, 0))
+
+ind_model<-glm(miss_ind_pk_score~time+age, family="binomial", data=acu_long_ind)
+summary(ind_model)# not MAR?
+```
+##VITAL
+```{r}
+variables_missing <- names(colSums(is.na(vital_long))[colSums(is.na(vital_long)) > 0])
+variables_missing
+
+vital_long_ind <- vital_long %>%
+  mutate(across(all_of(variables_missing), 
+                ~ ifelse(is.na(.), 1, 0), 
+                .names = "miss_ind_{.col}"))
+
+ind_model_vital<-glm(miss_ind_pain_base~KneesReplacedV2+bmi, family="binomial", data=vital_long_ind)
+summary(ind_model_vital) # not MAR?
+```
+
