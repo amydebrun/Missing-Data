@@ -14,8 +14,15 @@ vital_long <- vital_wide %>%
   mutate(time_contin = as.integer(gsub("yr", "", time)),
          time_contin_cent = time_contin - 4)
 
-# MICE FOR LME
+# MICE
 vital_mice <- mice(vital_wide, m = 5, method = 'pmm', seed = 123)
+vital_mice_random <- mice(vital_wide, m = 5, method = 'sample', seed = 123)
+vital_mice_midastouch <- mice(vital_wide, m = 5, method = 'midastouch', seed = 123)
+vital_mice_predict <- mice(vital_wide, m = 5, method = 'norm.predict', seed = 123)
+vital_mice_predict_noise <- mice(vital_wide, m = 5, method = 'norm.nob', seed = 123)
+vital_mice_bayesian <- mice(vital_wide, m = 5, method = 'norm', seed = 123)
+
+# MICE FOR LME
 vital_mice_data <- complete(vital_mice, action = "long", include = TRUE)
 vital_mice_data_long <- vital_mice_data %>%
   pivot_longer(cols = matches("_yr[[:digit:]]$"),
