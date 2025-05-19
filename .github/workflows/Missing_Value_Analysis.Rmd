@@ -24,8 +24,8 @@ source("R scripts/Different Imputation Method.R")
 
 To do
 - Sensitivity Analysis
-- Time as continuous and as factor
 - Including BMI in Vital
+- Check if model fit correctly
 
 
 
@@ -67,10 +67,10 @@ oil_compare_result
 
 # VitD result
 vital_result_vitd_cont
-# Compare with category time
+# Compare with category time 
 vitd_compare_result
 
-# Comparing plot
+# Comparing plot (green is time cont)
 vital_plot_compare
 ```
 
