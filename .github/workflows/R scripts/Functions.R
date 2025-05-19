@@ -128,3 +128,25 @@ to_long_format_acu_cont_MICE <- function(data_wide) {
     mutate(.id = row_number()) 
 }
 
+# VITAL transfer to long
+to_long_format_vital <- function(data_wide) {
+  data_wide %>%
+    pivot_longer(cols = matches("_yr[[:digit:]]$"),
+                 names_to = c(".value", "time"), 
+                 names_sep = "_") %>%
+    mutate(time_contin = as.integer(gsub("yr", "", time)),
+           time_contin_cent = time_contin - 4)
+}
+# VITAL transfer to long for MICE
+to_long_format_vital_mice <- function(data_wide) {
+  vital_mice_data %>%
+    pivot_longer(cols = matches("_yr[[:digit:]]$"),
+                 names_to = c(".value", "time"), 
+                 names_sep = "_") %>%
+    group_by(.imp) %>%
+    mutate(.id = 1:n()) %>%
+    mutate(time_contin = as.integer(gsub("yr", "", time)),
+           time_contin_cent = time_contin - 4)
+}
+
+

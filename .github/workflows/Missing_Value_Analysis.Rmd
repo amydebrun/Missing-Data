@@ -50,13 +50,30 @@ vital_plot_categorical
 # Treat time as continuous variable
 
 ```{r}
+# Acupunture
 # Result table
 acu_cont_result
 # Compare with categorical time result
 acu_compare_result
-# Plot to compare
+# Plot to compare (green is time cont)
 acu_plot_compare
 ```
+
+```{r}
+# Fishoil result
+vital_result_oil_cont
+# Compare with category time
+oil_compare_result
+
+# VitD result
+vital_result_vitd_cont
+# Compare with category time
+vitd_compare_result
+
+# Comparing plot
+vital_plot_compare
+```
+
 
 # Different Imputation Method
 
