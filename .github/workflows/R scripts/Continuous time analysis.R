@@ -1,7 +1,7 @@
 # Acupuncture
 
 # CAA
-acu_CAA_cont <- lm(pk_score ~ group + pk1 + time , data = acu_long_cont)
+acu_CAA_cont <- lm(pk_score ~ group*time + pk1 , data = acu_long_cont)
 acu_CAA_cont_result <- tidy(acu_CAA_cont, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "group") %>%
   select(estimate, conf.low, conf.high, std.error, p.value) %>%
@@ -10,7 +10,7 @@ acu_CAA_cont_result <- tidy(acu_CAA_cont, conf.int = TRUE, conf.method = "Wald")
 # LOCF
 acu_LOCF_data <- LOCF(data = acu_wide, columns = c(10,11))
 acu_LOCF_data_long <- to_long_format_acu_cont(acu_LOCF_data)
-acu_LOCF_cont <- lm(pk_score ~ group + pk1 + time , data = acu_LOCF_data_long)
+acu_LOCF_cont <- lm(pk_score ~ group*time + pk1 , data = acu_LOCF_data_long)
 acu_LOCF_cont_result <- tidy(acu_LOCF_cont, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "group") %>%
   select(estimate, conf.low, conf.high, std.error, p.value) %>%
@@ -19,14 +19,14 @@ acu_LOCF_cont_result <- tidy(acu_LOCF_cont, conf.int = TRUE, conf.method = "Wald
 # MOCF
 acu_SPM_data <- mean_impute(acu_wide)
 acu_SPM_data_long <- to_long_format_acu_cont(acu_SPM_data)
-acu_SPM_cont <- lm(pk_score ~ group + pk1 + time, data = acu_SPM_data_long)
+acu_SPM_cont <- lm(pk_score ~ group*time + pk1, data = acu_SPM_data_long)
 acu_SPM_cont_result <- tidy(acu_SPM, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "group") %>%
   select(estimate, conf.low, conf.high, std.error, p.value) %>%
   mutate(Method = "MOCF_LR", .before = estimate)
 
 # MI with mice default method
-acu_LM_MICE_cont <- with(acu_mice_data_obj_long_cont, lm(pk_score ~ group + pk1 + time))
+acu_LM_MICE_cont <- with(acu_mice_data_obj_long_cont, lm(pk_score ~ group*time + pk1))
 acu_LM_MICE_cont_pool <- pool(acu_LM_MICE_cont)
 acu_LM_MICE_default_cont_result <- tidy(acu_LM_MICE_cont_pool, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "group") %>%
@@ -59,7 +59,7 @@ acu_LME_MI_default_cont_result <- tidy(acu_LME_MI_default_cont_pool, conf.int = 
 # VITAL FISHOIL
 
 # CCA
-vital_complete_cont <- lm(pain ~ fishoilactive + vitdactive + pain_base + time_contin, data = vital_long) 
+vital_complete_cont <- lm(pain ~ fishoilactive*time_contin + vitdactive**time_contin + pain_base, data = vital_long) 
 vital_CAA_result_oil_cont <- tidy(vital_complete_cont, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "fishoilactive") %>%
   select(estimate, conf.low, conf.high, std.error, p.value) %>%
@@ -68,7 +68,7 @@ vital_CAA_result_oil_cont <- tidy(vital_complete_cont, conf.int = TRUE, conf.met
 # MOCF
 vital_MOCF <- mean_impute(vital_wide)
 vital_MOCF_long <- to_long_format_vital(vital_MOCF)
-vital_MOCF_cont <- lm(pain ~ fishoilactive + vitdactive + pain_base + time_contin, data = vital_MOCF_long)
+vital_MOCF_cont <- lm(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base, data = vital_MOCF_long)
 vital_MOCF_SLR_result_oil_cont <- tidy(vital_MOCF_cont, conf.int = TRUE, conf.method = "Wald")%>% 
   filter(term == "fishoilactive") %>%
   select(estimate, conf.low, conf.high, std.error, p.value) %>%
@@ -78,7 +78,7 @@ vital_MOCF_SLR_result_oil_cont <- tidy(vital_MOCF_cont, conf.int = TRUE, conf.me
 vital_LOCF_data <- LOCF(data = vital_wide,
                         columns = c(5,6,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29))
 vital_LOCF_long <- to_long_format_vital(vital_LOCF_data)
-vital_LOCF_cont <- lm(pain ~ fishoilactive + vitdactive + pain_base + time_contin, data = vital_LOCF_long)
+vital_LOCF_cont <- lm(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base, data = vital_LOCF_long)
 vital_LOCF_result_oil_cont <- tidy(vital_LOCF_cont, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "fishoilactive") %>%
   select(estimate, conf.low, conf.high, std.error, p.value) %>%
@@ -86,7 +86,7 @@ vital_LOCF_result_oil_cont <- tidy(vital_LOCF_cont, conf.int = TRUE, conf.method
 
 # MI+SLR
 vital_MI_SLR_cont <- with(vital_mice_obj_long,
-                          lm(pain ~ fishoilactive + vitdactive + pain_base + time_contin))
+                          lm(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base))
 vital_MI_SLR_cont_pool <- pool(vital_MI_SLR_cont)
 vital_MI_SLR_result_oil_cont <- summary(vital_MI_SLR_cont_pool, conf.int = TRUE, conf.method = "Wald")%>% 
   filter(term == "fishoilactive") %>%
@@ -94,7 +94,7 @@ vital_MI_SLR_result_oil_cont <- summary(vital_MI_SLR_cont_pool, conf.int = TRUE,
   mutate(Method = "MICE_LR_default", .before = estimate)
 
 # LME
-vital_LM_cont <- lmer(pain ~ fishoilactive * time_contin_cent + vitdactive * time_contin_cent + pain_base + 
+vital_LM_cont <- lmer(pain ~ fishoilactive*time_contin_cent + vitdactive*time_contin_cent + pain_base + 
                     (time_contin_cent|Subject_ID), 
                   data = vital_long)
 vital_LME_result_oil_cont <- tidy(vital_LME, conf.int = TRUE, conf.method = "Wald")%>% 
@@ -105,7 +105,7 @@ vital_LME_result_oil_cont <- tidy(vital_LME, conf.int = TRUE, conf.method = "Wal
 
 # MI+LME
 fishoil_MI_LME_cont <- with(vital_mice_obj_long, 
-                       lmer(pain ~ fishoilactive * time_contin_cent + vitdactive * time_contin_cent + pain_base + 
+                       lmer(pain ~ fishoilactive*time_contin_cent + vitdactive*time_contin_cent + pain_base + 
                               (time_contin_cent|Subject_ID)))
 vital_MI_LME_pool_cont <- pool(fishoil_MI_LME)
 vital_MI_LME_result_oil_cont <- tidy(vital_MI_LME_pool, conf.int = TRUE, conf.method = "Wald")%>% 
@@ -121,7 +121,7 @@ vital_MI_LME_result_oil_cont <- tidy(vital_MI_LME_pool, conf.int = TRUE, conf.me
 # VITAL VITAMIN D
 
 # CCA
-vital_complete_cont_vitd <- lm(pain ~ fishoilactive + vitdactive + pain_base + time_contin, data = vital_long) 
+vital_complete_cont_vitd <- lm(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base, data = vital_long) 
 vital_CAA_result_vitd_cont <- tidy(vital_complete_cont_vitd, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "vitdactive") %>%
   select(estimate, conf.low, conf.high, std.error, p.value) %>%
@@ -130,7 +130,7 @@ vital_CAA_result_vitd_cont <- tidy(vital_complete_cont_vitd, conf.int = TRUE, co
 # MOCF
 vital_MOCF <- mean_impute(vital_wide)
 vital_MOCF_long <- to_long_format_vital(vital_MOCF)
-vital_MOCF_cont_vitd <- lm(pain ~ fishoilactive + vitdactive + pain_base + time_contin, data = vital_MOCF_long)
+vital_MOCF_cont_vitd <- lm(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base, data = vital_MOCF_long)
 vital_MOCF_SLR_result_vitd_cont <- tidy(vital_MOCF_cont_vitd, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "vitdactive") %>%
   select(estimate, conf.low, conf.high, std.error, p.value) %>%
@@ -140,7 +140,7 @@ vital_MOCF_SLR_result_vitd_cont <- tidy(vital_MOCF_cont_vitd, conf.int = TRUE, c
 vital_LOCF_data <- LOCF(data = vital_wide,
                         columns = c(5,6,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29))
 vital_LOCF_long <- to_long_format_vital(vital_LOCF_data)
-vital_LOCF_cont_vitd <- lm(pain ~ fishoilactive + vitdactive + pain_base + time_contin, data = vital_LOCF_long)
+vital_LOCF_cont_vitd <- lm(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base, data = vital_LOCF_long)
 vital_LOCF_result_vitd_cont <- tidy(vital_LOCF_cont_vitd, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "vitdactive") %>%
   select(estimate, conf.low, conf.high, std.error, p.value) %>%
@@ -148,7 +148,7 @@ vital_LOCF_result_vitd_cont <- tidy(vital_LOCF_cont_vitd, conf.int = TRUE, conf.
 
 # MI+SLR
 vital_MI_SLR_cont_vitd <- with(vital_mice_obj_long,
-                               lm(pain ~ fishoilactive + vitdactive + pain_base + time_contin))
+                               lm(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base))
 vital_MI_SLR_cont_pool_vitd <- pool(vital_MI_SLR_cont_vitd)
 vital_MI_SLR_result_vitd_cont <- summary(vital_MI_SLR_cont_pool_vitd, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "vitdactive") %>%
@@ -156,7 +156,7 @@ vital_MI_SLR_result_vitd_cont <- summary(vital_MI_SLR_cont_pool_vitd, conf.int =
   mutate(Method = "MICE_LR_default", .before = estimate)
 
 # LME
-vital_LME_cont_vitd <- lmer(pain ~ fishoilactive * time_contin_cent + vitdactive * time_contin_cent + pain_base + 
+vital_LME_cont_vitd <- lmer(pain ~ fishoilactive*time_contin_cent + vitdactive*time_contin_cent + pain_base + 
                               (time_contin_cent|Subject_ID), 
                             data = vital_long)
 vital_LME_result_vitd_cont <- tidy(vital_LME_cont_vitd, conf.int = TRUE, conf.method = "Wald") %>% 
@@ -167,7 +167,7 @@ vital_LME_result_vitd_cont <- tidy(vital_LME_cont_vitd, conf.int = TRUE, conf.me
 
 # MI+LME
 vitd_MI_LME_cont <- with(vital_mice_obj_long, 
-                         lmer(pain ~ fishoilactive * time_contin_cent + vitdactive * time_contin_cent + pain_base + 
+                         lmer(pain ~ fishoilactive*time_contin_cent + vitdactive*time_contin_cent + pain_base + 
                                 (time_contin_cent|Subject_ID)))
 vital_MI_LME_pool_vitd_cont <- pool(vitd_MI_LME_cont)
 vital_MI_LME_result_vitd_cont <- tidy(vital_MI_LME_pool_vitd_cont, conf.int = TRUE, conf.method = "Wald") %>% 
