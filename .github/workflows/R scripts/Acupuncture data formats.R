@@ -3,7 +3,7 @@ acu_wide <- read_csv("Data/acupuncture.csv",show_col_types = FALSE)
 head(acu_wide)
 
 # Acupuncture Long format 
-acu_long <- to_long_format_acu_cont(acu_wide)
+acu_long <- to_long_format_acu_cat(acu_wide)
 
 # MICE
 acu_mice <- mice(acu_wide, m = 5, method = 'pmm', seed = 123)
