@@ -10,6 +10,8 @@ LOCF <- function(data, columns){
   return(data)  
 }
 
+
+
 # MEAN IMPUTATION FUNCTION 
 mean_impute <- function(data) {
   data <- data.frame(
@@ -23,3 +25,106 @@ mean_impute <- function(data) {
   )
   return(data)
 }
+
+
+
+# Function to transform wide to long
+
+# Acupuncture
+# For category time
+to_long_format_acu_cat <- function(data_wide) {
+  data_wide %>%
+    pivot_longer(
+      cols = c('pk2', 'pk5'), 
+      names_to = 'pk_time',
+      values_to = 'pk_score'
+    ) %>%
+    pivot_longer(
+      cols = c('f2', 'f5'), 
+      names_to = 'freq_time',
+      values_to = 'freq_score',
+      names_repair = 'unique'
+    ) %>%
+    filter((pk_time == 'pk2' & freq_time == 'f2') | (pk_time == 'pk5' & freq_time == 'f5')) %>%
+    mutate(
+      time = case_when(
+        pk_time == 'pk2' ~ "3m",
+        pk_time == 'pk5' ~ "12m"
+      )
+    ) %>%
+    select(-pk_time, -freq_time)
+}
+# For MICE category time
+to_long_format_acu_cat_MICE <- function(data_wide) {
+  data_wide %>%
+    pivot_longer(
+      cols = c('pk2', 'pk5'), 
+      names_to = 'pk_time',
+      values_to = 'pk_score'
+    ) %>%
+    pivot_longer(
+      cols = c('f2', 'f5'), 
+      names_to = 'freq_time',
+      values_to = 'freq_score',
+      names_repair = 'unique'
+    ) %>%
+    filter((pk_time == 'pk2' & freq_time == 'f2') | (pk_time == 'pk5' & freq_time == 'f5')) %>%
+    mutate(
+      time = case_when(
+        pk_time == 'pk2' ~ "3m",
+        pk_time == 'pk5' ~ "12m"
+      )
+    ) %>%
+    select(-pk_time, -freq_time) %>%
+    group_by(.imp) %>%
+    mutate(.id = row_number())
+}
+# For continuous time
+to_long_format_acu_cont <- function(data_wide) {
+  data_wide %>%
+    pivot_longer(
+      cols = c('pk2', 'pk5'), 
+      names_to = 'pk_time',
+      values_to = 'pk_score'
+    ) %>%
+    pivot_longer(
+      cols = c('f2', 'f5'), 
+      names_to = 'freq_time',
+      values_to = 'freq_score',
+      names_repair = 'unique'
+    ) %>%
+    filter((pk_time == "pk2" & freq_time == "f2") | (pk_time == "pk5" & freq_time == "f5")) %>%
+    mutate(
+      time = case_when(
+        pk_time == "pk2" ~ 3,
+        pk_time == "pk5" ~ 12
+      )
+    ) %>%
+    select(-c(pk_time, freq_time))
+}
+# For MICE continuous time
+to_long_format_acu_cont_MICE <- function(data_wide) {
+  data_wide %>%
+    pivot_longer(
+      cols = c('pk2', 'pk5'), 
+      names_to = 'pk_time',
+      values_to = 'pk_score'
+    ) %>%
+    pivot_longer(
+      cols = c('f2', 'f5'), 
+      names_to = 'freq_time',
+      values_to = 'freq_score',
+      names_repair = 'unique'
+    ) %>%
+    filter((pk_time == 'pk2' & freq_time == 'f2') | (pk_time == 'pk5' & freq_time == 'f5')) %>%
+    mutate(
+      time = case_when(
+        pk_time == 'pk2' ~ 3,
+        pk_time == 'pk5' ~ 12
+      )
+    ) %>%
+    select(-pk_time, -freq_time) %>%
+    group_by(.imp) %>%
+    mutate(.id = row_number()) 
+}
+
