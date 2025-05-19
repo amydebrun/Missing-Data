@@ -59,7 +59,7 @@ acu_LME_MI_default_cont_result <- tidy(acu_LME_MI_default_cont_pool, conf.int = 
 # VITAL FISHOIL
 
 # CCA
-vital_complete_cont <- lm(pain ~ fishoilactive*time_contin + vitdactive**time_contin + pain_base, data = vital_long) 
+vital_complete_cont <- lm(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base, data = vital_long) 
 vital_CAA_result_oil_cont <- tidy(vital_complete_cont, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "fishoilactive") %>%
   select(estimate, conf.low, conf.high, std.error, p.value) %>%
