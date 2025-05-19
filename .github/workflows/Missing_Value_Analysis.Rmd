@@ -18,6 +18,7 @@ source("R scripts/Functions.R")
 source("R scripts/VITAL data formats.R")
 source("R scripts/Acupuncture data formats.R")
 source("R scripts/Category time analysis.R")
+source("R scripts/Continuous time analysis.R")
 source("R scripts/Different Imputation Method.R")
 ```
 
@@ -44,6 +45,17 @@ print(cbind(properties, vital_result_oil))
 print(cbind(properties, vital_result_vitd))
 # VITAL plot
 vital_plot_categorical
+```
+
+# Treat time as continuous variable
+
+```{r}
+# Result table
+acu_cont_result
+# Compare with categorical time result
+acu_compare_result
+# Plot to compare
+acu_plot_compare
 ```
 
 # Different Imputation Method

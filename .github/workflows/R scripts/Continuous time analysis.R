@@ -281,6 +281,10 @@ acu_plot_compare <- ggplot(acu_plot_table, aes(x = estimate, y = Method, xmin = 
     x = "Treatment Effect",
     y = "Method",
     title = "Treatment effect with 95% Confidence Interval") +
+  scale_color_manual(
+    values = c("Categorical" = "#a80050", "Continuous" = "lawngreen"),
+    labels = c("Categorical Time", "Continuous Time")
+  ) +
   theme_minimal() + 
   theme(
     strip.background = element_rect(fill = "lawngreen", color = "black"),  
