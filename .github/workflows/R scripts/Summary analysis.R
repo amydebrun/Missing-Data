@@ -60,7 +60,7 @@ vital_wide_miss <- vital_wide %>%
   select(-c(matches("stiffness_"), matches("function_")))
 
 # Missing pattern
-acu_wide_miss_plot %>% ggplot(aes(x = miss_pattern, fill = factor(group))) +
+acu_wide_miss_plot<- acu_wide_miss %>% ggplot(aes(x = miss_pattern, fill = factor(group))) +
   geom_bar(position = "dodge") +
   labs(
     title = "Missing Data Patterns by Group",
@@ -70,7 +70,7 @@ acu_wide_miss_plot %>% ggplot(aes(x = miss_pattern, fill = factor(group))) +
   ) +
   theme_minimal()
 
-vital_wide_miss_plot %>% ggplot(aes(x = miss_pattern, fill = factor(group))) +
+vital_wide_miss_plot<- vital_wide_miss %>% ggplot(aes(x = miss_pattern, fill = factor(group))) +
   geom_bar(position = "dodge") +
   labs(
     title = "Missing Data Patterns by Group",
