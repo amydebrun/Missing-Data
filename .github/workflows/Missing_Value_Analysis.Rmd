@@ -46,7 +46,7 @@ vital_wide_miss_plot
 ```
 
 ```{r}
-# Mar anlysis
+# Mar analysis
 LRT_glm_missing
 acu_mar_pk2
 acu_mar_pk5
