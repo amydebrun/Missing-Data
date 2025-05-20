@@ -149,4 +149,15 @@ to_long_format_vital_mice <- function(data_wide) {
            time_contin_cent = time_contin - 4)
 }
 
-
+#LRT function
+lrt_from_glm <- function(model) {
+  null_dev <- model$null.deviance
+  resid_dev <- model$deviance
+  df <- model$df.null - model$df.residual
+  
+  chisq_stat <- null_dev - resid_dev
+  p_value <- pchisq(chisq_stat, df, lower.tail = FALSE)
+  
+  
+  print(round(p_value, digits=3))
+}

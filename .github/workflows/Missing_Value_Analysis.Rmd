@@ -14,9 +14,11 @@ library(lme4)
 library(broom.mixed)
 library(meta)
 library(dplyr)
+library(naniar)
 source("R scripts/Functions.R")
 source("R scripts/VITAL data formats.R")
 source("R scripts/Acupuncture data formats.R")
+source("R scripts/Summary analysis.R")
 source("R scripts/Category time analysis.R")
 source("R scripts/Continuous time analysis.R")
 source("R scripts/Different Imputation Method.R")
@@ -27,7 +29,33 @@ To do
 - Including BMI in Vital
 - Check if model fit correctly
 
+# Data summary
 
+```{r}
+# Acupuncture
+acu_summary
+acu_miss_plot
+acu_wide_miss_plot
+```
+
+```{r}
+# VITAL
+vital_summary
+vital_miss_plot
+vital_wide_miss_plot
+```
+
+```{r}
+# Mar anlysis
+LRT_glm_missing
+acu_mar_pk2
+acu_mar_pk5
+vital_mar_base
+vital_mar_yr1
+vital_mar_yr2
+vital_mar_yr3
+vital_mar_yr4
+```
 
 # Category time analysis
 
