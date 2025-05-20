@@ -1,0 +1,201 @@
+---
+title: "Sensitivity Analysis"
+author: "Amy, Kent"
+date: "2025-05-20"
+output: html_document
+---
+
+```{r setup, include=FALSE, message =FALSE}
+library(dplyr)
+library(mice)
+library(ggplot2)
+library(tidymodels)
+knitr::opts_chunk$set(echo = TRUE)
+source("R scripts/Functions.R")
+source("R scripts/VITAL data formats.R")
+source("R scripts/Acupuncture data formats.R")
+source("R scripts/Category time analysis.R")
+source("R scripts/Continuous time analysis.R")
+source("R scripts/Different Imputation Method.R")
+```
+
+
+"TEST" FOR MISSINGNESS MECHANISM
+
+Proof of non-MCAR data if some covariates are associated with the missingness indicator?
+
+Acupuncture:
+
+VITAL: 
+
+##ACUPUNCTURE
+```{r}
+  colnames(acu_long)
+
+#continuous time acupuncture 
+variables_missing_long <- names(colSums(is.na(acu_long))[colSums(is.na(acu_long)) > 0])
+variables_missing_long
+acu_long_ind <- 
+  acu_long%>%
+ mutate(across(all_of(variables_missing_long), 
+                ~ ifelse(is.na(.), 1, 0), 
+                .names = "miss_ind_{.col}"))
+ind_model_acu<-glm(miss_ind_pk_score~time+age+chronicity+practice_id, family="binomial", data=acu_long_ind)
+tidy(ind_model_acu)# not MAR?
+
+#categorical time acupuncture 
+variables_missing_wide <- names(colSums(is.na(acu_wide))[colSums(is.na(acu_wide)) > 0])
+acu_wide_ind <- 
+  acu_wide%>%
+   mutate(across(all_of(variables_missing_wide), 
+                ~ ifelse(is.na(.), 1, 0), 
+                .names = "miss_ind_{.col}"))
+ind_model_acu<-glm(miss_ind_pk5~pk1+pk2+age+sex, family="binomial", data=acu_wide_ind)
+tidy(ind_model_acu)# not MAR?
+```
+##VITAL
+```{r}
+#Continuous time vital
+variables_missing_long <- names(colSums(is.na(vital_long))[colSums(is.na(vital_long)) > 0])
+
+vital_long_ind <- vital_long %>%
+  mutate(across(all_of(variables_missing_long), 
+                ~ ifelse(is.na(.), 1, 0), 
+                .names = "miss_ind_{.col}"))
+
+pain_missing_contin<-glm(miss_ind_pain~KneesReplacedV2+bmi+ageyr+sex+currsmk, family="binomial", data=vital_long_ind)
+summary(pain_missing_contin) # not MAR?
+
+#Categorical time vital 
+variables_missing_wide<- names(colSums(is.na(vital_wide))[colSums(is.na(vital_wide)) > 0])
+
+vital_wide_ind<-vital_wide %>%
+  mutate(across(all_of(variables_missing_wide), 
+                ~ ifelse(is.na(.), 1, 0), 
+                .names = "miss_ind_{.col}"))
+
+pain_missing_cat<-glm(miss_ind_pain_yr4~pain_base+KneesReplacedV2+bmi+ageyr+sex+currsmk, family="binomial", data=vital_wide_ind)
+summary(pain_missing_cat) # not MAR?
+```
+
+##SENSITIVITY ANALYSIS : DELTA ADJUSTMENT 
+## Acupuncture 
+
+```{r}
+# Acupuncture categorical 
+MAR_imp_cat <- acu_compare_result %>%
+  filter(grepl("MI", Method)) %>%
+  select(Method, estimate, std.error ) 
+MAR_imp_cat# filtered out the multiple imputation methods suitable for MISSING AT RANDOM
+```
+
+
+```{r}
+#categorical
+delta <- c(0, -10, -20,-30,-40)
+inlist <- c("sex", "age", "pk1")
+pred_cat <- quickpred(acu_wide, minpuc = 0.5, include = inlist)
+imp.default_cat <- mice(acu_wide, m = 1, maxit = 1, predictorMatrix = pred_cat, seed = 123, print= FALSE)
+post_cat <- imp.default_cat$post
+imp.all.undamped_cat <- vector("list", length(delta))
+
+
+for (i in 1:length(delta)) {
+  d <- delta[i]
+  cmd <- paste("imp[[j]][,i] <- imp[[j]][,i] +", d)
+  post_cat["pk5"] <- cmd
+  imp_cat <- mice(acu_wide, pred = pred_cat, post = post_cat, maxit = 10,
+              seed = i * 22)
+  imp.all.undamped_cat[[i]] <- imp_cat
+}
+
+delta_results_cat <- data.frame()
+for (i in seq_along(imp.all.undamped_cat)) {
+  imp_cat <- imp.all.undamped_cat[[i]]
+  d <- delta[i]
+  fit_cat <- with(imp_cat, lm(pk5 ~ group + pk1))
+  pooled_cat <- pool(fit_cat)
+  est_cat <- tidy(pooled_cat, conf.int = TRUE) %>%
+    filter(term == "group") %>%  
+    select(estimate, std.error, conf.low, conf.high, p.value) %>%
+    mutate(delta = d)
+  
+  delta_results_cat <- bind_rows(delta_results_cat, est_cat)
+}
+
+delta_results_cat$group<-"Acupuncture Treatment"
+ggplot(delta_results_cat, aes(x = estimate, y = delta)) +
+   geom_point(size = 4, color = "#a80050") +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +   
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
+  facet_wrap(~ group) +
+  labs(
+    title = "Treatment effect with δ-Adjustment (categorical)",
+    x = "Treatment Effect",
+    y = "Delta"
+  ) +
+  theme_minimal()+ 
+  theme(
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+```
+
+```{r}
+#continuous
+delta <- c(0, -10, -20,-30,-40)
+inlist <- c("sex", "age", "pk1")
+pred_cont <- quickpred(acu_long, minpuc = 0.5, include = inlist)
+imp.default_cont <- mice(acu_long, m = 1, maxit = 1, predictorMatrix = pred_cont, seed = 123, print= FALSE)
+post_cont <- imp.default_cont$post
+imp.all.undamped_cont <- vector("list", length(delta))
+
+
+for (i in 1:length(delta)) {
+  d <- delta[i]
+  cmd <- paste("imp[[j]][,i] <- imp[[j]][,i] +", d)
+  post_cont["pk_score"] <- cmd
+  imp_cont <- mice(acu_long, pred = pred_cont, post = post_cont, maxit = 10,
+              seed = i * 22)
+  imp.all.undamped_cont[[i]] <- imp_cont
+}
+
+delta_results_cont <- data.frame()
+for (i in seq_along(imp.all.undamped_cont)) {
+  imp_cont <- imp.all.undamped_cont[[i]]
+  d <- delta[i]
+  fit_cont <- with(imp_cont, lm(pk_score ~ group * time + pk1))
+  pooled_cont <- pool(fit_cont)
+  est_cont <- tidy(pooled_cont, conf.int = TRUE) %>%
+    filter(term == "group") %>%  
+    select(estimate, std.error, conf.low, conf.high, p.value) %>%
+    mutate(delta = d)
+  
+  delta_results_cont <- bind_rows(delta_results_cont, est_cont)
+}
+
+delta_results_cont$group<-"Acupuncture Treatment"
+ggplot(delta_results_cont, aes(x = estimate, y = delta)) +
+   geom_point(size = 4, color = "#a80050") +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +   
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
+  facet_wrap(~ group) +
+  labs(
+    title = "Treatment effect with δ-Adjustment (continuous)",
+    x = "Treatment Effect",
+    y = "Delta"
+  ) +
+  theme_minimal()+ 
+  theme(
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+```
+
+
