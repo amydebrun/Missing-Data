@@ -16,6 +16,7 @@ library(meta)
 library(dplyr)
 library(naniar)
 library(tidymodels)
+library(gtsummary)
 source("R scripts/Functions.R")
 source("R scripts/VITAL data formats.R")
 source("R scripts/Acupuncture data formats.R")
@@ -26,10 +27,6 @@ source("R scripts/Different Imputation Method.R")
 source("R scripts/Sensitive Analysis.R")
 ```
 
-To do
-- Sensitivity Analysis
-- Including BMI in Vital
-- Check if model fit correctly
 
 # Data summary
 
