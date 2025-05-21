@@ -10,6 +10,24 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+library(mice)
+library(tidyverse)
+library(haven)
+library(lme4)
+library(broom.mixed)
+library(meta)
+library(dplyr)
+library(naniar)
+library(tidymodels)
+library(gtsummary)
+source("R scripts/Functions.R")
+source("R scripts/VITAL data formats.R")
+source("R scripts/Acupuncture data formats.R")
+source("R scripts/Summary analysis.R")
+source("R scripts/Category time analysis.R")
+source("R scripts/Continuous time analysis.R")
+source("R scripts/Different Imputation Method.R")
+source("R scripts/Sensitive Analysis.R")
 ```
 
 # Recapitulation
@@ -23,6 +41,8 @@ knitr::opts_chunk$set(echo = FALSE)
 - Missing Completely At Random: $$P(R = 1 \mid Y, X) = P(R = 1)$$
 - Missing At Random: $$P(R = 1 \mid Y, X) = P(R = 1 \mid X)$$
 - Missing Not At Random: $$P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)$$
+- We can never confirm these assumptions but Little's MCAR Test can rule out the MCAR assumption
+
 
 # Our Datasets 
 
@@ -54,7 +74,7 @@ knitr::opts_chunk$set(echo = FALSE)
 - This model is predicts the missing values in $x_i$ if it were observed, these steps are repeated for $x_{i+1}$, $x_{i+2}$,..., $x_{i+p}$
 - We can use this process to create $m$ data sets with imputed values, typically 5 or 10 suffices. 
 
-## Estimating Treatment Effect 
+## Estimating Treatment Effects 
 
 - Simple Linear Regression Models: Outcome is modelled as a straight line 
 - Linear Mixed Effects Models: Extends the linear regression model by accounting for individual variability
@@ -76,3 +96,17 @@ $$\text{pk5} = \beta_0 + \beta_1 \cdot \text{group} + \beta_2 \cdot \text{pk1} +
 
 Linear Mixed Effects 2
 $$\text{pk5}_{ij} = \beta_0 + \beta_1 \cdot \text{group}_i + \beta_2 \cdot \text{pk1}_i + \beta_3 \cdot \text{pk2}_{ij} + b_{0i} + \varepsilon_{ij}$$
+
+## Acupuncture Results 
+
+
+```{r echo=FALSE}
+acu_plot_categorical
+```
+
+## Comparing when time is continous 
+
+```{r}
+acu_plot_compare
+```
+
