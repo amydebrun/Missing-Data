@@ -1,13 +1,15 @@
 
-All the works are contained in the *workflows* folder here.
+All the works are contained in the **workflows** folder here.
 
-This is the summary what's in there. *Number 1-2* are more related to the current stage.
+This is the summary what's in there. **Number 1-2** are more related to the current stage.
 
-*1. Missing_Value_Analysis.Rmd*
+If running **1. Missing_Value_Analysis.Rmd** offline, you will need at least to download **2. R scripts (folder)** and **4. Data (folder)** as well.
+
+**1. Missing_Value_Analysis.Rmd**
   - This is the main report file
   - Including summary results like tables and plots
 
-*2. R scripts (folder)*
+**2. R scripts (folder)**
   - This contains all r scripts used in the mail report file Missing_Value_Analysis.Rmd
   - Here is a brief summary of each scripts for
     - Function.R (functions like LOCF, MOCF, and to_long_format)
