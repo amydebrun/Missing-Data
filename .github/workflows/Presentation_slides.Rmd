@@ -1,0 +1,78 @@
+---
+title: Estimating Treatment Effects in Longitudinal Clinical Trials with Missing Data
+author:
+  - name: Amy Browne
+  - name: Tsz Mang Yip
+output:
+   ioslides_presentation:
+    css: styles.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Recapitulation
+
+# Project Background 
+
+## Missing Data
+
+## Missingness Mechanisms 
+
+- Missing Completely At Random: $$P(R = 1 \mid Y, X) = P(R = 1)$$
+- Missing At Random: $$P(R = 1 \mid Y, X) = P(R = 1 \mid X)$$
+- Missing Not At Random: $$P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)$$
+
+# Our Datasets 
+
+## Treatment of Acupuncture on Headache 
+
+## Treatment of Vitamin D and Fish Oil on Knee Pain
+
+# Handling Missing Data 
+
+## Complete Case Analysis 
+
+- Only analyse the cases where there are no missing data in any variables  
+- May be valid when data is MCAR only
+- Introduces selection bias 
+- Reduces statistical power 
+
+## Single Imputation
+
+-Replaces missing data with a single value 
+-Last observation carried forward
+-Mean observation carried forward 
+-Reduces variability in the results 
+
+## Multiple Imputation Using Chained Equations 
+
+- All missing data are imputed with values derived from observed data to act as placeholders
+- Starting with variable $x_i$ that contains missing data, remove the place holders in this variable 
+- Regress $x_i$ on remaining covariates $x_{i+1}$, $x_{i+2}$,..., $x_{i+p}$
+- This model is predicts the missing values in $x_i$ if it were observed, these steps are repeated for $x_{i+1}$, $x_{i+2}$,..., $x_{i+p}$
+- We can use this process to create $m$ data sets with imputed values, typically 5 or 10 suffices. 
+
+## Estimating Treatment Effect 
+
+- Simple Linear Regression Models: Outcome is modelled as a straight line 
+- Linear Mixed Effects Models: Extends the linear regression model by accounting for individual variability
+
+## Treatment Effect of Acupuncture 
+
+## Continous 
+
+Linear Regression Model 1
+$$\text{pk_score} = \beta_0 + \beta_1 \cdot \text{group} + \beta_2 \cdot \text{time} + \beta_3 \cdot (\text{group} \cdot \text{time}) + \beta_4 \cdot \text{pk1} + \varepsilon$$
+
+Linear Mixed Effects model 1
+$$\text{pk_score}_{ij} = \beta_0 + \beta_1 \cdot \text{group}_i + \beta_2 \cdot \text{time}_{ij} + \beta_3 \cdot (\text{group}_i \cdot \text{time}_{ij}) + \beta_4 \cdot \text{pk1}_i + b_{0i} + \varepsilon_{ij}$$
+
+## Categorical
+
+Linear Regression Model 2
+$$\text{pk5} = \beta_0 + \beta_1 \cdot \text{group} + \beta_2 \cdot \text{pk1} + \varepsilon$$
+
+Linear Mixed Effects 2
+$$\text{pk5}_{ij} = \beta_0 + \beta_1 \cdot \text{group}_i + \beta_2 \cdot \text{pk1}_i + \beta_3 \cdot \text{pk2}_{ij} + b_{0i} + \varepsilon_{ij}$$
