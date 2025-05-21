@@ -22,6 +22,7 @@ source("R scripts/Summary analysis.R")
 source("R scripts/Category time analysis.R")
 source("R scripts/Continuous time analysis.R")
 source("R scripts/Different Imputation Method.R")
+source("R scripts/Sensitive Analysis.R")
 ```
 
 To do
@@ -120,3 +121,10 @@ print(vital_impt_result_oil)
 # VITAL plot
 vital_plot_impt
 ```
+
+# Sensitive Analysis
+
+```{r}
+
+```
+
