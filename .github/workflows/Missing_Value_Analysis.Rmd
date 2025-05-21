@@ -15,6 +15,7 @@ library(broom.mixed)
 library(meta)
 library(dplyr)
 library(naniar)
+library(tidymodels)
 source("R scripts/Functions.R")
 source("R scripts/VITAL data formats.R")
 source("R scripts/Acupuncture data formats.R")
@@ -125,6 +126,50 @@ vital_plot_impt
 # Sensitive Analysis
 
 ```{r}
-
+# Acupuncture categorical
+delta_results_cat
+delta_result_cat_plot
+# Acupuncture continuous
+delta_results_cont_acu
+delta_results_cont_acu_plot
 ```
+
+```{r}
+# Fish oil categorical
+delta_results_cat_fishoil
+delta_results_cat_fishoil_plot
+# Fish oil continuous
+delta_results_cont_fishoil
+delta_results_cont_fishoil_plot
+```
+
+```{r}
+# VitD categorical
+delta_results_cat_vitd
+delta_results_cat_vitd_plot
+# VitD continuous
+delta_results_cont_vitd
+delta_results_cont_vitd_plot
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
