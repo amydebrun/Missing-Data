@@ -102,38 +102,38 @@ acu_summary
 | "midastouch"   | Weighted predictive mean matching       |
 
 
-
 ## Estimating Treatment Effects 
 
 - Simple Linear Regression Models: Outcome is modelled as a straight line 
 - Linear Mixed Effects Models: Extends the linear regression model by accounting for individual variability
 
+We use use both types of modelling on the different types of imputed data sets to see how the treatment effect estimates change.   
+
 ## Treatment Effect of Acupuncture 
 
-## Continous 
+When treating time as continuous:
+
+Estimand: Difference in mean headache score $pk_score$ at final time point of 12 months 
 
 Linear Regression Model 1
-$$\text{pk_score} = \beta_0 + \beta_1 \cdot \text{group} + \beta_2 \cdot \text{time} + \beta_3 \cdot (\text{group} \cdot \text{time}) + \beta_4 \cdot \text{pk1} + \varepsilon$$
+$$\text{pk_score} = \beta_0 + \beta_1 \text{group} + \beta_2  \text{time} + \beta_3  (\text{group}  \text{time}) + \beta_4  \text{pk1} + \varepsilon$$
 
 Linear Mixed Effects model 1
-$$\text{pk_score}_{ij} = \beta_0 + \beta_1 \cdot \text{group}_i + \beta_2 \cdot \text{time}_{ij} + \beta_3 \cdot (\text{group}_i \cdot \text{time}_{ij}) + \beta_4 \cdot \text{pk1}_i + b_{0i} + \varepsilon_{ij}$$
+$$\text{pk_score}_{ij} = \beta_0 + \beta_1 \text{group}_i + \beta_2  \text{time}_{ij} + \beta_3 (\text{group}_i  \text{time}_{ij}) + \beta_4 \text{pk1}_i + b_{0i} + \varepsilon_{ij}$$
 
 ## Categorical
 
+Estimand: Mean difference in headache score $pk5$ 
+
 Linear Regression Model 2
-$$\text{pk5} = \beta_0 + \beta_1 \cdot \text{group} + \beta_2 \cdot \text{pk1} + \varepsilon$$
+$$\text{pk5} = \beta_0 + \beta_1  \text{group} + \beta_2 \text{pk1} + \varepsilon$$
 
 Linear Mixed Effects 2
-$$\text{pk5}_{ij} = \beta_0 + \beta_1 \cdot \text{group}_i + \beta_2 \cdot \text{pk1}_i + \beta_3 \cdot \text{pk2}_{ij} + b_{0i} + \varepsilon_{ij}$$
+$$\text{pk5}_{ij} = \beta_0 + \beta_1  \text{group}_i + \beta_2 \text{pk1}_i + \beta_3  \text{pk2}_{ij} + b_{0i} + \varepsilon_{ij}$$
 
 ## Acupuncture Results 
 
-
-```{r echo=TRUE}
-acu_plot_categorical
-```
-
-## Comparing when time is continous 
+## Comparing when time is continous and categorical
 
 ```{r echo=TRUE}
 acu_plot_compare
