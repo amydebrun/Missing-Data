@@ -36,6 +36,12 @@ source("R scripts/Sensitive Analysis.R")
 
 ## Missing Data
 
+Missing data is defined as data that has not been stored for a variable in the observation of interest. A systematic review of articles regarding 62 studies found that:
+- 44% did not report missing data 
+- 69% did not report how missing data was handled
+
+This shows how missing data is a topic that is often negected even though it can cause biased results when hadled inappropriately. 
+
 ## Missingness Mechanisms 
 
 - Missing Completely At Random: $$P(R = 1 \mid Y, X) = P(R = 1)$$
@@ -43,10 +49,16 @@ source("R scripts/Sensitive Analysis.R")
 - Missing Not At Random: $$P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)$$
 - We can never confirm these assumptions but Little's MCAR Test can rule out the MCAR assumption
 
-
 # Our Datasets 
 
 ## Treatment of Acupuncture on Headache 
+
+- Randomised controlled trial to determine the treatment effect of acupuncture on chronic headache against a placebo
+
+```{r}
+acu_summary
+```
+
 
 ## Treatment of Vitamin D and Fish Oil on Knee Pain
 
@@ -61,10 +73,14 @@ source("R scripts/Sensitive Analysis.R")
 
 ## Single Imputation
 
--Replaces missing data with a single value 
--Last observation carried forward
--Mean observation carried forward 
--Reduces variability in the results 
+- Replaces missing data with a single value 
+- Last observation carried forward
+- Mean observation carried forward 
+- Reduces variability in the results 
+
+## Maximum Likelihood
+
+- Linear Mixed Effects Model 
 
 ## Multiple Imputation Using Chained Equations 
 
@@ -73,6 +89,19 @@ source("R scripts/Sensitive Analysis.R")
 - Regress $x_i$ on remaining covariates $x_{i+1}$, $x_{i+2}$,..., $x_{i+p}$
 - This model is predicts the missing values in $x_i$ if it were observed, these steps are repeated for $x_{i+1}$, $x_{i+2}$,..., $x_{i+p}$
 - We can use this process to create $m$ data sets with imputed values, typically 5 or 10 suffices. 
+
+## MICE function
+
+| Method         | Definition                              |
+|----------------|-----------------------------------------|
+| "pmm"          | Predictive mean matching                |
+| "norm.nob"     | Linear regression, ignoring model error |
+| "norm"         | Bayesian linear regression              |
+| "norm.predict" | Linear regression, predicted value      |
+| "sample"       | Random sample from $Y_O$                |
+| "midastouch"   | Weighted predictive mean matching       |
+
+
 
 ## Estimating Treatment Effects 
 
@@ -100,13 +129,13 @@ $$\text{pk5}_{ij} = \beta_0 + \beta_1 \cdot \text{group}_i + \beta_2 \cdot \text
 ## Acupuncture Results 
 
 
-```{r echo=FALSE}
+```{r echo=TRUE}
 acu_plot_categorical
 ```
 
 ## Comparing when time is continous 
 
-```{r}
+```{r echo=TRUE}
 acu_plot_compare
 ```
 

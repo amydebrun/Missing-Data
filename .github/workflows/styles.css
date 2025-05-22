@@ -1,43 +1,43 @@
-/* Apply logo to all slides */
+
 slide {
   background-image: url('https://sport.universityofgalway.ie/assets/img/logo2.png');
   background-repeat: no-repeat;
-  background-position: top right;  /* Adjust this for desired logo position */
-  background-size: 180px;         /* Adjust the size of the logo */
-  padding-top: 100px;              /* Space between top and content */
+  background-position: top right;
+  background-size: 180px;
+  padding-top: 100px;
   
-  background-color: #f8f8f8;      /* Light background */
-  color: #000033;                 /* Dark text color */
+  background-color: #f8f8f8;
+  color: #000033;
   font-family: Arial, sans-serif;
 }
 
-/* Title slide (first slide) styling */
+
 .title-slide {
-  background-color: #a80050;      /* Primary color */
+  background-color: #a80050;
   color: white !important;
   background-image: url('https://sport.universityofgalway.ie/assets/img/logo2.png');
   background-repeat: no-repeat;
   background-position: top right;
-  background-size: 180px;         /* Adjust logo size for the title slide */
+  background-size: 180px;
 }
 
-/* Title text styling (main title slide) */
+
 .title-slide h1 {
   font-size: 55pt;
   color: white;
   text-align: center;
 }
 
-/* Author text styling (main title slide) */
+
 .title-slide h2 {
   font-size: 35pt;
   color: white;
   text-align: center;
 }
 
-/* Section header slides (e.g., "# Data") */
+
 slide.title-slide:not(:first-of-type) {
-  background-color: #000033;     /* Dark background for section headers */
+  background-color: #000033;
   color: white;
 }
 
@@ -47,17 +47,31 @@ slide.title-slide:not(:first-of-type) h1 {
   text-align: center;
 }
 
-/* Section header slide title */
+
 slide h2 {
-  color: #84003d;                /* Secondary color */
-  border-bottom: 4px solid #a80050; /* Border under section titles */
+  color: #84003d;
+  border-bottom: 4px solid #a80050;
   padding-bottom: 10px;
   margin-bottom: 20px;
   font-size: 32pt;
 }
 
-/* Body text for all content slides */
+
 slide p {
   font-size: 20pt;
 }
 
+
+.left-right {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.left {
+  flex: 1;
+}
+
+.right {
+  flex: 1;
+}
