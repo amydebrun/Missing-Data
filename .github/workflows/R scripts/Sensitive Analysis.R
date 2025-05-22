@@ -108,12 +108,42 @@ delta_results_cont_acu_plot <- ggplot(delta_results_cont_acu, aes(x = estimate, 
     plot.background = element_rect(fill = "white", color = NA)
   )
 
+#COMBINING THE TWO PLOTS TOGETHER 
 
+delta_results_cat$tme<- "Categorical time"
+delta_results_cont_acu$tme <- "Continuous time"
+delta_combined_acu <- bind_rows(delta_results_cat, delta_results_cont_acu)
 
-
-
-
-
+delta_compare_acu <- ggplot(delta_combined_acu, aes(x = estimate, y = delta)) +
+  geom_point(aes(color = tme, shape = tme), size = 4) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high, color = tme), height = 0.4) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
+  scale_color_manual(
+    values = c(
+      "Categorical time" = "lawngreen",   
+      "Continuous time" = "#a80050"     
+    )
+  ) +
+  scale_shape_manual(
+    values = c(
+      "Categorical time" = 17,  
+      "Continuous time" = 16    
+    )
+  ) +
+  labs(
+    title = "Treatment Effect with δ-Adjustment in Acupuncture data",
+    x = "Treatment Effect",
+    y = "Delta",
+    color = "Time Type",
+    shape = "Time Type"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "right",
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
 
 
 
@@ -216,7 +246,42 @@ delta_results_cat_fishoil_plot <- ggplot(delta_results_cat_fishoil, aes(x = esti
   )
 
 
+# combine fishoil sensitivity analysis plots
 
+delta_results_cat_fishoil$tme<-"Categorical Time"
+delta_results_cont_fishoil$tme<- "Continuous Time"
+delta_combined_fishoil<-bind_rows(delta_results_cat_fishoil, delta_results_cont_fishoil)
+
+delta_combined_fishoil_plot <- ggplot(delta_combined_fishoil, aes(x = estimate, y = delta, color = tme, shape = tme)) +
+  geom_point(size = 4) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +   
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
+  scale_color_manual(
+    values = c(
+      "Categorical Time" = "lawngreen",   
+      "Continuous Time" = "#a80050"     
+    )
+  ) +
+  scale_shape_manual(
+    values = c(
+      "Categorical Time" = 17,  
+      "Continuous Time" = 16   
+    )
+  ) +
+  labs(
+    title = "Treatment Effect with δ-Adjustment in Fish Oil Data",
+    x = "Treatment Effect",
+    y = "Delta",
+    color = "Time Type",
+    shape = "Time Type"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "right",
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
 
 
 
@@ -315,6 +380,82 @@ delta_results_cat_vitd_plot <- ggplot(delta_results_cat_vitd, aes(x = estimate, 
   theme_minimal()+ 
   theme(
     strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+
+#combine vitamin d plots 
+delta_results_cat_vitd$tme<-"Categorical Time"
+delta_results_cont_vitd$tme<- "Continuous Time"
+delta_combined_vitd<-bind_rows(delta_results_cat_vitd, delta_results_cont_vitd)
+
+delta_combined_vitd_plot <- ggplot(delta_combined_vitd, aes(x = estimate, y = delta, color = tme, shape = tme)) +
+  geom_point(size = 4) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +   
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
+  scale_color_manual(
+    values = c(
+      "Categorical Time" = "lawngreen",   
+      "Continuous Time" = "#a80050"     
+    )
+  ) +
+  scale_shape_manual(
+    values = c(
+      "Categorical Time" = 17,  
+      "Continuous Time" = 16   
+    )
+  ) +
+  labs(
+    title = "Treatment Effect with δ-Adjustment in Vitamin D Data",
+    x = "Treatment Effect",
+    y = "Delta",
+    color = "Time Type",
+    shape = "Time Type"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "right",
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+
+# facetting vitamin d and fishoil delta approach 
+
+delta_combined_vitd$treatment <- "Vitamin D"
+delta_combined_fishoil$treatment <- "Fish Oil"
+delta_combined_vital <- bind_rows(delta_combined_vitd, delta_combined_fishoil)
+
+delta_combined_vital_plot <- ggplot(delta_combined_vital, aes(x = estimate, y = delta, color = tme, shape = tme)) +
+  geom_point(size = 4) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +   
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
+  scale_color_manual(
+    values = c(
+      "Categorical Time" = "lawngreen",   
+      "Continuous Time" = "#a80050"     
+    )
+  ) +
+  scale_shape_manual(
+    values = c(
+      "Categorical Time" = 17,  
+      "Continuous Time" = 16   
+    )
+  ) +
+  facet_wrap(~ treatment) +
+  labs(
+    title = "Treatment Effect with δ-Adjustment by Treatment",
+    x = "Treatment Effect",
+    y = "Delta",
+    color = "Time Type",
+    shape = "Time Type"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
     panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
     panel.background = element_rect(fill = "white", color = NA),
     plot.background = element_rect(fill = "white", color = NA)

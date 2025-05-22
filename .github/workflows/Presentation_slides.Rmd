@@ -37,6 +37,7 @@ source("R scripts/Sensitive Analysis.R")
 ## Missing Data
 
 Missing data is defined as data that has not been stored for a variable in the observation of interest. A systematic review of articles regarding 62 studies found that:
+
 - 44% did not report missing data 
 - 69% did not report how missing data was handled
 
@@ -53,7 +54,7 @@ This shows how missing data is a topic that is often negected even though it can
 
 ## Treatment of Acupuncture on Headache 
 
-- Randomised controlled trial to determine the treatment effect of acupuncture on chronic headache against a placebo
+- RCT to determine the effect of acupuncture on migraine against a placebo
 
 ```{r}
 acu_summary
@@ -66,7 +67,14 @@ acu_summary
 
 ## Complete Case Analysis 
 
-- Only analyse the cases where there are no missing data in any variables  
+- Only analyse the cases where there are no missing data in any variables
+
+Advantages:
+
+- Quick Application
+
+Disadvantages:
+
 - May be valid when data is MCAR only
 - Introduces selection bias 
 - Reduces statistical power 
@@ -74,13 +82,14 @@ acu_summary
 ## Single Imputation
 
 - Replaces missing data with a single value 
-- Last observation carried forward
-- Mean observation carried forward 
+- Last observation carried forward: the missing value is replaced by the preceding observed measure,
+- Mean observation carried forward: the missing value is replaced by the mean value of all observed measure.  
 - Reduces variability in the results 
 
 ## Maximum Likelihood
 
-- Linear Mixed Effects Model 
+- Linear Mixed Effects Model adjusts to missing data by using maximum likelihood estimation
+- It uses all observed data to measure the treatment effect without needing to use complete cases only. 
 
 ## Multiple Imputation Using Chained Equations 
 
@@ -133,9 +142,32 @@ $$\text{pk5}_{ij} = \beta_0 + \beta_1  \text{group}_i + \beta_2 \text{pk1}_i + \
 
 ## Acupuncture Results 
 
-## Comparing when time is continous and categorical
+Green: treatment effect when time is treated as continuous
+Maroon: treatment effect when time is treated as categorical 
 
-```{r echo=TRUE}
+```{r echo=FALSE}
 acu_plot_compare
+```
+
+## VITAL results 
+```{r echo=FALSE}
+vital_plot_compare
+```
+
+## Sensitivity Analysis 
+
+```{r}
+delta_compare_acu
+```
+
+```{r}
+delta_combined_vitd_plot
+```
+```{r}
+delta_combined_fishoil_plot
+```
+
+```{r}
+delta_combined_vital_plot
 ```
 
