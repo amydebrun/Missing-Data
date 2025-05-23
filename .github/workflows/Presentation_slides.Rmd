@@ -57,23 +57,26 @@ This shows how missing data is a topic that is often negected even though it can
 - RCT to determine the effect of acupuncture on migraine against a placebo
 
 ```{r}
-acu_summary
+acu_wide_miss_plot
 ```
 
 
 ## Treatment of Vitamin D and Fish Oil on Knee Pain
 
-# Handling Missing Data 
+- 2x2 RCT to compare effect of vitamin D and fish oil on knee pain
+
+```{r}
+vital_wide_miss_plot
+```
+
+# Approaches to Missing Data 
 
 ## Complete Case Analysis 
 
-- Only analyse the cases where there are no missing data in any variables
+- Only analyse the cases where there are no missing data in any variables, this is popular due to its swift application. 
+- Cases with missing data are ignored
 
-Advantages:
-
-- Quick Application
-
-Disadvantages:
+Limitations: 
 
 - May be valid when data is MCAR only
 - Introduces selection bias 
@@ -84,12 +87,17 @@ Disadvantages:
 - Replaces missing data with a single value 
 - Last observation carried forward: the missing value is replaced by the preceding observed measure,
 - Mean observation carried forward: the missing value is replaced by the mean value of all observed measure.  
-- Reduces variability in the results 
 
-## Maximum Likelihood
+Limitations:
+
+- Reduces variability in the results 
+- Assumes data is MCAR
+
+## Maximum Likelihood Estimation
 
 - Linear Mixed Effects Model adjusts to missing data by using maximum likelihood estimation
 - It uses all observed data to measure the treatment effect without needing to use complete cases only. 
+- This is suitable for when the outcome variable has NA values
 
 ## Multiple Imputation Using Chained Equations 
 
@@ -124,21 +132,21 @@ When treating time as continuous:
 
 Estimand: Difference in mean headache score $pk_score$ at final time point of 12 months 
 
-Linear Regression Model 1
-$$\text{pk_score} = \beta_0 + \beta_1 \text{group} + \beta_2  \text{time} + \beta_3  (\text{group}  \text{time}) + \beta_4  \text{pk1} + \varepsilon$$
+Linear Regression Model:
+$\small\text{pk_score} = \beta_0 + \beta_1 \text{group} + \beta_2  \text{time} + \beta_3  (\text{group}  \text{time}) + \beta_4  \text{pk1} + \varepsilon$
 
-Linear Mixed Effects model 1
-$$\text{pk_score}_{ij} = \beta_0 + \beta_1 \text{group}_i + \beta_2  \text{time}_{ij} + \beta_3 (\text{group}_i  \text{time}_{ij}) + \beta_4 \text{pk1}_i + b_{0i} + \varepsilon_{ij}$$
+Linear Mixed Effects model:
+$\small\text{pk_score}_{ij} = \beta_0 + \beta_1 \text{group}_i + \beta_2  \text{time}_{ij} + \beta_3 (\text{group}_i  \text{time}_{ij}) + \beta_4 \text{pk1}_i + b_{0i} + \varepsilon_{ij}$
 
 ## Categorical
 
 Estimand: Mean difference in headache score $pk5$ 
 
-Linear Regression Model 2
-$$\text{pk5} = \beta_0 + \beta_1  \text{group} + \beta_2 \text{pk1} + \varepsilon$$
+Linear Regression Model:
+$\small\text{pk5} = \beta_0 + \beta_1  \text{group} + \beta_2 \text{pk1} + \varepsilon$
 
-Linear Mixed Effects 2
-$$\text{pk5}_{ij} = \beta_0 + \beta_1  \text{group}_i + \beta_2 \text{pk1}_i + \beta_3  \text{pk2}_{ij} + b_{0i} + \varepsilon_{ij}$$
+Linear Mixed Effects:
+$\small\text{pk5}_{ij} = \beta_0 + \beta_1  \text{group}_i + \beta_2 \text{pk1}_i + \beta_3  \text{pk2}_{ij} + b_{0i} + \varepsilon_{ij}$
 
 ## Acupuncture Results 
 
@@ -154,18 +162,25 @@ acu_plot_compare
 vital_plot_compare
 ```
 
-## Sensitivity Analysis 
+## Sensitivity Analysis
+
+This estimates the treatment effect when data is analysed under different missingness assumptions. The $δ-Adjustment$ approach shows how the treatment effect changes when the data is missing not at random. 
+
+## Sensitivity Analysis Results : Acupuncture data
+
+Linear Model: 
+$\small\text{pk_score} = \beta_0 + \beta_1 \text{group} + \beta_2  \text{time} + \beta_3  (\text{group}  \text{time}) + \beta_4  \text{pk1} + \varepsilon$
 
 ```{r}
 delta_compare_acu
 ```
 
-```{r}
-delta_combined_vitd_plot
-```
-```{r}
-delta_combined_fishoil_plot
-```
+## Sensitivity Analysis Results : VITAL data
+
+Linear Model:
+
+$\small\text{pain_yr4} = \beta_0 + \beta_1 \text{fishoilactive} + \beta_2  \text{vitdactive} + \beta_3  \text{pain_base} + \epsilon$
+
 
 ```{r}
 delta_combined_vital_plot

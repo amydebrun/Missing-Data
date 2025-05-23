@@ -60,15 +60,19 @@ vital_wide_miss <- vital_wide %>%
   select(-c(matches("stiffness_"), matches("function_")))
 
 # Missing pattern
-acu_wide_miss_plot<- acu_wide_miss %>% ggplot(aes(x = miss_pattern, fill = factor(group))) +
+acu_wide_miss_plot <- acu_wide_miss %>% 
+  ggplot(aes(x = miss_pattern, fill = factor(group))) +
   geom_bar(position = "dodge") +
   labs(
-    title = "Missing Data Patterns by Group",
+    title = "Missing Data Patterns by Treatment group",
     x = "Missing Pattern (pk2_miss_pk5_miss)",
     y = "Count",
-    fill = "Group"
+    fill = "Treatment Group"
   ) +
+  scale_fill_manual(values = c("0" = "#a80050", "1" = "lawngreen"),
+                    labels = c("0" = "Placebo", "1" = "Acupuncture")) +  
   theme_minimal()
+
 
 vital_wide_miss_plot<- vital_wide_miss %>% ggplot(aes(x = miss_pattern, fill = factor(group))) +
   geom_bar(position = "dodge") +
@@ -77,7 +81,9 @@ vital_wide_miss_plot<- vital_wide_miss %>% ggplot(aes(x = miss_pattern, fill = f
     x = "Missing Pattern",
     y = "Count",
     fill = "Group"
-  ) +
+  ) + 
+  scale_fill_manual(values = c("Neither" = "#a80050", "Vitamin D only" = "lawngreen", 
+                               "Fish Oil only" = "olivedrab", "Both" = "#84003d")) +
   theme_minimal() +
   coord_flip()
 
