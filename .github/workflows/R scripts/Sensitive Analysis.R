@@ -126,7 +126,7 @@ delta_compare_acu <- ggplot(delta_combined_acu, aes(x = estimate, y = delta)) +
     )
   ) +
   labs(
-    title = "Treatment Effect with δ-Adjustment in Acupuncture data",
+    title = "",
     x = "Treatment Effect",
     y = "Delta",
     color = "Time Type",
@@ -444,7 +444,7 @@ delta_combined_vital_plot <- ggplot(delta_combined_vital, aes(x = estimate, y = 
   ) +
   facet_wrap(~ treatment) +
   labs(
-    title = "Treatment Effect with δ-Adjustment by Treatment",
+    title = "",
     x = "Treatment Effect",
     y = "Delta",
     color = "Time Type",

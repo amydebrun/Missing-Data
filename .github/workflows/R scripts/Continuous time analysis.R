@@ -268,7 +268,7 @@ vital_plot_table[,1] <- factor(c("CAA", "LOCF", "MOCF", "LR_MI_pmm", "LME", "LME
 vital_plot_compare <- ggplot(vital_plot_table, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
   geom_point(size = 4, aes(color = treatment)) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color="#a80050") +
   geom_point(aes(x = estimate.1), 
              size = 4, color = "lawngreen", shape = 17) + 
   geom_errorbarh(aes(xmin = conf.low.1, xmax = conf.high.1), 

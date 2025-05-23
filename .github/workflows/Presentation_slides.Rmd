@@ -32,8 +32,6 @@ source("R scripts/Sensitive Analysis.R")
 
 # Recapitulation
 
-# Project Background 
-
 ## Missing Data
 
 Missing data is defined as data that has not been stored for a variable in the observation of interest. A systematic review of articles regarding 62 studies found that:
@@ -145,7 +143,9 @@ $\small\text{pk_score} = \beta_0 + \beta_1 \text{group} + \beta_2  \text{time} +
 Linear Mixed Effects model:
 $\small\text{pk_score}_{ij} = \beta_0 + \beta_1 \text{group}_i + \beta_2  \text{time}_{ij} + \beta_3 (\text{group}_i  \text{time}_{ij}) + \beta_4 \text{pk1}_i + b_{0i} + \varepsilon_{ij}$
 
-## Categorical
+## Treatment Effect of Acupuncture 
+
+Treating time as categorical
 
 Estimand: Mean difference in headache score $pk5$ 
 
@@ -169,7 +169,7 @@ acu_plot_compare
 vital_plot_compare
 ```
 
-## Sensitivity Analysis Results : Acupuncture data
+## Sensitivity Analysis Results : Acupuncture 
 
 Linear Model: 
 $\small\text{pk_score} = \beta_0 + \beta_1 \text{group} + \beta_2  \text{time} + \beta_3  (\text{group}  \text{time}) + \beta_4  \text{pk1} + \varepsilon$
