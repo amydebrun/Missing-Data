@@ -3,13 +3,7 @@
 # Acupuncture 
 
 # Acupuncture categorical 
-MAR_imp_cat <- acu_compare_result %>%
-  filter(grepl("MI", Method)) %>%
-  select(Method, estimate, std.error ) 
-MAR_imp_cat# filtered out the multiple imputation methods suitable for MISSING AT RANDOM
-
-#categorical
-delta <- c(0, -10, -20,-30,-40)
+delta <- c(-5,-2,0,2,5)
 inlist <- c("sex", "age", "pk1")
 pred_cat <- quickpred(acu_wide, minpuc = 0.5, include = inlist)
 imp.default_cat <- mice(acu_wide, m = 1, maxit = 1, predictorMatrix = pred_cat, seed = 123, print= FALSE)
@@ -58,7 +52,7 @@ delta_result_cat_plot <- ggplot(delta_results_cat, aes(x = estimate, y = delta))
   )
 
 #continuous
-delta <- c(0, -10, -20,-30,-40)
+delta <- c(-5,-2,0,2,5)
 inlist <- c("sex", "age", "pk1")
 pred_cont <- quickpred(acu_long, minpuc = 0.5, include = inlist)
 imp.default_cont <- mice(acu_long, m = 1, maxit = 1, predictorMatrix = pred_cont, seed = 123, print= FALSE)
@@ -117,7 +111,7 @@ delta_combined_acu$group<-"Acupuncture"
 
 delta_compare_acu <- ggplot(delta_combined_acu, aes(x = estimate, y = delta)) +
   geom_point(aes(color = tme, shape = tme), size = 4) +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high, color = tme), height = 2) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high, color = tme), height = 0.4) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") + facet_wrap(~group, scales="free") +
   scale_color_manual(
     values = c(
@@ -152,7 +146,7 @@ delta_compare_acu <- ggplot(delta_combined_acu, aes(x = estimate, y = delta)) +
 ##VITAL FISHOIL
 
 #continuous
-delta <- c(0, -10, -20,-30, -40)
+delta <- c(-10,-5,-2,0,2,5,10)
 inlist <- c("sex", "ageyr", "bmi")
 pred_cont <- quickpred(vital_long, minpuc = 0.5, include = inlist)
 imp.default_cont <- mice(vital_long, m = 1, maxit = 1, predictorMatrix = pred_cont, seed = 123, print= FALSE)
@@ -291,7 +285,7 @@ delta_combined_fishoil_plot <- ggplot(delta_combined_fishoil, aes(x = estimate, 
 ##VITAL VITAMIN D
 
 #continuous
-delta <- c(0, -10, -20,-30,-40)
+delta <- c(-10,-5,-2,0,2,5,10)
 inlist <- c("sex", "ageyr", "bmi")
 pred_cont <- quickpred(vital_long, minpuc = 0.5, include = inlist)
 imp.default_cont <- mice(vital_long, m = 1, maxit = 1, predictorMatrix = pred_cont, seed = 123, print= FALSE)
@@ -434,7 +428,7 @@ delta_combined_vital <- bind_rows(delta_combined_vitd, delta_combined_fishoil)
 
 delta_combined_vital_plot <- ggplot(delta_combined_vital, aes(x = estimate, y = delta, color = tme, shape = tme)) +
   geom_point(size = 4) +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.8) +   
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
   scale_color_manual(
     values = c(

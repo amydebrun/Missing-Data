@@ -66,6 +66,7 @@ acu_plot_categorical
 ```
 
 ```{r}
+
 # Fish oil result
 print(cbind(properties, vital_result_oil))
 # VitD result
@@ -129,6 +130,8 @@ delta_result_cat_plot
 # Acupuncture continuous
 delta_results_cont_acu
 delta_results_cont_acu_plot
+
+delta_compare_acu
 ```
 
 ```{r}
@@ -156,6 +159,19 @@ delta_combined_vital_plot
 
 ```
 
+
+```{r}
+vital_miss <- sum(is.na(vital_long))
+vital_observed <- sum(!is.na(vital_long))
+percent_miss <- vital_miss / (vital_miss + vital_observed)
+percent_miss
+```
+```{r}
+acu_miss <- sum(is.na(acu_long))
+acu_observed <- sum(!is.na(acu_long))
+percent_miss <- acu_miss / (acu_miss + acu_observed)
+percent_miss
+```
 
 
 

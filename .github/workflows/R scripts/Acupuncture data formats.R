@@ -24,3 +24,9 @@ acu_long_cont <- to_long_format_acu_cont(acu_wide)
 # MICE long
 acu_mice_data_long_cont <- to_long_format_acu_cont_MICE(acu_mice_data_wide)
 acu_mice_data_obj_long_cont <- as.mids(acu_mice_data_long_cont)
+
+
+#rule of thumb for imputation
+acu_miss <- sum(is.na(acu_long))
+acu_observed <- sum(!is.na(acu_long))
+percent_miss <- acu_miss / (acu_miss + acu_observed)

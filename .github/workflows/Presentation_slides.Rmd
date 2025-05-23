@@ -98,12 +98,14 @@ Limitations:
 - Linear Mixed Effects Model adjusts to missing data by using maximum likelihood estimation
 - It uses all observed data to measure the treatment effect without needing to use complete cases only. 
 - This is suitable for when the outcome variable has NA values
+- Suitable for MAR and MCAR
 
 ## Multiple Imputation Using Chained Equations 
 
 - All missing data are imputed with values derived from observed data to act as placeholders
 - Starting with variable $x_i$ that contains missing data, remove the place holders in this variable 
 - Regress $x_i$ on remaining covariates $x_{i+1}$, $x_{i+2}$,..., $x_{i+p}$
+- $x_i = \beta_0 + \beta_1 x_{i+1} + \beta_2 x_{i+2} + ...+\beta_p x_{i+p} + \varepsilon$
 - This model is predicts the missing values in $x_i$ if it were observed, these steps are repeated for $x_{i+1}$, $x_{i+2}$,..., $x_{i+p}$
 - We can use this process to create $m$ data sets with imputed values, typically 5 or 10 suffices. 
 
@@ -117,6 +119,11 @@ Limitations:
 | "norm.predict" | Linear regression, predicted value      |
 | "sample"       | Random sample from $Y_O$                |
 | "midastouch"   | Weighted predictive mean matching       |
+
+
+## Sensitivity Analysis
+
+This estimates the treatment effect when data is analysed under different missingness assumptions. The $δ-Adjustment$ approach shows how the treatment effect changes when the data is missing not at random. 
 
 
 ## Estimating Treatment Effects 
@@ -161,10 +168,6 @@ acu_plot_compare
 ```{r echo=FALSE}
 vital_plot_compare
 ```
-
-## Sensitivity Analysis
-
-This estimates the treatment effect when data is analysed under different missingness assumptions. The $δ-Adjustment$ approach shows how the treatment effect changes when the data is missing not at random. 
 
 ## Sensitivity Analysis Results : Acupuncture data
 
