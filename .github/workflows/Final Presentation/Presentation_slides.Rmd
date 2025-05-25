@@ -155,37 +155,117 @@ $\small\text{pk5} = \beta_0 + \beta_1  \text{group} + \beta_2 \text{pk1} + \vare
 Linear Mixed Effects:
 $\small\text{pk5}_{ij} = \beta_0 + \beta_1  \text{group}_i + \beta_2 \text{pk1}_i + \beta_3  \text{pk2}_{ij} + b_{0i} + \varepsilon_{ij}$
 
-## Acupuncture Results 
+## Analysis summary
 
-Green: treatment effect when time is treated as continuous
-Maroon: treatment effect when time is treated as categorical 
+We have perform the following analysis.
+For simplicity, the only covariates included here are the group and outcome baseline.
 
-```{r echo=FALSE}
-acu_plot_compare
+1. Combination of different parameters
+  - Simple linear regression or LME
+  - Different imputation method
+  
+2. Changing estimands
+
+3. Different multiple impuation methods
+
+4. Sensitive analysis (shifting)
+
+## Combination of different parameters - summary
+
+|Abbreviations|Method|SLR/MLE|SI/MI|MI Method|
+|---|---|---|---|---|
+|CAA|Complete case analysis|SLR|N/A|N/A|
+|LOCF|Last observation carry forward|SLR|SI|Last observation|
+|MOCF|Mean observation carry forward|SLR|SI|Mean observation|
+|LME|LME only|LME|N/A|N/A|
+|MI|MI only|SLR|MI|Predictive mean method|
+|LME+MI|LME + MI|LME|MI|Predictive mean method|
+
+## Combination of different parameters - acu result
+
+```{r}
+acu_plot_categorical
 ```
 
-## VITAL results 
-```{r echo=FALSE}
+Linear Regression Model:
+$\small\text{pk5} = \beta_0 + \beta_1  \text{group} + \beta_2 \text{pk1} + \varepsilon$
+
+Linear Mixed Effects:
+$\small\text{pk5}_{ij} = \beta_0 + \beta_1  \text{group}_i + \beta_2  \text{pk2}_{ij} + b_{0i} + \varepsilon_{ij}$
+
+
+## Combination of different parameters - vital result
+
+```{r}
+vital_plot_categorical
+```
+
+Linear Regression Model:
+$\small\text{pain_yr4} = \beta_0 + \beta_1  \text{group} + \beta_2 \text{pain_baseline} + \varepsilon$
+
+Linear Mixed Effects:
+$\small\text{pain_yr4}_{ij} = \beta_0 + \beta_1  \text{group}_i + \beta_2  \text{pain_baseline}_{ij} + b_{0i} + \varepsilon_{ij}$
+
+## Changing estimands - summary
+
+In previous session, the estimand is:
+
+**The mean difference of outcome at the end of study** between groups
+Linear Regression Model:
+$\small\text{outcome_end} = \beta_0 + \beta_1  \text{group} + \beta_2 \text{outcome_baseline} + \varepsilon$
+
+In this session we are testing if we change the estimand to:
+**The difference of outcome change rates over time** between groups
+Linear Regression Model:
+$\small\text{outcome_end} = \beta_0 + \beta_1  \text{group} + \beta_2 \text{outcome_baseline} + \beta_3 \text{time} + \varepsilon$
+
+## Changing estimands - result
+
+```{r}
+acu_plot_compare
 vital_plot_compare
 ```
 
-## Sensitivity Analysis Results : Acupuncture 
+Purple: Before changing estimand
+Green: After changing estimand
 
-Linear Model: 
-$\small\text{pk_score} = \beta_0 + \beta_1 \text{group} + \beta_2  \text{time} + \beta_3  (\text{group}  \text{time}) + \beta_4  \text{pk1} + \varepsilon$
+## Different imputation methods
+
+| Imputation Mthods                       |
+|-----------------------------------------|
+| Linear regression predicted value      |
+| Linear regression predicted value + noise|
+| Random parameters |
+| Predictive mean matching                |
+| Weighted predictive mean matching       |
+| Bayesian classification                 |
+
+## Different imputation methods
+
+```{r}
+!("Imputation Method.png")
+```
+
+## Different imputation methods - Result
+
+```{r}
+acu_plot_imp
+vital_plot_impt
+```
+
+## Sensitive analysis
 
 ```{r}
 delta_compare_acu
+delta_combined_fishoil_plot
+delta_combined_vitd_plot
 ```
 
-## Sensitivity Analysis Results : VITAL data
+## Conclusion
 
-Linear Model:
+So far, for both data sets. There is no significant impact observed when we apply different missing data analysis methods.
 
-$\small\text{pain_yr4} = \beta_0 + \beta_1 \text{fishoilactive} + \beta_2  \text{vitdactive} + \beta_3  \text{pain_base} + \epsilon$
+Note at the stage we haven't include covaraites yet. Which might not be a big change for the acupuncture data set, as there are no missing value in those covariates.
 
-
-```{r}
-delta_combined_vital_plot
-```
+But the VITAL data set have missing value in various covariates in different extents. Also have more data collection tiem points. So we expect to see more impact between methods.
 
