@@ -1,7 +1,7 @@
 
 All the works are contained in the **workflows** folder here.
 
-This is the summary what's in there. **Number 1-2** are more related to the current stage.
+This is the summary of what's in there. **Number 1-2** are more related to the current stage.
 
 If running **1. Missing_Value_Analysis.Rmd** offline, you will need at least to download **2. R scripts (folder)** and **4. Data (folder)** as well.
 
@@ -33,3 +33,6 @@ If running **1. Missing_Value_Analysis.Rmd** offline, you will need at least to 
   
 6. Outdated (folder)
   - Codes are not likely to be used anymore
+
+7. Final Presentation (folder)
+  - Material for the final presentation
