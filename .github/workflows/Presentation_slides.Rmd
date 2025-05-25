@@ -242,9 +242,8 @@ Green: After changing estimand
 
 ## Different imputation methods
 
-```{r}
-![Different imputation methods](images/Impute Method.png)
-```
+![Different imputation methods](Final Presentation/Impute Method.png)
+
 
 ## Different imputation methods - Result
 
