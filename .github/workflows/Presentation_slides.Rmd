@@ -6,9 +6,12 @@ author:
 output:
    ioslides_presentation:
     css: styles.css
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, cache=TRUE}
 knitr::opts_chunk$set(echo = FALSE)
 library(mice)
 library(tidyverse)
@@ -30,45 +33,47 @@ source("R scripts/Category time analysis.R")
 source("R scripts/Continuous time analysis.R")
 source("R scripts/Different Imputation Method.R")
 source("R scripts/Sensitive Analysis.R")
-source("R scripts/variable_tables.R")
 ```
 
 # Recapitulation
 
 ## Missing Data
 
-Missing data is defined as data that has not been stored for a variable in the observation of interest. A systematic review of articles regarding 62 studies found that:
+Missing data is defined as data that has not been stored for a variable
+in the observation of interest. A systematic review of articles
+regarding 62 studies found that:
 
-- 44% did not report missing data 
-- 69% did not report how missing data was handled
+-   44% did not report missing data
+-   69% did not report how missing data was handled
 
-This shows how missing data is a topic that is often neglected even though it can cause biased results when handled inappropriately. 
+This shows how missing data is a topic that is often neglected even
+though it can cause biased results when handled inappropriately.
 
-## Missingness Mechanisms 
+## Missingness Mechanisms
 
-- Missing Completely At Random: $$P(R = 1 \mid Y, X) = P(R = 1)$$
-- Missing At Random: $$P(R = 1 \mid Y, X) = P(R = 1 \mid X)$$
-- Missing Not At Random: $$P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)$$
-- We can never confirm these assumptions but Little's MCAR Test can rule out the MCAR assumption
+-   Missing Completely At Random: $$P(R = 1 \mid Y, X) = P(R = 1)$$
+-   Missing At Random: $$P(R = 1 \mid Y, X) = P(R = 1 \mid X)$$
+-   Missing Not At Random: $$P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)$$
+-   We can never confirm these assumptions but Little's MCAR Test can
+    rule out the MCAR assumption
 
-# Our Datasets 
+# Our Datasets
 
-## Treatment of Acupuncture on Headache 
+## Treatment of Acupuncture on Headache
 
-- RCT to determine the effect of acupuncture on migraine against a placebo
+-   RCT to determine the effect of acupuncture on migraine against a
+    placebo
 
 ```{r}
 acu_wide_miss_plot
 ```
 
-## Treatment of Acupuncture on Headache 
+## Treatment of Acupuncture on Headache
 
 ```{r, echo = FALSE, results = 'asis'}
 kable(acu_vars, format = "html") %>%
   kable_styling(font_size = 8) 
 ```
-
-
 
 ## Treatment of Vitamin D and Fish Oil on Knee Pain
 
@@ -85,45 +90,56 @@ kable(vital_vars, format = "html") %>%
   kable_styling(font_size = 8) 
 ```
 
-# Approaches to Missing Data 
+# Approaches to Missing Data
 
-## Complete Case Analysis 
+## Complete Case Analysis
 
-- Only analyse the cases where there are no missing data in any variables, this is popular due to its swift application. 
-- Cases with missing data are ignored
-
-Limitations: 
-
-- May be valid when data is MCAR only
-- Introduces selection bias 
-- Reduces statistical power 
-
-## Single Imputation
-
-- Replaces missing data with a single value 
-- Last observation carried forward: the missing value is replaced by the preceding observed measure,
-- Mean observation carried forward: the missing value is replaced by the mean value of all observed measure.  
+-   Only analyse the cases where there are no missing data in any
+    variables, this is popular due to its swift application.
+-   Cases with missing data are ignored
 
 Limitations:
 
-- Reduces variability in the results 
-- Assumes data is MCAR
+-   May be valid when data is MCAR only
+-   Introduces selection bias
+-   Reduces statistical power
+
+## Single Imputation
+
+-   Replaces missing data with a single value
+-   Last observation carried forward: the missing value is replaced by
+    the preceding observed measure,
+-   Mean observation carried forward: the missing value is replaced by
+    the mean value of all observed measure.
+
+Limitations:
+
+-   Reduces variability in the results
+-   Assumes data is MCAR
 
 ## Maximum Likelihood Estimation
 
-- Linear Mixed Effects Model adjusts to missing data by using maximum likelihood estimation
-- It uses all observed data to measure the treatment effect without needing to use complete cases only. 
-- This is suitable for when the outcome variable has NA values
-- Suitable for MAR and MCAR
+-   Linear Mixed Effects Model adjusts to missing data by using maximum
+    likelihood estimation
+-   It uses all observed data to measure the treatment effect without
+    needing to use complete cases only.
+-   This is suitable for when the outcome variable has NA values
+-   Suitable for MAR and MCAR
 
-## Multiple Imputation Using Chained Equations 
+## Multiple Imputation Using Chained Equations
 
-- All missing data are imputed with values derived from observed data to act as placeholders
-- Starting with variable $x_i$ that contains missing data, remove the place holders in this variable 
-- Regress $x_i$ on remaining covariates $x_{i+1}$, $x_{i+2}$,..., $x_{i+p}$
-- $x_i = \beta_0 + \beta_1 x_{i+1} + \beta_2 x_{i+2} + ...+\beta_p x_{i+p} + \varepsilon$
-- This model is predicts the missing values in $x_i$ if it were observed, these steps are repeated for $x_{i+1}$, $x_{i+2}$,..., $x_{i+p}$
-- We can use this process to create $m$ data sets with imputed values, typically 5 or 10 suffices. 
+-   All missing data are imputed with values derived from observed data
+    to act as placeholders
+-   Starting with variable $x_i$ that contains missing data, remove the
+    place holders in this variable
+-   Regress $x_i$ on remaining covariates $x_{i+1}$, $x_{i+2}$,...,
+    $x_{i+p}$
+-   $x_i = \beta_0 + \beta_1 x_{i+1} + \beta_2 x_{i+2} + ...+\beta_p x_{i+p} + \varepsilon$
+-   This model is predicts the missing values in $x_i$ if it were
+    observed, these steps are repeated for $x_{i+1}$, $x_{i+2}$,...,
+    $x_{i+p}$
+-   We can use this process to create $m$ data sets with imputed values,
+    typically 5 or 10 suffices.
 
 ## MICE function
 
@@ -136,24 +152,28 @@ Limitations:
 | "sample"       | Random sample from $Y_O$                |
 | "midastouch"   | Weighted predictive mean matching       |
 
-
 ## Sensitivity Analysis
 
-This estimates the treatment effect when data is analysed under different missingness assumptions. The $δ-Adjustment$ approach shows how the treatment effect changes when the data is missing not at random. 
+This estimates the treatment effect when data is analysed under
+different missingness assumptions. The $δ-Adjustment$ approach shows how
+the treatment effect changes when the data is missing not at random.
 
+## Estimating Treatment Effects
 
-## Estimating Treatment Effects 
+-   Simple Linear Regression Models: Outcome is modelled as a straight
+    line
+-   Linear Mixed Effects Models: Extends the linear regression model by
+    accounting for individual variability
 
-- Simple Linear Regression Models: Outcome is modelled as a straight line 
-- Linear Mixed Effects Models: Extends the linear regression model by accounting for individual variability
+We use use both types of modelling on the different types of imputed
+data sets to see how the treatment effect estimates change.
 
-We use use both types of modelling on the different types of imputed data sets to see how the treatment effect estimates change.   
-
-## Treatment Effect of Acupuncture 
+## Treatment Effect of Acupuncture
 
 When treating time as continuous:
 
-Estimand: Difference in mean headache score $pk_score$ at final time point of 12 months 
+Estimand: Difference in mean headache score $pk_score$ at final time
+point of 12 months
 
 Linear Regression Model:
 $\small\text{pk_score} = \beta_0 + \beta_1 \text{group} + \beta_2  \text{time} + \beta_3  (\text{group}  \text{time}) + \beta_4  \text{pk1} + \varepsilon$
@@ -161,11 +181,11 @@ $\small\text{pk_score} = \beta_0 + \beta_1 \text{group} + \beta_2  \text{time} +
 Linear Mixed Effects model:
 $\small\text{pk_score}_{ij} = \beta_0 + \beta_1 \text{group}_i + \beta_2  \text{time}_{ij} + \beta_3 (\text{group}_i  \text{time}_{ij}) + \beta_4 \text{pk1}_i + b_{0i} + \varepsilon_{ij}$
 
-## Treatment Effect of Acupuncture 
+## Treatment Effect of Acupuncture
 
 Treating time as categorical
 
-Estimand: Mean difference in headache score $pk5$ 
+Estimand: Mean difference in headache score $pk5$
 
 Linear Regression Model:
 $\small\text{pk5} = \beta_0 + \beta_1  \text{group} + \beta_2 \text{pk1} + \varepsilon$
@@ -173,116 +193,119 @@ $\small\text{pk5} = \beta_0 + \beta_1  \text{group} + \beta_2 \text{pk1} + \vare
 Linear Mixed Effects:
 $\small\text{pk5}_{ij} = \beta_0 + \beta_1  \text{group}_i + \beta_2 \text{pk1}_i + \beta_3  \text{pk2}_{ij} + b_{0i} + \varepsilon_{ij}$
 
-## Analysis summary
+# Result
 
-We have perform the following analysis.
-For simplicity, the only covariates included here are the group and outcome baseline.
+## Analysis Summary
 
-1. Combination of different parameters
-  - Simple linear regression or LME
-  - Different imputation method
-  
-2. Changing estimands
+We performed the following analyses.  
+For simplicity, only group and baseline outcome are included as covariates.
 
-3. Different multiple impuation methods
+1. Combination of different parameters  
+   - Simple Linear Regression (SLR) or Linear Mixed Effects (LME)  
+   - Different imputation methods  
 
-4. Sensitive analysis (shifting)
+2. Changing estimands  
 
-## Combination of different parameters - summary
+3. Different multiple imputation methods  
 
-|Abbreviations|Method|SLR/MLE|SI/MI|MI Method|
-|---|---|---|---|---|
-|CAA|Complete case analysis|SLR|N/A|N/A|
-|LOCF|Last observation carry forward|SLR|SI|Last observation|
-|MOCF|Mean observation carry forward|SLR|SI|Mean observation|
-|LME|LME only|LME|N/A|N/A|
-|MI|MI only|SLR|MI|Predictive mean method|
-|LME+MI|LME + MI|LME|MI|Predictive mean method|
+4. Sensitivity analysis (delta shift method)
 
-## Combination of different parameters - acu result
+## Combination of Different Parameters – Summary
 
-```{r}
+| Abbreviation | Method                        | SLR/LME | SI/MI | MI Method                 |
+|--------------|-------------------------------|---------|-------|---------------------------|
+| CAA          | Complete Case Analysis        | SLR     | N/A   | N/A                       |
+| LOCF         | Last Observation Carry Forward| SLR     | SI    | Last Observation          |
+| MOCF         | Mean Observation Carry Forward| SLR     | SI    | Mean Observation          |
+| LME          | LME Only                      | LME     | N/A   | N/A                       |
+| MI           | MI Only                       | SLR     | MI    | Predictive Mean Matching  |
+| LME+MI       | LME + MI                      | LME     | MI    | Predictive Mean Matching  |
+
+## Combination of Different Parameters – ACU Result
+
+```{r layout="two-columns"}
+par(mfrow = c(1, 2))
 acu_plot_categorical
 ```
 
-Linear Regression Model:
-$\small\text{pk5} = \beta_0 + \beta_1  \text{group} + \beta_2 \text{pk1} + \varepsilon$
+$\small \text{pk5} = \beta_0 + \beta_1 \text{group} + \beta_2 \text{pk1} + \varepsilon$
 
-Linear Mixed Effects:
-$\small\text{pk5}_{ij} = \beta_0 + \beta_1  \text{group}_i + \beta_2  \text{pk2}_{ij} + b_{0i} + \varepsilon_{ij}$
+$\small \text{pk5}_{ij} = \beta_0 + \beta_1 \text{group}_i + \beta_2 \text{pk2}_{ij} + b_{0i} + \varepsilon_{ij}$
 
+## Combination of Different Parameters – VITAL Result
 
-## Combination of different parameters - vital result
-
-```{r}
+```{r layout="two-columns"}
+par(mfrow = c(1, 2))
 vital_plot_categorical
 ```
 
-Linear Regression Model:
-$\small\text{pain_yr4} = \beta_0 + \beta_1  \text{group} + \beta_2 \text{pain_baseline} + \varepsilon$
+$\small \text{pain\_yr4} = \beta_0 + \beta_1 \text{group} + \beta_2 \text{pain\_baseline} + \varepsilon$
 
-Linear Mixed Effects:
-$\small\text{pain_yr4}_{ij} = \beta_0 + \beta_1  \text{group}_i + \beta_2  \text{pain_baseline}_{ij} + b_{0i} + \varepsilon_{ij}$
+$\small \text{pain\_yr4}_{ij} = \beta_0 + \beta_1 \text{group}_i + \beta_2 \text{pain\_baseline}_{ij} + b_{0i} + \varepsilon_{ij}$
 
-## Changing estimands - summary
+## Changing Estimands – Summary
 
-In previous session, the estimand is:
+In the previous session, the estimand was:  
+**Mean difference in outcome at the end of the study** between groups.
 
-**The mean difference of outcome at the end of study** between groups
-Linear Regression Model:
-$\small\text{outcome_end} = \beta_0 + \beta_1  \text{group} + \beta_2 \text{outcome_baseline} + \varepsilon$
+$\small \text{outcome\_end} = \beta_0 + \beta_1 \text{group} + \beta_2 \text{outcome\_baseline} + \varepsilon$
 
-In this session we are testing if we change the estimand to:
-**The difference of outcome change rates over time** between groups
-Linear Regression Model:
-$\small\text{outcome_end} = \beta_0 + \beta_1  \text{group} + \beta_2 \text{outcome_baseline} + \beta_3 \text{time} + \varepsilon$
+Now we test an alternative estimand:  
+**Difference in the rate of outcome change over time** between groups.
 
-## Changing estimands - result
+$\small \text{outcome\_end} = \beta_0 + \beta_1 \text{group} + \beta_2 \text{outcome\_baseline} + \beta_3 \text{time} + \varepsilon$
 
-```{r}
+## Changing Estimands – Result
+
+```{r layout="two-columns"}
+par(mfrow = c(1, 2))
 acu_plot_compare
 vital_plot_compare
 ```
 
-Purple: Before changing estimand
+Purple: Before changing estimand  
 Green: After changing estimand
 
-## Different imputation methods
+## Different Imputation Methods
 
-| Imputation Mthods                       |
-|-----------------------------------------|
-| Linear regression predicted value      |
-| Linear regression predicted value + noise|
-| Random parameters |
-| Predictive mean matching                |
-| Weighted predictive mean matching       |
-| Bayesian classification                 |
+| Imputation Methods                          |
+|---------------------------------------------|
+| Linear Regression Predicted Value           |
+| Linear Regression Predicted Value + Noise   |
+| Random Parameters                           |
+| Predictive Mean Matching                    |
+| Weighted Predictive Mean Matching           |
+| Bayesian Classification                     |
 
-## Different imputation methods
+## Different Imputation Methods – Illustration
 
 ![Different imputation methods](Final Presentation/Impute Method.png)
 
+## Different Imputation Methods – Result
 
-## Different imputation methods - Result
-
-```{r}
+```{r layout="two-columns"}
+par(mfrow = c(1, 2))
 acu_plot_imp
 vital_plot_impt
 ```
 
-## Sensitive analysis
+## Sensitivity Analysis (Delta Method)
 
-```{r}
+```{r layout="two-columns"}
+par(mfrow = c(1, 2))
 delta_compare_acu
 delta_combined_fishoil_plot
+```
+
+```{r layout="two-columns"}
+par(mfrow = c(1, 2))
 delta_combined_vitd_plot
 ```
 
 ## Conclusion
 
-So far, for both data sets. There is no significant impact observed when we apply different missing data analysis methods.
+So far, for both datasets, no significant impact has been observed across different missing data analysis methods.
 
-Note at the stage we haven't include covaraites yet. Which might not be a big change for the acupuncture data set, as there are no missing value in those covariates.
+Note: At this stage, we have not included covariates yet. This may not make much difference for the acupuncture dataset, since there are no missing values in those covariates.
 
-But the VITAL data set have missing value in various covariates in different extents. Also have more data collection tiem points. So we expect to see more impact between methods.
-
+However, the VITAL dataset contains missing values in several covariates to varying extents and includes more frequent data collection time points. Therefore, we expect to see greater variation across methods in that dataset.
