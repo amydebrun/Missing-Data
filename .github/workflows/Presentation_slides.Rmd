@@ -39,7 +39,7 @@ Missing data is defined as data that has not been stored for a variable in the o
 - 44% did not report missing data 
 - 69% did not report how missing data was handled
 
-This shows how missing data is a topic that is often negected even though it can cause biased results when hadled inappropriately. 
+This shows how missing data is a topic that is often neglected even though it can cause biased results when handled inappropriately. 
 
 ## Missingness Mechanisms 
 
@@ -58,6 +58,21 @@ This shows how missing data is a topic that is often negected even though it can
 acu_wide_miss_plot
 ```
 
+## Treatment of Acupuncture on Headache 
+
+| **Variable Name** | **Variable Description**                        |
+| ----------------- | ------------------------------------------------ |
+| `id`              | Patient ID code                                  |
+| `age`             | Age                                              |
+| `sex`             | Sex; female (1) vs. male (0)                     |
+| `migraine`        | Diagnosis; migraine (1) vs. tension-type (0)     |
+| `chronicity`      | Number of years of headache disorder             |
+| `acupuncturist`   | Acupuncturist ID code                            |
+| `practice_id`     | GP practice ID                                   |
+| `group`           | Treatment group; acupuncture (1) vs. control (0) |
+| `pk1`, `pk2`, `pk5`  | Headache severity score at baseline, 3 months, 12 months|
+| `f1`, `f2`,`f5`   | Headache frequency at baseline, 3 months, 12 months|
+
 
 ## Treatment of Vitamin D and Fish Oil on Knee Pain
 
@@ -66,6 +81,32 @@ acu_wide_miss_plot
 ```{r}
 vital_wide_miss_plot
 ```
+
+## Treatment of Vitamin D and Fish Oil on Knee Pain
+
+Variable_Name       | Description|
+ -------------------|---------------------------------------------------------------|
+Subject_ID          | Subject ID / Study ID|
+vitdactive          | Randomization to active Vitamin D: 1 = Active, 0 = Placebo|
+fishoilactive       | Randomization to active Omega-3 fatty acids: 1 = Active, 0 = Placebo|
+sex                 | Sex: 1 = Male, 2 = Female|
+ageyr               | Age at randomization (years, truncated at 90+)|
+bmi                 | Body mass index at randomization (kg/m²)|
+KneePainFreq        | Frequency of knee pain: 1 = Never, 2 = <1 day/wk, 3 = 1–2 days/wk, 4 = 3–6 days/wk, 5 = Daily|
+KneesReplacedV2     | Prior total knee replacement: 1 = Yes, 2 = No|
+bikneepain          | Bilateral knee pain: 1 = Yes, 0 = No|
+unikneepain         | Unilateral knee pain: 1 = Yes, 0 = No|
+tylenolbase         | Tylenol use at baseline: 1 = Never, 2 = Occasional, 3 = Daily, 9 = Missing|
+nsaidsbase          | NSAIDs use at baseline: 1 = Never, 2 = Occasional, 3 = Daily, 9 = Missing|
+strongerbase        | Analgesics use at baseline: 1 = Never, 2 = Occasional, 3 = Daily, 9 = Missing|
+pain_base           | WOMAC Pain score at baseline|
+function_base       | WOMAC Function score at baseline|
+stiffness_base      | WOMAC Stiffness score at baseline|
+pain_yrX            | WOMAC Pain score at follow-up|
+function_yrX        | WOMAC Function score at follow-up |
+stiffness_yrX       | WOMAC Stiffness score at follow-up|
+
+
 
 # Approaches to Missing Data 
 
