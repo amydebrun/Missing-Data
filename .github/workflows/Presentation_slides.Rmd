@@ -33,7 +33,6 @@ source("R scripts/Category time analysis.R")
 source("R scripts/Continuous time analysis.R")
 source("R scripts/Different Imputation Method.R")
 source("R scripts/Sensitive Analysis.R")
-source("R scripts/variable_tables.R")
 ```
 
 # Background
@@ -58,7 +57,7 @@ This is proof that missing data is becoming recognised as an issue, yet there is
 -   We can never confirm these assumptions but Little's MCAR Test can
     rule out the MCAR assumption
 
-# Study Design & Study Characters
+# Study Design & Study Characteristics
 
 ## Treatment of Acupuncture on Headache
 
@@ -71,12 +70,6 @@ acu_wide_miss_plot
 
 ## Treatment of Acupuncture on Headache
 
-```{r, echo = FALSE, results = 'asis'}
-kable(acu_vars, format = "html") %>%
-  kable_styling(font_size = 8) 
-```
-
-
 ## Treatment of Vitamin D and Fish Oil on Knee Pain
 
 2x2 RCT to compare effect of vitamin D and fish oil on knee pain
@@ -87,10 +80,6 @@ vital_wide_miss_plot
 
 ## Treatment of Vitamin D and Fish Oil on Knee Pain
 
-```{r, echo = FALSE, results = 'asis'}
-kable(vital_vars, format = "html") %>%
-  kable_styling(font_size = 8) 
-```
 
 # Missingness in data
 
