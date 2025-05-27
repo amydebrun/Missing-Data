@@ -266,13 +266,13 @@ vital_plot_table[,1] <- factor(c("CAA", "LOCF", "MOCF", "LR_MI_pmm", "LME", "LME
                              levels = rev(c("CAA", "LOCF", "MOCF", "LR_MI_pmm", "LME", "LME_MI_pmm")))
 
 vital_plot_compare <- ggplot(vital_plot_table, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
-  geom_point(size = 4, aes(color = treatment)) +
+  geom_point(size = 4, aes(color = treatment), color="#a80050", position = position_nudge(y = 0.15)) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color="#a80050") +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color="#a80050", position = position_nudge(y = 0.15)) +
   geom_point(aes(x = estimate.1), 
-             size = 4, color = "lawngreen", shape = 17) + 
+             size = 4, color = "lawngreen", shape = 17, position = position_nudge(y = -0.15)) + 
   geom_errorbarh(aes(xmin = conf.low.1, xmax = conf.high.1), 
-                 height = 0.4, color = "lawngreen") +
+                 height = 0.4, color = "lawngreen", position = position_nudge(y = -0.15)) +
   facet_wrap(~ treatment, scales = "free_x") +
   labs(
     x = "Treatment Effect",
@@ -297,12 +297,12 @@ acu_plot_table[,1] <- factor(c("CAA", "LOCF", "MOCF", "LR_MI_pmm", "LME", "LME_M
                              levels = rev(c("CAA", "LOCF", "MOCF", "LR_MI_pmm", "LME", "LME_MI_pmm")))
 acu_plot_table$group<-"Acupuncture"
 acu_plot_compare <- ggplot(acu_plot_table, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
-  geom_point(size = 4, color = "#a80050") + 
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color = "#a80050") + 
+  geom_point(size = 4, color = "#a80050", position = position_nudge(y = 0.15)) + 
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color = "#a80050", position = position_nudge(y = 0.15)) + 
   geom_point(aes(x = estimate.1), 
-             size = 4, color = "lawngreen", shape = 17) + 
+             size = 4, color = "lawngreen", shape = 17, position = position_nudge(y = -0.15)) + 
   geom_errorbarh(aes(xmin = conf.low.1, xmax = conf.high.1), 
-                 height = 0.4, color = "lawngreen") + facet_wrap(~group)+
+                 height = 0.4, color = "lawngreen", position = position_nudge(y = -0.15)) + facet_wrap(~group)+
   geom_vline(xintercept = 0, linetype="dashed", color="red") +
   labs(
     x = "Treatment Effect",
