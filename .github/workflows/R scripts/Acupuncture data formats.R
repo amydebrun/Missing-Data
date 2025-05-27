@@ -26,7 +26,10 @@ acu_long_cont <- acu_long_cont %>%
   mutate(time_c = time - 12)
 # MICE long
 acu_mice_data_long_cont <- to_long_format_acu_cont_MICE(acu_mice_data_wide)
+acu_mice_data_long_cont <- acu_mice_data_long_cont %>%
+  mutate(time_c = time - 12)
 acu_mice_data_obj_long_cont <- as.mids(acu_mice_data_long_cont)
+
 
 
 #rule of thumb for imputation

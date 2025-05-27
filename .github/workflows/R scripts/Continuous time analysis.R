@@ -44,7 +44,7 @@ acu_LME_cont_result <- tidy(acu_LME_cont, conf.int = TRUE, conf.method = "Wald")
 
 # LME + MI with mice default
 acu_LME_MI_default_cont <- with(acu_mice_data_obj_long_cont, 
-                           lmer(pk_score ~ group*time + pk1 + (1|id), data = acu_long_cont))
+                                lmer(pk_score ~ group*(time_c) + pk1 + (1|id)))
 acu_LME_MI_default_cont_pool <- pool(acu_LME_MI_default_cont)
 acu_LME_MI_default_cont_result <- tidy(acu_LME_MI_default_cont_pool, conf.int = TRUE, conf.method = "Wald") %>%
   filter(term == "group") %>%
@@ -95,7 +95,7 @@ vital_MI_SLR_result_oil_cont <- summary(vital_MI_SLR_cont_pool, conf.int = TRUE,
 
 # LME
 vital_LM_cont <- lmer(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base + 
-                    (time_contin|Subject_ID), 
+                    (1|Subject_ID), 
                   data = vital_long)
 vital_LME_result_oil_cont <- tidy(vital_LM_cont, conf.int = TRUE, conf.method = "Wald")%>% 
   filter(term == "fishoilactive") %>%
@@ -106,7 +106,7 @@ vital_LME_result_oil_cont <- tidy(vital_LM_cont, conf.int = TRUE, conf.method = 
 # MI+LME
 fishoil_MI_LME_cont <- with(vital_mice_obj_long, 
                        lmer(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base + 
-                              (time_contin|Subject_ID)))
+                              (1|Subject_ID)))
 vital_MI_LME_pool_cont <- pool(fishoil_MI_LME_cont)
 vital_MI_LME_result_oil_cont <- tidy(vital_MI_LME_pool_cont, conf.int = TRUE, conf.method = "Wald")%>% 
   filter(term == "fishoilactive") %>%
@@ -157,7 +157,7 @@ vital_MI_SLR_result_vitd_cont <- summary(vital_MI_SLR_cont_pool_vitd, conf.int =
 
 # LME
 vital_LME_cont_vitd <- lmer(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base + 
-                              (time_contin|Subject_ID), 
+                              (1|Subject_ID), 
                             data = vital_long)
 vital_LME_result_vitd_cont <- tidy(vital_LME_cont_vitd, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "vitdactive") %>%
@@ -168,7 +168,7 @@ vital_LME_result_vitd_cont <- tidy(vital_LME_cont_vitd, conf.int = TRUE, conf.me
 # MI+LME
 vitd_MI_LME_cont <- with(vital_mice_obj_long, 
                          lmer(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base + 
-                                (time_contin|Subject_ID)))
+                                (1|Subject_ID)))
 vital_MI_LME_pool_vitd_cont <- pool(vitd_MI_LME_cont)
 vital_MI_LME_result_vitd_cont <- tidy(vital_MI_LME_pool_vitd_cont, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "vitdactive") %>%
