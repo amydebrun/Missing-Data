@@ -36,7 +36,7 @@ source("R scripts/Sensitive Analysis.R")
 source("R scripts/variable_tables.R")
 ```
 
-# Recapitulation
+# Background
 
 ## Missing Data
 
@@ -48,6 +48,8 @@ Missing data is defined as data that has not been stored for a variable in the o
 
 This is proof that missing data is becoming recognised as an issue, yet there is still room for improvement as for choosing proper missing data approaches and showing their reasoning for their choice.
 
+# Mechanism
+
 ## Missingness Mechanisms
 
 -   Missing Completely At Random: $$P(R = 1 \mid Y, X) = P(R = 1)$$
@@ -56,7 +58,7 @@ This is proof that missing data is becoming recognised as an issue, yet there is
 -   We can never confirm these assumptions but Little's MCAR Test can
     rule out the MCAR assumption
 
-# Our Datasets
+# Study Design & Study Characters
 
 ## Treatment of Acupuncture on Headache
 
@@ -74,6 +76,7 @@ kable(acu_vars, format = "html") %>%
   kable_styling(font_size = 8) 
 ```
 
+
 ## Treatment of Vitamin D and Fish Oil on Knee Pain
 
 2x2 RCT to compare effect of vitamin D and fish oil on knee pain
@@ -88,6 +91,61 @@ vital_wide_miss_plot
 kable(vital_vars, format = "html") %>%
   kable_styling(font_size = 8) 
 ```
+
+# Missingness in data
+
+# Analysis summary
+
+## Different analysis methods
+
+-   Change imputation methods
+-   Change estimands
+
+## Combination of Different Parameters – Summary
+
+| Abbreviation | Method | SLR/LME | SI/MI | MI Method |
+|---------------|---------------|---------------|---------------|---------------|
+| CAA | Complete Case Analysis | SLR | N/A | N/A |
+| LOCF | Last Observation Carry Forward | SLR | SI | Last Observation |
+| MOCF | Mean Observation Carry Forward | SLR | SI | Mean Observation |
+| LME | LME Only | LME | N/A | N/A |
+| MI | MI Only | SLR | MI | Predictive Mean Matching |
+| LME+MI | LME + MI | LME | MI | Predictive Mean Matching |
+
+## Treatment Effect of Acupuncture
+
+When treating time as continuous:
+
+Estimand: Difference in mean headache score $pk_score$ at final time
+point of 12 months
+
+Linear Regression Model:
+$\small\text{pk_score} = \beta_0 + \beta_1 \text{group} + \beta_2  \text{time} + \beta_3  (\text{group}  \text{time}) + \beta_4  \text{pk1} + \varepsilon$
+
+Linear Mixed Effects model:
+$\small\text{pk_score}_{ij} = \beta_0 + \beta_1 \text{group}_i + \beta_2  \text{time}_{ij} + \beta_3 (\text{group}_i  \text{time}_{ij}) + \beta_4 \text{pk1}_i + b_{0i} + \varepsilon_{ij}$
+
+## Treatment Effect of Acupuncture
+
+Treating time as categorical
+
+Estimand: Mean difference in headache score $pk5$
+
+Linear Regression Model:
+$\small\text{pk5} = \beta_0 + \beta_1  \text{group} + \beta_2 \text{pk1} + \varepsilon$
+
+Linear Mixed Effects:
+$\small\text{pk5}_{ij} = \beta_0 + \beta_1  \text{group}_i + \beta_2 \text{pk1}_i + \beta_3  \text{pk2}_{ij} + b_{0i} + \varepsilon_{ij}$
+
+
+
+
+
+
+
+
+
+
 
 # Approaches to Missing Data
 
@@ -127,132 +185,44 @@ Limitations:
 
 ## Multiple Imputation 
 
-## Sensitivity Analysis
+-   Here we used predictive mean method for the imputation with m=5
+-   We then combine the LME and MI
 
-This estimates the treatment effect when data is analysed under
-different missingness assumptions. The $δ-Adjustment$ approach shows how
-the treatment effect changes when the data is missing not at random.
+## Different analysis methods – Acupuncture
 
-## Estimating Treatment Effects
-
--   Simple Linear Regression Models: Outcome is modelled as a straight
-    line
--   Linear Mixed Effects Models: Extends the linear regression model by
-    accounting for individual variability
-
-We use use both types of modelling on the different types of imputed
-data sets to see how the treatment effect estimates change.
-
-## Treatment Effect of Acupuncture
-
-When treating time as continuous:
-
-Estimand: Difference in mean headache score $pk_score$ at final time
-point of 12 months
-
-Linear Regression Model:
-$\small\text{pk_score} = \beta_0 + \beta_1 \text{group} + \beta_2  \text{time} + \beta_3  (\text{group}  \text{time}) + \beta_4  \text{pk1} + \varepsilon$
-
-Linear Mixed Effects model:
-$\small\text{pk_score}_{ij} = \beta_0 + \beta_1 \text{group}_i + \beta_2  \text{time}_{ij} + \beta_3 (\text{group}_i  \text{time}_{ij}) + \beta_4 \text{pk1}_i + b_{0i} + \varepsilon_{ij}$
-
-## Treatment Effect of Acupuncture
-
-Treating time as categorical
-
-Estimand: Mean difference in headache score $pk5$
-
-Linear Regression Model:
-$\small\text{pk5} = \beta_0 + \beta_1  \text{group} + \beta_2 \text{pk1} + \varepsilon$
-
-Linear Mixed Effects:
-$\small\text{pk5}_{ij} = \beta_0 + \beta_1  \text{group}_i + \beta_2 \text{pk1}_i + \beta_3  \text{pk2}_{ij} + b_{0i} + \varepsilon_{ij}$
-
-# Result
-
-## Analysis Summary
-
-We performed the following analyses.\
-For simplicity, only group and baseline outcome are included as
-covariates.
-
-1.  Combination of different parameters
-
-    -   Simple Linear Regression (SLR) or Linear Mixed Effects (LME)\
-    -   Different imputation methods
-
-2.  Changing estimands
-
-3.  Different multiple imputation methods
-
-4.  Sensitivity analysis (delta shift method)
-
-## Combination of Different Parameters – Summary
-
-| Abbreviation | Method | SLR/LME | SI/MI | MI Method |
-|---------------|---------------|---------------|---------------|---------------|
-| CAA | Complete Case Analysis | SLR | N/A | N/A |
-| LOCF | Last Observation Carry Forward | SLR | SI | Last Observation |
-| MOCF | Mean Observation Carry Forward | SLR | SI | Mean Observation |
-| LME | LME Only | LME | N/A | N/A |
-| MI | MI Only | SLR | MI | Predictive Mean Matching |
-| LME+MI | LME + MI | LME | MI | Predictive Mean Matching |
-
-## Combination of Different Parameters – ACU Result
-
-```{r layout="two-columns"}
-par(mfrow = c(1, 2))
+```{r}
 acu_plot_categorical
 ```
 
-$\small \text{pk5} = \beta_0 + \beta_1 \text{group} + \beta_2 \text{pk1} + \varepsilon$
+## Different analysis methods – VITAL
 
-$\small \text{pk5}_{ij} = \beta_0 + \beta_1 \text{group}_i + \beta_2 \text{pk2}_{ij} + b_{0i} + \varepsilon_{ij}$
-
-## Combination of Different Parameters – VITAL Result
-
-```{r layout="two-columns"}
-par(mfrow = c(1, 2))
+```{r}
 vital_plot_categorical
 ```
 
-$\small \text{pain\_yr4} = \beta_0 + \beta_1 \text{group} + \beta_2 \text{pain\_baseline} + \varepsilon$
 
-$\small \text{pain\_yr4}_{ij} = \beta_0 + \beta_1 \text{group}_i + \beta_2 \text{pain\_baseline}_{ij} + b_{0i} + \varepsilon_{ij}$
+## Changing Estimands – Acupuncture
 
-## Changing Estimands – Summary
-
-In the previous session, the estimand was:\
-**Mean difference in outcome at the end of the study** between groups.
-
-$\small \text{outcome\_end} = \beta_0 + \beta_1 \text{group} + \beta_2 \text{outcome\_baseline} + \varepsilon$
-
-Now we test an alternative estimand:\
-**Difference in the rate of outcome change over time** between groups.
-
-$\small \text{outcome\_end} = \beta_0 + \beta_1 \text{group} + \beta_2 \text{outcome\_baseline} + \beta_3 \text{time} + \varepsilon$
-
-## Changing Estimands – Result
-
-```{r layout="two-columns"}
-par(mfrow = c(1, 2))
+```{r}
 acu_plot_compare
+```
+
+Purple: Before changing estimand
+Green: After changing estimand
+
+## Changing Estimands – VITAL
+
+```{r}
 vital_plot_compare
 ```
 
-Purple: Before changing estimand\
+Purple: Before changing estimand
 Green: After changing estimand
-
-```{r layout="two-columns"}
-par(mfrow = c(1, 2))
-delta_combined_vitd_plot
-```
 
 ## Further Work
 
 - Conduct Sensitivity Analysis on both data sets to test sensitivity when we deter from the MAR assumption in both treatment and placebo group.
 - Try different methods of multiple imputation using chained equations 
-- 
 
 ## Conclusion
 
@@ -261,23 +231,19 @@ delta_combined_vitd_plot
 - Methods
 - guidelines for the future 
 
-So far, for both datasets, no meaningful impact has been observed
-across different missing data analysis methods.
-
-Note: At this stage, we have not included covariates yet. This may not
-make much difference for the acupuncture dataset, since there are no
-missing values in those covariates.
-
-However, the VITAL dataset contains missing values in several covariates
-to varying extents and includes more frequent data collection time
-points. Therefore, we expect to see greater variation across methods in
-that dataset.
-
 ## References 
 
 1- Hunt, Nicholas & Gardarsdottir, Helga & Bazelier, Marloes & Klungel, O.H. & Pajouheshnia, Romin. (2021). A Systematic Review of How Missing Data are Handled and Reported in Multi‐Database Pharmacoepidemiologic studies. Pharmacoepidemiology and Drug Safety. 30. 10.1002/pds.5245
 
-## Backup slides
+
+
+
+
+
+
+
+
+# Backup slides
 
 ## Different Imputation Methods
 
@@ -290,24 +256,31 @@ that dataset.
 | Weighted Predictive Mean Matching         |
 | Bayesian Classification                   |
 
-## Different Imputation Methods – Illustration
+## Different Imputation Methods – ACU
 
-![Different imputation
-methods](Final%20Presentation/Impute%20Method.png)
-
-## Different Imputation Methods – Result
-
-```{r layout="two-columns"}
-par(mfrow = c(1, 2))
+```{r}
 acu_plot_imp
+```
+
+## Different Imputation Methods – VITAL
+
+```{r}
 vital_plot_impt
 ```
 
+## Sensitivity Analysis (Delta Method) - ACU
 
-## Sensitivity Analysis (Delta Method)
-
-```{r layout="two-columns"}
-par(mfrow = c(1, 2))
+```{r}
 delta_compare_acu
+```
+
+## Sensitivity Analysis (Delta Method) - VITAL
+
+```{r}
 delta_combined_fishoil_plot
 ```
+
+
+## Sensitivity Analysis
+
+This estimates the treatment effect when data is analysed under different missingness assumptions. The $δ-Adjustment$ approach shows how the treatment effect changes when the data is missing not at random.
