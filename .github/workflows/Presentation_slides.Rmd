@@ -72,25 +72,25 @@ headache. There are two follow up time points of 401 participants.
 
 ## Age distribution overall
 
-```{r}
+```{r, echo=FALSE}
 acu_age_plot
 ```
 
 ## Sex distribution
 
-```{r}
+```{r, echo=FALSE}
 acu_sex_plot
 ```
 
 ## 
 
-```{r}
+```{r, echo=FALSE, fig.height=4, out.width='100%'}
 acu_summary
 ```
 
 ## Missing Data Patterns
 
-```{r}
+```{r, echo=FALSE}
 acu_wide_miss_plot
 ```
 
@@ -108,25 +108,25 @@ a patient can be randomised to.
 -   Note: we are only analysing the treatment effect of either fish oil
     or vitamin D, not both. \## Age distribution
 
-```{r}
+## VITAL age distribution
+```{r, echo=FALSE}
 age_vital_plot
 ```
 
 ## Sex distribution
-
-```{r}
+```{r, echo=FALSE}
 sex_vital_plot
 ```
 
 ## 
 
-```{r}
+```{r, echo=FALSE, fig.height=4, out.width='100%'}
 vital_summary
 ```
 
 # Missingness in data
 
-```{r}
+```{r, echo=FALSE}
 vital_wide_miss_plot
 ```
 
@@ -186,7 +186,7 @@ Limitations:
 -   Replaces missing data with a single value
 -   Last observation carried forward: the missing value is replaced by
     the preceding observed measure,
--   Mean observation carried forward: the missing value is replaced by
+-   Mean observation method: the missing value is replaced by
     the mean value of all observed measure.
 
 Limitations:
@@ -204,46 +204,44 @@ Limitations:
 -   It uses all observed data to measure the treatment effect without
     needing to use complete cases only.
 -   Suitable for MAR and MCAR
--   Unbiased estimation and no power loss
 
 ## Multiple Imputation
 
 -   Imputation method to leverage all information we have and involve
     our uncertainty
-
 -   Also suitable for MAR and MCAR
-
 -   Not underestimating the uncertainty
 
 -   We then combine the LME and MI
 
 ## Different analysis methods – Acupuncture
 
-```{r}
+```{r, echo=FALSE}
 acu_plot_categorical
 ```
 
 ## Different analysis methods – VITAL
 
-```{r}
+```{r, echo=FALSE}
 vital_plot_categorical
 ```
 
+
 ## Changing Estimands – Acupuncture
 
-```{r}
+<div class="columns-2">
+
+```{r, echo=FALSE, out.width='100%'}
 acu_plot_compare
 ```
 
-Purple: Before changing estimand Green: After changing estimand
-
-## Changing Estimands – VITAL
-
-```{r}
+```{r, echo=FALSE, warning=FALSE, out.width='100%'}
 vital_plot_compare
 ```
 
 Purple: Before changing estimand Green: After changing estimand
+
+</div>
 
 ## Further Work
 
@@ -265,6 +263,19 @@ Purple: Before changing estimand Green: After changing estimand
 O.H. & Pajouheshnia, Romin. (2021). A Systematic Review of How Missing
 Data are Handled and Reported in Multi‐Database Pharmacoepidemiologic
 studies. Pharmacoepidemiology and Drug Safety. 30. 10.1002/pds.5245
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Backup slides
 
