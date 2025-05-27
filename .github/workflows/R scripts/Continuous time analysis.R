@@ -35,7 +35,7 @@ acu_LM_MICE_default_cont_result <- tidy(acu_LM_MICE_cont_pool, conf.int = TRUE, 
 
 
 # LME with no imputation
-acu_LME_cont <- lmer(pk_score ~ group*time + pk1 + (1|id), data = acu_long_cont)
+acu_LME_cont <- lmer(pk_score ~ group*(time_c) + pk1 + (1|id), data = acu_long_cont)
 acu_LME_cont_result <- tidy(acu_LME_cont, conf.int = TRUE, conf.method = "Wald") %>% 
   filter(term == "group") %>%
   select(estimate, conf.low, conf.high, std.error) %>%

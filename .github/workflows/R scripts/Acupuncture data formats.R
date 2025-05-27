@@ -5,6 +5,7 @@ head(acu_wide)
 # Acupuncture Long format 
 acu_long <- to_long_format_acu_cat(acu_wide)
 
+
 # MICE
 acu_mice <- mice(acu_wide, m = 5, method = 'pmm', seed = 123)
 acu_mice_random <- mice(acu_wide, m = 5, method = 'sample', seed = 123)
@@ -21,6 +22,8 @@ acu_mice_data_obj_long <- as.mids(acu_mice_data_long)
 # Making time continuous
 # long
 acu_long_cont <- to_long_format_acu_cont(acu_wide)
+acu_long_cont <- acu_long_cont %>%
+  mutate(time_c = time - 12)
 # MICE long
 acu_mice_data_long_cont <- to_long_format_acu_cont_MICE(acu_mice_data_wide)
 acu_mice_data_obj_long_cont <- as.mids(acu_mice_data_long_cont)
