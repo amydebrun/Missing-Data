@@ -33,6 +33,7 @@ source("R scripts/Category time analysis.R")
 source("R scripts/Continuous time analysis.R")
 source("R scripts/Different Imputation Method.R")
 source("R scripts/Sensitive Analysis.R")
+source("R scripts/variable_tables.R")
 ```
 
 # Recapitulation
@@ -197,29 +198,31 @@ $\small\text{pk5}_{ij} = \beta_0 + \beta_1  \text{group}_i + \beta_2 \text{pk1}_
 
 ## Analysis Summary
 
-We performed the following analyses.  
-For simplicity, only group and baseline outcome are included as covariates.
+We performed the following analyses.\
+For simplicity, only group and baseline outcome are included as
+covariates.
 
-1. Combination of different parameters  
-   - Simple Linear Regression (SLR) or Linear Mixed Effects (LME)  
-   - Different imputation methods  
+1.  Combination of different parameters
 
-2. Changing estimands  
+    -   Simple Linear Regression (SLR) or Linear Mixed Effects (LME)\
+    -   Different imputation methods
 
-3. Different multiple imputation methods  
+2.  Changing estimands
 
-4. Sensitivity analysis (delta shift method)
+3.  Different multiple imputation methods
+
+4.  Sensitivity analysis (delta shift method)
 
 ## Combination of Different Parameters – Summary
 
-| Abbreviation | Method                        | SLR/LME | SI/MI | MI Method                 |
-|--------------|-------------------------------|---------|-------|---------------------------|
-| CAA          | Complete Case Analysis        | SLR     | N/A   | N/A                       |
-| LOCF         | Last Observation Carry Forward| SLR     | SI    | Last Observation          |
-| MOCF         | Mean Observation Carry Forward| SLR     | SI    | Mean Observation          |
-| LME          | LME Only                      | LME     | N/A   | N/A                       |
-| MI           | MI Only                       | SLR     | MI    | Predictive Mean Matching  |
-| LME+MI       | LME + MI                      | LME     | MI    | Predictive Mean Matching  |
+| Abbreviation | Method | SLR/LME | SI/MI | MI Method |
+|-------------|-------------------|-------------|-------------|----------------|
+| CAA | Complete Case Analysis | SLR | N/A | N/A |
+| LOCF | Last Observation Carry Forward | SLR | SI | Last Observation |
+| MOCF | Mean Observation Carry Forward | SLR | SI | Mean Observation |
+| LME | LME Only | LME | N/A | N/A |
+| MI | MI Only | SLR | MI | Predictive Mean Matching |
+| LME+MI | LME + MI | LME | MI | Predictive Mean Matching |
 
 ## Combination of Different Parameters – ACU Result
 
@@ -245,12 +248,12 @@ $\small \text{pain\_yr4}_{ij} = \beta_0 + \beta_1 \text{group}_i + \beta_2 \text
 
 ## Changing Estimands – Summary
 
-In the previous session, the estimand was:  
+In the previous session, the estimand was:\
 **Mean difference in outcome at the end of the study** between groups.
 
 $\small \text{outcome\_end} = \beta_0 + \beta_1 \text{group} + \beta_2 \text{outcome\_baseline} + \varepsilon$
 
-Now we test an alternative estimand:  
+Now we test an alternative estimand:\
 **Difference in the rate of outcome change over time** between groups.
 
 $\small \text{outcome\_end} = \beta_0 + \beta_1 \text{group} + \beta_2 \text{outcome\_baseline} + \beta_3 \text{time} + \varepsilon$
@@ -263,23 +266,24 @@ acu_plot_compare
 vital_plot_compare
 ```
 
-Purple: Before changing estimand  
+Purple: Before changing estimand\
 Green: After changing estimand
 
 ## Different Imputation Methods
 
-| Imputation Methods                          |
-|---------------------------------------------|
-| Linear Regression Predicted Value           |
-| Linear Regression Predicted Value + Noise   |
-| Random Parameters                           |
-| Predictive Mean Matching                    |
-| Weighted Predictive Mean Matching           |
-| Bayesian Classification                     |
+| Imputation Methods                        |
+|-------------------------------------------|
+| Linear Regression Predicted Value         |
+| Linear Regression Predicted Value + Noise |
+| Random Parameters                         |
+| Predictive Mean Matching                  |
+| Weighted Predictive Mean Matching         |
+| Bayesian Classification                   |
 
 ## Different Imputation Methods – Illustration
 
-![Different imputation methods](Final Presentation/Impute Method.png)
+![Different imputation
+methods](Final%20Presentation/Impute%20Method.png)
 
 ## Different Imputation Methods – Result
 
@@ -304,8 +308,14 @@ delta_combined_vitd_plot
 
 ## Conclusion
 
-So far, for both datasets, no significant impact has been observed across different missing data analysis methods.
+So far, for both datasets, no significant impact has been observed
+across different missing data analysis methods.
 
-Note: At this stage, we have not included covariates yet. This may not make much difference for the acupuncture dataset, since there are no missing values in those covariates.
+Note: At this stage, we have not included covariates yet. This may not
+make much difference for the acupuncture dataset, since there are no
+missing values in those covariates.
 
-However, the VITAL dataset contains missing values in several covariates to varying extents and includes more frequent data collection time points. Therefore, we expect to see greater variation across methods in that dataset.
+However, the VITAL dataset contains missing values in several covariates
+to varying extents and includes more frequent data collection time
+points. Therefore, we expect to see greater variation across methods in
+that dataset.
