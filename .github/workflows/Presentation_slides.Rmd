@@ -141,7 +141,7 @@ $\small\beta_2 \text{vitdactive}_i + \beta_3 \text{pain_base}_i + \varepsilon_i$
 
 ## Changed Estimands
 
-- Acupuncture: $\small\text{pk_score}_{ij} = \beta_0 + \beta_1  \text{group}_i + $
+- Acupuncture: $\small\text{pk_score}_{ij} = \beta_0 + \beta_1  \text{group}_i +$
 $\small\beta_2  \text{time}_{ij} + \beta_3 (\text{group}_i \text{time}_{ij}) + \beta_4  \text{pk1}_i + b_{0i} + \varepsilon_{ij}$
 
 - VITAL: $\small\text{pain}_{ij} = \beta_0 + \beta_1  \text{fishoil}_i + \beta_2 \text{time}_{ij} +$
