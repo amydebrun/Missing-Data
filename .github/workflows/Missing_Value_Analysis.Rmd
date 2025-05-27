@@ -25,7 +25,7 @@ source("R scripts/Category time analysis.R")
 source("R scripts/Continuous time analysis.R")
 source("R scripts/Different Imputation Method.R")
 source("R scripts/Sensitive Analysis.R")
-source("R scripts/variable_tables.R")
+
 ```
 
 

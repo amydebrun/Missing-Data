@@ -40,15 +40,13 @@ source("R scripts/variable_tables.R")
 
 ## Missing Data
 
-Missing data is defined as data that has not been stored for a variable
-in the observation of interest. A systematic review of articles
-regarding 62 studies found that:
+Missing data is defined as data that has not been stored for a variable in the observation of interest. A systematic review of 100 publicized longitudinal RCTs from 2005 to 2012 (Powney et al 2014) [1] found that:
 
--   44% did not report missing data
--   69% did not report how missing data was handled
+- 9 did not report missing data
+- 44 papers used adequate handling methods
+- 30 papers did not use adequate handling methods
 
-This shows how missing data is a topic that is often neglected even
-though it can cause biased results when handled inappropriately.
+This is proof that missing data is becoming recognised as an issue, yet there is still room for improvement as for choosing proper missing data approaches and showing their reasoning for their choice.
 
 ## Missingness Mechanisms
 
@@ -127,31 +125,7 @@ Limitations:
 -   This is suitable for when the outcome variable has NA values
 -   Suitable for MAR and MCAR
 
-## Multiple Imputation Using Chained Equations
-
--   All missing data are imputed with values derived from observed data
-    to act as placeholders
--   Starting with variable $x_i$ that contains missing data, remove the
-    place holders in this variable
--   Regress $x_i$ on remaining covariates $x_{i+1}$, $x_{i+2}$,...,
-    $x_{i+p}$
--   $x_i = \beta_0 + \beta_1 x_{i+1} + \beta_2 x_{i+2} + ...+\beta_p x_{i+p} + \varepsilon$
--   This model is predicts the missing values in $x_i$ if it were
-    observed, these steps are repeated for $x_{i+1}$, $x_{i+2}$,...,
-    $x_{i+p}$
--   We can use this process to create $m$ data sets with imputed values,
-    typically 5 or 10 suffices.
-
-## MICE function
-
-| Method         | Definition                              |
-|----------------|-----------------------------------------|
-| "pmm"          | Predictive mean matching                |
-| "norm.nob"     | Linear regression, ignoring model error |
-| "norm"         | Bayesian linear regression              |
-| "norm.predict" | Linear regression, predicted value      |
-| "sample"       | Random sample from $Y_O$                |
-| "midastouch"   | Weighted predictive mean matching       |
+## Multiple Imputation 
 
 ## Sensitivity Analysis
 
@@ -216,7 +190,7 @@ covariates.
 ## Combination of Different Parameters – Summary
 
 | Abbreviation | Method | SLR/LME | SI/MI | MI Method |
-|-------------|-------------------|-------------|-------------|----------------|
+|---------------|---------------|---------------|---------------|---------------|
 | CAA | Complete Case Analysis | SLR | N/A | N/A |
 | LOCF | Last Observation Carry Forward | SLR | SI | Last Observation |
 | MOCF | Mean Observation Carry Forward | SLR | SI | Mean Observation |
@@ -269,6 +243,42 @@ vital_plot_compare
 Purple: Before changing estimand\
 Green: After changing estimand
 
+```{r layout="two-columns"}
+par(mfrow = c(1, 2))
+delta_combined_vitd_plot
+```
+
+## Further Work
+
+- Conduct Sensitivity Analysis on both data sets to test sensitivity when we deter from the MAR assumption in both treatment and placebo group.
+- Try different methods of multiple imputation using chained equations 
+- 
+
+## Conclusion
+
+- Importance of missingess
+- Mechanisms 
+- Methods
+- guidelines for the future 
+
+So far, for both datasets, no meaningful impact has been observed
+across different missing data analysis methods.
+
+Note: At this stage, we have not included covariates yet. This may not
+make much difference for the acupuncture dataset, since there are no
+missing values in those covariates.
+
+However, the VITAL dataset contains missing values in several covariates
+to varying extents and includes more frequent data collection time
+points. Therefore, we expect to see greater variation across methods in
+that dataset.
+
+## References 
+
+1- Hunt, Nicholas & Gardarsdottir, Helga & Bazelier, Marloes & Klungel, O.H. & Pajouheshnia, Romin. (2021). A Systematic Review of How Missing Data are Handled and Reported in Multi‐Database Pharmacoepidemiologic studies. Pharmacoepidemiology and Drug Safety. 30. 10.1002/pds.5245
+
+## Backup slides
+
 ## Different Imputation Methods
 
 | Imputation Methods                        |
@@ -293,6 +303,7 @@ acu_plot_imp
 vital_plot_impt
 ```
 
+
 ## Sensitivity Analysis (Delta Method)
 
 ```{r layout="two-columns"}
@@ -300,22 +311,3 @@ par(mfrow = c(1, 2))
 delta_compare_acu
 delta_combined_fishoil_plot
 ```
-
-```{r layout="two-columns"}
-par(mfrow = c(1, 2))
-delta_combined_vitd_plot
-```
-
-## Conclusion
-
-So far, for both datasets, no significant impact has been observed
-across different missing data analysis methods.
-
-Note: At this stage, we have not included covariates yet. This may not
-make much difference for the acupuncture dataset, since there are no
-missing values in those covariates.
-
-However, the VITAL dataset contains missing values in several covariates
-to varying extents and includes more frequent data collection time
-points. Therefore, we expect to see greater variation across methods in
-that dataset.
