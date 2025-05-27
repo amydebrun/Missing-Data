@@ -200,7 +200,6 @@ acu_plot_categorical
 vital_plot_categorical
 ```
 
-
 ## Changing Estimands – Acupuncture
 
 ```{r}
@@ -226,10 +225,10 @@ Green: After changing estimand
 
 ## Conclusion
 
-- Importance of missingess
-- Mechanisms 
-- Methods
-- guidelines for the future 
+- We have learned how missingness can be handled in many different way
+- It is crucial to at least make sure we are using statistical principled method to quantify our uncertainties. Both in the imputation part and parameter estimation part (We could use bad imputation method for MI)
+- The expertise input can be an important on how we handle the missing data (which estimand? can we use LOCF?)
+- Different method can be more beneficial than others depends on dataset (LME better for VITAL as more time poins, imputation better for ACU as no covariates missing)
 
 ## References 
 
