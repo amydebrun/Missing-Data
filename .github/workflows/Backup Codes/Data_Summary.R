@@ -39,12 +39,12 @@ acu_sex_plot<-ggplot(acu_long, aes(
     plot.background = element_rect(fill = "white", color = NA)  
   )
 
-acu_long %>%
+x<-acu_long %>%
   summarise(
     missing_age = mean(is.na(age)) * 100,
     missing_sex = mean(is.na(sex)) * 100
   )
-```
+
 
 ## Basics of VITAL dataset
 

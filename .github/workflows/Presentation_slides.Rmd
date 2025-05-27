@@ -98,15 +98,15 @@ acu_wide_miss_plot
 
 This larger dataset is a 2x2 factorial randomised controlled
 longitudinal trial. This means there are four combinations of treatment
-a patient can be randomised to. 
+a patient can be randomised to.
 
 |              | **Vitamin D** | **Placebo** |
-| ------------ | ------------- | ----------- |
+|--------------|---------------|-------------|
 | **Fish Oil** | N = 342       | N = 353     |
 | **Placebo**  | N = 332       | N = 371     |
 
-- Note: we are only analysing the treatment effect of either fish oil or vitamin D, not both. 
-## Age distribution
+-   Note: we are only analysing the treatment effect of either fish oil
+    or vitamin D, not both. \## Age distribution
 
 ```{r}
 age_vital_plot
@@ -124,7 +124,6 @@ sex_vital_plot
 vital_summary
 ```
 
-
 # Missingness in data
 
 ```{r}
@@ -136,7 +135,7 @@ vital_wide_miss_plot
 ## Combination of Different Parameters – Summary
 
 | Abbreviation | Method | SLR/LME | SI/MI | MI Method |
-|---------------|---------------|---------------|---------------|---------------|
+|----|----|----|----|----|
 | CAA | Complete Case Analysis | SLR | N/A | N/A |
 | LOCF | Last Observation Carry Forward | SLR | SI | Last Observation |
 | MOCF | Mean Observation Carry Forward | SLR | SI | Mean Observation |
@@ -144,23 +143,29 @@ vital_wide_miss_plot
 | MI | MI Only | SLR | MI | Predictive Mean Matching |
 | LME+MI | LME + MI | LME | MI | Predictive Mean Matching |
 
-## Changing Estimands 
+## Changing Estimands
 
-- To determine the effect of changing time from a categorical variable to a continuous variable 
-- Due to the repetitive measures per individual, we can only estimate a continuous estimand using a linear mixed effects model, not a linear regression
-
+-   To determine the effect of changing time from a categorical variable
+    to a continuous variable
+-   Due to the repetitive measures per individual, we can only estimate
+    a continuous estimand using a linear mixed effects model, not a
+    linear regression
 
 ## Original Estimands
 
-- Acupuncture: $\small\text{pk5}_i = \beta_0 + \beta_1 \text{group}_i + \beta_2 \text{pk1}_i + \varepsilon_i$
+-   Acupuncture:
+    $\small\text{pk5}_i = \beta_0 + \beta_1 \text{group}_i + \beta_2 \text{pk1}_i + \varepsilon_i$
 
-- VITAL: $\small\text{pain_yr4}_i = \beta_0 + \beta_1\text{fishoilactive}_i + \beta_2 \text{vitdactive}_i + \beta_3 \text{pain_base}_i + \varepsilon_i$
+-   VITAL:
+    $\small\text{pain_yr4}_i = \beta_0 + \beta_1\text{fishoilactive}_i + \beta_2 \text{vitdactive}_i + \beta_3 \text{pain_base}_i + \varepsilon_i$
 
 ## Changed Estimands
 
-- Acupuncture: $\small\text{pk_score}_{ij} = \beta_0 + \beta_1  \text{group}_i + \beta_2  \text{time}_{ij} + \beta_3 (\text{group}_i \text{time}_{ij}) + \beta_4  \text{pk1}_i + b_{0i} + \varepsilon_{ij}$
+-   Acupuncture:
+    $\small\text{pk_score}_{ij} = \beta_0 + \beta_1  \text{group}_i + \beta_2  \text{time}_{ij} + \beta_3 (\text{group}_i \text{time}_{ij}) + \beta_4  \text{pk1}_i + b_{0i} + \varepsilon_{ij}$
 
-- VITAL: $\small\text{pain}_{ij} = \beta_0 + \beta_1  \text{fishoil}_i + \beta_2 \text{time}_{ij} + \beta_3(\text{fishoil}_i \text{time}_{ij}) + \beta_4  \text{vitd}_i + \beta_5 (\text{vitd}_i \text{time}_{ij}) + \beta_6 \text{pain_base}_i + b_{0i} + \varepsilon_{ij}$
+-   VITAL:
+    $\small\text{pain}_{ij} = \beta_0 + \beta_1  \text{fishoil}_i + \beta_2 \text{time}_{ij} + \beta_3(\text{fishoil}_i \text{time}_{ij}) + \beta_4  \text{vitd}_i + \beta_5 (\text{vitd}_i \text{time}_{ij}) + \beta_6 \text{pain_base}_i + b_{0i} + \varepsilon_{ij}$
 
 # Approaches to Missing Data
 
