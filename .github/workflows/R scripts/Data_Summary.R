@@ -79,7 +79,7 @@ ggplot(vital_long, aes(x = factor(sex, labels = c("Male", "Female")), fill = fac
     fill = "Sex"
   ) + theme_minimal() + scale_fill_manual(values=c("green","lawngreen")) + theme(legend.position="none")
 
-```
+
 
 
 vital_long %>%

@@ -33,7 +33,7 @@ source("R scripts/Category time analysis.R")
 source("R scripts/Continuous time analysis.R")
 source("R scripts/Different Imputation Method.R")
 source("R scripts/Sensitive Analysis.R")
-source("Backup Codes/Data_Summary.R")
+source("R scripts/Data_Summary.R")
 ```
 
 # Background
@@ -135,7 +135,7 @@ vital_wide_miss_plot
 ## Combination of Different Parameters – Summary
 
 | Abbreviation | Method | SLR/LME | SI/MI | MI Method |
-|----|----|----|----|----|
+|---------------|---------------|---------------|---------------|---------------|
 | CAA | Complete Case Analysis | SLR | N/A | N/A |
 | LOCF | Last Observation Carry Forward | SLR | SI | Last Observation |
 | MOCF | Mean Observation Carry Forward | SLR | SI | Mean Observation |
