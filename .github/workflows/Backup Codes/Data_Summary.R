@@ -1,24 +1,10 @@
----
-title: "exploaratory analysis"
-author: "Amy, Kent"
-date: "2025-05-13"
-output: html_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-source("R scripts/VITAL data formats.R")
-source("R scripts/Acupuncture data formats.R")
-library(dplyr)
-library(ggplot2)
-```
 
 
 ## Basics of Acupuncture dataset
+library(dplyr)
 
-```{r}
 #distribution of age overall acupuncture 
-ggplot(acu_long, aes(x = age)) +
+acu_age_plot<-ggplot(acu_long, aes(x = age)) +
   geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
   labs(
     title = "Distribution of Age in Acupuncture dataset",
@@ -26,13 +12,10 @@ ggplot(acu_long, aes(x = age)) +
     y = "Count"
   ) +
   theme_minimal()
-```
-
-```{r}
 
 #DISTRIBUTION SEX BY TREATMENT GROUP
     
-ggplot(acu_long, aes(
+acu_sex_plot<-ggplot(acu_long, aes(
   x = factor(sex, labels = c("Male", "Female")),
   fill = factor(sex, labels = c("Male", "Female"))
 )) +
@@ -55,9 +38,7 @@ ggplot(acu_long, aes(
     panel.background = element_rect(fill = "white", color = NA),
     plot.background = element_rect(fill = "white", color = NA)  
   )
-```
 
-```{r}
 acu_long %>%
   summarise(
     missing_age = mean(is.na(age)) * 100,
@@ -67,7 +48,7 @@ acu_long %>%
 
 ## Basics of VITAL dataset
 
-```{r warning=FALSE}
+
 #overall age 
 ggplot(vital_long, aes(x = ageyr)) +
   geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
@@ -100,21 +81,21 @@ ggplot(vital_long, aes(x = factor(sex, labels = c("Male", "Female")), fill = fac
 
 ```
 
-```{r}
+
 vital_long %>%
   summarise(
     missing_age = mean(is.na(ageyr)) * 100,
     missing_sex = mean(is.na(sex)) * 100,
     missing_bmi = mean(is.na(bmi)) * 100
   )
-```
+
 
 ## Seperated by fishoil & vitamin D
 
-```{r warning=FALSE}
+
 #Age distribution of each group 
 
-vital_long %>%
+age_vital_plot<-vital_long %>%
   filter(vitdactive == 1 | fishoilactive == 1) %>%
   mutate(treatment = case_when(
     vitdactive == 1 ~ "Vitamin D",
@@ -137,7 +118,7 @@ vital_long %>%
 
 #BMI distribution of each group
 
-vital_long %>%
+bmi_vital_plot<-vital_long %>%
   filter(vitdactive == 1 | fishoilactive == 1) %>%
   mutate(treatment = case_when(
     vitdactive == 1 ~ "Vitamin D",
@@ -157,11 +138,9 @@ vital_long %>%
     panel.background = element_rect(fill = "white", color = NA),
     plot.background = element_rect(fill = "white", color = NA)
   )
-```
 
-```{r}
 #sex in each group 
-vital_long %>%
+sex_vital_plot<-vital_long %>%
   filter(vitdactive == 1 | fishoilactive == 1) %>%
   mutate(treatment = case_when(
     vitdactive == 1 ~ "Vitamin D",
@@ -185,12 +164,11 @@ vital_long %>%
     panel.background = element_rect(fill = "white", color = NA),
     plot.background = element_rect(fill = "white", color = NA)  
   )
-```
+
 
 
 ##GTSUMMARY() 
 
-```{r}
 
 library(gtsummary)
 
@@ -206,12 +184,12 @@ vital_long%>%
 acu_long%>%
   select(age, group)%>%
   tbl_summary(by=group)
-```
+
 
 EXTRA: LOGISTIC REGRESSION TO TEST FOR MISSINGNESS MECHANISM 
 
 ##ACUPUNCTURE
-```{r}
+
 variables_missing <- names(colSums(is.na(acu_long))[colSums(is.na(acu_long)) > 0])
 variables_missing
 acu_long
@@ -221,9 +199,9 @@ acu_long_ind <-
 
 ind_model<-glm(miss_ind_pk_score~time+age, family="binomial", data=acu_long_ind)
 summary(ind_model)# not MAR?
-```
+
 ##VITAL
-```{r}
+
 variables_missing <- names(colSums(is.na(vital_long))[colSums(is.na(vital_long)) > 0])
 variables_missing
 
@@ -234,5 +212,5 @@ vital_long_ind <- vital_long %>%
 
 ind_model_vital<-glm(miss_ind_pain_base~KneesReplacedV2+bmi, family="binomial", data=vital_long_ind)
 summary(ind_model_vital) # not MAR?
-```
+
 

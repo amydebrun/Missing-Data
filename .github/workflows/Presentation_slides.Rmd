@@ -33,21 +33,26 @@ source("R scripts/Category time analysis.R")
 source("R scripts/Continuous time analysis.R")
 source("R scripts/Different Imputation Method.R")
 source("R scripts/Sensitive Analysis.R")
+source("Backup Codes/Data_Summary.R")
 ```
 
 # Background
 
 ## Missing Data
 
-Missing data is defined as data that has not been stored for a variable in the observation of interest. A systematic review of 100 publicized longitudinal RCTs from 2005 to 2012 (Powney et al 2014) [1] found that:
+Missing data is defined as data that has not been stored for a variable
+in the observation of interest. A systematic review of 100 publicized
+longitudinal RCTs from 2005 to 2012 (Powney et al 2014) [1] found that:
 
-- 9 did not report missing data
-- 44 papers used adequate handling methods
-- 30 papers did not use adequate handling methods
+-   9 did not report missing data
+-   44 papers used adequate handling methods
+-   30 papers did not use adequate handling methods
 
-This is proof that missing data is becoming recognised as an issue, yet there is still room for improvement as for choosing proper missing data approaches and showing their reasoning for their choice.
+This is proof that missing data is becoming recognised as an issue, yet
+there is still room for improvement as for choosing proper missing data
+approaches and showing their reasoning for their choice.
 
-# Mechanism
+# Missign Data Assumptions
 
 ## Missingness Mechanisms
 
@@ -59,36 +64,74 @@ This is proof that missing data is becoming recognised as an issue, yet there is
 
 # Study Design & Study Characteristics
 
-## Treatment of Acupuncture on Headache
+## Acupuncture Dataset
 
--   RCT to determine the effect of acupuncture on migraine against a
-    placebo
+The first dataset is a randomised controlled longitudinal trial which
+aims to estimate the effect of acupuncture therapy against a placebo on
+headache. There are two follow up time points of 401 participants.
+
+## Age distribution overall
+
+```{r}
+acu_age_plot
+```
+
+## Sex distribution
+
+```{r}
+acu_sex_plot
+```
+
+## 
+
+```{r}
+acu_summary
+```
+
+## Missing Data Patterns
 
 ```{r}
 acu_wide_miss_plot
 ```
 
-## Treatment of Acupuncture on Headache
+## VITAL Dataset
 
-## Treatment of Vitamin D and Fish Oil on Knee Pain
+This larger dataset is a 2x2 factorial randomised controlled
+longitudinal trial. This means there are four combinations of treatment
+a patient can be randomised to. 
 
-2x2 RCT to compare effect of vitamin D and fish oil on knee pain
+|              | **Vitamin D** | **Placebo** |
+| ------------ | ------------- | ----------- |
+| **Fish Oil** | N = 342       | N = 353     |
+| **Placebo**  | N = 332       | N = 371     |
+
+- Note: we are only analysing the treatment effect of either fish oil or vitamin D, not both. 
+## Age distribution
+
+```{r}
+age_vital_plot
+```
+
+## Sex distribution
+
+```{r}
+sex_vital_plot
+```
+
+## 
+
+```{r}
+vital_summary
+```
+
+
+# Missingness in data
 
 ```{r}
 vital_wide_miss_plot
 ```
 
-## Treatment of Vitamin D and Fish Oil on Knee Pain
-
-
-# Missingness in data
-
 # Analysis summary
-
-## Different analysis methods
-
--   Change imputation methods
--   Change estimands
 
 ## Combination of Different Parameters – Summary
 
@@ -101,40 +144,23 @@ vital_wide_miss_plot
 | MI | MI Only | SLR | MI | Predictive Mean Matching |
 | LME+MI | LME + MI | LME | MI | Predictive Mean Matching |
 
-## Treatment Effect of Acupuncture
+## Changing Estimands 
 
-When treating time as continuous:
-
-Estimand: Difference in mean headache score $pk_score$ at final time
-point of 12 months
-
-Linear Regression Model:
-$\small\text{pk_score} = \beta_0 + \beta_1 \text{group} + \beta_2  \text{time} + \beta_3  (\text{group}  \text{time}) + \beta_4  \text{pk1} + \varepsilon$
-
-Linear Mixed Effects model:
-$\small\text{pk_score}_{ij} = \beta_0 + \beta_1 \text{group}_i + \beta_2  \text{time}_{ij} + \beta_3 (\text{group}_i  \text{time}_{ij}) + \beta_4 \text{pk1}_i + b_{0i} + \varepsilon_{ij}$
-
-## Treatment Effect of Acupuncture
-
-Treating time as categorical
-
-Estimand: Mean difference in headache score $pk5$
-
-Linear Regression Model:
-$\small\text{pk5} = \beta_0 + \beta_1  \text{group} + \beta_2 \text{pk1} + \varepsilon$
-
-Linear Mixed Effects:
-$\small\text{pk5}_{ij} = \beta_0 + \beta_1  \text{group}_i + \beta_2 \text{pk1}_i + \beta_3  \text{pk2}_{ij} + b_{0i} + \varepsilon_{ij}$
+- To determine the effect of changing time from a categorical variable to a continuous variable 
+- Due to the repetitive measures per individual, we can only estimate a continuous estimand using a linear mixed effects model, not a linear regression
 
 
+## Original Estimands
 
+- Acupuncture: $\small\text{pk5}_i = \beta_0 + \beta_1 \text{group}_i + \beta_2 \text{pk1}_i + \varepsilon_i$
 
+- VITAL: $\small\text{pain_yr4}_i = \beta_0 + \beta_1\text{fishoilactive}_i + \beta_2 \text{vitdactive}_i + \beta_3 \text{pain_base}_i + \varepsilon_i$
 
+## Changed Estimands
 
+- Acupuncture: $\small\text{pk_score}_{ij} = \beta_0 + \beta_1  \text{group}_i + \beta_2  \text{time}_{ij} + \beta_3 (\text{group}_i \text{time}_{ij}) + \beta_4  \text{pk1}_i + b_{0i} + \varepsilon_{ij}$
 
-
-
-
+- VITAL: $\small\text{pain}_{ij} = \beta_0 + \beta_1  \text{fishoil}_i + \beta_2 \text{time}_{ij} + \beta_3(\text{fishoil}_i \text{time}_{ij}) + \beta_4  \text{vitd}_i + \beta_5 (\text{vitd}_i \text{time}_{ij}) + \beta_6 \text{pain_base}_i + b_{0i} + \varepsilon_{ij}$
 
 # Approaches to Missing Data
 
@@ -168,16 +194,20 @@ Limitations:
 
 -   Linear Mixed Effects Model adjusts to missing data by using maximum
     likelihood estimation
--   Captures subject-specific random effects, which improves model accuracy in repeated measures settings
+-   Captures subject-specific random effects, which improves model
+    accuracy in repeated measures settings
 -   It uses all observed data to measure the treatment effect without
     needing to use complete cases only.
 -   Suitable for MAR and MCAR
 -   Unbiased estimation and no power loss
 
-## Multiple Imputation 
+## Multiple Imputation
 
--   Imputation method to leverage all information we have and involve our uncertainty
+-   Imputation method to leverage all information we have and involve
+    our uncertainty
+
 -   Also suitable for MAR and MCAR
+
 -   Not underestimating the uncertainty
 
 -   We then combine the LME and MI
@@ -200,8 +230,7 @@ vital_plot_categorical
 acu_plot_compare
 ```
 
-Purple: Before changing estimand
-Green: After changing estimand
+Purple: Before changing estimand Green: After changing estimand
 
 ## Changing Estimands – VITAL
 
@@ -209,31 +238,28 @@ Green: After changing estimand
 vital_plot_compare
 ```
 
-Purple: Before changing estimand
-Green: After changing estimand
+Purple: Before changing estimand Green: After changing estimand
 
 ## Further Work
 
-- Conduct Sensitivity Analysis on both data sets to test sensitivity when we deter from the MAR assumption in both treatment and placebo group.
-- Try different methods of multiple imputation using chained equations 
+-   Conduct Sensitivity Analysis on both data sets to test sensitivity
+    when we deter from the MAR assumption in both treatment and placebo
+    group.
+-   Try different methods of multiple imputation using chained equations
 
 ## Conclusion
 
-- We have learned how missingness can be handled in many different way
-- It is crucial to understand how each method works and what applies
-- Different method can be more beneficial than others depends on dataset
+-   We have learned how missingness can be handled in many different way
+-   It is crucial to understand how each method works and what applies
+-   Different method can be more beneficial than others depends on
+    dataset
 
-## References 
+## References
 
-1- Hunt, Nicholas & Gardarsdottir, Helga & Bazelier, Marloes & Klungel, O.H. & Pajouheshnia, Romin. (2021). A Systematic Review of How Missing Data are Handled and Reported in Multi‐Database Pharmacoepidemiologic studies. Pharmacoepidemiology and Drug Safety. 30. 10.1002/pds.5245
-
-
-
-
-
-
-
-
+1- Hunt, Nicholas & Gardarsdottir, Helga & Bazelier, Marloes & Klungel,
+O.H. & Pajouheshnia, Romin. (2021). A Systematic Review of How Missing
+Data are Handled and Reported in Multi‐Database Pharmacoepidemiologic
+studies. Pharmacoepidemiology and Drug Safety. 30. 10.1002/pds.5245
 
 # Backup slides
 
@@ -272,7 +298,8 @@ delta_compare_acu
 delta_combined_fishoil_plot
 ```
 
-
 ## Sensitivity Analysis
 
-This estimates the treatment effect when data is analysed under different missingness assumptions. The $δ-Adjustment$ approach shows how the treatment effect changes when the data is missing not at random.
+This estimates the treatment effect when data is analysed under
+different missingness assumptions. The $δ-Adjustment$ approach shows how
+the treatment effect changes when the data is missing not at random.
