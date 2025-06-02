@@ -29,7 +29,7 @@ header-includes:
 ---
 
 ```{r setup, include=FALSE, cache=TRUE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
 library(mice)
 library(tidyverse)
 library(haven)
@@ -221,27 +221,48 @@ vital_miss_pattern_fish
 ## Complete Case Analysis
 
 - method 
-- mcar 
+mechanism
 
 ## Single Imputation
 
 mean
 locf 
-mcar 
+mechanism
 
 ## Maximum Likelihood
 
 - linear mixed effects model
 - conditions 
 - only suitable with missing outcome 
-- mar
+mechanism
 
 ## Multiple Imputation
 
 - chained equations 
-- mar
+mechanism
 
 ## Sensitivity Analysis 
+
+We conducted a sensitivity analysis on both data sets to determine how sensitive the estimated in the treatment effect is when we assume the data is Missing Not At Random. 
+
+**Purpose of Sensitivity Analysis**
+
+As mentioned in our background section, it is important to investigate the missingness mechanism of the data to assess the choice of data handling method. Although we can never really confirm what type of missingness mechanism follows, we can use sensitivity analysis to test how the data forms under different missingness assumptions. 
+
+**Delta Adjustment**
+
+This is a common approach of sensitivity analysis. A fixed $\delta$ is added or removed from the values that were imputed using multiple imputation using chained equations. Doing this, we are estimating the effect that treatment had on the patient if they were observed. Providing a range of deltas allows potential for unobserved patients responses to treatment to be worse or better than the observed patients. 
+
+**Choosing δ**
+
+In our analysis, we chose which range of $\delta$ values to use based on the outcome of the observed values of each data set. A quantitative estimate would involve determining the mean value of the outcome and the mean predicted value of the missing outcome. 
+
+**Acupuncture**
+
+```{r}
+acu_wide$
+```
+
 
 ```{r}
 # Acupuncture categorical
