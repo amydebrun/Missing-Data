@@ -51,9 +51,16 @@ source("R scripts/Sensitive Analysis.R")
 
 # Project Aims
 
+- bias
+- missingness mechanisms 
+- data handling methdods
+- limitations and strengths 
+- comparison 
+- estimands 
+
 # Background
 
-Missing data in clinical research
+## Missing data in clinical research
 
 ## Missing Data Mechanisms
 
@@ -96,6 +103,8 @@ Vickers et al. conducted a longitudinal randomised controlled trial to determine
 
 **Characteristics**
 
+table summary
+
 **Missing Data**
 
 ```{r}
@@ -103,13 +112,15 @@ acu_miss_perc_plot
 acu_miss_perc_group
 acu_miss_pattern_plot
 ```
-
+-estimands 
 
 ## The Effects of Vitamin D and Marine Omega-3 Fatty Acid Supplementation on Chronic Knee Pain in Older US Adults: Results From a Randomized Trial (MacFarlane et al. 2020)
 
 **Study Design**
 
 **Characteristics**
+
+table summary
 
 **Missing Data**
 
@@ -118,23 +129,50 @@ vital_miss_perc_plot
 vital_miss_perc_plot_fish
 vital_miss_pattern_fish
 ```
-
+- estimand 
 
 # Methods
 
 ## Complete Case Analysis
 
+- method 
+- mcar 
+
 ## Single Imputation
+
+mean
+locf 
+mcar 
 
 ## Maximum Likelihood
 
+- linear mixed effects model
+- conditions 
+- only suitable with missing outcome 
+- mar
+
 ## Multiple Imputation
+
+- chained equations 
+- mar
 
 ## Sensitivity Analysis 
 
+- model 
+- choosing delta 
+- purpose 
+- mnar
+
 # Results 
 
+forest plots 
+table of estimates 
+senstivity analysis 
+
 # Discussion
+
+
+
 
 
 
