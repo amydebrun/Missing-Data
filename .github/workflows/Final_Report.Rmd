@@ -24,7 +24,33 @@ keywords:
 bibliography: references.bib
 biblio-style: unsrt
 output: rticles::arxiv_article
+header-includes:
+  - \newcommand{\pandocbounded}[1]{#1}
 ---
+
+```{r setup, include=FALSE, cache=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+library(mice)
+library(tidyverse)
+library(haven)
+library(lme4)
+library(broom.mixed)
+library(meta)
+library(dplyr)
+library(naniar)
+library(tidymodels)
+library(gtsummary)
+library(tinytex)
+source("R scripts/Functions.R")
+source("R scripts/VITAL data formats.R")
+source("R scripts/Acupuncture data formats.R")
+source("R scripts/Summary analysis.R")
+source("R scripts/Category time analysis.R")
+source("R scripts/Continuous time analysis.R")
+source("R scripts/Different Imputation Method.R")
+source("R scripts/Sensitive Analysis.R")
+
+```
 
 # Introduction
 
@@ -217,16 +243,16 @@ mcar
 
 ## Sensitivity Analysis 
 
-- model 
-- choosing delta 
-- purpose 
-- mnar
+```{r}
+
+```
+
 
 ## Results 
 
 forest plots 
 table of estimates 
-senstivity analysis 
+sensitivity analysis 
 
 
 

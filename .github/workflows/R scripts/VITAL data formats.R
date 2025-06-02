@@ -10,12 +10,12 @@ vital_wide <- data_main %>%
 vital_long <- to_long_format_vital(vital_wide)
 
 # MICE
-vital_mice <- mice(vital_wide, m = 5, method = 'pmm', seed = 123)
-vital_mice_random <- mice(vital_wide, m = 5, method = 'sample', seed = 123)
-vital_mice_midastouch <- mice(vital_wide, m = 5, method = 'midastouch', seed = 123)
-vital_mice_predict <- mice(vital_wide, m = 5, method = 'norm.predict', seed = 123)
-vital_mice_predict_noise <- mice(vital_wide, m = 5, method = 'norm.nob', seed = 123)
-vital_mice_bayesian <- mice(vital_wide, m = 5, method = 'norm', seed = 123)
+vital_mice <- mice(vital_wide, m = 5, method = 'pmm', seed = 123, print=FALSE)
+vital_mice_random <- mice(vital_wide, m = 5, method = 'sample', seed = 123, print=FALSE)
+vital_mice_midastouch <- mice(vital_wide, m = 5, method = 'midastouch', seed = 123, print=FALSE)
+vital_mice_predict <- mice(vital_wide, m = 5, method = 'norm.predict', seed = 123, print=FALSE)
+vital_mice_predict_noise <- mice(vital_wide, m = 5, method = 'norm.nob', seed = 123, print=FALSE)
+vital_mice_bayesian <- mice(vital_wide, m = 5, method = 'norm', seed = 123, print=FALSE)
 
 # MICE FOR LME
 vital_mice_data <- complete(vital_mice, action = "long", include = TRUE)

@@ -7,12 +7,12 @@ acu_long <- to_long_format_acu_cat(acu_wide)
 
 
 # MICE
-acu_mice <- mice(acu_wide, m = 5, method = 'pmm', seed = 123)
-acu_mice_random <- mice(acu_wide, m = 5, method = 'sample', seed = 123)
-acu_mice_midastouch <- mice(acu_wide, m = 5, method = 'midastouch', seed = 123)
-acu_mice_predict <- mice(acu_wide, m = 5, method = 'norm.predict', seed = 123)
-acu_mice_predict_noise <- mice(acu_wide, m = 5, method = 'norm.nob', seed = 123)
-acu_mice_bayesian <- mice(acu_wide, m = 5, method = 'norm', seed = 123)
+acu_mice <- mice(acu_wide, m = 5, method = 'pmm', seed = 123, print=FALSE)
+acu_mice_random <- mice(acu_wide, m = 5, method = 'sample', seed = 123, print=FALSE)
+acu_mice_midastouch <- mice(acu_wide, m = 5, method = 'midastouch', seed = 123, print=FALSE)
+acu_mice_predict <- mice(acu_wide, m = 5, method = 'norm.predict', seed = 123, print=FALSE)
+acu_mice_predict_noise <- mice(acu_wide, m = 5, method = 'norm.nob', seed = 123, print=FALSE)
+acu_mice_bayesian <- mice(acu_wide, m = 5, method = 'norm', seed = 123, print=FALSE)
 
 # MICE for LME
 acu_mice_data_wide <- complete(data = acu_mice, action = "long", include = TRUE)
