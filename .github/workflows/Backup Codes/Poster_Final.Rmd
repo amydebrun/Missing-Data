@@ -96,9 +96,9 @@ This project investigates missing data analysis methods in two longitudinal RCT 
 
 ```{r}
 
-data_vitalkp <- read_sas("Data/vitalkneepain111623.sas7bdat", 
+data_vitalkp <- read_sas("C:/Users/abrow/Documents/Missing-Data/.github/workflows/Data/vitalkneepain111623.sas7bdat", 
                          NULL)
-data_main <- read_sas("Data/VITAL_trial_NEJM_2022.sas7bdat", 
+data_main <- read_sas("C:/Users/abrow/Documents/Missing-Data/.github/workflows/Data/VITAL_trial_NEJM_2022.sas7bdat", 
                       NULL)
 
 data_combined <- data_main %>%
@@ -136,7 +136,7 @@ data_miss <- data_combined %>%
 
 ```{r mytable, echo=FALSE, fig.height=5, fig.width=14}
 pct_format = scales::label_percent(accuracy = .1)
-suppressMessages(
+vital_miss_perc_plot<-suppressMessages(
 data_miss %>%
   group_by(time, miss_obs) %>%
   summarise(count_pat = n(), .groups="keep") %>%
@@ -155,11 +155,12 @@ scale_fill_manual(name="",values=c("olivedrab", "lawngreen"), labels=c("Missing 
         axis.text.x = element_text(angle = 0, vjust = 0.5),
         legend.position = "top", legend.text=element_text(size=20))
 )
+vital_miss_perc_plot
 ```
 Figure 1. The proportions of missing data (represented in dark green) at different time points. The observed missing data pattern is non-monotonic.
 
 ```{r mytable2, echo=FALSE, warning=FALSE, fig.height=6, fig.width=14}
-suppressMessages(
+vital_miss_perc_plot_fish<-suppressMessages(
 data_miss %>%
   group_by(time, miss_obs, group_oil) %>%
   summarise(count_pat = n(), .groups="keep") %>%
@@ -178,6 +179,7 @@ data_miss %>%
   theme(text = element_text(size = 24),
         axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "none")
 )
+vital_miss_perc_plot_fish
 ```
  
 Figure 2. Proportions of missing data (dark green) over time in different groups (Fish Oil vs. Placebo) are shown. Similar proportions of missing data were observed between the two groups.
@@ -190,7 +192,7 @@ data_miss_count <- data_miss %>%
   ungroup %>%
   mutate(pattern_perc = round(pattern_count/sum(pattern_count)*100*5,1))
 
-ggplot(data_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
+vital_miss_pattern_fish<-ggplot(data_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
   geom_tile(color = "white") + 
   geom_text(data = filter(data_miss_count, time_cont == 4), 
             aes(x = time_cont+1.5, label = paste0(pattern_count," (", pattern_perc, "%)")), size = 4) +
@@ -206,6 +208,7 @@ ggplot(data_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
   scale_x_continuous(name = "Time", breaks = c(0,1,2,3,4,5), 
                      labels = c("Baseline","Year 1","Year 2","Year 3","Year 4","Patient Count\n(%)")) +
   scale_fill_manual(name="",labels=c("Missing Data","Measured Data"),values=c("olivedrab", "lawngreen"))
+vital_miss_pattern_fish
 ```
 
 Figure 3. The missing data patterns (where 0 represents missing data and 1 represents observed data) between the groups (Fish Oil vs. Placebo) are displayed. Some differences in the patterns can be observed.
@@ -246,7 +249,7 @@ acupuncture_miss <- acupuncture %>%
 ```{r mytable4, echo=FALSE, warning=FALSE, fig.height=7, fig.width=14}
 pct_format = scales::label_percent(accuracy = .1)
 
-acupuncture_miss %>%
+acu_miss_perc_plot<- acupuncture_miss %>%
   group_by(time, miss_obs) %>%
   summarise(count_pat = n(), .groups = "keep") %>%
   group_by(time) %>%
@@ -262,12 +265,13 @@ acupuncture_miss %>%
   scale_y_continuous(name = "Number of Patients") +
   theme(text = element_text(size = 18),
         axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "top", legend.text=element_text(size=20))
+acu_miss_perc_plot
 ```
 
 Figure 4. Proportions of Missing data (dark green) at different time in Acupuncture trial 
 
 ```{r mytable5, echo=FALSE, warning=FALSE, fig.height=8, fig.width=14}
-acupuncture_miss %>%
+acu_miss_perc_group<-acupuncture_miss %>%
   group_by(time, miss_obs, group) %>%
   summarise(count_pat = n(), .groups="keep") %>%
   group_by(time, group) %>%
@@ -284,6 +288,8 @@ acupuncture_miss %>%
   scale_y_continuous(name = "Number of Patients") +
   theme(text = element_text(size = 18),
         axis.text.x = element_text(angle = 0, vjust = 0.5),legend.position = "none",strip.text.x=element_text(size=20))
+
+acu_miss_perc_group
 ```
 
 Figure 5. Proportions of missing data (dark green) within treatment groups over time. They are similar within both treatment groups, but higher percentage of data is missing in placebo group. 
@@ -297,7 +303,7 @@ acupuncture_miss_count <- acupuncture_miss %>%
   mutate(pattern_perc = round(pattern_count/sum(pattern_count)*100*5,1))
 
 
-ggplot(acupuncture_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
+acu_miss_pattern_plot<-ggplot(acupuncture_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
   geom_tile(color = "white") + 
   geom_text(data = filter(acupuncture_miss_count, time_cont == 2), 
             aes(x = time_cont+1, label = paste0(pattern_count," (", pattern_perc, "%)")), size = 5.5) +
@@ -312,6 +318,7 @@ ggplot(acupuncture_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_
   scale_fill_manual(name = "", labels=c("Missing","Measured"), values=c("olivedrab","lawngreen")) +
   scale_x_continuous(name = "Time", breaks = c(0.1,1.1,2.1,3.1), 
                      labels = c("Baseline","3 Months","12 Months","Patients \n(%)")) 
+acu_miss_pattern_plot
 ```
 
 Figure 6. Missing data pattern (where 0 represents missing data and 1 represents observed data) over time. Slight differences was observed.

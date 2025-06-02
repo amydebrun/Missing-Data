@@ -40,6 +40,7 @@ source("R scripts/Functions.R")
 source("R scripts/VITAL data formats.R")
 source("R scripts/Acupuncture data formats.R")
 source("R scripts/Summary analysis.R")
+source("R scripts/Data_Summary.R")
 source("R scripts/Category time analysis.R")
 source("R scripts/Continuous time analysis.R")
 source("R scripts/Different Imputation Method.R")
@@ -97,6 +98,13 @@ Vickers et al. conducted a longitudinal randomised controlled trial to determine
 
 **Missing Data**
 
+```{r}
+acu_miss_perc_plot
+acu_miss_perc_group
+acu_miss_pattern_plot
+```
+
+
 ## The Effects of Vitamin D and Marine Omega-3 Fatty Acid Supplementation on Chronic Knee Pain in Older US Adults: Results From a Randomized Trial (MacFarlane et al. 2020)
 
 **Study Design**
@@ -104,6 +112,13 @@ Vickers et al. conducted a longitudinal randomised controlled trial to determine
 **Characteristics**
 
 **Missing Data**
+
+```{r}
+vital_miss_perc_plot
+vital_miss_perc_plot_fish
+vital_miss_pattern_fish
+```
+
 
 # Methods
 
