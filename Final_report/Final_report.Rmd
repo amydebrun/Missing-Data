@@ -2,14 +2,14 @@
 title: Estimating Treatment Effects in Longitudinal Clinical Trials with Missing Data 
 authors:
   - name: Amy Browne
-    thanks: The authors would like to thank Neil O'Leary from the University of Galway for his valuable guidance, feedback, and support throughout the development of this project
-    department: Department of Methametics
+    department: Department of Mathametics
     affiliation: University of Galway
     email: k.yip2@universityofgalway.ie
   - name: Tsz Mang Yip
-    department: Department of Methametics
+    department: Department of Mathametics
     affiliation: University of Galway
     email: a.browne47@universityofgalway.ie
+thanks: The authors would like to thank Neil O'Leary from the University of Galway for his valuable guidance, feedback, and support throughout the development of this project
 abstract: |
   Enter the text of your abstract here.
 keywords:
@@ -20,118 +20,54 @@ keywords:
 bibliography: references.bib
 biblio-style: unsrt
 output: rticles::arxiv_article
+header-includes:
+  - \newcommand{\pandocbounded}[1]{#1}
 ---
 
 # Introduction
 
+# Project Aims
+
+# Background
+
+Missing data in clinical research
+
+Missing data mechanisms 
+
+Missing data mechanisms are important to consider when choosing which sort of missing data handling method to use. There are three mechanisms which missing data can follow:
+
+- Missing Completely At Random (MCAR)
+- Missing At Random (MAR)
+- Missing Not At Random (MNAR)
+
+Although they may appear similar at first glance, handling missing data without considering these mechanisms may result in biased estimates and inaccurate conclusions. 
+
+## Missing Completely At Random
+
+## Missing At Random
+
+## Missing Not At Random
+
+# Data 
+
+## Acupuncture for chronic headache in primary care: large, pragmatic, randomised trial (Vickers et al., 2004)
+
+## The Effects of Vitamin D and Marine Omega-3 Fatty Acid Supplementation on Chronic Knee Pain in Older US Adults: Results From a Randomized Trial (MacFarlane et al. 2020)
+
+# Methods
+
+## Complete Case Analysis
+
+## Single Imputation
+
+## Maximum Likelihood
+
+## Multiple Imputation
+
+# Result
+
+# Discussion
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Examples of citations, figures, tables, references
-\label{sec:others}
-
-You can insert references. Here is some text [@kour2014real; @kour2014fast] and see @hadash2018estimate.
-
-The documentation for \verb+natbib+ may be found at
-
-You can use custom blocks with LaTeX support from **rmarkdown** to create environment.
-
-::: {.center latex=true}
-  <http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}>
-:::
-
-Of note is the command \verb+\citet+, which produces citations
-appropriate for use in inline text.  
-
-You can insert LaTeX environment directly too.
-
-\begin{verbatim}
-   \citet{hasselmo} investigated\dots
-\end{verbatim}
-
-produces
-
-\begin{quote}
-  Hasselmo, et al.\ (1995) investigated\dots
-\end{quote}
-
-\begin{center}
-  \url{https://www.ctan.org/pkg/booktabs}
-\end{center}
-
-
-## Figures
-
-You can insert figure using LaTeX directly. 
-
-See Figure \ref{fig:fig1}. Here is how you add footnotes. [^Sample of the first footnote.]
-
-\begin{figure}
-  \centering
-  \fbox{\rule[-.5cm]{4cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
-  \caption{Sample figure caption.}
-  \label{fig:fig1}
-\end{figure}
-
-But you can also do that using R.
-
-```{r fig2, fig.cap = "Another sample figure"}
-plot(mtcars$mpg)
-```
-
-You can use **bookdown** to allow references for Tables and Figures.
-
-
-## Tables
-
-Below we can see how to use tables. 
-
-See awesome Table~\ref{tab:table} which is written directly in LaTeX in source Rmd file.
-
-\begin{table}
- \caption{Sample table title}
-  \centering
-  \begin{tabular}{lll}
-    \toprule
-    \multicolumn{2}{c}{Part}                   \\
-    \cmidrule(r){1-2}
-    Name     & Description     & Size ($\mu$m) \\
-    \midrule
-    Dendrite & Input terminal  & $\sim$100     \\
-    Axon     & Output terminal & $\sim$10      \\
-    Soma     & Cell body       & up to $10^6$  \\
-    \bottomrule
-  \end{tabular}
-  \label{tab:table}
-\end{table}
-
-You can also use R code for that.
-
-```{r}
-knitr::kable(head(mtcars), caption = "Head of mtcars table")
-```
-
-
-## Lists
-
-- Item 1
-- Item 2 
-- Item 3
