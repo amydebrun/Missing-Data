@@ -256,6 +256,13 @@ delta_results_cont_fishoil$tme<- "Continuous Time"
 delta_combined_fishoil<-bind_rows(delta_results_cat_fishoil, delta_results_cont_fishoil)
 delta_combined_fishoil$treatment<- "Fish Oil"
 
+delta_combined_fishoil <- delta_combined_fishoil %>%
+  mutate(delta_jittered = case_when(
+    tme == "Categorical Time" ~ delta + 0.15,
+    tme == "Continuous Time"  ~ delta - 0.15,
+    TRUE ~ delta
+  ))
+
 delta_combined_fishoil_plot <- ggplot(delta_combined_fishoil, aes(x = estimate, y = delta, color = tme, shape = tme)) +
   geom_point(size = 4,position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
@@ -394,6 +401,13 @@ delta_results_cont_vitd$tme<- "Continuous Time"
 delta_combined_vitd<-bind_rows(delta_results_cat_vitd, delta_results_cont_vitd)
 delta_combined_vitd$treatment<-"Vitamin D"
 
+delta_combined_vitd<- delta_combined_vitd %>%
+  mutate(delta_jittered = case_when(
+    tme == "Categorical Time" ~ delta + 0.15,
+    tme == "Continuous Time"  ~ delta - 0.15,
+    TRUE ~ delta
+  ))
+
 delta_combined_vitd_plot <- ggplot(delta_combined_vitd, aes(x = estimate, y = delta, color = tme, shape = tme)) +
   geom_point(size = 4,position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
@@ -432,6 +446,13 @@ delta_combined_vitd_plot <- ggplot(delta_combined_vitd, aes(x = estimate, y = de
 delta_combined_vitd$treatment <- "Vitamin D"
 delta_combined_fishoil$treatment <- "Fish Oil"
 delta_combined_vital <- bind_rows(delta_combined_vitd, delta_combined_fishoil)
+
+delta_combined_vital <- delta_combined_vital %>%
+  mutate(delta_jittered = case_when(
+    tme == "Categorical Time" ~ delta + 0.15,
+    tme == "Continuous Time"  ~ delta - 0.15,
+    TRUE ~ delta
+  ))
 
 delta_combined_vital_plot <- ggplot(delta_combined_vital, aes(x = estimate, y = delta, color = tme, shape = tme)) +
   geom_point(size = 4,position = position_nudge(y = 0.15)) +
