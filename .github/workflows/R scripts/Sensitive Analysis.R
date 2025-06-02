@@ -263,7 +263,7 @@ delta_combined_fishoil <- delta_combined_fishoil %>%
     TRUE ~ delta
   ))
 
-delta_combined_fishoil_plot <- ggplot(delta_combined_fishoil, aes(x = estimate, y = delta, color = tme, shape = tme)) +
+delta_combined_fishoil_plot <- ggplot(delta_combined_fishoil, aes(x = estimate, y = delta_jittered, color = tme, shape = tme)) +
   geom_point(size = 4,position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +  
@@ -408,7 +408,7 @@ delta_combined_vitd<- delta_combined_vitd %>%
     TRUE ~ delta
   ))
 
-delta_combined_vitd_plot <- ggplot(delta_combined_vitd, aes(x = estimate, y = delta, color = tme, shape = tme)) +
+delta_combined_vitd_plot <- ggplot(delta_combined_vitd, aes(x = estimate, y = delta_jittered, color = tme, shape = tme)) +
   geom_point(size = 4,position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") + facet_wrap(~treatment)+
@@ -454,7 +454,7 @@ delta_combined_vital <- delta_combined_vital %>%
     TRUE ~ delta
   ))
 
-delta_combined_vital_plot <- ggplot(delta_combined_vital, aes(x = estimate, y = delta, color = tme, shape = tme)) +
+delta_combined_vital_plot <- ggplot(delta_combined_vital, aes(x = estimate, y = delta_jittered, color = tme, shape = tme)) +
   geom_point(size = 4,position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
