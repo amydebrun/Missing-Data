@@ -66,7 +66,7 @@ Enter the text of your abstract here.
 
 Missing data in clinical research
 
-Missing data mechanisms
+\subsection{Missing Data Mechanisms}\label{missing-data-mechanisms}
 
 Missing data mechanisms are important to consider when choosing which
 sort of missing data handling method to use. There are three mechanisms
@@ -86,12 +86,41 @@ Although they may appear similar at first glance, handling missing data
 without considering these mechanisms may result in biased estimates and
 inaccurate conclusions.
 
-\subsection{Missing Completely At
-Random}\label{missing-completely-at-random}
+\textbf{Missing Completely At Random}
 
-\subsection{Missing At Random}\label{missing-at-random}
+The formal definition of MCAR data is:
 
-\subsection{Missing Not At Random}\label{missing-not-at-random}
+\[\quad P(R = 1 \mid Y, X) = P(R = 1)\] where \(R\) is a missing data
+indicator (1 = Data is observed, 0 = Data is missing), \(Y\) represents
+the variables in which the data is potentially missing and \(X\)
+represents the observed data. The probability of the data is observed
+given observed data and missing data is the same as the probability of
+being observed without the given data. This mechanism is considered the
+easiest to deal with as it does not bias the result although data is
+rarely MCAR. This can occur due to system failure and some data is
+deleted accidentally, or else there is issues with the treatment system
+and data cannot be recorded.
+
+\textbf{Missing At Random}
+
+\[\quad P(R = 1 \mid Y, X) = P(R = 1 \mid X)\] The probability of data
+being observed given the rest of the data is the same as the probability
+being observed given the observed data. In short, the data's missingness
+is dependent on the observed data. For example, people with a higher
+body mass index may be more prone to having missing blood pressure data
+- this is not relative to the missing data. MAR is a more realistic
+mechanism than MCAR and requires more intensive handling methods.
+
+\textbf{Missing Not At Random}
+
+\[\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)\] The probability of data
+being observed is not dependent on the observed data. This mechanism is
+the most difficult to deal with as it relates to the unobserved data, so
+producing valid results is a challenge. Certain participants in a
+general health study may avoid answering questions truthfully about
+smoking habits or their diet in order to make themselves more appealing.
+Sensitivity analysis is an option to determine the treatment effect when
+assuming different mechanisms.
 
 \section{Data}\label{data}
 
