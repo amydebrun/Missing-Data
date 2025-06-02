@@ -109,7 +109,14 @@ delta_results_cont_acu$tme <- "Continuous time"
 delta_combined_acu <- bind_rows(delta_results_cat, delta_results_cont_acu)
 delta_combined_acu$group<-"Acupuncture"
 
-delta_compare_acu <- ggplot(delta_combined_acu, aes(x = estimate, y = delta)) +
+delta_combined_acu <- delta_combined_acu %>%
+  mutate(delta_jittered = case_when(
+    tme == "Categorical time" ~ delta + 0.15,
+    tme == "Continuous time"  ~ delta - 0.15,
+    TRUE ~ delta
+  ))
+
+delta_compare_acu <- ggplot(delta_combined_acu, aes(x = estimate, y = delta_jittered)) +
   geom_point(aes(color = tme, shape = tme), size = 4) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high, color = tme), height = 0.4, position = position_nudge(y = 0.15)) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") + facet_wrap(~group, scales="free") +
