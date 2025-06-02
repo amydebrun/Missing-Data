@@ -1,24 +1,22 @@
 ---
-title: A template for the *arxiv* style
+title: Estimating Treatment Effects in Longitudinal Clinical Trials with Missing Data 
 authors:
-  - name: David S. Hippocampus
-    thanks: Use footnote for providing further information about author (webpage, alternative address)---*not* for acknowledging funding agencies. Optional.
-    department: Department of Computer Science
-    affiliation: Cranberry-Lemon University
-    location: Pittsburgh, PA 15213
-    email: hippo@cs.cranberry-lemon.edu
-  - name: Elias D. Striatum
-    department: Department of Electrical Engineering
-    affiliation: Mount-Sheikh University
-    location: Santa Narimana, Levand
-    email: stariate@ee.mount-sheikh.edu
+  - name: Amy Browne
+    thanks: The authors would like to thank Neil O'Leary from the University of Galway for his valuable guidance, feedback, and support throughout the development of this project
+    department: Department of Methametics
+    affiliation: University of Galway
+    email: k.yip2@universityofgalway.ie
+  - name: Tsz Mang Yip
+    department: Department of Methametics
+    affiliation: University of Galway
+    email: a.browne47@universityofgalway.ie
 abstract: |
   Enter the text of your abstract here.
 keywords:
-  - blah
-  - blee
-  - bloo
-  - these are optional and can be removed
+  - Missing Data
+  - Longitudinal Data
+  - Randomized Clinical Trial
+  - Real World Data Analysis
 bibliography: references.bib
 biblio-style: unsrt
 output: rticles::arxiv_article
@@ -26,29 +24,25 @@ output: rticles::arxiv_article
 
 # Introduction
 
-Here goes an introduction text
 
-# Headings: first level
-\label{sec:headings}
 
-You can use directly LaTeX command or Markdown text. 
 
-LaTeX command can be used to reference other section. See Section \ref{sec:headings}.
-However, you can also use **bookdown** extensions mechanism for this.
 
-## Headings: second level
 
-You can use equation in blocks
 
-$$
-\xi _{ij}(t)=P(x_{t}=i,x_{t+1}=j|y,v,w;\theta)= {\frac {\alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}{\sum _{i=1}^{N} \sum _{j=1}^{N} \alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}}
-$$
 
-But also inline i.e $z=x+y$
 
-### Headings: third level
 
-Another paragraph. 
+
+
+
+
+
+
+
+
+
+
 
 
 # Examples of citations, figures, tables, references
