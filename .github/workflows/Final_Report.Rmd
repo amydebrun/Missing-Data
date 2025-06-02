@@ -10,8 +10,12 @@ authors:
     department: Department of Methametics
     affiliation: University of Galway
     email: a.browne47@universityofgalway.ie
-abstract: |
-  Enter the text of your abstract here.
+abstract:
+  1. Motivation. Missing data is a pervasive issue in longitudinal clinical trials, risking bias and reduced power.
+  2. Approach. This study compares several statistical methods for estimating treatment effects in the presence of missing data.
+  3. Datasets. Applied to two real-world datasets (Acupuncture and VITAL studies).
+  4. Findings. No meaningful differences between methods for both data sets.
+  5. Conclusion. Understanding there are many ways to handle missing data, and it is crutial to understand the mechanism to make corret choise under circumstances.
 keywords:
   - Missing Data
   - Longitudinal Data
@@ -24,18 +28,98 @@ output: rticles::arxiv_article
 
 # Introduction
 
-# Project Aims
+  - Clinical trials often face missing outcome data due to dropout or nonresponse.
+  - Existing literature reveals inconsistent reporting and handling practices.(Power 2014)
+  - Consequences: bias, reduced efficiency, invalid conclusions if not handled properly.
+  - Missing mechanism MCAR, MAR, MNAR. (Missing Data Mechanisms)
+  - DAG of missing mechanism
+  - Objective: Evaluate how different methods perform in estimating treatment effects under varying missing data mechanisms using real data.
 
-- bias
-- missingness mechanisms 
-- data handling methdods
-- limitations and strengths 
-- comparison 
-- estimands 
+## Data sets
 
-# Background
+  - Source
+  - Study design
+  - Data overview
+    - assuming not interaction in VITAL study
+  - Estimands in this project
+
+## Missing analysis
+
+  - Missing proportion
+  - Missing pattern
+
+# Methods
+
+## Data wrangling
+
+  - Have data both in wide and long format
+  - We have done multi imputation in wide format then transform for LME
+  - Which account for reapeat measurements and will work if collecting time are more different
+
+## Changing imputation methods
+
+  - No imputation (complete case, LME)
+  - Single imputation (LOCF, mean observation)
+  - Multiple imputation (Different method, predictive value or observed value, number of m)
+  - Chain equation for multi-variate missingness
+
+## Changing substantial model
+
+  - Simple linear regression
+  - LME
+  - Change estimand
+  - Change linear regression to polynomial, splie...
+
+## Sensitive analysis
+
+  - Violation of MAR possible
+  - shifting method (choosing delta, how to model)
+
+# Result
+
+## Comparing different methods
+
+## Changing estimand
+  - almost no impact in acupuncture study due to 2 follow-up
+
+## Changing imputation methods
+
+## Sensitive analysis
 
 ## Missing data in clinical research
+
+# Discussion
+
+  - No meaningful difference observed
+  - limitation: only 2 follow up for acupuncture
+  - limitation: VITAL only have weak therapeutic effect
+  - further work: simulate complete data, and compare accuracy between methods
+
+# References
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Back up writing
 
 ## Missing Data Mechanisms
 
@@ -66,7 +150,7 @@ The probability of data being observed given the rest of the data is the same as
 $$\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)$$
 The probability of data being observed is not dependent on the observed data. This mechanism is the most difficult to deal with as it relates to the unobserved data, so producing valid results is a challenge. Certain participants in a general health study may avoid answering questions truthfully about smoking habits or their diet in order to make themselves more appealing. Sensitivity analysis is an option to determine the treatment effect when assuming different mechanisms. 
 
-# Data 
+## Data 
 
 We will analyse 2 longitudinal randomised controlled trials. Both studies are designed differently with two different sample sizes, which is an advantage to our research as we can look to apply these methods in two different settings. 
 
@@ -106,7 +190,7 @@ vital_miss_pattern_fish
 ```
 - estimand 
 
-# Methods
+## Methods
 
 ## Complete Case Analysis
 
@@ -138,13 +222,14 @@ mcar
 - purpose 
 - mnar
 
-# Results 
+## Results 
 
 forest plots 
 table of estimates 
 senstivity analysis 
 
-# Discussion
+
+
 
 
 
