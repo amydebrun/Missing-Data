@@ -244,8 +244,41 @@ mcar
 ## Sensitivity Analysis 
 
 ```{r}
+# Acupuncture categorical
+delta_results_cat
+delta_result_cat_plot
+# Acupuncture continuous
+delta_results_cont_acu
+delta_results_cont_acu_plot
+
+delta_compare_acu
+```
+
+```{r}
+# Fish oil categorical
+delta_results_cat_fishoil
+# Fish oil continuous
+delta_results_cont_fishoil
+
+delta_combined_fishoil_plot
+```
+
+```{r}
+# VitD categorical
+delta_results_cat_vitd
+# VitD continuous
+delta_results_cont_vitd
+
+delta_combined_vitd_plot
+```
+
+
+```{r}
+#vital compare plot delta
+delta_combined_vital_plot
 
 ```
+
 
 
 ## Results 

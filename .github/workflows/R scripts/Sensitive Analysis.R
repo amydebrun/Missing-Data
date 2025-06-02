@@ -34,8 +34,8 @@ for (i in seq_along(imp.all.undamped_cat)) {
 
 delta_results_cat$group<-"Acupuncture Treatment"
 delta_result_cat_plot <- ggplot(delta_results_cat, aes(x = estimate, y = delta)) +
-  geom_point(size = 4, color = "#a80050") +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +   
+  geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
   facet_wrap(~ group) +
   labs(
@@ -85,8 +85,8 @@ for (i in seq_along(imp.all.undamped_cont)) {
 
 delta_results_cont_acu$group<-"Acupuncture Treatment"
 delta_results_cont_acu_plot <- ggplot(delta_results_cont_acu, aes(x = estimate, y = delta)) +
-  geom_point(size = 4, color = "#a80050") +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +   
+  geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
   facet_wrap(~ group) +
   labs(
@@ -111,7 +111,7 @@ delta_combined_acu$group<-"Acupuncture"
 
 delta_compare_acu <- ggplot(delta_combined_acu, aes(x = estimate, y = delta)) +
   geom_point(aes(color = tme, shape = tme), size = 4) +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high, color = tme), height = 0.4) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high, color = tme), height = 0.4, position = position_nudge(y = 0.15)) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") + facet_wrap(~group, scales="free") +
   scale_color_manual(
     values = c(
@@ -177,8 +177,8 @@ for (i in seq_along(imp.all.undamped_cont)) {
 
 delta_results_cont_fishoil$treatment<-"Fish Oil"
 delta_results_cont_fishoil_plot <- ggplot(delta_results_cont_fishoil, aes(x = estimate, y = delta)) +
-  geom_point(size = 4, color = "#a80050") +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +   
+  geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
   facet_wrap(~ treatment) + 
   labs(
@@ -224,8 +224,8 @@ for (i in seq_along(imp.all.undamped_cat)) {
 
 delta_results_cat_fishoil$treatment<-"Fish Oil"
 delta_results_cat_fishoil_plot <- ggplot(delta_results_cat_fishoil, aes(x = estimate, y = delta)) +
-  geom_point(size = 4, color = "#a80050") +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +   
+  geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
   facet_wrap(~ treatment) + 
   labs(
@@ -250,8 +250,8 @@ delta_combined_fishoil<-bind_rows(delta_results_cat_fishoil, delta_results_cont_
 delta_combined_fishoil$treatment<- "Fish Oil"
 
 delta_combined_fishoil_plot <- ggplot(delta_combined_fishoil, aes(x = estimate, y = delta, color = tme, shape = tme)) +
-  geom_point(size = 4) +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +   
+  geom_point(size = 4,position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +  
   facet_wrap(~ treatment) +  
   scale_color_manual(
@@ -318,8 +318,8 @@ for (i in seq_along(imp.all.undamped_cont)) {
 
 delta_results_cont_vitd$treatment<-"Vitamin D"
 delta_results_cont_vitd_plot <- ggplot(delta_results_cont_vitd, aes(x = estimate, y = delta)) +
-  geom_point(size = 4, color = "#a80050") +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +   
+  geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
   facet_wrap(~ treatment) +
   labs(
@@ -363,8 +363,8 @@ for (i in seq_along(imp.all.undamped_cat)) {
 
 delta_results_cat_vitd$treatment<-"Vitamin D"
 delta_results_cat_vitd_plot <- ggplot(delta_results_cat_vitd, aes(x = estimate, y = delta)) +
-  geom_point(size = 4, color = "#a80050") +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +   
+  geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
   facet_wrap(~ treatment) + 
   labs(
@@ -388,8 +388,8 @@ delta_combined_vitd<-bind_rows(delta_results_cat_vitd, delta_results_cont_vitd)
 delta_combined_vitd$treatment<-"Vitamin D"
 
 delta_combined_vitd_plot <- ggplot(delta_combined_vitd, aes(x = estimate, y = delta, color = tme, shape = tme)) +
-  geom_point(size = 4) +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +   
+  geom_point(size = 4,position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") + facet_wrap(~treatment)+
   scale_color_manual(
     values = c(
@@ -427,8 +427,8 @@ delta_combined_fishoil$treatment <- "Fish Oil"
 delta_combined_vital <- bind_rows(delta_combined_vitd, delta_combined_fishoil)
 
 delta_combined_vital_plot <- ggplot(delta_combined_vital, aes(x = estimate, y = delta, color = tme, shape = tme)) +
-  geom_point(size = 4) +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +   
+  geom_point(size = 4,position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
   scale_color_manual(
     values = c(
