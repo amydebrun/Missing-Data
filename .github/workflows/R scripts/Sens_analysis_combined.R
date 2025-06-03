@@ -54,6 +54,7 @@ delta_combined_cont_cat_plot <- ggplot(delta_combined_cont_cat, aes(x = estimate
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
   facet_wrap(~ treatment) +
   scale_shape_manual(values = c("Continuous time" = 17, "Categorical time" = 16)) + 
+  scale_color_manual(values = c("Continuous time" = "lawngreen", "Categorical time" = "#a80050")) +
   labs(
     title = "δ-Adjustment Sensitivity Analysis by Estimand and Treatment Arm",
     x = "Estimated Treatment Effect",
