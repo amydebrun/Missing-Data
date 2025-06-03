@@ -22,7 +22,7 @@ delta_combined_acu_plot <- ggplot(delta_combined_cont_acu, aes(x = estimate, y =
 
 #cat
 delta_combined_cat_acu <- bind_rows(delta_results_cat, delta_results_cat_placebo)
-delta_combined_cat_acu_plot <- ggplot(delta_combined_cat_acu, aes(x = estimate, y = delta)) +
+delta_combined_cat_acu_plot <- ggplot(delta_combined_cat_acu, aes(x = estimate, y = delta_acu)) +
   geom_point(size = 4, color = "#a80050", position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, 
                  position = position_nudge(y = 0.15)) +
@@ -45,7 +45,7 @@ delta_combined_cat_acu_plot <- ggplot(delta_combined_cat_acu, aes(x = estimate, 
 
 delta_combined_cont_cat_plot <- ggplot(
   delta_combined_cont_cat, 
-  aes(x = estimate, y = delta, shape = estimand, colour = estimand)
+  aes(x = estimate, y = delta_acu, shape = estimand, colour = estimand)
 ) + geom_point(
     data = subset(delta_combined_cont_cat, estimand == "Categorical time"),
     size = 4, position = position_nudge(y = -0.15)
