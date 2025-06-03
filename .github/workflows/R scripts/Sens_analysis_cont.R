@@ -59,7 +59,7 @@ delta_results_cont_acu_plot <- ggplot(delta_results_cont_acu, aes(x = estimate, 
 
 #continuous acu placebo
 delta <- c(-5,-2,0,2,5)
-inlist <- c("sex", "age", "pk1")
+inlist <- c("group", "pk1")
 pred_cont <- quickpred(acu_long_cont, minpuc = 0.5, include = inlist)
 imp.default_cont <- mice(acu_long_cont, m = 1, maxit = 1, predictorMatrix = pred_cont, seed = 123, print= FALSE)
 post_cont <- imp.default_cont$post
@@ -73,7 +73,7 @@ for (i in 1:length(delta)) {
     "imp[[j]]$pk_score[idx] <- imp[[j]]$pk_score[idx] + ", d
   )
   post_cont["pk_score"] <- cmd
-  imp_cont <- mice(acu_long, pred = pred_cont, post = post_cont, maxit = 10,
+  imp_cont <- mice(acu_long_cont, pred = pred_cont, post = post_cont, maxit = 10,
                    seed = i * 22, print=FALSE)
   imp.all.undamped_cont_placebo[[i]] <- imp_cont
 }
