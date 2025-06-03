@@ -46,8 +46,9 @@ source("R scripts/Summary analysis.R")
 source("R scripts/Category time analysis.R")
 source("R scripts/Continuous time analysis.R")
 source("R scripts/Different Imputation Method.R")
-source("R scripts/Sensitive Analysis.R")
-
+source("R scripts/Sens_analysis_cat.R")
+source("R scripts/Sens_analysis_cont.R")
+source("R scripts/Sens_analysis_combined.R")
 ```
 
 # Introduction
@@ -287,6 +288,9 @@ delta_compare_acu
 ```
 
 ```{r}
+
+vital_long
+
 # Fish oil categorical
 delta_results_cat_fishoil
 # Fish oil continuous
