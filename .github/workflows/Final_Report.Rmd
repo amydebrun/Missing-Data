@@ -11,11 +11,9 @@ authors:
     affiliation: University of Galway
     email: a.browne47@universityofgalway.ie
 abstract:
-  1. Motivation. Missing data is a pervasive issue in longitudinal clinical trials, risking bias and reduced power.
-  2. Approach. This study compares several statistical methods for estimating treatment effects in the presence of missing data.
-  3. Datasets. Applied to two real-world datasets (Acupuncture and VITAL studies).
-  4. Findings. No meaningful differences between methods for both data sets.
-  5. Conclusion. Understanding there are many ways to handle missing data, and it is crutial to understand the mechanism to make corret choise under circumstances.
+  - Motivation. Missing data is a pervasive issue in longitudinal clinical trials, risking bias and reduced power. This study compares several statistical methods for estimating treatment effects in the presence of missing data.
+  - Result. No meaningful differences between methods for both data sets. To understanding there are many ways to handle missing data, and it is crutial to understand the mechanism to make corret choise under circumstances.
+  - Supplement information. Code Available at https://github.com/amydebrun/Missing-Data
 keywords:
   - Missing Data
   - Longitudinal Data
@@ -54,19 +52,32 @@ source("R scripts/Sensitive Analysis.R")
 
 # Introduction
 
-  - Clinical trials often face missing outcome data due to dropout or nonresponse.
-  - Existing literature reveals inconsistent reporting and handling practices.(Power 2014)
-  - Consequences: bias, reduced efficiency, invalid conclusions if not handled properly.
+## Missing data in longitudinal study
+
+  - Clinical trials often face missing outcome data due to dropout or non-response.
+  
+## Missing mechanism
+  
   - Missing mechanism MCAR, MAR, MNAR. (Missing Data Mechanisms)
   - DAG of missing mechanism
-  - Objective: Evaluate how different methods perform in estimating treatment effects under varying missing data mechanisms using real data.
+ 
+## Current approach and limitations
+ 
+  - Existing literature reveals inconsistent reporting and handling practices.(Power 2014)
+  - Consequences: bias, reduced efficiency, invalid conclusions if not handled properly.
+  
+
+## Objective of this project
+
+  - Using statistical principled methods
+  - Test how different methods perform in estimating treatment effects using real-world data.
 
 ## Data sets
 
   - Source
   - Study design
   - Data overview
-    - assuming not interaction in VITAL study
+    - assuming no interaction in VITAL study
   - Estimands in this project
 
 ## Missing analysis
@@ -79,8 +90,8 @@ source("R scripts/Sensitive Analysis.R")
 ## Data wrangling
 
   - Have data both in wide and long format
-  - We have done multi imputation in wide format then transform for LME
-  - Which account for reapeat measurements and will work if collecting time are more different
+  - We have done multi-imputation in wide format then transform for LME
+  - Which account for repeat measurements and will work if collecting time are more different
 
 ## Changing imputation methods
 
