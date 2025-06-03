@@ -46,6 +46,8 @@ delta_combined_cat_acu_plot <- ggplot(delta_combined_cat_acu, aes(x = estimate, 
 delta_combined_cont_acu$estimand <- "Continuous time"
 delta_combined_cat_acu$estimand <- "Categorical time"
 delta_combined_cont_cat <- bind_rows(delta_combined_cont_acu, delta_combined_cat_acu)
+delta_combined_cont_cat$estimand <- factor(delta_combined_cont_cat$estimand,
+                                           levels = c("Continuous time", "Categorical time"))
 
 delta_combined_cont_cat_plot <- ggplot(delta_combined_cont_cat, aes(x = estimate, y = delta, shape = estimand)) +
   geom_point(size = 4, color = "#a80050", position = position_nudge(y = 0.15)) +
