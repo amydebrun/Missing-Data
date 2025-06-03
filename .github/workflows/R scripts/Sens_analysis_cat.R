@@ -52,7 +52,7 @@ delta_result_cat_plot <- ggplot(delta_results_cat, aes(x = estimate, y = delta_a
 
 
 # Acupuncture categorical placebo
-inlist <- c("group", "pk1")
+inlist <- c("group", "pk1", "pk5")
 pred_cat <- quickpred(acu_wide, minpuc = 0.5, include = inlist)
 imp.default_cat <- mice(acu_wide, m = 1, maxit = 1, predictorMatrix = pred_cat, seed = 123, print= FALSE)
 post_cat <- imp.default_cat$post
