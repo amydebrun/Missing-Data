@@ -228,7 +228,7 @@ for (i in 1:length(delta)) {
                   seed = i * 22, print=FALSE)
   imp.all.undamped_cat[[i]] <- imp_cat
 }
-delta_results_cat_fishoil <- data.frame()
+delta_results_cat_placebo <- data.frame()
 
 for (i in seq_along(imp.all.undamped_cat)) {
   imp_cat <- imp.all.undamped_cat[[i]]
