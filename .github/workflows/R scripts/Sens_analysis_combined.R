@@ -1,7 +1,7 @@
 #COMBINING THE TWO PLOTS TOGETHER - Acupuncture 
 #cont
 delta_combined_cont_acu <- bind_rows(delta_results_cont_acu, delta_results_cont_acu_placebo)
-delta_combined_acu_plot <- ggplot(delta_combined_cont_acu, aes(x = estimate, y = delta)) +
+delta_combined_acu_plot <- ggplot(delta_combined_cont_acu, aes(x = estimate, y = delta_acu)) +
   geom_point(size = 4, color = "#a80050", position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, 
                  position = position_nudge(y = 0.15)) +
