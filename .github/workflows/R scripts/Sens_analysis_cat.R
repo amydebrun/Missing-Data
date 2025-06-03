@@ -32,7 +32,7 @@ for (i in seq_along(imp.all.undamped_cat)) {
   delta_results_cat <- bind_rows(delta_results_cat, est_cat)
 }
 
-delta_results_cat$group<-"Acupuncture Treatment"
+delta_results_cat$treatment<-"Acupuncture Treatment"
 delta_result_cat_plot <- ggplot(delta_results_cat, aes(x = estimate, y = delta)) +
   geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
@@ -85,7 +85,7 @@ for (i in seq_along(imp.all.undamped_cat_placebo)) {
   delta_results_cat_placebo <- bind_rows(delta_results_cat_placebo, est_cat)
 }
 
-delta_results_cat_placebo$group<-"Placebo"
+delta_results_cat_placebo$treatment<-"Placebo"
 delta_result_cat_placebo_plot <- ggplot(delta_results_cat_placebo, aes(x = estimate, y = delta)) +
   geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   

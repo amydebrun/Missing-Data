@@ -92,12 +92,12 @@ for (i in seq_along(imp.all.undamped_cont_placebo)) {
   delta_results_cont_acu_placebo <- bind_rows(delta_results_cont_acu_placebo, est_cont)
 }
 
-delta_results_cont_acu_placebo$group<-"Placebo"
+delta_results_cont_acu_placebo$treatment<-"Placebo"
 delta_results_cont_acu_placebo_plot <- ggplot(delta_results_cont_acu_placebo, aes(x = estimate, y = delta)) +
   geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
-  facet_wrap(~ group) +
+  facet_wrap(~ treatment) +
   labs(
     title = "Placebo with δ-Adjustment (continuous)",
     x = "Treatment Effect",
