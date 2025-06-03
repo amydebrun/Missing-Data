@@ -49,7 +49,7 @@ delta_combined_cont_cat <- bind_rows(delta_combined_cont_acu, delta_combined_cat
 delta_combined_cont_cat$estimand <- factor(delta_combined_cont_cat$estimand,
                                            levels = c("Continuous time", "Categorical time"))
 
-delta_combined_cont_cat_plot <- ggplot(delta_combined_cont_cat, aes(x = estimate, y = delta, shape = estimand)) +
+delta_combined_cont_cat_plot <- ggplot(delta_combined_cont_cat, aes(x = estimate, y = delta, shape = estimand, colour=estimand)) +
   geom_point(size = 4, color = "#a80050", position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4,
                  position = position_nudge(y = 0.15)) +
