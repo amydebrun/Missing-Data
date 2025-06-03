@@ -52,7 +52,7 @@ delta_combined_cont_cat_plot <- ggplot(delta_combined_cont_cat, aes(x = estimate
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4,
                  position = position_nudge(y = 0.15)) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
-  facet_grid(estimand ~ treatment) +
+  facet_wrap(~ treatment) +
   labs(
     title = "δ-Adjustment Sensitivity Analysis: Continuous & Categorical estimand",
     x = "Estimated Treatment Effect",
@@ -66,4 +66,28 @@ delta_combined_cont_cat_plot <- ggplot(delta_combined_cont_cat, aes(x = estimate
     plot.background = element_rect(fill = "white", color = NA)
   )
 
+
+
+
+delta_combined_cont_cat_plot <- ggplot(delta_combined_cont_cat, aes(x = estimate, y = delta, shape = estimand)) +
+  geom_point(size = 4, color = "#a80050", position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4,
+                 position = position_nudge(y = 0.15)) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
+  facet_wrap(~ treatment) +
+  scale_shape_manual(values = c("Continuous time" = 17, "Categorical time" = 16)) + 
+  labs(
+    title = "δ-Adjustment Sensitivity Analysis by Estimand and Treatment Arm",
+    x = "Estimated Treatment Effect",
+    y = "Delta",
+    shape = "Estimand"
+  ) +
+  theme_minimal() +
+  theme(
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA),
+    legend.position = "bottom"
+  )
 
