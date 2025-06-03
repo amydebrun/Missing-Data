@@ -52,7 +52,7 @@ delta_combined_cont_cat_plot <- ggplot(delta_combined_cont_cat, aes(x = estimate
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4,
                  position = position_nudge(y = 0.15)) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
-  facet_grid(outcome_type ~ treatment) +
+  facet_grid(estimand ~ treatment) +
   labs(
     title = "δ-Adjustment Sensitivity Analysis: Continuous & Categorical estimand",
     x = "Estimated Treatment Effect",
