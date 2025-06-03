@@ -37,7 +37,7 @@ delta_result_cat_plot <- ggplot(delta_results_cat, aes(x = estimate, y = delta))
   geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
-  facet_wrap(~ group) +
+  facet_wrap(~ treatment) +
   labs(
     title = "Treatment effect with δ-Adjustment (categorical)",
     x = "Treatment Effect",
@@ -90,7 +90,7 @@ delta_result_cat_placebo_plot <- ggplot(delta_results_cat_placebo, aes(x = estim
   geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
-  facet_wrap(~ group) +
+  facet_wrap(~ treatment) +
   labs(
     title = "Placebo with δ-Adjustment (categorical)",
     x = "Treatment Effect",
