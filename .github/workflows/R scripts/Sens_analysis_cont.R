@@ -2,16 +2,16 @@
 
 
 #continuous acupuncutre
-delta <- c(-5,-2,0,2,5)
+delta_acu <- c(-5,-2,0,2,5)
 inlist <- c("group", "pk1")
 pred_cont <- quickpred(acu_long_cont, minpuc = 0.5, include = inlist)
 imp.default_cont <- mice(acu_long_cont, m = 1, maxit = 1, predictorMatrix = pred_cont, seed = 123, print= FALSE)
 post_cont <- imp.default_cont$post
-imp.all.undamped_cont <- vector("list", length(delta))
+imp.all.undamped_cont <- vector("list", length(delta_acu))
 
 
-for (i in 1:length(delta)) {
-  d <- delta[i]
+for (i in 1:length(delta_acu)) {
+  d <- delta_acu[i]
   cmd <- paste0(
     "idx <- which(data[,'group'] == 1 & is.na(data[,'pk_score'])); ",
     "imp[[j]]$pk_score[idx] <- imp[[j]]$pk_score[idx] + ", d
@@ -25,19 +25,19 @@ for (i in 1:length(delta)) {
 delta_results_cont_acu <- data.frame()
 for (i in seq_along(imp.all.undamped_cont)) {
   imp_cont <- imp.all.undamped_cont[[i]]
-  d <- delta[i]
+  d <- delta_acu[i]
   fit_cont <- with(imp_cont,  lmer(pk_score ~ group*(time_c) + pk1 + (1|id)))
   pooled_cont <- pool(fit_cont)
   est_cont <- tidy(pooled_cont, conf.int = TRUE) %>%
     filter(term == "group") %>%  
     select(estimate, std.error, conf.low, conf.high, p.value) %>%
-    mutate(delta = d)
+    mutate(delta_acu = d)
   
   delta_results_cont_acu  <- bind_rows(delta_results_cont_acu, est_cont)
 }
 
-delta_results_cont_acu$treatment<-"Acupuncture Treatment"
-delta_results_cont_acu_plot <- ggplot(delta_results_cont_acu, aes(x = estimate, y = delta)) +
+delta_results_cont_acu$treatment<-"Acupuncture"
+delta_results_cont_acu_plot <- ggplot(delta_results_cont_acu, aes(x = estimate, y = delta_acu)) +
   geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
@@ -58,16 +58,16 @@ delta_results_cont_acu_plot <- ggplot(delta_results_cont_acu, aes(x = estimate, 
 
 
 #continuous acu placebo
-delta <- c(-5,-2,0,2,5)
+
 inlist <- c("group", "pk1")
 pred_cont <- quickpred(acu_long_cont, minpuc = 0.5, include = inlist)
 imp.default_cont <- mice(acu_long_cont, m = 1, maxit = 1, predictorMatrix = pred_cont, seed = 123, print= FALSE)
 post_cont <- imp.default_cont$post
-imp.all.undamped_cont_placebo <- vector("list", length(delta))
+imp.all.undamped_cont_placebo <- vector("list", length(delta_acu))
 
 
-for (i in 1:length(delta)) {
-  d <- delta[i]
+for (i in 1:length(delta_acu)) {
+  d <- delta_acu[i]
   cmd <- paste0(
     "idx <- which(data[,'group'] == 0 & is.na(data[,'pk_score'])); ",
     "imp[[j]]$pk_score[idx] <- imp[[j]]$pk_score[idx] + ", d
@@ -81,19 +81,19 @@ for (i in 1:length(delta)) {
 delta_results_cont_acu_placebo <- data.frame()
 for (i in seq_along(imp.all.undamped_cont_placebo)) {
   imp_cont <- imp.all.undamped_cont_placebo[[i]]
-  d <- delta[i]
+  d <- delta_acu[i]
   fit_cont <- with(imp_cont, lmer(pk_score ~ group*(time_c) + pk1 + (1|id)))
   pooled_cont <- pool(fit_cont)
   est_cont <- tidy(pooled_cont, conf.int = TRUE) %>%
     filter(term == "group") %>%  
     select(estimate, std.error, conf.low, conf.high, p.value) %>%
-    mutate(delta = d)
+    mutate(delta_acu = d)
   
   delta_results_cont_acu_placebo <- bind_rows(delta_results_cont_acu_placebo, est_cont)
 }
 
 delta_results_cont_acu_placebo$treatment<-"Placebo"
-delta_results_cont_acu_placebo_plot <- ggplot(delta_results_cont_acu_placebo, aes(x = estimate, y = delta)) +
+delta_results_cont_acu_placebo_plot <- ggplot(delta_results_cont_acu_placebo, aes(x = estimate, y = delta_acu)) +
   geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
@@ -116,15 +116,15 @@ delta_results_cont_acu_placebo_plot <- ggplot(delta_results_cont_acu_placebo, ae
 ##VITAL FISHOIL
 
 #continuous fishoil
-delta <- c(-10,-5,-2,0,2,5,10)
-inlist <- c("sex", "ageyr", "bmi")
+delta_vital <- c(-10,-5,-2,0,2,5,10)
+inlist <- c("fishoilactive", "vitdactive", "pain", "pain_base", "time_contin")
 pred_cont <- quickpred(vital_long, minpuc = 0.5, include = inlist)
 imp.default_cont <- mice(vital_long, m = 1, maxit = 1, predictorMatrix = pred_cont, seed = 123, print= FALSE)
 post_cont <- imp.default_cont$post
-imp.all.undamped_cont <- vector("list", length(delta))
+imp.all.undamped_cont <- vector("list", length(delta_vital))
 
-for (i in 1:length(delta)) {
-  d <- delta[i]
+for (i in 1:length(delta_vital)) {
+  d <- delta_vital[i]
   cmd <- paste0(
     "idx <- which(is.na(data[,'pain'])); ",
     "imp[[j]]$pain[idx] <- imp[[j]]$pain[idx] + ", d
@@ -138,18 +138,18 @@ delta_results_cont_fishoil <- data.frame()
 
 for (i in seq_along(imp.all.undamped_cont)) {
   imp_cont <- imp.all.undamped_cont[[i]]
-  d <- delta[i]
+  d <- delta_vital[i]
   fit_cont <- with(imp_cont, lm(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base))
   pooled_cont <- pool(fit_cont)
   est_cont <- tidy(pooled_cont, conf.int = TRUE) %>%
     filter(term == "fishoilactive") %>%  
     select(estimate, std.error, conf.low, conf.high, p.value) %>%
-    mutate(delta = d)
+    mutate(delta_vital = d)
   delta_results_cont_fishoil <- bind_rows(delta_results_cont_fishoil, est_cont)
 }
 
 delta_results_cont_fishoil$treatment<-"Fish Oil"
-delta_results_cont_fishoil_plot <- ggplot(delta_results_cont_fishoil, aes(x = estimate, y = delta)) +
+delta_results_cont_fishoil_plot <- ggplot(delta_results_cont_fishoil, aes(x = estimate, y = delta_vital)) +
   geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
@@ -169,17 +169,16 @@ delta_results_cont_fishoil_plot <- ggplot(delta_results_cont_fishoil, aes(x = es
 
 
 #continuous placebo
-delta <- c(-10,-5,-2,0,2,5,10)
 inlist <- c("pain_base","time_contin", "vitdactive", "fishoilactive")
 vital_long$placebo<- ifelse(vital_long$fishoilactive == 0 & vital_long$vitdactive == 0, 1, 0)
 pred_cont <- quickpred(vital_long, minpuc = 0.5, include = inlist)
 imp.default_cont <- mice(vital_long, m = 1, maxit = 1, predictorMatrix = pred_cont, seed = 123, print= FALSE)
 post_cont <- imp.default_cont$post
-imp.all.undamped_cont <- vector("list", length(delta))
+imp.all.undamped_cont <- vector("list", length(delta_vital))
 
 
-for (i in 1:length(delta)) {
-  d <- delta[i]
+for (i in 1:length(delta_vital)) {
+  d <- delta_vital[i]
   cmd <- paste0(
     "idx <- which(is.na(data[,'pain'])); ",
     "imp[[j]]$pain[idx] <- imp[[j]]$pain[idx] + ", d
@@ -193,18 +192,18 @@ delta_results_cont_placebo <- data.frame()
 
 for (i in seq_along(imp.all.undamped_cont)) {
   imp_cont <- imp.all.undamped_cont[[i]]
-  d <- delta[i]
+  d <- delta_vital[i]
   fit_cont <- with(imp_cont, lm(pain ~ placebo*time_contin +vitdactive*time_contin + fishoilactive*time_contin  + pain_base))
   pooled_cont <- pool(fit_cont)
   est_cont <- tidy(pooled_cont, conf.int = TRUE) %>%
     filter(term == "placebo") %>%  
     select(estimate, std.error, conf.low, conf.high, p.value) %>%
-    mutate(delta = d)
+    mutate(delta_vital = d)
   delta_results_cont_placebo<- bind_rows(delta_results_cont_placebo, est_cont)
 }
 
 delta_results_cont_placebo$treatment<-"Placebo"
-delta_results_cont_placebo_plot <- ggplot(delta_results_cont_placebo, aes(x = estimate, y = delta)) +
+delta_results_cont_placebo_plot <- ggplot(delta_results_cont_placebo, aes(x = estimate, y = delta_vital)) +
   geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
@@ -229,16 +228,15 @@ delta_results_cont_placebo_plot <- ggplot(delta_results_cont_placebo, aes(x = es
 ##VITAL VITAMIN D
 
 #continuous
-delta <- c(-10,-5,-2,0,2,5,10)
 inlist <- c("pain_base","time_contin", "vitdactive", "fishoilactive")
 pred_cont <- quickpred(vital_long, minpuc = 0.5, include = inlist)
 imp.default_cont <- mice(vital_long, m = 1, maxit = 1, predictorMatrix = pred_cont, seed = 123, print= FALSE)
 post_cont <- imp.default_cont$post
-imp.all.undamped_cont <- vector("list", length(delta))
+imp.all.undamped_cont <- vector("list", length(delta_vital))
 
 
-for (i in 1:length(delta)) {
-  d <- delta[i]
+for (i in 1:length(delta_vital)) {
+  d <- delta_vital[i]
   cmd <- paste0(
     "idx <- which(is.na(data[,'pain'])); ",
     "imp[[j]]$pain[idx] <- imp[[j]]$pain[idx] + ", d
@@ -252,19 +250,19 @@ for (i in 1:length(delta)) {
 delta_results_cont_vitd <- data.frame()
 for (i in seq_along(imp.all.undamped_cont)) {
   imp_cont <- imp.all.undamped_cont[[i]]
-  d <- delta[i]
+  d <- delta_vital[i]
   fit_cont <- with(imp_cont, lm(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base))
   pooled_cont <- pool(fit_cont)
   est_cont <- tidy(pooled_cont, conf.int = TRUE) %>%
     filter(term == "vitdactive") %>%  
     select(estimate, std.error, conf.low, conf.high, p.value) %>%
-    mutate(delta = d)
+    mutate(delta_vital = d)
   
   delta_results_cont_vitd <- bind_rows(delta_results_cont_vitd, est_cont)
 }
 
 delta_results_cont_vitd$treatment<-"Vitamin D"
-delta_results_cont_vitd_plot <- ggplot(delta_results_cont_vitd, aes(x = estimate, y = delta)) +
+delta_results_cont_vitd_plot <- ggplot(delta_results_cont_vitd, aes(x = estimate, y = delta_vital)) +
   geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   

@@ -20,7 +20,9 @@ vital_mice_bayesian <- mice(vital_wide, m = 5, method = 'norm', seed = 123, prin
 # MICE FOR LME
 vital_mice_data <- complete(vital_mice, action = "long", include = TRUE)
 vital_mice_data_long <- to_long_format_vital_mice(vital_mice_data)
+
 # Convert long format back to mids objectives
+
 vital_mice_obj_long <- as.mids(vital_mice_data_long)
 
 #rule of thumb for imputation
