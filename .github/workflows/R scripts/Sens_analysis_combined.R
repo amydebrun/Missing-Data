@@ -189,3 +189,51 @@ delta_combined_vital_plot <- ggplot(delta_combined_vital, aes(x = estimate, y = 
     plot.background = element_rect(fill = "white", color = NA), 
     strip.background = element_rect(fill = "lawngreen", color = "black"),
   )
+
+
+# combine fishoil sensitivity analysis plots
+
+delta_results_cat_fishoil$tme<-"Categorical Time"
+delta_results_cont_fishoil$tme<- "Continuous Time"
+delta_combined_fishoil<-bind_rows(delta_results_cat_fishoil, delta_results_cont_fishoil)
+delta_combined_fishoil$treatment<- "Fish Oil"
+
+delta_combined_fishoil <- delta_combined_fishoil %>%
+  mutate(delta_jittered = case_when(
+    tme == "Categorical Time" ~ delta + 0.15,
+    tme == "Continuous Time"  ~ delta - 0.15,
+    TRUE ~ delta
+  ))
+
+delta_combined_fishoil_plot <- ggplot(delta_combined_fishoil, aes(x = estimate, y = delta_jittered, color = tme, shape = tme)) +
+  geom_point(size = 4,position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red") +  
+  facet_wrap(~ treatment) +  
+  scale_color_manual(
+    values = c(
+      "Categorical Time" = "lawngreen",   
+      "Continuous Time" = "#a80050"     
+    )
+  ) +
+  scale_shape_manual(
+    values = c(
+      "Categorical Time" = 17,  
+      "Continuous Time" = 16   
+    )
+  ) +
+  labs(
+    title = "Treatment Effect with δ-Adjustment in Fish Oil Data",
+    x = "Treatment Effect",
+    y = "Delta",
+    color = "Time Type",
+    shape = "Time Type"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA),
+    strip.background = element_rect(fill = "lawngreen", color = "black")
+  )
