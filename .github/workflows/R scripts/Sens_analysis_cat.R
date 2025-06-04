@@ -159,10 +159,15 @@ delta_results_cat_fishoil_plot <- ggplot(delta_results_cat_fishoil, aes(x = esti
 
 
 #categorical vitamin D
-inlist <- c("pain_base","time_contin", "vitdactive", "fishoilactive")
+inlist <- c("pain_base","time_contin", "vitdactive", "fishoilactive", "pain_yr4")
+pred_cat <- quickpred(vital_wide, minpuc = 0.5, include = inlist)
+imp.default_cat <- mice(vital_wide, m = 1, maxit = 1, predictorMatrix = pred_cat, seed = 123, print= FALSE)
+post_cat<- imp.default_cat$post
 for (i in 1:length(delta_vital)) {
-  d <- delta[i]
-  cmd <- paste("imp[[j]][,i] <- imp[[j]][,i] +", d)
+  d <- delta_vital[i]
+  cmd <- paste0(
+    "idx <- which(is.na(data[,'pain_yr4'])); ",
+    "imp[[j]]$pain_yr4[idx] <- imp[[j]]$pain_yr4[idx] + ", d)
   post_cat["pain_yr4"] <- cmd
   imp_cat <- mice(vital_wide, pred = pred_cat, post = post_cat, maxit = 10,
                   seed = i * 22, print=FALSE)
@@ -213,7 +218,7 @@ imp.default_cat <- mice(vital_wide, m = 1, maxit = 1, predictorMatrix = pred_cat
 imp.default_cat$method["pain_yr4"] <- "pmm"
 method <- imp.default_cat$method
 post_cat<- imp.default_cat$post
-imp.all.undamped_cat <- vector("list", length(delta))
+imp.all.undamped_cat <- vector("list", length(delta_vital))
 
 for (i in 1:length(delta_vital)) {
   d <- delta_vital[i]

@@ -44,6 +44,9 @@ delta_combined_cat_acu_plot <- ggplot(delta_combined_cat_acu, aes(x = estimate, 
   )
 
 #combining cat and cont 
+delta_combined_cat_acu$estimand<- "Categorical time"
+delta_combined_cont_acu$estimand<- "Continuous time"
+delta_combined_cont_cat<- bind_rows(delta_combined_cat_acu,delta_combined_cont_acu)
 
 delta_combined_cont_cat_plot <- ggplot(
   delta_combined_cont_cat, 
