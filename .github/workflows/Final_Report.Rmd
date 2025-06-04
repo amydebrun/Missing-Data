@@ -304,11 +304,9 @@ delta_results_cat_placebo_plot
 
 
 ```{r}
-delta_combined_acu_plot
+delta_combined_cont_acu_plot
 delta_combined_cat_acu_plot
 delta_combined_cont_cat_plot
-str(delta_results_cont_acu)
-str(delta_results_cont_acu_placebo)
 
 ```
 

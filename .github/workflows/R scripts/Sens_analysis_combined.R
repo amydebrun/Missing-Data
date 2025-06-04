@@ -1,14 +1,16 @@
 #COMBINING THE TWO PLOTS TOGETHER - Acupuncture 
+delta_vital <- c(-10,-5,-2,0,2,5,10)
+delta_acu <- c(-5,-2,0,2,5)
 #cont
 delta_combined_cont_acu <- bind_rows(delta_results_cont_acu, delta_results_cont_acu_placebo)
-delta_combined_acu_plot <- ggplot(delta_combined_cont_acu, aes(x = estimate, y = delta_acu)) +
-  geom_point(size = 4, color = "#a80050", position = position_nudge(y = 0.15)) +
+delta_combined_cont_acu_plot <- ggplot(delta_combined_cont_acu, aes(x = estimate, y = delta_acu)) +
+  geom_point(aes(x = estimate, y = delta_acu), size = 4, color = "#a80050", position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, 
                  position = position_nudge(y = 0.15)) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
   facet_wrap(~ treatment) +
   labs(
-    title = "δ-Adjustment Sensitivity Analysis (Continuous Outcomes)",
+    title = "δ-Adjustment Sensitivity Analysis (Continuous)",
     x = "Estimated Treatment Effect",
     y = "Delta"
   ) +
@@ -29,7 +31,7 @@ delta_combined_cat_acu_plot <- ggplot(delta_combined_cat_acu, aes(x = estimate, 
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
   facet_wrap(~ treatment) +
   labs(
-    title = "δ-Adjustment Sensitivity Analysis (Categorical Outcomes)",
+    title = "δ-Adjustment Sensitivity Analysis (Categorical)",
     x = "Estimated Treatment Effect",
     y = "Delta"
   ) +
@@ -67,7 +69,7 @@ delta_combined_cont_cat_plot <- ggplot(
   scale_shape_manual(values = c("Continuous time" = 17, "Categorical time" = 16)) +
   scale_color_manual(values = c("Continuous time" = "lawngreen", "Categorical time" = "#a80050")) +
   labs(
-    title = "δ-Adjustment Sensitivity Analysis by Estimand and Treatment Arm",
+    title = "δ-Adjustment Sensitivity Analysis by Estimand and Treatment",
     x = "Estimated Treatment Effect",
     y = "Delta",
     shape = "Estimand",

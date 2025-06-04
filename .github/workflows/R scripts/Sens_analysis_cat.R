@@ -1,5 +1,5 @@
 # Acupuncture 
-
+delta_acu <- c(-5,-2,0,2,5)
 # Acupuncture categorical treatment
 inlist <- c("group", "pk5", "pk1")
 pred_cat <- quickpred(acu_wide, minpuc = 0.5, include = inlist)
@@ -25,9 +25,10 @@ for (i in seq_along(imp.all.undamped_cat)) {
   fit_cat <- with(imp_cat, lm(pk5 ~ group + pk1))
   pooled_cat <- pool(fit_cat)
   est_cat <- tidy(pooled_cat, conf.int = TRUE) %>%
-    filter(term == "group") %>%  
+    filter(term == "group") %>% 
     select(estimate, std.error, conf.low, conf.high, p.value) %>%
     mutate(delta_acu = d)
+    
   delta_results_cat <- bind_rows(delta_results_cat, est_cat)
 }
 
@@ -106,6 +107,8 @@ delta_result_cat_placebo_plot <- ggplot(delta_results_cat_placebo, aes(x = estim
 
 
 #categorical fishoil
+delta_vital <- c(-10,-5,-2,0,2,5,10)
+
 inlist <- c("pain_base","time_contin", "vitdactive", "fishoilactive")
 pred_cat <- quickpred(vital_wide, minpuc = 0.5, include = inlist)
 imp.default_cat <- mice(vital_wide, m = 1, maxit = 1, predictorMatrix = pred_cat, seed = 123, print= FALSE)
