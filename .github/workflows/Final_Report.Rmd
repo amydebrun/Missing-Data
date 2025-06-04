@@ -51,16 +51,21 @@ source("R scripts/Sens_analysis_cont.R")
 source("R scripts/Sens_analysis_combined.R")
 ```
 
+
 # Introduction
 
 ## Missing data in longitudinal study
 
   - Clinical trials often face missing outcome data due to dropout or non-response.
+  - longitudinal study designs 
+  - missing baseline data (vital)
+  - losing data, loss of efficiency, bias
+  
   
 ## Missing mechanism
   
   - Missing mechanism MCAR, MAR, MNAR. (Missing Data Mechanisms)
-  - DAG of missing mechanism
+  - DAG of missing mechanism (randomised)
  
 ## Current approach and limitations
  
@@ -73,7 +78,7 @@ source("R scripts/Sens_analysis_combined.R")
   - Using statistical principled methods
   - Test how different methods perform in estimating treatment effects using real-world data.
 
-## Data sets
+# Data sets
 
   - Source
   - Study design
@@ -81,11 +86,13 @@ source("R scripts/Sens_analysis_combined.R")
     - assuming no interaction in VITAL study
   - Estimands in this project
 
+
 ## Missing analysis
 
   - Missing proportion
   - Missing pattern
-
+  - which methods to use based on data
+  
 # Methods
 
 ## Data wrangling
@@ -103,7 +110,7 @@ source("R scripts/Sens_analysis_combined.R")
 
 ## Changing substantial model
 
-  - Simple linear regression
+  - multiple linear regression
   - LME
   - Change estimand
   - Change linear regression to polynomial, splie...

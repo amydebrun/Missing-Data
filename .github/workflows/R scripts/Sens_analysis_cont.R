@@ -2,38 +2,36 @@
 
 
 #continuous acupuncutre
-delta_acu <- c(-5,-2,0,2,5)
+delta_acu <- c(-5, -2, 0, 2, 5)
 inlist <- c("group", "pk1")
-pred_cont <- quickpred(acu_long_cont, minpuc = 0.5, include = inlist)
-imp.default_cont <- mice(acu_long_cont, m = 1, maxit = 1, predictorMatrix = pred_cont, seed = 123, print= FALSE)
-post_cont <- imp.default_cont$post
+pred_cont <- quickpred(acu_wide, minpuc = 0.5, include = inlist)
 imp.all.undamped_cont <- vector("list", length(delta_acu))
-
-
-for (i in 1:length(delta_acu)) {
-  d <- delta_acu[i]
-  cmd <- paste0(
-    "idx <- which(data[,'group'] == 1 & is.na(data[,'pk_score'])); ",
-    "imp[[j]]$pk_score[idx] <- imp[[j]]$pk_score[idx] + ", d
-  )
-  post_cont["pk_score"] <- cmd
-  imp_cont <- mice(acu_long_cont, pred = pred_cont, post = post_cont, maxit = 10,
-                   seed = i * 22, print=FALSE)
-  imp.all.undamped_cont[[i]] <- imp_cont
-}
-
 delta_results_cont_acu <- data.frame()
-for (i in seq_along(imp.all.undamped_cont)) {
-  imp_cont <- imp.all.undamped_cont[[i]]
+
+for (i in seq_along(delta_acu)) {
   d <- delta_acu[i]
-  fit_cont <- with(imp_cont,  lmer(pk_score ~ group*(time_c) + pk1 + (1|id)))
-  pooled_cont <- pool(fit_cont)
+  imp_init <- mice(acu_wide, m = 5, maxit = 1, predictorMatrix = pred_cont, seed = 100 + i, print = FALSE)
+  post_cont <- imp_init$post
+  post_cont["pk5"] <- paste0(
+    "idx <- which(data[,'group'] == 1 & is.na(data[,'pk5'])); ",
+    "imp[[j]]$pk5[idx] <- imp[[j]]$pk5[idx] + ", d
+  )
+  imp_wide <- mice(acu_wide, m = 5, maxit = 10, predictorMatrix = pred_cont,
+                   post = post_cont, seed = 200 + i, print = FALSE)
+  imp_data_long <- complete(imp_wide, action = "long", include = TRUE) %>%
+    to_long_format_acu_cont_MICE() %>%
+    mutate(time_c = time - 12)
+  imp_data_list <- split(imp_data_long, imp_data_long$.imp)
+  fit_list <- lapply(imp_data_list, function(df) {
+    lmer(pk_score ~ group * time_c + pk1 + (1 | id), data = df)
+  })
+  pooled_cont <- pool(fit_list)
   est_cont <- tidy(pooled_cont, conf.int = TRUE) %>%
-    filter(term == "group") %>%  
-    select(estimate, std.error, conf.low, conf.high, p.value) %>%
+    filter(term == "group") %>%
+    select(estimate, std.error, conf.low, conf.high) %>%
     mutate(delta_acu = d)
   
-  delta_results_cont_acu  <- bind_rows(delta_results_cont_acu, est_cont)
+  delta_results_cont_acu <- bind_rows(delta_results_cont_acu, est_cont)
 }
 
 delta_results_cont_acu$treatment<-"Acupuncture"
@@ -60,33 +58,31 @@ delta_results_cont_acu_plot <- ggplot(delta_results_cont_acu, aes(x = estimate, 
 #continuous acu placebo
 
 inlist <- c("group", "pk1")
-pred_cont <- quickpred(acu_long_cont, minpuc = 0.5, include = inlist)
-imp.default_cont <- mice(acu_long_cont, m = 1, maxit = 1, predictorMatrix = pred_cont, seed = 123, print= FALSE)
-post_cont <- imp.default_cont$post
-imp.all.undamped_cont_placebo <- vector("list", length(delta_acu))
-
-
-for (i in 1:length(delta_acu)) {
-  d <- delta_acu[i]
-  cmd <- paste0(
-    "idx <- which(data[,'group'] == 0 & is.na(data[,'pk_score'])); ",
-    "imp[[j]]$pk_score[idx] <- imp[[j]]$pk_score[idx] + ", d
-  )
-  post_cont["pk_score"] <- cmd
-  imp_cont <- mice(acu_long_cont, pred = pred_cont, post = post_cont, maxit = 10,
-                   seed = i * 22, print=FALSE)
-  imp.all.undamped_cont_placebo[[i]] <- imp_cont
-}
-
+pred_cont <- quickpred(acu_wide, minpuc = 0.5, include = inlist)
+imp.all.undamped_cont <- vector("list", length(delta_acu))
 delta_results_cont_acu_placebo <- data.frame()
-for (i in seq_along(imp.all.undamped_cont_placebo)) {
-  imp_cont <- imp.all.undamped_cont_placebo[[i]]
+
+for (i in seq_along(delta_acu)) {
   d <- delta_acu[i]
-  fit_cont <- with(imp_cont, lmer(pk_score ~ group*(time_c) + pk1 + (1|id)))
-  pooled_cont <- pool(fit_cont)
+  imp_init <- mice(acu_wide, m = 5, maxit = 1, predictorMatrix = pred_cont, seed = 100 + i, print = FALSE)
+  post_cont <- imp_init$post
+  post_cont["pk5"] <- paste0(
+    "idx <- which(data[,'group'] == 0 & is.na(data[,'pk5'])); ",
+    "imp[[j]]$pk5[idx] <- imp[[j]]$pk5[idx] + ", d
+  )
+  imp_wide <- mice(acu_wide, m = 5, maxit = 10, predictorMatrix = pred_cont,
+                   post = post_cont, seed = 200 + i, print = FALSE)
+  imp_data_long <- complete(imp_wide, action = "long", include = TRUE) %>%
+    to_long_format_acu_cont_MICE() %>%
+    mutate(time_c = time - 12)
+  imp_data_list <- split(imp_data_long, imp_data_long$.imp)
+  fit_list <- lapply(imp_data_list, function(df) {
+    lmer(pk_score ~ group * time_c + pk1 + (1 | id), data = df)
+  })
+  pooled_cont <- pool(fit_list)
   est_cont <- tidy(pooled_cont, conf.int = TRUE) %>%
-    filter(term == "group") %>%  
-    select(estimate, std.error, conf.low, conf.high, p.value) %>%
+    filter(term == "group") %>%
+    select(estimate, std.error, conf.low, conf.high) %>%
     mutate(delta_acu = d)
   
   delta_results_cont_acu_placebo <- bind_rows(delta_results_cont_acu_placebo, est_cont)
@@ -99,7 +95,7 @@ delta_results_cont_acu_placebo_plot <- ggplot(delta_results_cont_acu_placebo, ae
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
   facet_wrap(~ treatment) +
   labs(
-    title = "Placebo with δ-Adjustment (continuous)",
+    title = "Placebo effect with δ-Adjustment (continuous)",
     x = "Treatment Effect",
     y = "Delta"
   ) +
