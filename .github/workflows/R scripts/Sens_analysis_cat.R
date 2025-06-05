@@ -107,18 +107,17 @@ delta_result_cat_placebo_plot <- ggplot(delta_results_cat_placebo, aes(x = estim
 
 
 #categorical fishoil
-delta_vital <- c(-10,-5,-2,0,2,5,10)
-
-inlist <- c("pain_base","time_contin", "vitdactive", "fishoilactive")
+inlist <- c("pain_base", "vitdactive", "fishoilactive", "pain_yr4")
 pred_cat <- quickpred(vital_wide, minpuc = 0.5, include = inlist)
-imp.default_cat <- mice(vital_wide, m = 1, maxit = 1, predictorMatrix = pred_cat, seed = 123, print= FALSE)
-post_cat<- imp.default_cat$post
 imp.all.undamped_cat <- vector("list", length(delta_vital))
 
 for (i in 1:length(delta_vital)) {
   d <- delta_vital[i]
-  cmd <- paste("imp[[j]][,i] <- imp[[j]][,i] +", d)
-  post_cat["pain_yr4"] <- cmd
+  post_cat <- rep("", ncol(vital_wide))
+  names(post_cat) <- names(vital_wide)
+  post_cat["pain_yr4"]  <- paste0(
+    "idx <- which(data[,'vitdactive'] == 0 & data[,'fishoilactive'] == 1 & is.na(data[,'pain_yr4'])); ",
+    "imp[[j]]$pain_yr4[idx] <- imp[[j]]$pain_yr4[idx] + ", d)
   imp_cat <- mice(vital_wide, pred = pred_cat, post = post_cat, maxit = 10,
                   seed = i * 22, print=FALSE)
   imp.all.undamped_cat[[i]] <- imp_cat
@@ -159,16 +158,17 @@ delta_results_cat_fishoil_plot <- ggplot(delta_results_cat_fishoil, aes(x = esti
 
 
 #categorical vitamin D
-inlist <- c("pain_base","time_contin", "vitdactive", "fishoilactive", "pain_yr4")
+inlist <- c("pain_base", "vitdactive", "fishoilactive", "pain_yr4")
 pred_cat <- quickpred(vital_wide, minpuc = 0.5, include = inlist)
-imp.default_cat <- mice(vital_wide, m = 1, maxit = 1, predictorMatrix = pred_cat, seed = 123, print= FALSE)
-post_cat<- imp.default_cat$post
+imp.all.undamped_cat <- vector("list", length(delta_vital))
+
 for (i in 1:length(delta_vital)) {
   d <- delta_vital[i]
-  cmd <- paste0(
-    "idx <- which(is.na(data[,'pain_yr4'])); ",
+  post_cat <- rep("", ncol(vital_wide))
+  names(post_cat) <- names(vital_wide)
+  post_cat["pain_yr4"]  <- paste0(
+    "idx <- which(data[,'vitdactive'] == 1 & data[,'fishoilactive'] == 0 & is.na(data[,'pain_yr4'])); ",
     "imp[[j]]$pain_yr4[idx] <- imp[[j]]$pain_yr4[idx] + ", d)
-  post_cat["pain_yr4"] <- cmd
   imp_cat <- mice(vital_wide, pred = pred_cat, post = post_cat, maxit = 10,
                   seed = i * 22, print=FALSE)
   imp.all.undamped_cat[[i]] <- imp_cat
@@ -195,7 +195,7 @@ delta_results_cat_vitd_plot <- ggplot(delta_results_cat_vitd, aes(x = estimate, 
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
   facet_wrap(~ treatment) + 
   labs(
-    title = "Treatment effect with δ-Adjustment (categorical)",
+    title = "Treatment effect of Vit D with δ-Adjustment (categorical)",
     x = "Treatment Effect",
     y = "Delta"
   ) +
@@ -214,45 +214,42 @@ delta_results_cat_vitd_plot <- ggplot(delta_results_cat_vitd, aes(x = estimate, 
 inlist <- c("pain_base","time_contin", "vitdactive", "fishoilactive", "placebo", "pain_yr4")
 vital_wide$placebo<- ifelse(vital_wide$fishoilactive == 0 & vital_wide$vitdactive == 0, 1, 0)
 pred_cat <- quickpred(vital_wide, minpuc = 0.5, include = inlist)
-imp.default_cat <- mice(vital_wide, m = 1, maxit = 1, predictorMatrix = pred_cat, seed = 123, print= FALSE)
-imp.default_cat$method["pain_yr4"] <- "pmm"
-method <- imp.default_cat$method
-post_cat<- imp.default_cat$post
 imp.all.undamped_cat <- vector("list", length(delta_vital))
 
 for (i in 1:length(delta_vital)) {
   d <- delta_vital[i]
-  cmd <- paste0(
-    "imp[[j]]$pain_yr4[!is.na(imp[[j]]$pain_yr4)] <- ",
-    "imp[[j]]$pain_yr4[!is.na(imp[[j]]$pain_yr4)] + ", d
-  )
-  post_cat["pain_yr4"] <- cmd
-  imp_cat <- mice(vital_wide, method = method, pred = pred_cat, post = post_cat, maxit = 10,
+  post_cat <- rep("", ncol(vital_wide))
+  names(post_cat) <- names(vital_wide)
+  post_cat["pain_yr4"]  <- paste0(
+    "idx <- which(data[,'vitdactive'] == 0 & data[,'fishoilactive'] == 0 & data[,'placebo'] == 1 & is.na(data[,'pain_yr4'])); ",
+    "imp[[j]]$pain_yr4[idx] <- imp[[j]]$pain_yr4[idx] + ", d)
+  imp_cat <- mice(vital_wide, pred = pred_cat, post = post_cat, maxit = 10,
                   seed = i * 22, print=FALSE)
   imp.all.undamped_cat[[i]] <- imp_cat
 }
-delta_results_cat_placebo <- data.frame()
 
+delta_results_cat_vital_placebo <- data.frame()
 for (i in seq_along(imp.all.undamped_cat)) {
   imp_cat <- imp.all.undamped_cat[[i]]
   d <- delta_vital[i]
-  fit_cat <- with(imp_cat, lm(pain_yr4 ~ placebo + pain_base))
+  fit_cat <- with(imp_cat, lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base))
   pooled_cat<- pool(fit_cat)
   est_cat <- tidy(pooled_cat, conf.int = TRUE) %>%
-    filter(term == "placebo") %>%  
+    filter(term == "fishoilactive") %>%  
     select(estimate, std.error, conf.low, conf.high, p.value) %>%
     mutate(delta_vital = d)
-  delta_results_cat_placebo <- bind_rows(delta_results_cat_placebo, est_cat)
+  
+  delta_results_cat_vital_placebo <- bind_rows(delta_results_cat_vital_placebo, est_cat)
 }
 
-delta_results_cat_placebo$treatment<-"Placebo"
-delta_results_cat_placebo_plot <- ggplot(delta_results_cat_placebo, aes(x = estimate, y = delta_vital)) +
+delta_results_cat_vital_placebo$treatment<-"Placebo"
+delta_results_cat_vital_placebo_plot <- ggplot(delta_results_cat_vital_placebo, aes(x = estimate, y = delta_vital)) +
   geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
   facet_wrap(~ treatment) + 
   labs(
-    title = "Placebo with δ-Adjustment (categorical)",
+    title = "VITAL placebo with δ-Adjustment (categorical)",
     x = "Treatment Effect",
     y = "Delta"
   ) +

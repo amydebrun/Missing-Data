@@ -112,35 +112,36 @@ delta_results_cont_acu_placebo_plot <- ggplot(delta_results_cont_acu_placebo, ae
 ##VITAL FISHOIL
 
 #continuous fishoil
-delta_vital <- c(-10,-5,-2,0,2,5,10)
-inlist <- c("fishoilactive", "vitdactive", "pain", "pain_base", "time_contin")
-pred_cont <- quickpred(vital_long, minpuc = 0.5, include = inlist)
-imp.default_cont <- mice(vital_long, m = 1, maxit = 1, predictorMatrix = pred_cont, seed = 123, print= FALSE)
-post_cont <- imp.default_cont$post
-imp.all.undamped_cont <- vector("list", length(delta_vital))
 
-for (i in 1:length(delta_vital)) {
-  d <- delta_vital[i]
-  cmd <- paste0(
-    "idx <- which(is.na(data[,'pain'])); ",
-    "imp[[j]]$pain[idx] <- imp[[j]]$pain[idx] + ", d
-  )
-  post_cont["pain"] <- cmd
-  imp_cont <- mice(vital_long, pred = pred_cont, post = post_cont, maxit = 10,
-                   seed = i * 22, print=FALSE)
-  imp.all.undamped_cont[[i]] <- imp_cont
-}
+delta_vital <- c(-10,-5,-2,0,2,5,10)
+inlist <- c("fishoilactive", "vitdactive", "pain", "pain_base", "time_contin", "Subject_ID")
+pred_cont <- quickpred(vital_wide, minpuc = 0.5, include = inlist)
+imp.all.undamped_cont <- vector("list", length(delta_vital))
 delta_results_cont_fishoil <- data.frame()
 
-for (i in seq_along(imp.all.undamped_cont)) {
-  imp_cont <- imp.all.undamped_cont[[i]]
+for (i in seq_along(delta_vital)) {
   d <- delta_vital[i]
-  fit_cont <- with(imp_cont, lm(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base))
-  pooled_cont <- pool(fit_cont)
+  imp_init <- mice(vital_wide, m = 5, maxit = 1, predictorMatrix = pred_cont, seed = 100 + i, print = FALSE)
+  post_cont <- imp_init$post
+  post_cont["pain_yr4"] <- paste0(
+    "idx <- which(data[,'fishoilactive'] == 1 & data[,'vitdactive'] == 0 & is.na(data[,'pain_yr4'])); ",
+    "imp[[j]]$pain_yr4[idx] <- imp[[j]]$pain_yr4[idx] + ", d
+  )
+  imp_wide <- mice(vital_wide, m = 5, maxit = 10, predictorMatrix = pred_cont,
+                   post = post_cont, seed = 200 + i, print = FALSE)
+  imp_data_long <- complete(imp_wide, action = "long", include = TRUE) %>%
+    to_long_format_vital_mice()
+  imp_data_list <- split(imp_data_long, imp_data_long$.imp)
+  fit_list <- lapply(imp_data_list, function(df) {
+    lmer(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base + 
+           (1|Subject_ID), data = df)
+  })
+  pooled_cont <- pool(fit_list)
   est_cont <- tidy(pooled_cont, conf.int = TRUE) %>%
-    filter(term == "fishoilactive") %>%  
-    select(estimate, std.error, conf.low, conf.high, p.value) %>%
+    filter(term == "fishoilactive") %>%
+    select(estimate, std.error, conf.low, conf.high) %>%
     mutate(delta_vital = d)
+  
   delta_results_cont_fishoil <- bind_rows(delta_results_cont_fishoil, est_cont)
 }
 
@@ -165,47 +166,45 @@ delta_results_cont_fishoil_plot <- ggplot(delta_results_cont_fishoil, aes(x = es
 
 
 #continuous placebo
-inlist <- c("pain_base","time_contin", "vitdactive", "fishoilactive")
-vital_long$placebo<- ifelse(vital_long$fishoilactive == 0 & vital_long$vitdactive == 0, 1, 0)
-pred_cont <- quickpred(vital_long, minpuc = 0.5, include = inlist)
-imp.default_cont <- mice(vital_long, m = 1, maxit = 1, predictorMatrix = pred_cont, seed = 123, print= FALSE)
-post_cont <- imp.default_cont$post
+
+inlist <- c("fishoilactive", "vitdactive", "pain", "pain_base", "time_contin", "Subject_ID")
+pred_cont <- quickpred(vital_wide, minpuc = 0.5, include = inlist)
 imp.all.undamped_cont <- vector("list", length(delta_vital))
+delta_results_cont_vital_placebo <- data.frame()
 
-
-for (i in 1:length(delta_vital)) {
+for (i in seq_along(delta_vital)) {
   d <- delta_vital[i]
-  cmd <- paste0(
-    "idx <- which(is.na(data[,'pain'])); ",
-    "imp[[j]]$pain[idx] <- imp[[j]]$pain[idx] + ", d
+  imp_init <- mice(vital_wide, m = 5, maxit = 1, predictorMatrix = pred_cont, seed = 100 + i, print = FALSE)
+  post_cont <- imp_init$post
+  post_cont["pain_yr4"] <- paste0(
+    "idx <- which(data[,'fishoilactive'] == 0 & data[,'vitdactive'] == 0 & is.na(data[,'pain_yr4'])); ",
+    "imp[[j]]$pain_yr4[idx] <- imp[[j]]$pain_yr4[idx] + ", d
   )
-  post_cont["pain"] <- cmd
-  imp_cont <- mice(vital_long, pred = pred_cont, post = post_cont, maxit = 10,
-                   seed = i * 22, print=FALSE)
-  imp.all.undamped_cont[[i]] <- imp_cont
-}
-delta_results_cont_placebo <- data.frame()
-
-for (i in seq_along(imp.all.undamped_cont)) {
-  imp_cont <- imp.all.undamped_cont[[i]]
-  d <- delta_vital[i]
-  fit_cont <- with(imp_cont, lm(pain ~ placebo*time_contin +vitdactive*time_contin + fishoilactive*time_contin  + pain_base))
-  pooled_cont <- pool(fit_cont)
+  imp_wide <- mice(vital_wide, m = 5, maxit = 10, predictorMatrix = pred_cont,
+                   post = post_cont, seed = 200 + i, print = FALSE)
+  imp_data_long <- complete(imp_wide, action = "long", include = TRUE) %>%
+    to_long_format_vital_mice()
+  imp_data_list <- split(imp_data_long, imp_data_long$.imp)
+  fit_list <- lapply(imp_data_list, function(df) {
+    lmer(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base + 
+           (1|Subject_ID), data = df)
+  })
+  pooled_cont <- pool(fit_list)
   est_cont <- tidy(pooled_cont, conf.int = TRUE) %>%
-    filter(term == "placebo") %>%  
-    select(estimate, std.error, conf.low, conf.high, p.value) %>%
+    filter(term == "fishoilactive") %>%
+    select(estimate, std.error, conf.low, conf.high) %>%
     mutate(delta_vital = d)
-  delta_results_cont_placebo<- bind_rows(delta_results_cont_placebo, est_cont)
+  
+  delta_results_cont_vital_placebo <- bind_rows(delta_results_cont_vital_placebo, est_cont)
 }
-
-delta_results_cont_placebo$treatment<-"Placebo"
-delta_results_cont_placebo_plot <- ggplot(delta_results_cont_placebo, aes(x = estimate, y = delta_vital)) +
+delta_results_cont_vital_placebo$treatment<-"Placebo"
+delta_results_cont_vital_placebo_plot <- ggplot(delta_results_cont_vital_placebo, aes(x = estimate, y = delta_vital)) +
   geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
   facet_wrap(~ treatment) + 
   labs(
-    title = "Placebo with δ-Adjustment (continuous)",
+    title = "VITAL Placebo with δ-Adjustment (continuous)",
     x = "Treatment Effect",
     y = "Delta"
   ) +
@@ -224,34 +223,32 @@ delta_results_cont_placebo_plot <- ggplot(delta_results_cont_placebo, aes(x = es
 ##VITAL VITAMIN D
 
 #continuous
-inlist <- c("pain_base","time_contin", "vitdactive", "fishoilactive")
-pred_cont <- quickpred(vital_long, minpuc = 0.5, include = inlist)
-imp.default_cont <- mice(vital_long, m = 1, maxit = 1, predictorMatrix = pred_cont, seed = 123, print= FALSE)
-post_cont <- imp.default_cont$post
+inlist <- c("fishoilactive", "vitdactive", "pain", "pain_base", "time_contin", "Subject_ID")
+pred_cont <- quickpred(vital_wide, minpuc = 0.5, include = inlist)
 imp.all.undamped_cont <- vector("list", length(delta_vital))
-
-
-for (i in 1:length(delta_vital)) {
-  d <- delta_vital[i]
-  cmd <- paste0(
-    "idx <- which(is.na(data[,'pain'])); ",
-    "imp[[j]]$pain[idx] <- imp[[j]]$pain[idx] + ", d
-  )
-  post_cont["pain"] <- cmd
-  imp_cont <- mice(vital_long, pred = pred_cont, post = post_cont, maxit = 10,
-                   seed = i * 22, print=FALSE)
-  imp.all.undamped_cont[[i]] <- imp_cont
-}
-
 delta_results_cont_vitd <- data.frame()
-for (i in seq_along(imp.all.undamped_cont)) {
-  imp_cont <- imp.all.undamped_cont[[i]]
+
+for (i in seq_along(delta_vital)) {
   d <- delta_vital[i]
-  fit_cont <- with(imp_cont, lm(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base))
-  pooled_cont <- pool(fit_cont)
+  imp_init <- mice(vital_wide, m = 5, maxit = 1, predictorMatrix = pred_cont, seed = 100 + i, print = FALSE)
+  post_cont <- imp_init$post
+  post_cont["pain_yr4"] <- paste0(
+    "idx <- which(data[,'fishoilactive'] == 0 & data[,'vitdactive'] == 1 & is.na(data[,'pain_yr4'])); ",
+    "imp[[j]]$pain_yr4[idx] <- imp[[j]]$pain_yr4[idx] + ", d
+  )
+  imp_wide <- mice(vital_wide, m = 5, maxit = 10, predictorMatrix = pred_cont,
+                   post = post_cont, seed = 200 + i, print = FALSE)
+  imp_data_long <- complete(imp_wide, action = "long", include = TRUE) %>%
+    to_long_format_vital_mice()
+  imp_data_list <- split(imp_data_long, imp_data_long$.imp)
+  fit_list <- lapply(imp_data_list, function(df) {
+    lmer(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base + 
+           (1|Subject_ID), data = df)
+  })
+  pooled_cont <- pool(fit_list)
   est_cont <- tidy(pooled_cont, conf.int = TRUE) %>%
-    filter(term == "vitdactive") %>%  
-    select(estimate, std.error, conf.low, conf.high, p.value) %>%
+    filter(term == "vitdactive") %>%
+    select(estimate, std.error, conf.low, conf.high) %>%
     mutate(delta_vital = d)
   
   delta_results_cont_vitd <- bind_rows(delta_results_cont_vitd, est_cont)
@@ -264,7 +261,7 @@ delta_results_cont_vitd_plot <- ggplot(delta_results_cont_vitd, aes(x = estimate
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
   facet_wrap(~ treatment) +
   labs(
-    title = "Treatment effect with δ-Adjustment (continuous)",
+    title = "Treatment effect of VitD with δ-Adjustment (continuous)",
     x = "Treatment Effect",
     y = "Delta"
   ) +
