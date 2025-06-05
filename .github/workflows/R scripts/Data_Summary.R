@@ -46,6 +46,36 @@ x<-acu_long %>%
   )
 
 
+#acupuncture pain distribution 
+
+acu_pk1_plot<-ggplot(acu_wide, aes(x = pk1)) +
+  geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
+  labs(
+    title = "Distribution of Pain baseline in Acupuncture dataset",
+    x = "Headache score at baseline",
+    y = "Count"
+  ) +
+  theme_minimal()
+
+acu_pk2_plot<-ggplot(acu_wide, aes(x = pk2)) +
+  geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
+  labs(
+    title = "Distribution of Pain 3 month in Acupuncture dataset",
+    x = "Headache score at 3 months",
+    y = "Count"
+  ) +
+  theme_minimal()
+
+acu_pk5_plot<-ggplot(acu_wide, aes(x = pk5)) +
+  geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
+  labs(
+    title = "Distribution of Pain 1 year in Acupuncture dataset",
+    x = "Headache score at 1 year",
+    y = "Count"
+  ) +
+  theme_minimal()
+
+
 ## Basics of VITAL dataset
 
 
@@ -166,5 +196,108 @@ sex_vital_plot<-vital_long %>%
   )
 
 
+#knee pain score 
+pain_base_vital_plot<-vital_wide %>%
+  filter(vitdactive == 1 | fishoilactive == 1) %>%
+  mutate(treatment = case_when(
+    vitdactive == 1 ~ "Vitamin D",
+    fishoilactive == 1 ~ "Fish Oil"
+  )) %>%
+  ggplot(aes(x = pain_base)) +
+  geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
+  facet_wrap(~ treatment, scales = "fixed") + 
+  labs(
+    title = "Distribution of baseline pain for Vitamin D and Fish Oil Groups",
+    x = "Knee pain score",
+    y = "Count"
+  ) +
+  theme_minimal()+ theme(
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
 
+pain_yr1_vital_plot<-vital_wide %>%
+  filter(vitdactive == 1 | fishoilactive == 1) %>%
+  mutate(treatment = case_when(
+    vitdactive == 1 ~ "Vitamin D",
+    fishoilactive == 1 ~ "Fish Oil"
+  )) %>%
+  ggplot(aes(x = pain_yr1)) +
+  geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
+  facet_wrap(~ treatment, scales = "fixed") + 
+  labs(
+    title = "Distribution of year 1 pain for Vitamin D and Fish Oil Groups",
+    x = "Knee pain score",
+    y = "Count"
+  ) +
+  theme_minimal()+ theme(
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
 
+pain_yr2_vital_plot<-vital_wide %>%
+  filter(vitdactive == 1 | fishoilactive == 1) %>%
+  mutate(treatment = case_when(
+    vitdactive == 1 ~ "Vitamin D",
+    fishoilactive == 1 ~ "Fish Oil"
+  )) %>%
+  ggplot(aes(x = pain_yr2)) +
+  geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
+  facet_wrap(~ treatment, scales = "fixed") + 
+  labs(
+    title = "Distribution of year 2 pain for Vitamin D and Fish Oil Groups",
+    x = "Knee pain score",
+    y = "Count"
+  ) +
+  theme_minimal()+ theme(
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+pain_yr3_vital_plot<-vital_wide %>%
+  filter(vitdactive == 1 | fishoilactive == 1) %>%
+  mutate(treatment = case_when(
+    vitdactive == 1 ~ "Vitamin D",
+    fishoilactive == 1 ~ "Fish Oil"
+  )) %>%
+  ggplot(aes(x = pain_yr3)) +
+  geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
+  facet_wrap(~ treatment, scales = "fixed") + 
+  labs(
+    title = "Distribution of year 3 pain for Vitamin D and Fish Oil Groups",
+    x = "Knee pain score",
+    y = "Count"
+  ) +
+  theme_minimal()+ theme(
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+pain_yr4_vital_plot<-vital_wide %>%
+  filter(vitdactive == 1 | fishoilactive == 1) %>%
+  mutate(treatment = case_when(
+    vitdactive == 1 ~ "Vitamin D",
+    fishoilactive == 1 ~ "Fish Oil"
+  )) %>%
+  ggplot(aes(x = pain_yr4)) +
+  geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
+  facet_wrap(~ treatment, scales = "fixed") + 
+  labs(
+    title = "Distribution of final time pain for Vitamin D and Fish Oil Groups",
+    x = "Knee pain score",
+    y = "Count"
+  ) +
+  theme_minimal()+ theme(
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )

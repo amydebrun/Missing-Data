@@ -49,6 +49,7 @@ source("R scripts/Different Imputation Method.R")
 source("R scripts/Sens_analysis_cat.R")
 source("R scripts/Sens_analysis_cont.R")
 source("R scripts/Sens_analysis_combined.R")
+source("R scripts/Data_summary.R")
 ```
 
 
@@ -308,6 +309,11 @@ delta_combined_cont_acu_plot
 delta_combined_cat_acu_plot
 delta_combined_cont_cat_plot
 
+pain_base_vital_plot
+pain_yr1_vital_plot
+pain_yr2_vital_plot
+pain_yr3_vital_plot
+pain_yr4_vital_plot
 ```
 
 
