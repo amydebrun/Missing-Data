@@ -289,6 +289,13 @@ delta_results_cont_acu_placebo_plot
 delta_result_cat_placebo_plot 
 #continuous acupuncture
 delta_results_cont_acu_plot
+
+
+delta_results_cont_acu
+delta_results_cont_acu_placebo
+
+
+
 ```
 
 **VITAL**
@@ -296,6 +303,9 @@ delta_results_cont_acu_plot
 delta_results_cont_fishoil_plot
 delta_results_cont_vitd_plot 
 delta_results_cont_placebo_plot
+
+tidy(pooled_cont)$term
+
 ```
 ```{r}
 delta_results_cat_fishoil_plot
@@ -309,11 +319,9 @@ delta_combined_cont_acu_plot
 delta_combined_cat_acu_plot
 delta_combined_cont_cat_plot
 
-pain_base_vital_plot
-pain_yr1_vital_plot
-pain_yr2_vital_plot
-pain_yr3_vital_plot
-pain_yr4_vital_plot
+delta_combined_cont_acu
+
+
 ```
 
 
@@ -328,116 +336,3 @@ table of estimates
 sensitivity analysis 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Examples of citations, figures, tables, references
-\label{sec:others}
-
-You can insert references. Here is some text [@kour2014real; @kour2014fast] and see @hadash2018estimate.
-
-The documentation for \verb+natbib+ may be found at
-
-You can use custom blocks with LaTeX support from **rmarkdown** to create environment.
-
-::: {.center latex=true}
-  <http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}>
-:::
-
-Of note is the command \verb+\citet+, which produces citations
-appropriate for use in inline text.  
-
-You can insert LaTeX environment directly too.
-
-\begin{verbatim}
-   \citet{hasselmo} investigated\dots
-\end{verbatim}
-
-produces
-
-\begin{quote}
-  Hasselmo, et al.\ (1995) investigated\dots
-\end{quote}
-
-\begin{center}
-  \url{https://www.ctan.org/pkg/booktabs}
-\end{center}
-
-
-## Figures
-
-You can insert figure using LaTeX directly. 
-
-See Figure \ref{fig:fig1}. Here is how you add footnotes. [^Sample of the first footnote.]
-
-\begin{figure}
-  \centering
-  \fbox{\rule[-.5cm]{4cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
-  \caption{Sample figure caption.}
-  \label{fig:fig1}
-\end{figure}
-
-But you can also do that using R.
-
-```{r fig2, fig.cap = "Another sample figure"}
-plot(mtcars$mpg)
-```
-
-You can use **bookdown** to allow references for Tables and Figures.
-
-
-## Tables
-
-Below we can see how to use tables. 
-
-See awesome Table~\ref{tab:table} which is written directly in LaTeX in source Rmd file.
-
-\begin{table}
- \caption{Sample table title}
-  \centering
-  \begin{tabular}{lll}
-    \toprule
-    \multicolumn{2}{c}{Part}                   \\
-    \cmidrule(r){1-2}
-    Name     & Description     & Size ($\mu$m) \\
-    \midrule
-    Dendrite & Input terminal  & $\sim$100     \\
-    Axon     & Output terminal & $\sim$10      \\
-    Soma     & Cell body       & up to $10^6$  \\
-    \bottomrule
-  \end{tabular}
-  \label{tab:table}
-\end{table}
-
-You can also use R code for that.
-
-```{r}
-knitr::kable(head(mtcars), caption = "Head of mtcars table")
-```
-
-
-## Lists
-
-- Item 1
-- Item 2 
-- Item 3

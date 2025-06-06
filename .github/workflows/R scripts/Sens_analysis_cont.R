@@ -1,9 +1,7 @@
 # SENSITIVITY ANALYSIS : DELTA ADJUSTMENT 
-
-
 #continuous acupuncutre
 delta_acu <- c(-5, -2, 0, 2, 5)
-inlist <- c("group", "pk1")
+inlist <- c("group", "pk1", "pk5", "time_c", "id")
 pred_cont <- quickpred(acu_wide, minpuc = 0.5, include = inlist)
 imp.all.undamped_cont <- vector("list", length(delta_acu))
 delta_results_cont_acu <- data.frame()
@@ -14,7 +12,7 @@ for (i in seq_along(delta_acu)) {
   post_cont <- imp_init$post
   post_cont["pk5"] <- paste0(
     "idx <- which(data[,'group'] == 1 & is.na(data[,'pk5'])); ",
-    "imp[[j]]$pk5[idx] <- imp[[j]]$pk5[idx] + ", d
+    "imp[[j]]$pk5[idx] <- imp[[j]]$pk5[idx] + ", d, ";"
   )
   imp_wide <- mice(acu_wide, m = 5, maxit = 10, predictorMatrix = pred_cont,
                    post = post_cont, seed = 200 + i, print = FALSE)
@@ -56,37 +54,39 @@ delta_results_cont_acu_plot <- ggplot(delta_results_cont_acu, aes(x = estimate, 
 
 
 #continuous acu placebo
-
-inlist <- c("group", "pk1")
-pred_cont <- quickpred(acu_wide, minpuc = 0.5, include = inlist)
+delta_acu <- c(-5, -2, 0, 2, 5)
+inlist <- c("group", "pk1", "pk5", "time_c", "id")
+acu_wide_placebo<-acu_wide%>%filter(group==0)
+pred_cont_placebo <- quickpred(acu_wide_placebo, minpuc = 0.5, include = inlist)
 imp.all.undamped_cont <- vector("list", length(delta_acu))
 delta_results_cont_acu_placebo <- data.frame()
 
 for (i in seq_along(delta_acu)) {
   d <- delta_acu[i]
-  imp_init <- mice(acu_wide, m = 5, maxit = 1, predictorMatrix = pred_cont, seed = 100 + i, print = FALSE)
+  imp_init <- mice(acu_wide_placebo, m = 5, maxit = 1, predictorMatrix = pred_cont_placebo, seed = 100 + i, print = FALSE)
   post_cont <- imp_init$post
   post_cont["pk5"] <- paste0(
-    "idx <- which(data[,'group'] == 0 & is.na(data[,'pk5'])); ",
-    "imp[[j]]$pk5[idx] <- imp[[j]]$pk5[idx] + ", d
+    "idx <- which(is.na(data[,'pk5'])); ",
+    "imp[[j]]$pk5[idx] <- imp[[j]]$pk5[idx] + ", d, ";"
   )
-  imp_wide <- mice(acu_wide, m = 5, maxit = 10, predictorMatrix = pred_cont,
+  imp_wide <- mice(acu_wide_placebo, m = 5, maxit = 10, predictorMatrix = pred_cont_placebo,
                    post = post_cont, seed = 200 + i, print = FALSE)
   imp_data_long <- complete(imp_wide, action = "long", include = TRUE) %>%
     to_long_format_acu_cont_MICE() %>%
     mutate(time_c = time - 12)
   imp_data_list <- split(imp_data_long, imp_data_long$.imp)
   fit_list <- lapply(imp_data_list, function(df) {
-    lmer(pk_score ~ group * time_c + pk1 + (1 | id), data = df)
+    lmer(pk_score ~ time_c + pk1 + (1 | id), data = df)
   })
   pooled_cont <- pool(fit_list)
   est_cont <- tidy(pooled_cont, conf.int = TRUE) %>%
-    filter(term == "group") %>%
+    filter(term == "(Intercept)") %>%
     select(estimate, std.error, conf.low, conf.high) %>%
     mutate(delta_acu = d)
   
   delta_results_cont_acu_placebo <- bind_rows(delta_results_cont_acu_placebo, est_cont)
 }
+
 
 delta_results_cont_acu_placebo$treatment<-"Placebo"
 delta_results_cont_acu_placebo_plot <- ggplot(delta_results_cont_acu_placebo, aes(x = estimate, y = delta_acu)) +
@@ -186,12 +186,13 @@ for (i in seq_along(delta_vital)) {
     to_long_format_vital_mice()
   imp_data_list <- split(imp_data_long, imp_data_long$.imp)
   fit_list <- lapply(imp_data_list, function(df) {
-    lmer(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base + 
-           (1|Subject_ID), data = df)
-  })
+    df_placebo <- df %>%
+      filter(fishoilactive == 0 & vitdactive == 0)
+    lmer(pain ~ time_contin + pain_base + (1 | Subject_ID), data = df_placebo)
+})
   pooled_cont <- pool(fit_list)
   est_cont <- tidy(pooled_cont, conf.int = TRUE) %>%
-    filter(term == "fishoilactive") %>%
+    filter(term == "time_contin") %>%
     select(estimate, std.error, conf.low, conf.high) %>%
     mutate(delta_vital = d)
   
