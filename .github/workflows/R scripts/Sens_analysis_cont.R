@@ -232,18 +232,22 @@ for (i in seq_along(delta_vital)) {
   d <- delta_vital[i]
   imp_init <- mice(vital_wide, m = 5, maxit = 1, predictorMatrix = pred_cont, seed = 100 + i, print = FALSE)
   post_cont <- imp_init$post
-  post_cont["pain_yr4"] <- paste0(
-    "idx <- which(data[,'fishoilactive'] == 0 & data[,'vitdactive'] == 1 & is.na(data[,'pain_yr4'])); ",
-    "imp[[j]]$pain_yr4[idx] <- imp[[j]]$pain_yr4[idx] + ", d
-  )
+  years <- paste0("pain_yr", 1:4)
+  for (yr in years) {
+    post_cont[yr] <- paste0(
+      "idx <- which(data[,'fishoilactive'] == 0 & data[,'vitdactive'] == 1 & is.na(data[,'", yr, "'])); ",
+      "imp[[j]]$", yr, "[idx] <- imp[[j]]$", yr, "[idx] + ", d, ";"
+    )
+  }
   imp_wide <- mice(vital_wide, m = 5, maxit = 10, predictorMatrix = pred_cont,
                    post = post_cont, seed = 200 + i, print = FALSE)
   imp_data_long <- complete(imp_wide, action = "long", include = TRUE) %>%
     to_long_format_vital_mice()
   imp_data_list <- split(imp_data_long, imp_data_long$.imp)
+  
   fit_list <- lapply(imp_data_list, function(df) {
     lmer(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base + 
-           (1|Subject_ID), data = df)
+           (1 | Subject_ID), data = df)
   })
   pooled_cont <- pool(fit_list)
   est_cont <- tidy(pooled_cont, conf.int = TRUE) %>%
