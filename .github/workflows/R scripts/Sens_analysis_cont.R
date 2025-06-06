@@ -168,31 +168,30 @@ delta_results_cont_fishoil_plot <- ggplot(delta_results_cont_fishoil, aes(x = es
 #continuous placebo
 
 inlist <- c("fishoilactive", "vitdactive", "pain", "pain_base", "time_contin", "Subject_ID")
-pred_cont <- quickpred(vital_wide, minpuc = 0.5, include = inlist)
+vital_wide_placebo<-vital_wide%>%filter(fishoilactive==0, vitdactive==0)
+pred_cont_placebo <- quickpred(vital_wide_placebo, minpuc = 0.5, include = inlist)
 imp.all.undamped_cont <- vector("list", length(delta_vital))
 delta_results_cont_vital_placebo <- data.frame()
 
 for (i in seq_along(delta_vital)) {
   d <- delta_vital[i]
-  imp_init <- mice(vital_wide, m = 5, maxit = 1, predictorMatrix = pred_cont, seed = 100 + i, print = FALSE)
+  imp_init <- mice(vital_wide_placebo, m = 5, maxit = 1, predictorMatrix = pred_cont_placebo, seed = 100 + i, print = FALSE)
   post_cont <- imp_init$post
   post_cont["pain_yr4"] <- paste0(
-    "idx <- which(data[,'fishoilactive'] == 0 & data[,'vitdactive'] == 0 & is.na(data[,'pain_yr4'])); ",
-    "imp[[j]]$pain_yr4[idx] <- imp[[j]]$pain_yr4[idx] + ", d
+    "idx <- which(is.na(data[,'pain_yr4'])); ",
+    "imp[[j]]$pain_yr4[idx] <- imp[[j]]$pain_yr4[idx] + ", d, ";"
   )
-  imp_wide <- mice(vital_wide, m = 5, maxit = 10, predictorMatrix = pred_cont,
+  imp_wide <- mice(vital_wide_placebo, m = 5, maxit = 10, predictorMatrix = pred_cont_placebo,
                    post = post_cont, seed = 200 + i, print = FALSE)
   imp_data_long <- complete(imp_wide, action = "long", include = TRUE) %>%
     to_long_format_vital_mice()
   imp_data_list <- split(imp_data_long, imp_data_long$.imp)
   fit_list <- lapply(imp_data_list, function(df) {
-    df_placebo <- df %>%
-      filter(fishoilactive == 0 & vitdactive == 0)
-    lmer(pain ~ time_contin + pain_base + (1 | Subject_ID), data = df_placebo)
+    lmer(pain ~ time_contin + pain_base + (1 | Subject_ID), data = df)
 })
   pooled_cont <- pool(fit_list)
   est_cont <- tidy(pooled_cont, conf.int = TRUE) %>%
-    filter(term == "time_contin") %>%
+    filter(term == "(Intercept)") %>%
     select(estimate, std.error, conf.low, conf.high) %>%
     mutate(delta_vital = d)
   
