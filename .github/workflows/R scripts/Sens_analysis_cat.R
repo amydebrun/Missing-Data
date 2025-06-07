@@ -113,12 +113,16 @@ imp.all.undamped_cat <- vector("list", length(delta_vital))
 
 for (i in 1:length(delta_vital)) {
   d <- delta_vital[i]
+  imp_init <- mice(vital_wide, pred = pred_cat, maxit = 1, print = FALSE)
+  method_cat <- imp_init$method
+  method_cat["pain_base"] <- "pmm" 
   post_cat <- rep("", ncol(vital_wide))
   names(post_cat) <- names(vital_wide)
   post_cat["pain_yr4"]  <- paste0(
     "idx <- which(data[,'vitdactive'] == 0 & data[,'fishoilactive'] == 1 & is.na(data[,'pain_yr4'])); ",
-    "imp[[j]]$pain_yr4[idx] <- imp[[j]]$pain_yr4[idx] + ", d)
-  imp_cat <- mice(vital_wide, pred = pred_cat, post = post_cat, maxit = 10,
+    "imp[[j]]$pain_yr4[idx] <- imp[[j]]$pain_yr4[idx] + ", d, ";"
+    )
+  imp_cat <- mice(vital_wide, pred = pred_cat, post = post_cat, method=method_cat, maxit = 10,
                   seed = i * 22, print=FALSE)
   imp.all.undamped_cat[[i]] <- imp_cat
 }
@@ -164,12 +168,16 @@ imp.all.undamped_cat <- vector("list", length(delta_vital))
 
 for (i in 1:length(delta_vital)) {
   d <- delta_vital[i]
+  imp_init <- mice(vital_wide, pred = pred_cat, maxit = 1, print = FALSE)
+  method_cat <- imp_init$method
+  method_cat["pain_base"] <- "pmm" 
   post_cat <- rep("", ncol(vital_wide))
   names(post_cat) <- names(vital_wide)
   post_cat["pain_yr4"]  <- paste0(
     "idx <- which(data[,'vitdactive'] == 1 & data[,'fishoilactive'] == 0 & is.na(data[,'pain_yr4'])); ",
-    "imp[[j]]$pain_yr4[idx] <- imp[[j]]$pain_yr4[idx] + ", d)
-  imp_cat <- mice(vital_wide, pred = pred_cat, post = post_cat, maxit = 10,
+    "imp[[j]]$pain_yr4[idx] <- imp[[j]]$pain_yr4[idx] + ", d, ";"
+    )
+  imp_cat <- mice(vital_wide, pred = pred_cat, post = post_cat, method=method_cat, maxit = 10,
                   seed = i * 22, print=FALSE)
   imp.all.undamped_cat[[i]] <- imp_cat
 }
@@ -216,6 +224,9 @@ imp.all.undamped_cat <- vector("list", length(delta_vital))
 
 for (i in 1:length(delta_vital)) {
   d <- delta_vital[i]
+  imp_init <- mice(vital_wide, pred = pred_cat, maxit = 1, print = FALSE)
+  method_cat <- imp_init$method
+  method_cat["pain_base"] <- "pmm" 
   post_cat <- rep("", ncol(vital_wide_placebo))
   names(post_cat) <- names(vital_wide_placebo)
   post_cat["pain_yr4"]  <- paste0(
