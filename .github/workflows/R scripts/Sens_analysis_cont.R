@@ -9,13 +9,17 @@ delta_results_cont_acu <- data.frame()
 for (i in seq_along(delta_acu)) {
   d <- delta_acu[i]
   imp_init <- mice(acu_wide, m = 5, maxit = 1, predictorMatrix = pred_cont, seed = 100 + i, print = FALSE)
+  method_cont <- imp_init$method
+  post_cont <- imp_init$post
+  method_cont[c("pk2", "pk5")] <- "pmm"
   post_cont <- imp_init$post
   post_cont["pk5"] <- paste0(
     "idx <- which(data[,'group'] == 1 & is.na(data[,'pk5'])); ",
     "imp[[j]]$pk5[idx] <- imp[[j]]$pk5[idx] + ", d, ";"
   )
   imp_wide <- mice(acu_wide, m = 5, maxit = 10, predictorMatrix = pred_cont,
-                   post = post_cont, seed = 200 + i, print = FALSE)
+                   post = post_cont, method=method_cont, seed = 200 + i, print = FALSE)
+  imp.all.undamped_cont[[i]] <- imp_wide 
   imp_data_long <- complete(imp_wide, action = "long", include = TRUE) %>%
     to_long_format_acu_cont_MICE() %>%
     mutate(time_c = time - 12)
@@ -63,13 +67,17 @@ delta_results_cont_acu_placebo <- data.frame()
 
 for (i in seq_along(delta_acu)) {
   d <- delta_acu[i]
-  imp_init <- mice(acu_wide_placebo, m = 5, maxit = 1, predictorMatrix = pred_cont_placebo, seed = 100 + i, print = FALSE)
+  imp_init <- mice(acu_wide_placebo, m = 5, maxit = 1, predictorMatrix = pred_cont, seed = 100 + i, print = FALSE)
+  imp.all.undamped_cont[[i]] <- imp_wide 
+  method_cont <- imp_init$method
+  post_cont <- imp_init$post
+  method_cont[c("pk2", "pk5")] <- "pmm"
   post_cont <- imp_init$post
   post_cont["pk5"] <- paste0(
     "idx <- which(is.na(data[,'pk5'])); ",
     "imp[[j]]$pk5[idx] <- imp[[j]]$pk5[idx] + ", d, ";"
   )
-  imp_wide <- mice(acu_wide_placebo, m = 5, maxit = 10, predictorMatrix = pred_cont_placebo,
+  imp_wide <- mice(acu_wide_placebo, m = 5, maxit = 10, predictorMatrix = pred_cont_placebo, method=method_cont,
                    post = post_cont, seed = 200 + i, print = FALSE)
   imp_data_long <- complete(imp_wide, action = "long", include = TRUE) %>%
     to_long_format_acu_cont_MICE() %>%
