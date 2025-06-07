@@ -49,21 +49,21 @@ delta_combined_cont_acu$estimand<- "Continuous time"
 delta_combined_acu_cont_cat<- bind_rows(delta_combined_cat_acu,delta_combined_cont_acu)
 
 delta_combined_cont_cat_plot <- ggplot(
-  delta_combined_cont_cat, 
+  delta_combined_acu_cont_cat, 
   aes(x = estimate, y = delta_acu, shape = estimand, colour = estimand)
 ) + geom_point(
-    data = subset(delta_combined_cont_cat, estimand == "Categorical time"),
+    data = subset(delta_combined_acu_cont_cat, estimand == "Categorical time"),
     size = 4, position = position_nudge(y = -0.15)
   ) + geom_errorbarh(
-    data = subset(delta_combined_cont_cat, estimand == "Categorical time"),
+    data = subset(delta_combined_acu_cont_cat, estimand == "Categorical time"),
     aes(xmin = conf.low, xmax = conf.high),
     height = 0.4,
     position = position_nudge(y = -0.15)
   ) + geom_point(
-    data = subset(delta_combined_cont_cat, estimand == "Continuous time"),
+    data = subset(delta_combined_acu_cont_cat, estimand == "Continuous time"),
     size = 4, position = position_nudge(y = 0.15)
   ) + geom_errorbarh(
-    data = subset(delta_combined_cont_cat, estimand == "Continuous time"),
+    data = subset(delta_combined_acu_cont_cat, estimand == "Continuous time"),
     aes(xmin = conf.low, xmax = conf.high),
     height = 0.4,
     position = position_nudge(y = 0.15)
@@ -86,25 +86,4 @@ delta_combined_cont_cat_plot <- ggplot(
     plot.background = element_rect(fill = "white", color = NA),
     legend.position = "bottom"
   )
-
-
-
-#HEATMAP OF ACUPUCNTURE RESULTS 
-
-
-acu_heatmap<-ggplot(delta_combined_acu_cont_cat, aes(x = factor(delta_acu), y = estimand, fill = estimate)) +
-  geom_tile(color = "white") +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
-  labs(
-    title = "Heatmap of Treatment Effect Estimates by Delta and Estimand",
-    x = "Delta",
-    y = "Estimand",
-    fill = "Estimate"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    panel.grid = element_blank()
-  )
-
 

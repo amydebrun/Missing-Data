@@ -294,23 +294,63 @@ delta_results_cont_acu_plot
 delta_results_cont_acu
 delta_results_cont_acu_placebo
 
+acu_heatmap
 
+delta_results_cat <- delta_results_cat %>%
+  rename(est_cat = est_cat, delta_cat = delta_acu)
+
+delta_results_cont_acu <- delta_results_cont_acu %>%
+  rename(delta_cont = delta_acu)
+heatmap_data <- merge(delta_results_cat, delta_results_cont_acu, by = NULL)
+
+ggplot(heatmap_data, aes(x = factor(delta_cont), y = factor(delta_cat), fill = est_cont)) +
+  geom_tile(color = "white") +
+  geom_text(aes(label = round(est_cont, 2)), size = 3) +
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
+  labs(
+    title = "Acupuncture Sensitivity Analysis (Effect on pk_score)",
+    x = "δ for Continuous Outcome (pk_score)",
+    y = "δ for Categorical Outcome (pk5)",
+    fill = "Estimate (pk_score)"
+  ) +
+  theme_minimal() +
+  theme(aspect.ratio = 1)
 
 ```
 
 **VITAL**
 ```{r}
-delta_results_cont_fishoil_plot
+
 delta_results_cont_vitd_plot 
-delta_results_cont_placebo_plot
+delta_results_cont_fishoil_plot
+delta_results_cont_vital_placebo_plot
+```
 
-tidy(pooled_cont)$term
 
+```{r}
+
+delta_results_cont_vitd_plot 
+
+
+delta_results_cont_fishoil
+delta_results_cont_vitd
+delta_results_cont_vital_placebo
+```
+
+
+```{r}
+vital_MI_LME_result_oil_cont
+vital_MI_LME_result_vitd_cont
+
+sum(is.na(vital_wide$pain_yr4) & vital_wide$fishoilactive == 0 & vital_wide$vitdactive == 1)
+sum(is.na(vital_wide$pain_yr3) & vital_wide$fishoilactive == 0 & vital_wide$vitdactive == 1)
+sum(is.na(vital_wide$pain_yr2) & vital_wide$fishoilactive == 0 & vital_wide$vitdactive == 1)
+sum(is.na(vital_wide$pain_yr1) & vital_wide$fishoilactive == 0 & vital_wide$vitdactive == 1)
 ```
 ```{r}
 delta_results_cat_fishoil_plot
 delta_results_cat_vitd_plot 
-delta_results_cat_placebo_plot
+delta_results_cat_vital_placebo_plot
 ```
 
 
