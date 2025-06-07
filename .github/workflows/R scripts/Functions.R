@@ -149,6 +149,19 @@ to_long_format_vital_mice <- function(data_wide) {
            time_contin_cent = time_contin - 4)
 }
 
+# VITAL transfer to long for MICE in sensitivity analysis 
+to_long_format_vital_mice_SA <- function(data_wide) {
+  data_wide %>%
+    pivot_longer(cols = matches("_yr[[:digit:]]$"),
+                 names_to = c(".value", "time"), 
+                 names_sep = "_") %>%
+    group_by(.imp) %>%
+    mutate(.id = 1:n()) %>%
+    mutate(time_contin = as.integer(gsub("yr", "", time)),
+           time_contin_cent = time_contin - 4)
+}
+
+
 #LRT function
 lrt_from_glm <- function(model) {
   null_dev <- model$null.deviance
