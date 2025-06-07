@@ -112,9 +112,9 @@ delta_results_cont_acu_placebo_plot <- ggplot(delta_results_cont_acu_placebo, ae
 ##VITAL FISHOIL
 
 #continuous placebo
-
+delta_vital <- c(-10,-5,-2,0,2,5,10)  
 inlist <- c("fishoilactive", "vitdactive", "pain", "pain_base", "time_contin", "Subject_ID")
-vital_wide_placebo<-vital_wide%>%filter(fishoilactive==0, vitdactive==0)
+vital_wide_placebo <- vital_wide %>% filter(fishoilactive == 0, vitdactive == 0)
 pred_cont_placebo <- quickpred(vital_wide_placebo, minpuc = 0.5, include = inlist)
 imp.all.undamped_cont <- vector("list", length(delta_vital))
 delta_results_cont_vital_placebo <- data.frame()
@@ -123,24 +123,32 @@ for (i in seq_along(delta_vital)) {
   d <- delta_vital[i]
   imp_init <- mice(vital_wide_placebo, m = 5, maxit = 1, predictorMatrix = pred_cont_placebo, seed = 100 + i, print = FALSE)
   post_cont <- imp_init$post
-  post_cont["pain_yr4"] <- paste0(
-    "idx <- which(is.na(data[,'pain_yr4'])); ",
-    "imp[[j]]$pain_yr4[idx] <- imp[[j]]$pain_yr4[idx] + ", d, ";"
-  )
+  method_cont <- imp_init$method
+  years <- paste0("pain_yr", 1:4)
+  method_cont[years] <- "pmm"
+  method_cont["pain_base"] <- "pmm"
+  for (yr in years) {
+    post_cont[yr] <- paste0(
+      "idx <- which(is.na(data[,'", yr, "'])); ",
+      "imp[[j]]$", yr, "[idx] <- imp[[j]]$", yr, "[idx] + ", d, ";"
+    )
+  }
+  
   imp_wide <- mice(vital_wide_placebo, m = 5, maxit = 10, predictorMatrix = pred_cont_placebo,
-                   post = post_cont, seed = 200 + i, print = FALSE)
+                   post = post_cont, method = method_cont, seed = 200 + i, print = FALSE)
+  
+  imp.all.undamped_cont[[i]] <- imp_wide
   imp_data_long <- complete(imp_wide, action = "long", include = TRUE) %>%
-    to_long_format_vital_mice()
+    to_long_format_vital_mice_SA()
   imp_data_list <- split(imp_data_long, imp_data_long$.imp)
   fit_list <- lapply(imp_data_list, function(df) {
     lmer(pain ~ time_contin + pain_base + (1 | Subject_ID), data = df)
-})
+  })
   pooled_cont <- pool(fit_list)
   est_cont <- tidy(pooled_cont, conf.int = TRUE) %>%
     filter(term == "(Intercept)") %>%
     select(estimate, std.error, conf.low, conf.high) %>%
     mutate(delta_vital = d)
-  
   delta_results_cont_vital_placebo <- bind_rows(delta_results_cont_vital_placebo, est_cont)
 }
 delta_results_cont_vital_placebo$treatment<-"Placebo"
@@ -162,10 +170,6 @@ delta_results_cont_vital_placebo_plot <- ggplot(delta_results_cont_vital_placebo
     plot.background = element_rect(fill = "white", color = NA)
   )
 
-
-
-
-
 ##VITAL VITAMIN D
 
 #continuous
@@ -181,6 +185,7 @@ for (i in seq_along(delta_vital)) {
   method_cont <- imp_init$method
   years <- paste0("pain_yr", 1:4)
   method_cont[years] <- "pmm"
+  method_cont["pain_base"] <- "pmm"
   for (yr in years) {
     post_cont[yr] <- paste0(
       "idx <- which(data[,'fishoilactive'] == 0 & data[,'vitdactive'] == 1 & is.na(data[,'", yr, "'])); ",
@@ -242,6 +247,7 @@ for (i in seq_along(delta_vital)) {
   method_cont <- imp_init$method
   years <- paste0("pain_yr", 1:4)
   method_cont[years] <- "pmm"
+  method_cont["pain_base"] <- "pmm"
   for (yr in years) {
     post_cont[yr] <- paste0(
       "idx <- which(data[,'fishoilactive'] == 1 & data[,'vitdactive'] == 0 & is.na(data[,'", yr, "'])); ",
