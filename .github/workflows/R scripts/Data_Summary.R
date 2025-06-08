@@ -142,7 +142,7 @@ acu_pk5_plot<-ggplot(acu_wide, aes(x = pk5)) +
 
 
 #overall age 
-ggplot(vital_long, aes(x = ageyr)) +
+ggplot(vital_long, aes(x = ageyr)) + 
   geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
   labs(
     title = "Distribution of Age in VITAL dataset",
@@ -269,7 +269,7 @@ pain_base_vital_plot<-vital_wide %>%
   geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
   facet_wrap(~ treatment, scales = "fixed") + 
   labs(
-    title = "Distribution of baseline pain for Vitamin D and Fish Oil Groups",
+    title = "Baseline Knee Pain",
     x = "Knee pain score",
     y = "Count"
   ) +
@@ -290,7 +290,7 @@ pain_yr1_vital_plot<-vital_wide %>%
   geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
   facet_wrap(~ treatment, scales = "fixed") + 
   labs(
-    title = "Distribution of year 1 pain for Vitamin D and Fish Oil Groups",
+    title = "Knee Pain 1 Year post-randomisation",
     x = "Knee pain score",
     y = "Count"
   ) +
@@ -311,7 +311,7 @@ pain_yr2_vital_plot<-vital_wide %>%
   geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
   facet_wrap(~ treatment, scales = "fixed") + 
   labs(
-    title = "Distribution of year 2 pain for Vitamin D and Fish Oil Groups",
+    title = "Knee Pain 2 Years post-randomisation",
     x = "Knee pain score",
     y = "Count"
   ) +
@@ -332,7 +332,7 @@ pain_yr3_vital_plot<-vital_wide %>%
   geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
   facet_wrap(~ treatment, scales = "fixed") + 
   labs(
-    title = "Distribution of year 3 pain for Vitamin D and Fish Oil Groups",
+    title = "Knee Pain 3 Years post-randomisation",
     x = "Knee pain score",
     y = "Count"
   ) +
@@ -353,7 +353,7 @@ pain_yr4_vital_plot<-vital_wide %>%
   geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
   facet_wrap(~ treatment, scales = "fixed") + 
   labs(
-    title = "Distribution of final time pain for Vitamin D and Fish Oil Groups",
+    title = "Knee Pain 4 Years post-randomisation",
     x = "Knee pain score",
     y = "Count"
   ) +

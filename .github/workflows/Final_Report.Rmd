@@ -173,11 +173,60 @@ where
 
 **VITAL data**
 
-  - Source
-  - Study design
+*Source*
+
+MacFarlane et al. conducted a study on the therapeutic effects of vitamin D and fish oil on osteoarthritic knee pain. We sourced this data at xyz. 
+
+*Study Design* 
+
+This study was a 2x2 factorial designed longitudinal randomised controlled trial. 1,398 participants in the study was randomised to 4 possible treatment combinations. Participants were randomised to receive either omega-3 oils or vitamin D, both treatments, or randomised to the placebo group. For this research project, we assumed that that the participants were only randomised to either recieve the fish oil treatment, vitamin D treatment or the placebo. We did not include the interaction between vitamin D or the fish oil. 
+
+|                   | Vitamin D              | Placebo          |
+|-------------------|------------------------|------------------|
+| **Fish Oil**      | N = 342 (not analysed) | N = 353          |
+| **Placebo**       | N = 332                | N = 371          |
+
+
   - Data overview
+
+```{r}
+vital_summary
+```
+
+```{r}
+age_vital_plot
+```
+
+```{r}
+bmi_vital_plot
+```
+
+```{r}
+sex_vital_plot
+```
+
+```{r}
+pain_base_vital_plot
+pain_yr1_vital_plot
+pain_yr2_vital_plot
+pain_yr3_vital_plot
+pain_yr4_vital_plot
+```
+
+
     - assuming no interaction in VITAL study
-  - Estimands in this project
+    
+*Original estimand in VITAL study*
+
+Our estimand for this dataset is the difference in mean knee pain at the finall time point of 4 years post randomisation $pain_yr4$ which is modelled by 
+$$\text{pain_yr4}_i = \beta_0 + \beta_1\text{fishoilactive}_i + \beta_2\text{vitdactive}_i + \beta_3\text{pain_base}_i \varepsilon_i$$ in which
+
+- $text{pain_yr4}_i$ is the knee pain score for individual $i$ at the final time point of 4 years post randomisation. 
+- $\beta_0$ is the intercept parameter which represents the knee pain score when there is no treatment of vitamin D or fish oil given and no baseline knee pain score is recorded. 
+- $\beta_1$ is the effect of being randomised to the fishoil treatment group. This is the treatment effect of interest in our fishoil only missingness analysis. 
+- $\beta_2$ is the effect of being randomised to the vitamin D treatment group. This is the treatment effect of interest in our vitamin D only missingness analysis. 
+- $\beta_3$ is the effect of the baseline knee pain score pre-randomisation. 
+- $\varepsilon$ is the residual error of individual $i$ 
 
 ## Missing analysis
 
@@ -185,7 +234,12 @@ where
 
 ```{r}
 acu_miss_perc_plot
+```
+```{r}
 acu_miss_perc_group
+```
+
+```{r}
 acu_miss_pattern_plot
 ```
 
