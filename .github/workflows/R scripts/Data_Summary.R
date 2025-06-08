@@ -3,15 +3,50 @@
 ## Basics of Acupuncture dataset
 library(dplyr)
 
-#distribution of age overall acupuncture 
+
+#variable table 
+
+acu_var_table <- tibble::tibble(
+  `Variable` = c(
+    "id", "age", "sex", "migraine", "chronicity", "acupuncturist", "practice_id", "group",
+    "pk1", "pk2", "pk5", "f1", "f2", "f5"
+  ),
+  `Description` = c(
+    "patient ID code",
+    "Age",
+    "sex; female (1) vs. male (0)",
+    "diagnosis ; migraine (1) vs. tension-type (0)",
+    "number of years of headache disorder",
+    "acupuncturist id code",
+    "gp practice id",
+    "treatment group; acupuncture (1) vs. control (0)",
+    "headache severity score baseline",
+    "headache severity score 3 month",
+    "headache severity score 1 year",
+    "headache frequency baseline",
+    "headache frequency 3 month",
+    "headache frequency 1 year"
+  )
+)
+
+#distribution of age by treatment group
 acu_age_plot<-ggplot(acu_long, aes(x = age)) +
-  geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
+  geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) + 
+  facet_wrap(~ group, 
+             scales = "fixed", 
+             labeller = labeller(group = c("0" = "Control", "1" = "Acupuncture"))) +
   labs(
-    title = "Distribution of Age in Acupuncture dataset",
-    x = "Age (years)",
+    title = "",
+    x = "Age",
     y = "Count"
   ) +
-  theme_minimal()
+  theme_minimal() + theme(
+    legend.position = "none",  
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),  
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)  
+  )
 
 #DISTRIBUTION SEX BY TREATMENT GROUP
     
@@ -22,9 +57,9 @@ acu_sex_plot<-ggplot(acu_long, aes(
   geom_bar(width = 0.5, color = "black") + 
   facet_wrap(~ group, 
              scales = "fixed", 
-             labeller = labeller(group = c("0" = "Placebo", "1" = "Acupuncture"))) +
+             labeller = labeller(group = c("0" = "Control", "1" = "Acupuncture"))) +
   labs(
-    title = "Distribution of sex by Treatment Group",
+    title = "",
     x = "Sex",
     y = "Count",
     fill = "Sex"
@@ -49,31 +84,58 @@ x<-acu_long %>%
 #acupuncture pain distribution 
 
 acu_pk1_plot<-ggplot(acu_wide, aes(x = pk1)) +
-  geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
+  geom_histogram(binwidth = 2, fill = "#a80050", color = "black", alpha = 0.8) + 
+  facet_wrap(~ group, 
+             scales = "fixed", 
+             labeller = labeller(group = c("0" = "Control", "1" = "Acupuncture"))) +
   labs(
-    title = "Distribution of Pain baseline in Acupuncture dataset",
+    title = "Baseline Pain",
     x = "Headache score at baseline",
     y = "Count"
   ) +
-  theme_minimal()
+  theme_minimal() + theme(
+    legend.position = "none",  
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),  
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)  
+  )
 
 acu_pk2_plot<-ggplot(acu_wide, aes(x = pk2)) +
-  geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
+  geom_histogram(binwidth = 2, fill = "#a80050", color = "black", alpha = 0.8) + 
+  facet_wrap(~ group, 
+             scales = "fixed", 
+             labeller = labeller(group = c("0" = "Control", "1" = "Acupuncture"))) +
   labs(
-    title = "Distribution of Pain 3 month in Acupuncture dataset",
+    title = "3 Month Follow-Up",
     x = "Headache score at 3 months",
     y = "Count"
   ) +
-  theme_minimal()
+  theme_minimal() + theme(
+    legend.position = "none",  
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),  
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)  
+  )
 
 acu_pk5_plot<-ggplot(acu_wide, aes(x = pk5)) +
-  geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
+  geom_histogram(binwidth = 2, fill = "#a80050", color = "black", alpha = 0.8) + 
+  facet_wrap(~ group, 
+             scales = "fixed", 
+             labeller = labeller(group = c("0" = "Control", "1" = "Acupuncture"))) +
   labs(
-    title = "Distribution of Pain 1 year in Acupuncture dataset",
+    title = "12 Month Follow-Up",
     x = "Headache score at 1 year",
     y = "Count"
   ) +
-  theme_minimal()
+  theme_minimal() + theme(
+    legend.position = "none",  
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),  
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)  
+  )
 
 
 ## Basics of VITAL dataset
