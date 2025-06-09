@@ -15,16 +15,33 @@ library(dplyr)
 ```
 
 ```{r}
-random_acu_dag <- dagitty('dag {
+acu_dag1 <- dagitty('dag {
     randomisation [pos="0,1"]
     group [pos="1,2"]
-    pk5 [pos="2,1"]
+    pk5_obs [pos="2,2"]
+    pk5_miss [pos="3,1"]
     
-    randomisation -> group -> pk5
-    randomisation-> pk5
+    randomisation -> group -> pk5_obs
+    randomisation-> pk5_obs
+    group -> pk5_miss
+    randomisation-> pk5_miss <- pk5_obs
+}') #observed data has something to do with the missingness?
+
+plot(acu_dag1)
+
+acu_dag2 <- dagitty('dag {
+    randomisation [pos="0,1"]
+    group [pos="1,2"]
+    pk5_obs [pos="2,2"]
+    pk5_miss [pos="3,1"]
+    
+    randomisation -> group -> pk5_obs
+    randomisation-> pk5_obs
+    group -> pk5_miss
+    randomisation-> pk5_miss 
 }')
 
-plot(random_acu_dag)
+plot(acu_dag2) #observed data has nothing to do with the missingness?
 ```
 
 ```{r}
@@ -104,7 +121,7 @@ dag_outcome_base_miss <- dagitty('dag {
   
     randomisation -> treatment
     treatment -> observed_outcome 
-    observed_outcome -> missing_outcome 
+    observed_outcome -> missing_outcome <- treatment
     baseline_variable1_obs -> observed_outcome <- baseline_variable2_obs
     baseline_variable1_miss -> observed_outcome <- baseline_variable2_miss
     baseline_variable1_obs -> missing_outcome <- baseline_variable2_obs
@@ -126,7 +143,7 @@ dag_outcome_miss <- dagitty('dag {
   
     randomisation -> treatment
     treatment -> observed_outcome 
-    observed_outcome -> missing_outcome 
+    observed_outcome -> missing_outcome <- treatment
     baseline_variable1_obs -> observed_outcome <- baseline_variable2_obs
     baseline_variable1_obs -> missing_outcome <- baseline_variable2_obs
     randomisation -> observed_outcome
@@ -147,11 +164,9 @@ dag_base_miss <- dagitty('dag {
   
     randomisation -> treatment
     treatment -> observed_outcome 
-    observed_outcome -> missing_outcome 
     baseline_variable1_obs -> observed_outcome <- baseline_variable2_obs
     baseline_variable1_miss -> observed_outcome <- baseline_variable2_miss
     randomisation -> observed_outcome
-    randomisation -> missing_outcome 
 }')
 
 plot(dag_base_miss)
