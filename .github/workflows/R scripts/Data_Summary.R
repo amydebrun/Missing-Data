@@ -1,9 +1,6 @@
 
 
 ## Basics of Acupuncture dataset
-library(dplyr)
-
-
 #variable table 
 
 acu_var_table <- tibble::tibble(

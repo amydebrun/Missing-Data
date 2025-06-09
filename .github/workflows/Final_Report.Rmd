@@ -39,6 +39,8 @@ library(naniar)
 library(tidymodels)
 library(gtsummary)
 library(tinytex)
+library(ggdag)
+library(daggity)
 suppressWarnings({
   source("R scripts/Functions.R")
   source("R scripts/VITAL data formats.R")
@@ -59,15 +61,15 @@ suppressWarnings({
 
 ## Missing data in longitudinal study
 
-  - Clinical trials often face missing outcome data due to dropout or non-response.
-  - longitudinal study designs 
-  - missing baseline data (vital)
-  - losing data, loss of efficiency, bias
-  
+*Longitudinal Study Design*
+
+Longitudinal studies are a type of research design in which repeated measures of variables are collected from participants over different time points. They provide a comprehensive understanding of the direction and degree of change over time, typically in years or even decades. While the information provided in longitudinal studies is beneficial for establishing relationships, the nature of the design faces challenges while attempting to retain the participants involved in the study. 
+
+Longitudinal trials requires data to be collected from participants over set time points using a consistent method of collection. It is important that the researchers attempt to maximize the design so non-contact or non-cooperation is unlikely. However missing data is almost inevitable due to the study duration and complexity. 
+
+Clinical trials are bio medical or behavioural research studies that study the effect of certain interventions or treatment on participants. These trials are also subject to missing participant data which could be due to time consumption, illness or family commitments. This can be an issue as loss of data can reduce robustness of the results. Ignoring the missing data altogether introduces bias in to the results as we are choosing to ignore informative data even if we did not observe it. Removing the missing data unavoidably reduces the sample size of the study therefore reducing statistical power which is important in establishing a valid treatment effect. 
   
 ## Missing mechanism
-  
-  - Missing mechanism MCAR, MAR, MNAR. (Missing Data Mechanisms)
   
 Missing data mechanisms are important to consider when choosing which sort of missing data handling method to use. There are three mechanisms which missing data can follow:
 
@@ -75,14 +77,18 @@ Missing data mechanisms are important to consider when choosing which sort of mi
 - Missing At Random (MAR)
 - Missing Not At Random (MNAR)
 
-Although they may appear similar at first glance, handling missing data without considering these mechanisms may result in biased estimates and inaccurate conclusions. 
+Although they may appear similar at first glance, handling missing data without considering these mechanisms may result in biased estimates and inaccurate conclusions. Missing data mechanisms appear to be mentioned first by Donald Rubin in 1976. We can formally define these mechanisms using the following notation;
+
+- $R$ represents a missing data indicator which when $R=1$ indicates observed data and $R=0$ indicates unobserved
+- $X$ represents data that is always observed 
+- $Y$ represents data that is potentially missing. 
 
 **Missing Completely At Random**
 
 The formal definition of MCAR data is:
 
 $$\quad P(R = 1 \mid Y, X) = P(R = 1)$$
-where $R$ is a missing data indicator (1 = Data is observed, 0 = Data is missing), $Y$ represents the variables in which the data is potentially missing and $X$ represents the observed data. The probability of the data is observed given observed data and missing data is the same as the probability of being observed without the given data. This mechanism is considered the easiest to deal with as it does not bias the result although data is rarely MCAR. This can occur due to system failure and some data is deleted accidentally, or else there is issues with the treatment system and data cannot be recorded.    
+The probability of the data is observed given observed data and missing data is the same as the probability of being observed without the given data. This mechanism is considered the easiest to deal with as it does not bias the result although data is rarely MCAR. This can occur due to system failure and some data is deleted accidentally, or else there is issues with the treatment system and data cannot be recorded.    
 
 
 **Missing At Random**
@@ -135,26 +141,14 @@ Variables `pk2` and ``pk5` are the follow-up times at 3 months and 12 months.
 
 ```{r}
 acu_summary
-```
-
-
-```{r}
 acu_sex_plot
-```
-
-```{r}
 acu_age_plot
 ```
 
+
 ```{r}
 acu_pk1_plot
-```
-
-```{r}
 acu_pk2_plot
-```
-
-```{r}
 acu_pk5_plot
 ```
 
@@ -171,7 +165,7 @@ where
 - $\beta_2$ is the effect of the baseline headache severity
 - $\varepsilon_i$ is the residual error term for individual $i$
 
-**VITAL data**
+**VITAL data**  - missing baseline data (vital)
 
 *Source*
 
@@ -191,17 +185,8 @@ This study was a 2x2 factorial designed longitudinal randomised controlled trial
 
 ```{r}
 vital_summary
-```
-
-```{r}
 age_vital_plot
-```
-
-```{r}
 bmi_vital_plot
-```
-
-```{r}
 sex_vital_plot
 ```
 
@@ -212,13 +197,10 @@ pain_yr2_vital_plot
 pain_yr3_vital_plot
 pain_yr4_vital_plot
 ```
-
-
-    - assuming no interaction in VITAL study
     
 *Original estimand in VITAL study*
 
-Our estimand for this dataset is the difference in mean knee pain at the finall time point of 4 years post randomisation $pain_yr4$ which is modelled by 
+Our estimand for this dataset is the difference in mean knee pain at the final time point of 4 years post randomisation $pain_yr4$ which is modelled by 
 $$\text{pain_yr4}_i = \beta_0 + \beta_1\text{fishoilactive}_i + \beta_2\text{vitdactive}_i + \beta_3\text{pain_base}_i \varepsilon_i$$ in which
 
 - $text{pain_yr4}_i$ is the knee pain score for individual $i$ at the final time point of 4 years post randomisation. 
