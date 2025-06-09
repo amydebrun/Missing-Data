@@ -602,9 +602,15 @@ $m \approx 100\lambda$
 
 ```{r}
 delta_combined_cont_cat_plot
+SA_combined_vital_all_plot 
 ```
 ```{r}
-SA_combined_vital_all_plot 
+#heatmap attempt for acupuncture
+cat_heatmap_acu_plot
+cont_heatmap_acu_plot
+
+#heatmap attempt for vital 
+cont_heatmap_fishoil_plot
 ```
 
 
