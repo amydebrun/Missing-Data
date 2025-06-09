@@ -72,7 +72,7 @@ delta_combined_cont_cat_plot <- ggplot(
   scale_shape_manual(values = c("Continuous time" = 17, "Categorical time" = 16)) +
   scale_color_manual(values = c("Continuous time" = "lawngreen", "Categorical time" = "#a80050")) +
   labs(
-    title = "δ-Adjustment Sensitivity Analysis by Estimand and Treatment",
+    title = "δ-Adjustment by Estimand and Treatment",
     x = "Estimated Treatment Effect",
     y = "Delta",
     shape = "Estimand",
@@ -87,3 +87,80 @@ delta_combined_cont_cat_plot <- ggplot(
     legend.position = "bottom"
   )
 
+#vital data continous 
+
+SA_combined_vital_cont <- bind_rows(delta_results_cont_fishoil, delta_results_cont_vitd, delta_results_cont_vital_placebo)
+SA_combined_vital_cont_plot <- ggplot(SA_combined_vital_cont, aes(x = estimate, y = delta_vital)) +
+  geom_point(aes(x = estimate, y = delta_vital), size = 4, color = "#a80050", position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, 
+                 position = position_nudge(y = 0.15)) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
+  facet_wrap(~ treatment) +
+  labs(
+    title = "δ-Adjustment Sensitivity Analysis (Continuous)",
+    x = "Estimated Treatment Effect",
+    y = "Delta"
+  ) +
+  theme_minimal() +
+  theme(
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+#vital data categorical 
+
+SA_combined_vital_cat <- bind_rows(delta_results_cat_fishoil, delta_results_cat_vitd, delta_results_cat_vital_placebo)
+SA_combined_vital_cat_plot <- ggplot(SA_combined_vital_cat, aes(x = estimate, y = delta_vital)) +
+  geom_point(aes(x = estimate, y = delta_vital), size = 4, color = "#a80050", position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, 
+                 position = position_nudge(y = 0.15)) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
+  facet_wrap(~ treatment) +
+  labs(
+    title = "δ-Adjustment Sensitivity Analysis (Categorical)",
+    x = "Estimated Treatment Effect",
+    y = "Delta"
+  ) +
+  theme_minimal() +
+  theme(
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+#combining cat and cont vital 
+
+SA_combined_vital_cat$estimand<- "Categorical"
+SA_combined_vital_cont$estimand<- "Continuous"
+SA_combined_vital_all<- bind_rows(SA_combined_vital_cat,SA_combined_vital_cont)
+
+SA_combined_vital_all_plot <- ggplot(SA_combined_vital_all, aes(x = estimate, y = delta_vital, shape = estimand, colour = estimand)
+) + geom_point( data = subset(SA_combined_vital_all, estimand == "Categorical"),
+  size = 4, position = position_nudge(y = -0.15)
+) + geom_errorbarh(data = subset(SA_combined_vital_all, estimand == "Categorical"), aes(xmin = conf.low, xmax = conf.high),
+  height = 0.4, position = position_nudge(y = -0.15)
+) + geom_point( data = subset(SA_combined_vital_all, estimand == "Continuous"),
+  size = 4, position = position_nudge(y = 0.15)
+) + geom_errorbarh(data = subset(SA_combined_vital_all, estimand == "Continuous"),
+  aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)
+) + geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
+  facet_wrap(~ treatment) +
+  scale_shape_manual(values = c("Continuous" = 17, "Categorical" = 16)) +
+  scale_color_manual(values = c("Continuous" = "lawngreen", "Categorical" = "#a80050")) +
+  labs(
+    title = "VITAL δ-Adjustment by Estimand and Treatment",
+    x = "Estimated Treatment Effect",
+    y = "Delta",
+    shape = "Estimand",
+    colour = "Estimand"
+  ) +
+  theme_minimal() + theme(
+    strip.background = element_rect(fill = "lawngreen", color = "black"),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA),
+    legend.position = "none"
+  )

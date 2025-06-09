@@ -1,5 +1,6 @@
 # Acupuncture 
 delta_acu <- c(-5,-2,0,2,5)
+delta_vital <- c(-10,-5,-2,0,2,5,10)
 # Acupuncture categorical treatment
 inlist <- c("group", "pk5", "pk1")
 pred_cat <- quickpred(acu_wide, minpuc = 0.5, include = inlist)
@@ -54,6 +55,7 @@ delta_result_cat_plot <- ggplot(delta_results_cat, aes(x = estimate, y = delta_a
 
 # Acupuncture categorical placebo
 inlist <- c("group", "pk1", "pk5")
+acu_wide_placebo<-acu_wide%>%filter(group==0)
 pred_cat_placebo <- quickpred(acu_wide_placebo, minpuc = 0.5, include = inlist)
 imp.default_cat <- mice(acu_wide_placebo, m = 1, maxit = 1, predictorMatrix = pred_cat_placebo, seed = 123, print= FALSE)
 post_cat <- imp.default_cat$post
@@ -92,7 +94,7 @@ delta_result_cat_placebo_plot <- ggplot(delta_results_cat_placebo, aes(x = estim
   facet_wrap(~ treatment) +
   labs(
     title = "Placebo with δ-Adjustment (categorical)",
-    x = "Treatment Effect",
+    x = "Mean headache severity at 12 months",
     y = "Delta"
   ) +
   theme_minimal()+ 
@@ -217,14 +219,14 @@ delta_results_cat_vitd_plot <- ggplot(delta_results_cat_vitd, aes(x = estimate, 
 
 
 #vital categorical control 
-
+vital_wide_placebo <- vital_wide %>% filter(fishoilactive == 0, vitdactive == 0)
 inlist <- c("pain_base", "vitdactive", "fishoilactive", "pain_yr4")
 pred_cat_placebo <- quickpred(vital_wide_placebo, minpuc = 0.5, include = inlist)
 imp.all.undamped_cat <- vector("list", length(delta_vital))
 
 for (i in 1:length(delta_vital)) {
   d <- delta_vital[i]
-  imp_init <- mice(vital_wide, pred = pred_cat, maxit = 1, print = FALSE)
+  imp_init <- mice(vital_wide_placebo , pred = pred_cat_placebo, maxit = 1, print = FALSE)
   method_cat <- imp_init$method
   method_cat["pain_base"] <- "pmm" 
   post_cat <- rep("", ncol(vital_wide_placebo))
@@ -259,7 +261,7 @@ delta_results_cat_vital_placebo_plot <- ggplot(delta_results_cat_vital_placebo, 
   facet_wrap(~ treatment) + 
   labs(
     title = "Control effect of Vital with δ-Adjustment (categorical)",
-    x = "Treatment Effect",
+    x = "Mean pain at year 4",
     y = "Delta"
   ) +
   theme_minimal()+ 

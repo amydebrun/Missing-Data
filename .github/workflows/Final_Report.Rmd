@@ -40,7 +40,6 @@ library(tidymodels)
 library(gtsummary)
 library(tinytex)
 library(ggdag)
-library(daggity)
 suppressWarnings({
   source("R scripts/Functions.R")
   source("R scripts/VITAL data formats.R")
@@ -77,7 +76,7 @@ Missing data mechanisms are important to consider when choosing which sort of mi
 - Missing At Random (MAR)
 - Missing Not At Random (MNAR)
 
-Although they may appear similar at first glance, handling missing data without considering these mechanisms may result in biased estimates and inaccurate conclusions. Missing data mechanisms appear to be mentioned first by Donald Rubin in 1976. We can formally define these mechanisms using the following notation;
+Although they may appear similar at first glance, continuing to handle missing data without considering these mechanisms may still result in biased estimates and inaccurate conclusions. Missing data mechanisms appear to be mentioned first by Donald Rubin in 1976. We can formally define these mechanisms using the following notation;
 
 - $R$ represents a missing data indicator which when $R=1$ indicates observed data and $R=0$ indicates unobserved
 - $X$ represents data that is always observed 
@@ -102,7 +101,23 @@ The probability of data being observed given the rest of the data is the same as
 $$\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)$$
 The probability of data being observed is not dependent on the observed data. This mechanism is the most difficult to deal with as it relates to the unobserved data, so producing valid results is a challenge. Certain participants in a general health study may avoid answering questions truthfully about smoking habits or their diet in order to make themselves more appealing. Sensitivity analysis is an option to determine the treatment effect when assuming different mechanisms. 
 
-  - DAG of missing mechanism (randomised)
+  - DAG of missing mechanism (randomised) in progress in R scripts 
+  
+  
+## Different missing data patterns (section tbc)
+
+A missing data pattern describes the pattern of missing data among the observed data. 
+As described by Little & Rubin (2014), it's important to remark the missing data patterns of the data set prior to data handling as some handling methods are intended for certain classified patterns.  
+
+-univariate missing data
+
+Univariate missing data confines the missingness to a single variable 
+
+-multivariate missing data
+-monotonic 
+-general
+-file matching
+-factor analysis 
  
 ## Current approach and limitations
  
@@ -585,6 +600,14 @@ $m \approx 100\lambda$
 -   Violation of MAR possible
 -   shifting method (choosing delta, how to model)
 
+```{r}
+delta_combined_cont_cat_plot
+```
+```{r}
+SA_combined_vital_all_plot 
+```
+
+
 # Result
 
 ## Comparing different methods
@@ -715,94 +738,7 @@ In our analysis, we chose which range of $\delta$ values to use based on the out
 
 **Acupuncture**
 
-
-```{r}
-#categorical acupuncture
-delta_result_cat_plot
-#continuous acupuncture placebo
-delta_results_cont_acu_placebo_plot 
-#categorical acu placebo
-delta_result_cat_placebo_plot 
-#continuous acupuncture
-delta_results_cont_acu_plot
-
-
-delta_results_cont_acu
-delta_results_cont_acu_placebo
-
-acu_heatmap
-
-delta_results_cat <- delta_results_cat %>%
-  rename(est_cat = est_cat, delta_cat = delta_acu)
-
-delta_results_cont_acu <- delta_results_cont_acu %>%
-  rename(delta_cont = delta_acu)
-heatmap_data <- merge(delta_results_cat, delta_results_cont_acu, by = NULL)
-
-ggplot(heatmap_data, aes(x = factor(delta_cont), y = factor(delta_cat), fill = est_cont)) +
-  geom_tile(color = "white") +
-  geom_text(aes(label = round(est_cont, 2)), size = 3) +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
-  labs(
-    title = "Acupuncture Sensitivity Analysis (Effect on pk_score)",
-    x = "δ for Continuous Outcome (pk_score)",
-    y = "δ for Categorical Outcome (pk5)",
-    fill = "Estimate (pk_score)"
-  ) +
-  theme_minimal() +
-  theme(aspect.ratio = 1)
-
-```
-
 **VITAL**
-```{r}
-
-delta_results_cont_vitd_plot 
-delta_results_cont_fishoil_plot
-delta_results_cont_vital_placebo_plot
-```
-
-
-```{r}
-
-delta_results_cont_vitd_plot 
-
-
-delta_results_cont_fishoil
-delta_results_cont_vitd
-delta_results_cont_vital_placebo
-```
-
-
-```{r}
-vital_MI_LME_result_oil_cont
-vital_MI_LME_result_vitd_cont
-
-sum(is.na(vital_wide$pain_yr4) & vital_wide$fishoilactive == 0 & vital_wide$vitdactive == 1)
-sum(is.na(vital_wide$pain_yr3) & vital_wide$fishoilactive == 0 & vital_wide$vitdactive == 1)
-sum(is.na(vital_wide$pain_yr2) & vital_wide$fishoilactive == 0 & vital_wide$vitdactive == 1)
-sum(is.na(vital_wide$pain_yr1) & vital_wide$fishoilactive == 0 & vital_wide$vitdactive == 1)
-```
-```{r}
-delta_results_cat_fishoil_plot
-delta_results_cat_vitd_plot 
-delta_results_cat_vital_placebo_plot
-```
-
-
-```{r}
-delta_combined_cont_acu_plot
-delta_combined_cat_acu_plot
-delta_combined_cont_cat_plot
-
-delta_combined_cont_acu
-
-
-```
-
-
-
-
 
 
 ## Results 

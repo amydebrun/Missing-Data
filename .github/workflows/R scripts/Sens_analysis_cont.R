@@ -10,7 +10,6 @@ for (i in seq_along(delta_acu)) {
   d <- delta_acu[i]
   imp_init <- mice(acu_wide, m = 5, maxit = 1, predictorMatrix = pred_cont, seed = 100 + i, print = FALSE)
   method_cont <- imp_init$method
-  post_cont <- imp_init$post
   method_cont[c("pk2", "pk5")] <- "pmm"
   post_cont <- imp_init$post
   post_cont["pk5"] <- paste0(
@@ -159,7 +158,7 @@ for (i in seq_along(delta_vital)) {
     mutate(delta_vital = d)
   delta_results_cont_vital_placebo <- bind_rows(delta_results_cont_vital_placebo, est_cont)
 }
-delta_results_cont_vital_placebo$treatment<-"Placebo"
+delta_results_cont_vital_placebo$treatment<-"Control"
 delta_results_cont_vital_placebo_plot <- ggplot(delta_results_cont_vital_placebo, aes(x = estimate, y = delta_vital)) +
   geom_point(size = 4, color = "#a80050",position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)) +   
@@ -167,7 +166,7 @@ delta_results_cont_vital_placebo_plot <- ggplot(delta_results_cont_vital_placebo
   facet_wrap(~ treatment) + 
   labs(
     title = "VITAL Placebo with δ-Adjustment (continuous)",
-    x = "Treatment Effect",
+    x = "Mean Knee pain at year 4",
     y = "Delta"
   ) +
   theme_minimal()+ 
