@@ -260,6 +260,29 @@ vital_miss_pattern_fish
   - which methods to use based on data
   
   
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
   
   
   
@@ -269,35 +292,322 @@ vital_miss_pattern_fish
 
 ## Data wrangling
 
-  - Have data both in wide and long format
-  - We have done multi-imputation in wide format then transform for LME
-  - Which account for repeat measurements and will work if collecting time are more different
+-   Have data both in wide and long format
+-   We have done multi-imputation in wide format then transform for LME
+-   Which account for repeat measurements and will work if collecting
+    time are more different
+-   Show our data wrangling codes
+
+## Anchoring methods
+
+-   We start off with basic methods for the sake of comparison
+
+### Complete case analysis
+
+-   Given our estimand here is the change of pain score at the end of
+    study, we fit that against group and baseline pain score.
+
+-   Show our lm() function for each data sets
+
+-   If data are MCAR, valid inference can be obtained from xxx completed
+    record in xxx data sets
+
+-   We did not adjust for other baseline covariates for the simplicity
+    and saving computing power
+
+-   We will leave out those baseline covariates in other methods too for
+    comparison
+
+-   For CAA, though MCAR assumptions are not always strictly required,
+    especially if we fit more baseline covariates into the model
+
+-   Still, rows are moved and we are not using all the observed data we
+    have, so we can till have biased estimation with MAR
+
+-   We can say in CAA, the assumption is the outcome is MAR dependent on
+    predictors
+
+-   This assumption can be called "conditionally MCAR", which it's still
+    a strong assumption
+
+    -   The missingness depends only on variables included in the model
+    -   The model is correctly specified
+    -   The outcome variable is not involved in the missingness
+        mechanism (same as MAR).
+
+**(Based on my understanding, need to be checked, maybe more suitable to
+put in Amy's part)**
+
+Y MAR depends on X (predictors in model) $$\begin{align*}
+  Pr(Ri=r \mid Yi, Xi) = Pr(Ri=r \mid Xi)
+  \end{align*}$$ Thus, we can infer under MAR, the distribution of
+income within job type is the same in the observed data, the unobserved
+data, and the population. $$\begin{align*}
+  & Pr(Yi \mid Ri=r, Xi) \\ 
+  & = \displaystyle \frac{Pr(Ri=r,Yi,Xi)}{Pr(Ri=r,Xi)} \\
+  & = \displaystyle \frac{Pr(Ri=r \mid Yi,Xi)Pr(Yi,Xi)}{Pr(Ri=r \mid Xi)Pr(Xi)} 
+  \\
+  & Assuming \ \ \Pr(Ri=r \mid Yi, Xi) = Pr(Ri=r \mid Xi) \\
+  & = \displaystyle \frac{Pr(Yi,Xi)}{Pr(Xi)} \\
+  & = Pr(Yi \mid Xi)
+  \end{align*}$$
+
+-   The issue here is we would like to include as much information as we
+    can in the X to have a more robust MAR
+-   Using more statistical principle method, we will be able to do that
+-   However, it cannot be tested, and that is why we need sensitive
+    analysis
+
+### Last observation carry forward
+
+-   Based on assumptions unrelated to missing mechanisms
+-   LOCF assuming the outcome stabilized once missed
+-   Which could be valid under certain circumstances
+-   Not convincing in both data sets here
+-   Show our code to do LOCF in wide format
+
+### Mean observation method
+
+-   Also based on assumptions unrelated to missing mechanisms
+-   Mean method assuming the observed data mean value correctly present
+    the population mean
+-   Arguably a even more radical assumption compared to data MCAR
+-   Show our mean method code
 
 ## Changing imputation methods
 
-  - No imputation (complete case, LME)
-  - Single imputation (LOCF, mean observation)
-  - Multiple imputation (Different method, predictive value or observed value, number of m)
-  - Chain equation for multi-variate missingness
+### No imputation
 
-## Changing substantial model
+-   complete case, LME
 
-  - multiple linear regression
-  - LME
-  - Change estimand
-  - Change linear regression to polynomial, splie...
+### Single imputation
+
+-   LOCF, mean observation
+
+### Multiple imputation
+
+-   Why we need multiple? (To quantify our uncertainty of prediction)
+
+#### Rubin's rules
+
+-   Used for pooling parameter and variance
+-   Compute K data sets
+-   Fit the substantive model to the kth imputed data set, this gives
+    $\hat{\beta}_{k}$ and $\hat{\sigma}_{k}^{2}$
+-   Then calculate $\hat{\beta}_{MI}$ and $\hat{V}_{MI}$
+-   To test hypothesis $\hat{\beta}_{MI} = \beta^{0}$ we refer to a
+    t-distribution, ts=T with $\nu$ degrees of freedom
+-   We thus have the p value and CI95%
+-   We can also use$(\frac{I_{C} - I_{O}}{I_{C}}) * 100%$ to quantify
+    the information $\beta$ lost due to missing data **Q: Better way for
+    comparison different imputation methods?**
+
+$$\begin{align*}
+  \hat{\beta}_{MI} = \frac{1}{K} \sum_{k=1}^{K}{\hat{\beta}_{k}} \\
+  \hat{V}_{MI} = \hat{W} + (1 + \frac{1}{K}) \hat{B} \\
+  \hat{W} = \frac{1}{K} \sum^{K}_{k=1}{\hat{\sigma}^{2}_{k}} \\
+  \hat{B} = \frac{1}{K-1} \sum^{K}_{k=1}({\hat{\beta}_{k}} - 
+  \hat{\beta_{MI}})^{2} \\
+  T = \frac{\hat{\beta}_{MI} - \beta^{0}}  {\sqrt{\hat{V}_{MI}}} \\
+  \nu = (K-1)[1 + \frac{\hat{W}}{(1 + 1/K) \hat{B}}]^{2}
+  \end{align*}$$
+
+#### Sequential regression MI
+
+-   if missing pattern close to monotonic (assuming Amy introduced
+    previously)
+-   which is a common situation in practice, missing considered as
+    withdrawal
+-   justification, consider the joint distribution
+
+$$\begin{align*}
+    f(Y_{i,1},Y_{i,2},...,Y_{i,p}) = f(Y_{i,p} \mid Y_{i,1},...,Y_{i,p-1}) * 
+    f(Y_{i,p-1} \mid Y_{i,1},...,Y_{i,p-2}) * ... * f(Y_{i,2} \mid Y_{i,1}) 
+    * f(Y_{i,1})
+    \end{align*}$$
+
+-   with monotonic pattern, MAR means each conditional distribution
+    valid from the observed data algorithm
+-   Suppose we have i individual with j variables
+-   Monotonic means for each unobserved $Y_{i,j}$ have
+    $Y_{i,1},...,Y_{i,j-1}$ observed
+
+$$\begin{align*}    
+    Y_{i,j} = (1,Y_{i,1},...,Y_{i,j-1})^{T} * \beta_{j} + 
+    e_{i,j},\ {e_{i,j}^{i.i.d.} \sim{N} (0,\sigma^{2}_{j})}
+    \end{align*}$$
+
+-   By ordinary least squares we have
+    $\hat{\beta}_{j},\hat{\sigma}_{j}^{2}$
+-   Then draw $\beta_{j}^{*},\sigma_{j}^{*2}$
+
+$$\begin{align*}
+   \sigma_j^{*2} = \frac{\hat{\sigma}_j^2 (n_j - j)}{z} \\
+   \beta^* \sim N(\hat{\beta}, \sigma_j^{*2} A_j) \\
+   A_j = (\sum_{i=1}^{n_j} x_{i,j} x_{i,j}^T)^{-1}
+   \end{align*}$$
+
+-   Impute $Y_{i,j} = (1,Y_{i,1},...,Y_{i,j-1}) \beta^{*} + e^{*}_{i,j}$
+-   Repeat for $Y_{i,j+1}$ until complete
+-   We can use this method for acupuncture but not VITAL
+-   If non-monotonic then Joint model or FCS
+
+#### Joint modelling
+
+-   no assumption of missing pattern
+-   assuming missing mechanism ignorable
+-   thus multivariate normal $Y \sim N(\beta,\ \Omega)$
+    $Y = (Y_{i,1},Y_{i,2},...,Y_{i,p})^{T}$
+    $\beta = (\beta_{0,1},\beta_{0,2},...,\beta_{0,p})^{T}$ $\Omega$ is
+    the covariance matrix
+-   Gibbs sampler is on apporach to estimate the parameters
+-   Drawing each parameter in turn, conditional on all thers parameters
+    and the data
+-   As prior we calculate from observed data $\beta^{0},\Omega^{0}$
+    missing value draw from observed value of the same variable $Y_{j}$,
+    with replacement, denoted as $Y_{M}^{0}$ thus calculate
+    $\overline{Y}^{0}$ and $S^{0}$ (which is also $S_{P}$)
+-   for iteration r
+
+$$\begin{align*}
+  \Omega^{-1,r} \sim W(n + \nu, (S_p^{-1} + S^{r-1})^{-1}) \\
+  \beta^{r} \sim N(\bar{Y}^{r-1}, n^{-1} \Omega^r) \\
+  Y_{M}^{r} \sim f(Y_{M} \mid \beta^{r}, \Omega^{r}, Y_{O}) \\
+  \bar{Y}^{r} = \text{mean}(Y_M^{r}, Y_{O}) \\
+  S^{r} = \text{sum of squares and cross products from}(Y_M^{r}, {Y_O}).
+  \end{align*}$$
+
+-   after n times iteration as burn, repeat k times and pool by Rubin's
+    rules
+
+#### Full conditional specification
+
+-   Similar to sequential but relaxing the requirement that all
+    covariate values in the sequential regressions are observed
+
+-   We note that if the missingness pattern is monotone, then FCS is
+    equivalent to sequential regression imputation
+
+-   The name ‘full conditional specification’ was coined because each
+    variable is imputed from its full conditional distribution on all
+    the other variables.
+
+-   We first re-order variables so the missingness patter is as close to
+    monotone as possibile
+
+-   Then the cycle goes like: filling missing by drawing, with
+    replacement, from the observed values of each variable regress the
+    observed part of $Y_{j}$ on all remaining variable, with missing
+    value imputed use the regression to impute the missing value of
+    $Y_{j}$
+
+#### FCS VS joint modelling
+
+-   More generally, under the multivariate normal distribution, the
+    joint distribution defines the unique conditional distributions, and
+    vice versa. So the two specifications are compatible.
+-   In general, joint model with Gibbs sampling is a more efficient
+    algorithms.
+-   Joint model do have the benefit of including prior information
+-   Joint model can also use ridge parameter to stabilize the covariance
+    matrix if we have relative large p compared to sample size
+-   However, we do not have these concerns in our project so we will use
+    FCS for our MI.
+-   FCS easily to implement as ti avoid the need to define prior, and
+    generally take less iteration for convergence.
+-   We use FCS with MICE package for our MI in this project
+-   for FCS, we can use different methods (predictive value or observed
+    value)
+-   will explore later
+
+#### How to choose m
+
+-   $\gamma0$ is a important parameter for choosing m. But unknown in
+    our project and most cases
+-   Bodner 2008 suggest use the proportion of complete cases as
+    conservative estimate of $\gamma0$
+
+Chose 3-5 m
+
+-   The classic advice is to use a low number of imputations, somewhere
+    between 3 and 5, for moderate amounts of missing information.
+-   (Rubin 1987b, 114) Argument of low m based on the variance estimate
+    T with m imputations $T_{m} = (1 + \frac{\gamma0}{m}) T_{\infty}$
+-   Only limited advantage of increase m further (e.g. for
+    $\gamma0=30\%$, m=5, $T_m=1.06T_\infty$) - We start with m=5 as MICE
+    default setting in our project
+
+Chose m\>20
+
+-   Several authors investigated the influence of m
+-   The picture emerging from this work is that it is often beneficial
+    to set mm higher, somewhere in the range of 20–100 imputations.
+-   (Royston 2004) suggested use
+    $\text{Coefficient of Variation}(ln(t_{\nu}\sqrt{T})) < 0.05$
+    constrain uncertainty of confidence interval roughly within 10%,
+    require m\>20
+-   (Graham 2007) argues that to attain power within 1% of theoretical
+    power, we need m\>20
+-   (Bodner 2008) explore the relationship between m and r0, p-value,
+    and 95%CI. for $\gamma0=(0.1, 0.3, 0.5, 0.7, 0.9)$ he recommend
+    $m=(3,6,12,24,59,114,258)$ respectively.
+-   Setting mm very high (say m=200m=200) may be useful for low-level
+    estimands that are very uncertain, and for which we want to
+    approximate the full distribution, or for parameters that are
+    notoriously different to estimates, like variance components. - On
+    the other hand, setting mm high may not be worth the extra wait if
+    the primary interest is on the point estimates (and not on standard
+    errors, pp-values, and so on). In that case using m=5−20 will be
+    enough under moderate missingness.
+
+$m \approx 100\lambda$
+
+-   White, Royston, and Wood (2011)
+
+-   The rule has now become the de-facto standard, especially in medical
+    applications.
+
+-   The number of imputations should be similar to the percentage of
+    cases that are incomplete - When missing fraction \<0.5, following
+    properties will hold
+
+    -   The Monte Carlo error of $\hat{\beta}$ is approximately 10% of
+        SE
+    -   The Monte Carlo error of
+        $\hat{\beta}/SE_{\hat{\beta}} \approx 0.1$
+    -   The Monte Carlo error of the p-value is approximately 0.01 when
+        the true p-value is 0.05
+
+-   One problem is when p increase, will have large % of missing
+    individuals. Can use missing rate as conservative estimate
+
+## Changing substantive model
+
+-   Simple linear regression
+-   LME
+-   Change estimand
+-   Change linear regression to polynomial, splie...
+
+## Examing using forest plot
+
+-   We use several forest plot to show how our estimand changes between
+    methods
+-   First plot compared 6 methods...
+-   2nd plot we changed estimand... ...
+-   3rd plot we change MI methods
+-   At its simplest, this means regressing the response on the constant
+    alone, which estimates its marginal mean.
 
 ## Sensitive analysis
 
-  - Violation of MAR possible
-  - shifting method (choosing delta, how to model)
+-   Violation of MAR possible
+-   shifting method (choosing delta, how to model)
 
 # Result
 
 ## Comparing different methods
 
 ## Changing estimand
-  - almost no impact in acupuncture study due to 2 follow-up
 
 ## Changing imputation methods
 
@@ -307,12 +617,19 @@ vital_miss_pattern_fish
 
 # Discussion
 
-  - No meaningful difference observed
-  - limitation: only 2 follow up for acupuncture
-  - limitation: VITAL only have weak therapeutic effect
-  - further work: simulate complete data, and compare accuracy between methods
+-   No meaningful difference observed
+-   Change estimand: Almost no impact in acupuncture study due to 2
+    follow-up
 
-# References
+## Limitations
+
+-   limitation: only 2 follow up for acupuncture
+-   limitation: VITAL only have weak therapeutic effect
+
+## Future work
+
+-   further work: simulate complete data, and compare accuracy between
+    methods
 
 
 
