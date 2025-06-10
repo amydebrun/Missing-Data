@@ -185,17 +185,18 @@ vital_long %>%
 #Age distribution of each group 
 
 age_vital_plot<-vital_long %>%
-  filter(vitdactive == 1 | fishoilactive == 1) %>%
   mutate(treatment = case_when(
-    vitdactive == 1 ~ "Vitamin D",
-    fishoilactive == 1 ~ "Fish Oil"
+    vitdactive == 1 & fishoilactive == 0 ~ "Vitamin D",
+    fishoilactive == 1 & vitdactive == 0 ~ "Fish Oil",
+    vitdactive == 0 & fishoilactive == 0 ~ "Control",
+    vitdactive == 1 & fishoilactive == 1 ~ "Both Treatment"
   )) %>%
   ggplot(aes(x = ageyr)) +
   geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
   facet_wrap(~ treatment, scales = "fixed") + 
   labs(
-    title = "Distribution of Age for Vitamin D and Fish Oil Groups",
-    x = "Age (years)",
+    title = "Distribution of Age in VITAL data",
+    x = "Age",
     y = "Count"
   ) +
   theme_minimal()+ theme(
@@ -208,16 +209,17 @@ age_vital_plot<-vital_long %>%
 #BMI distribution of each group
 
 bmi_vital_plot<-vital_long %>%
-  filter(vitdactive == 1 | fishoilactive == 1) %>%
   mutate(treatment = case_when(
-    vitdactive == 1 ~ "Vitamin D",
-    fishoilactive == 1 ~ "Fish Oil"
+    vitdactive == 1 & fishoilactive == 0 ~ "Vitamin D",
+    fishoilactive == 1 & vitdactive == 0 ~ "Fish Oil",
+    vitdactive == 0 & fishoilactive == 0 ~ "Control",
+    vitdactive == 1 & fishoilactive == 1 ~ "Both Treatment"
   )) %>%
   ggplot(aes(x = bmi)) +
   geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
   facet_wrap(~ treatment, scales = "fixed") + 
   labs(
-    title = "Distribution of BMI for Vitamin D and Fish Oil Groups",
+    title = "Distribution of BMI for VITAL data",
     x = "Body Mass Index",
     y = "Count"
   ) +
@@ -230,16 +232,17 @@ bmi_vital_plot<-vital_long %>%
 
 #sex in each group 
 sex_vital_plot<-vital_long %>%
-  filter(vitdactive == 1 | fishoilactive == 1) %>%
   mutate(treatment = case_when(
-    vitdactive == 1 ~ "Vitamin D",
-    fishoilactive == 1 ~ "Fish Oil"
+    vitdactive == 1 & fishoilactive == 0 ~ "Vitamin D",
+    fishoilactive == 1 & vitdactive == 0 ~ "Fish Oil",
+    vitdactive == 0 & fishoilactive == 0 ~ "Control",
+    vitdactive == 1 & fishoilactive == 1 ~ "Both Treatment"
   )) %>%
   ggplot(aes(x = factor(sex, labels = c("Male", "Female")), fill = factor(sex, labels = c("Male", "Female")))) +
   geom_bar(width = 0.5, color = "black") + 
   facet_wrap(~ treatment, scales = "fixed") +
   labs(
-    title = "Number of Male and Female Participants",
+    title = "Sex Distribution in VITAL data",
     x = "Sex",
     y = "Count",
     fill = "Sex"
@@ -257,10 +260,11 @@ sex_vital_plot<-vital_long %>%
 
 #knee pain score 
 pain_base_vital_plot<-vital_wide %>%
-  filter(vitdactive == 1 | fishoilactive == 1) %>%
   mutate(treatment = case_when(
-    vitdactive == 1 ~ "Vitamin D",
-    fishoilactive == 1 ~ "Fish Oil"
+    vitdactive == 1 & fishoilactive == 0 ~ "Vitamin D",
+    fishoilactive == 1 & vitdactive == 0 ~ "Fish Oil",
+    vitdactive == 0 & fishoilactive == 0 ~ "Control",
+    vitdactive == 1 & fishoilactive == 1 ~ "Both Treatment"
   )) %>%
   ggplot(aes(x = pain_base)) +
   geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
@@ -278,10 +282,11 @@ pain_base_vital_plot<-vital_wide %>%
   )
 
 pain_yr1_vital_plot<-vital_wide %>%
-  filter(vitdactive == 1 | fishoilactive == 1) %>%
   mutate(treatment = case_when(
-    vitdactive == 1 ~ "Vitamin D",
-    fishoilactive == 1 ~ "Fish Oil"
+    vitdactive == 1 & fishoilactive == 0 ~ "Vitamin D",
+    fishoilactive == 1 & vitdactive == 0 ~ "Fish Oil",
+    vitdactive == 0 & fishoilactive == 0 ~ "Control",
+    vitdactive == 1 & fishoilactive == 1 ~ "Both Treatment"
   )) %>%
   ggplot(aes(x = pain_yr1)) +
   geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
@@ -299,10 +304,11 @@ pain_yr1_vital_plot<-vital_wide %>%
   )
 
 pain_yr2_vital_plot<-vital_wide %>%
-  filter(vitdactive == 1 | fishoilactive == 1) %>%
   mutate(treatment = case_when(
-    vitdactive == 1 ~ "Vitamin D",
-    fishoilactive == 1 ~ "Fish Oil"
+    vitdactive == 1 & fishoilactive == 0 ~ "Vitamin D",
+    fishoilactive == 1 & vitdactive == 0 ~ "Fish Oil",
+    vitdactive == 0 & fishoilactive == 0 ~ "Control",
+    vitdactive == 1 & fishoilactive == 1 ~ "Both Treatment"
   )) %>%
   ggplot(aes(x = pain_yr2)) +
   geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
@@ -320,10 +326,11 @@ pain_yr2_vital_plot<-vital_wide %>%
   )
 
 pain_yr3_vital_plot<-vital_wide %>%
-  filter(vitdactive == 1 | fishoilactive == 1) %>%
   mutate(treatment = case_when(
-    vitdactive == 1 ~ "Vitamin D",
-    fishoilactive == 1 ~ "Fish Oil"
+    vitdactive == 1 & fishoilactive == 0 ~ "Vitamin D",
+    fishoilactive == 1 & vitdactive == 0 ~ "Fish Oil",
+    vitdactive == 0 & fishoilactive == 0 ~ "Control",
+    vitdactive == 1 & fishoilactive == 1 ~ "Both Treatment"
   )) %>%
   ggplot(aes(x = pain_yr3)) +
   geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
@@ -341,10 +348,11 @@ pain_yr3_vital_plot<-vital_wide %>%
   )
 
 pain_yr4_vital_plot<-vital_wide %>%
-  filter(vitdactive == 1 | fishoilactive == 1) %>%
   mutate(treatment = case_when(
-    vitdactive == 1 ~ "Vitamin D",
-    fishoilactive == 1 ~ "Fish Oil"
+    vitdactive == 1 & fishoilactive == 0 ~ "Vitamin D",
+    fishoilactive == 1 & vitdactive == 0 ~ "Fish Oil",
+    vitdactive == 0 & fishoilactive == 0 ~ "Control",
+    vitdactive == 1 & fishoilactive == 1 ~ "Both Treatment"
   )) %>%
   ggplot(aes(x = pain_yr4)) +
   geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
@@ -360,3 +368,10 @@ pain_yr4_vital_plot<-vital_wide %>%
     panel.background = element_rect(fill = "white", color = NA),
     plot.background = element_rect(fill = "white", color = NA)
   )
+
+---------------------------
+save(pain_base_vital_plot, pain_yr1_vital_plot, pain_yr2_vital_plot, pain_yr3_vital_plot, pain_yr4_vital_plot,
+     acu_pk1_plot, acu_pk2_plot, acu_pk5_plot, acu_sex_plot, acu_age_plot, sex_vital_plot, age_vital_plot, bmi_vital_plot, file="report_plots.RData")  
+
+
+

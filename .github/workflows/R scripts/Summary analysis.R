@@ -339,3 +339,12 @@ acu_miss_pattern_plot<-ggplot(acupuncture_miss_count, aes(x = time_cont, y = mis
   scale_fill_manual(name = "", labels=c("Missing","Measured"), values=c("olivedrab","lawngreen")) +
   scale_x_continuous(name = "Time", breaks = c(0.1,1.1,2.1,3.1), 
                      labels = c("Baseline","3 Months","12 Months","Patients \n(%)")) 
+
+
+
+
+_______________________
+
+save(acu_summary, vital_summary, acu_miss_pattern_plot, acu_miss_perc_plot, acu_miss_perc_group, vital_miss_perc_plot, vital_miss_plot,
+     vital_miss_perc_plot_fish, vital_miss_pattern_fish, file = "report_plots.RData")
+

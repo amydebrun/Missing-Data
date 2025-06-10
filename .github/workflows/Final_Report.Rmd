@@ -50,7 +50,6 @@ suppressWarnings({
   source("R scripts/Different Imputation Method.R")
   source("R scripts/Sens_analysis_cat.R")
   source("R scripts/Sens_analysis_cont.R")
-  source("R scripts/Sens_analysis_combined.R")
   source("R scripts/Data_summary.R")
 })
 ```
@@ -601,7 +600,7 @@ $m \approx 100\lambda$
 -   shifting method (choosing delta, how to model)
 
 ```{r}
-delta_combined_cont_cat_plot
+SA_combined_acu_plot
 SA_combined_vital_all_plot 
 ```
 ```{r}
@@ -753,4 +752,8 @@ forest plots
 table of estimates 
 sensitivity analysis 
 
+```{r}
+load(report_plots.RData)
+
+```
 

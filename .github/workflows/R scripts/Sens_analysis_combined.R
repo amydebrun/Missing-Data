@@ -48,7 +48,7 @@ delta_combined_cat_acu$estimand<- "Categorical time"
 delta_combined_cont_acu$estimand<- "Continuous time"
 delta_combined_acu_cont_cat<- bind_rows(delta_combined_cat_acu,delta_combined_cont_acu)
 
-delta_combined_cont_cat_plot <- ggplot(
+SA_combined_acu_plot <- ggplot(
   delta_combined_acu_cont_cat, 
   aes(x = estimate, y = delta_acu, shape = estimand, colour = estimand)
 ) + geom_point(
@@ -316,5 +316,6 @@ cont_heatmap_fishoil_plot<-ggplot(cont_heatmap_data, aes(x = delta_1, y = delta_
   theme(panel.grid = element_blank())
 
 
+save(SA_combined_vital_all_plot , SA_combined_acu_plot, file ="report_plots.RData")
 
 
