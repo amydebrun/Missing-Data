@@ -45,6 +45,7 @@ suppressWarnings({
   source("R scripts/VITAL data formats.R")
   source("R scripts/Acupuncture data formats.R")
 })
+load("~/Missing-Data/.github/workflows/report_plots.RData")
 ```
 
 
@@ -140,9 +141,9 @@ The study design for the acupuncture trial is a longitudinal randomised controll
 
 13 variables were recorded during the acupuncture trial. 
 
-```{r}
+
 acu_var_table
-```
+
 
 Variables `pk2` and ``pk5` are the follow-up times at 3 months and 12 months. 
 
@@ -596,14 +597,14 @@ $m \approx 100\lambda$
 SA_combined_acu_plot
 SA_combined_vital_all_plot 
 ```
-```{r}
+
 #heatmap attempt for acupuncture
 cat_heatmap_acu_plot
 cont_heatmap_acu_plot
 
 #heatmap attempt for vital 
 cont_heatmap_fishoil_plot
-```
+
 
 
 # Result
