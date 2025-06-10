@@ -40,12 +40,11 @@ library(tidymodels)
 library(gtsummary)
 library(tinytex)
 library(ggdag)
-suppressWarnings({
-  source("R scripts/Functions.R")
-  source("R scripts/VITAL data formats.R")
-  source("R scripts/Acupuncture data formats.R")
-})
-load("~/Missing-Data/.github/workflows/report_plots.RData")
+source("R scripts/Functions.R")
+source("R scripts/VITAL data formats.R")
+source("R scripts/Acupuncture data formats.R")
+load("~/Missing-Data/.github/workflows/report_plots.RData") %>% ls()
+
 ```
 
 
@@ -141,23 +140,23 @@ The study design for the acupuncture trial is a longitudinal randomised controll
 
 13 variables were recorded during the acupuncture trial. 
 
-
-acu_var_table
-
+```{r}
+print(acu_var_table)
+```
 
 Variables `pk2` and ``pk5` are the follow-up times at 3 months and 12 months. 
 
 ```{r}
-acu_summary
-acu_sex_plot
-acu_age_plot
+print(acu_summary)
+print(acu_sex_plot)
+print(acu_age_plot)
 ```
 
 
 ```{r}
-acu_pk1_plot
-acu_pk2_plot
-acu_pk5_plot
+print(acu_pk1_plot)
+print(acu_pk2_plot)
+print(acu_pk5_plot)
 ```
 
 *Original Estimand*
@@ -192,18 +191,18 @@ This study was a 2x2 factorial designed longitudinal randomised controlled trial
   - Data overview
 
 ```{r}
-vital_summary
-age_vital_plot
-bmi_vital_plot
-sex_vital_plot
+print(vital_summary)
+print(age_vital_plot)
+print(bmi_vital_plot)
+print(sex_vital_plot)
 ```
 
 ```{r}
-pain_base_vital_plot
-pain_yr1_vital_plot
-pain_yr2_vital_plot
-pain_yr3_vital_plot
-pain_yr4_vital_plot
+print(pain_base_vital_plot)
+print(pain_yr1_vital_plot)
+print(pain_yr2_vital_plot)
+print(pain_yr3_vital_plot)
+print(pain_yr4_vital_plot)
 ```
     
 *Original estimand in VITAL study*
@@ -223,26 +222,26 @@ $$\text{pain_yr4}_i = \beta_0 + \beta_1\text{fishoilactive}_i + \beta_2\text{vit
 **Acupuncture Data**
 
 ```{r}
-acu_miss_perc_plot
+print(acu_miss_perc_plot)
 ```
 ```{r}
-acu_miss_perc_group
+print(acu_miss_perc_group)
 ```
 
 ```{r}
-acu_miss_pattern_plot
+print(acu_miss_pattern_plot)
 ```
 
 **VITAL data**
 
 ```{r}
-vital_miss_perc_plot
+print(vital_miss_perc_plot)
 ```
 ```{r}
-vital_miss_perc_plot_fish
+print(vital_miss_perc_plot_fish)
 ```
 ```{r}
-vital_miss_pattern_fish
+print(vital_miss_pattern_fish)
 ```
 
   - Missing proportion
@@ -594,8 +593,8 @@ $m \approx 100\lambda$
 -   shifting method (choosing delta, how to model)
 
 ```{r}
-SA_combined_acu_plot
-SA_combined_vital_all_plot 
+print(SA_combined_acu_plot)
+print(SA_combined_vital_all_plot)
 ```
 
 #heatmap attempt for acupuncture
@@ -746,8 +745,5 @@ forest plots
 table of estimates 
 sensitivity analysis 
 
-```{r}
-load(report_plots.RData)
 
-```
 

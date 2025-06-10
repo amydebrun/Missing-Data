@@ -343,7 +343,6 @@ acu_miss_pattern_plot<-ggplot(acupuncture_miss_count, aes(x = time_cont, y = mis
 
 
 
-_______________________
 
 save(acu_summary, vital_summary, acu_miss_pattern_plot, acu_miss_perc_plot, acu_miss_perc_group, vital_miss_perc_plot, vital_miss_plot,
      vital_miss_perc_plot_fish, vital_miss_pattern_fish, file = "report_plots.RData")

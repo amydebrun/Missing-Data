@@ -371,7 +371,8 @@ pain_yr4_vital_plot<-vital_wide %>%
 
 ---------------------------
 save(acu_var_table,pain_base_vital_plot, pain_yr1_vital_plot, pain_yr2_vital_plot, pain_yr3_vital_plot, pain_yr4_vital_plot,
-     acu_pk1_plot, acu_pk2_plot, acu_pk5_plot, acu_sex_plot, acu_age_plot, sex_vital_plot, age_vital_plot, bmi_vital_plot, file="report_plots.RData")  
+     acu_pk1_plot, acu_pk2_plot, acu_pk5_plot, acu_sex_plot, acu_age_plot, sex_vital_plot, age_vital_plot,
+     bmi_vital_plot, file="report_plots.RData")  
 
 
 
