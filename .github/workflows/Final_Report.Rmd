@@ -44,13 +44,6 @@ suppressWarnings({
   source("R scripts/Functions.R")
   source("R scripts/VITAL data formats.R")
   source("R scripts/Acupuncture data formats.R")
-  source("R scripts/Summary analysis.R")
-  source("R scripts/Category time analysis.R")
-  source("R scripts/Continuous time analysis.R")
-  source("R scripts/Different Imputation Method.R")
-  source("R scripts/Sens_analysis_cat.R")
-  source("R scripts/Sens_analysis_cont.R")
-  source("R scripts/Data_summary.R")
 })
 ```
 
