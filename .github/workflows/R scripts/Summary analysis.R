@@ -188,8 +188,8 @@ data_miss <- data_combined %>%
     )) %>%
   arrange(desc(miss_pattern), Subject_ID) %>%
   mutate(miss_pattern_label = factor(miss_pattern_label, levels = unique(miss_pattern_label)),
-         group_vitd = factor(vitdactive, levels = c(0,1), labels = c("Placebo","Vitamin D")),
-         group_oil = factor(fishoilactive, levels = c(0,1), labels = c("Placebo","Fish Oil")))
+         group_vitd = factor(vitdactive, levels = c(0,1), labels = c("Control","Vitamin D")),
+         group_oil = factor(fishoilactive, levels = c(0,1), labels = c("Control","Fish Oil")))
 
 pct_format = scales::label_percent(accuracy = .1)
 vital_miss_perc_plot<-suppressMessages(
@@ -205,56 +205,56 @@ vital_miss_perc_plot<-suppressMessages(
                   aes(label =perc_pat), 
                   position = position_stack(vjust=0.5)) +
     scale_fill_manual(name="",values=c("olivedrab", "lawngreen"), labels=c("Missing Data", "Measured Data")) +
-    scale_x_discrete(name = "Time", labels = c("base" = "Baseline", "yr1" = "Year 1", "yr2" = "Year 2", "yr3" = "Year 3", "yr4"="Year 4")) + 
+    scale_x_discrete(name = "", labels = c("base" = "Baseline", "yr1" = "Year 1", "yr2" = "Year 2", "yr3" = "Year 3", "yr4"="Year 4")) + 
     scale_y_continuous(name = "Number of Patients") +
     theme(text = element_text(size = 24),
           axis.text.x = element_text(angle = 0, vjust = 0.5),
-          legend.position = "top", legend.text=element_text(size=20))
+          legend.position = "none", legend.text=element_text(size=20))
 )
 
-vital_miss_perc_plot_fish<-suppressMessages(
+vital_miss_perc_group_plot<-suppressMessages(
   data_miss %>%
-    group_by(time, miss_obs, group_oil) %>%
+    group_by(time, miss_obs, group_oil, group_vitd) %>%
     summarise(count_pat = n(), .groups="keep") %>%
-    group_by(time, group_oil) %>%
+    group_by(time, group_oil, group_vitd) %>%
     mutate(total_pat = sum(count_pat), perc_pat = pct_format(count_pat/total_pat)) %>%
     ungroup %>%
     ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
     geom_col() +
-    facet_grid(~group_oil) + 
+    facet_grid(group_vitd~group_oil) + 
     stat_identity(geom = "text", colour = "white", size = 5,
                   aes(label =perc_pat), 
                   position = position_stack(vjust=0.5)) +
     scale_fill_manual(name="",values=c("olivedrab", "lawngreen"))+
-    scale_x_discrete(name = "Time", labels = c("base" = "Baseline", "yr1" = "Year 1", "yr2" = "Year 2", "yr3" = "Year 3", "yr4"="Year 4")) + 
+    scale_x_discrete(name = "", labels = c("base" = "Baseline", "yr1" = "Year 1", "yr2" = "Year 2", "yr3" = "Year 3", "yr4"="Year 4")) + 
     scale_y_continuous(name = "Number of Patients") +
     theme(text = element_text(size = 24),
           axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "none")
 )
 
 data_miss_count <- data_miss %>%
-  select(Subject_ID, miss_pattern, pain, time_cont, group_oil, miss_obs) %>%
-  group_by(group_oil, miss_pattern, miss_obs, time_cont) %>%
+  select(Subject_ID, miss_pattern, pain, time_cont, group_oil, group_vitd, miss_obs) %>%
+  group_by(group_oil, group_vitd, miss_pattern, miss_obs, time_cont) %>%
   summarise(pattern_count = n()) %>%
   ungroup %>%
   mutate(pattern_perc = round(pattern_count/sum(pattern_count)*100*5,1))
 
-vital_miss_pattern_fish<-ggplot(data_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
+vital_miss_pattern<-ggplot(data_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
   geom_tile(color = "white") + 
   geom_text(data = filter(data_miss_count, time_cont == 4), 
             aes(x = time_cont+1.5, label = paste0(pattern_count," (", pattern_perc, "%)")), size = 4) +
-  facet_grid(~group_oil, scales = "free", switch = "y") +
+  facet_grid(group_vitd~group_oil, scales = "free", switch = "y") +
   theme_bw() +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.spacing.x = unit(1, "lines"),
         text = element_text(size = 18),
-        axis.text.x = element_text(angle = 90, vjust = 0.5) , legend.position = "none") +
+        axis.text.x = element_text(angle = 45, vjust = 0.5) , legend.position = "none") +
   coord_cartesian(xlim = c(-0.5, 6.2), clip = 'off') +
   scale_y_discrete(name = "Missing Data Pattern") +
   scale_fill_discrete(name = "Data Observed\nIndicator (R)", ) +
-  scale_x_continuous(name = "Time", breaks = c(0,1,2,3,4,5), 
-                     labels = c("Baseline","Year 1","Year 2","Year 3","Year 4","Patient Count\n(%)")) +
-  scale_fill_manual(name="",labels=c("Missing Data","Measured Data"),values=c("olivedrab", "lawngreen"))
+  scale_x_continuous(name = "", breaks = c(0,1,2,3,4,5), 
+                     labels = c("Bslne","Yr1","Yr2","Yr3","Yr4","Count\n(%)")) +
+  scale_fill_manual(name="",labels=c("Missing Data","Observed Data"),values=c("olivedrab", "lawngreen"))
 
 acupuncture <- read_csv("Data/acupuncture.csv",show_col_types = FALSE)
 acupuncture_miss <- acupuncture %>%
@@ -292,11 +292,11 @@ acu_miss_perc_plot<- acupuncture_miss %>%
   stat_identity(geom = "text", colour = "white", size = 10,
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
-  scale_fill_manual(name="",values=c("olivedrab", "lawngreen"), labels=c("Missing Data", "Measured Data")) + 
-  scale_x_discrete(name = "Time", labels = c("1" = "Baseline", "2" = "3 Months", "5" = "12 Months")) +
+  scale_fill_manual(name="",values=c("olivedrab", "lawngreen"), labels=c("Missing Data", "Observed Data")) + 
+  scale_x_discrete(name = "", labels = c("1" = "Baseline", "2" = "3 Months", "5" = "12 Months")) +
   scale_y_continuous(name = "Number of Patients") +
   theme(text = element_text(size = 18),
-        axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "top", legend.text=element_text(size=20))
+        axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "none", legend.text=element_text(size=20))
 
 acu_miss_perc_group<-acupuncture_miss %>%
   group_by(time, miss_obs, group) %>%
@@ -306,12 +306,12 @@ acu_miss_perc_group<-acupuncture_miss %>%
   ungroup %>%
   ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
   geom_col() + 
-  facet_grid(.~group, labeller=labeller(group=c("0" = "Placebo", "1" = "Acupuncture"))) + 
+  facet_grid(.~group, labeller=labeller(group=c("0" = "Control", "1" = "Acupuncture"))) + 
   stat_identity(geom = "text", colour = "white", size = 10,
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
-  scale_fill_manual(name="Data",values=c("olivedrab", "lawngreen"), labels=c("Missing", "Measured")) + 
-  scale_x_discrete(name = "Time", labels = c("1" = "Baseline", "2" = "3 Months", "5" = "12 Months")) +
+  scale_fill_manual(name="Data",values=c("olivedrab", "lawngreen"), labels=c("Missing", "Observed")) + 
+  scale_x_discrete(name = "", labels = c("1" = "Baseline", "2" = "3 Months", "5" = "12 Months")) +
   scale_y_continuous(name = "Number of Patients") +
   theme(text = element_text(size = 18),
         axis.text.x = element_text(angle = 0, vjust = 0.5),legend.position = "none",strip.text.x=element_text(size=20))
@@ -328,7 +328,7 @@ acu_miss_pattern_plot<-ggplot(acupuncture_miss_count, aes(x = time_cont, y = mis
   geom_tile(color = "white") + 
   geom_text(data = filter(acupuncture_miss_count, time_cont == 2), 
             aes(x = time_cont+1, label = paste0(pattern_count," (", pattern_perc, "%)")), size = 5.5) +
-  facet_grid(~group, scales = "free", switch = "y",labeller=labeller(group=c("0" = "Placebo", "1" = "Acupuncture"))) +
+  facet_grid(~group, scales = "free", switch = "y",labeller=labeller(group=c("0" = "Control", "1" = "Acupuncture"))) +
   theme_bw() +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.spacing.x = unit(1, "lines"),
@@ -337,7 +337,7 @@ acu_miss_pattern_plot<-ggplot(acupuncture_miss_count, aes(x = time_cont, y = mis
   coord_cartesian(xlim = c(-0.5, 3.2), clip = 'off') +
   scale_y_discrete(name = "Missing Data Pattern") +
   scale_fill_manual(name = "", labels=c("Missing","Measured"), values=c("olivedrab","lawngreen")) +
-  scale_x_continuous(name = "Time", breaks = c(0.1,1.1,2.1,3.1), 
+  scale_x_continuous(name = "", breaks = c(0.1,1.1,2.1,3.1), 
                      labels = c("Baseline","3 Months","12 Months","Patients \n(%)")) 
 
 

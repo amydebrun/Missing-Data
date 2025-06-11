@@ -202,6 +202,5 @@ acu_plot_compare <- ggplot(acu_plot_table, aes(x = estimate, y = Method, xmin = 
 
 
 
-___________
 
 save(acu_plot_compare, vital_plot_compare, vitd_compare_result, acu_compare_result, file="report_plots.RData")

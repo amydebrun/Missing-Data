@@ -264,8 +264,5 @@ vital_plot_impt <- ggplot(vital_impt_result_all, aes(x = estimate, y = Method, x
 
 
 
-____
-
-
 
 save(acu_plot_imp,vital_plot_impt, acu_impt_result, vital_impt_result_oil, vital_impt_result_vitd, file="report_plots.RData")

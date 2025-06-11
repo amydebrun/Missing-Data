@@ -40,10 +40,11 @@ library(tidymodels)
 library(gtsummary)
 library(tinytex)
 library(ggdag)
+library(ggplot2)
 source("R scripts/Functions.R")
 source("R scripts/VITAL data formats.R")
 source("R scripts/Acupuncture data formats.R")
-load("~/Missing-Data/.github/workflows/report_plots.RData") %>% ls()
+load("~/Missing-Data/.github/workflows/report_plots.RData")
 
 ```
 
@@ -101,16 +102,14 @@ The probability of data being observed is not dependent on the observed data. Th
 A missing data pattern describes the pattern of missing data among the observed data. 
 As described by Little & Rubin (2014), it's important to remark the missing data patterns of the data set prior to data handling as some handling methods are intended for certain classified patterns.  
 
--univariate missing data
 
-Univariate missing data confines the missingness to a single variable 
+```{r}
+print(missing_pattern_table)
+```
 
--multivariate missing data
--monotonic 
--general
--file matching
--factor analysis 
- 
+
+
+
 ## Current approach and limitations
  
   - Existing literature reveals inconsistent reporting and handling practices.(Power 2014)
@@ -180,8 +179,7 @@ MacFarlane et al. conducted a study on the therapeutic effects of vitamin D and 
 
 *Study Design* 
 
-This study was a 2x2 factorial designed longitudinal randomised controlled trial. 1,398 participants in the study was randomised to 4 possible treatment combinations. Participants were randomised to receive either omega-3 oils or vitamin D, both treatments, or randomised to the placebo group. For this research project, we assumed that that the participants were only randomised to either recieve the fish oil treatment, vitamin D treatment or the placebo. We did not include the interaction between vitamin D or the fish oil. 
-
+This study was a 2x2 factorial designed longitudinal randomised controlled trial. 1,398 participants in the study was randomised to 4 possible treatment combinations. Participants were randomised to receive either omega-3 oils or vitamin D, both treatments, or randomised to the placebo group. For this research project, we assumed that that the participants were only randomised to either receive the fish oil treatment, vitamin D treatment or the placebo. We did not include the interaction between vitamin D and fish oil in our substantive model or our imputation model. 
 |                   | Vitamin D              | Placebo          |
 |-------------------|------------------------|------------------|
 | **Fish Oil**      | N = 342 (not analysed) | N = 353          |
@@ -221,35 +219,50 @@ $$\text{pain_yr4}_i = \beta_0 + \beta_1\text{fishoilactive}_i + \beta_2\text{vit
 
 **Acupuncture Data**
 
+The summary statistics of the acupuncture trial data shows that all baseline variables have been observed. It appears two post-randomisation outcome variables contain missing data. This pattern would be described as a multivariate monotonic pattern as the percentage of missing data increases at each follow up time point, which is common in longitudinal studies. We can visualise this in the plot below. 
+
 ```{r}
 print(acu_miss_perc_plot)
 ```
+Figure 2.x: Proportion of missing data (dark green) in outcome variables $pk2$ and $pk5$. This follows a monotonic missing data pattern.
+
+If we separate the acupuncture trial data into the treatment group and control group, we can observe that there is a higher percentage of missing data in the control group. 
+
 ```{r}
 print(acu_miss_perc_group)
 ```
+Figure 2.x: Higher percentage of missing data in control group 
+
+If we investigate the missing data pattern in more detail, we can see that the pattern is similar in both groups. In the plot below, we can see that the pattern in which the three headache severity scores $pk1$, $pk2$ and $pk5$ are observed (1,1,1) followed by the pattern in which both post-randomised headache severity scores contain missing data (1,0,0). 
 
 ```{r}
 print(acu_miss_pattern_plot)
 ```
+Figure 2.x: Missing data pattern is similar in both groups (1=observed, 0=missing)
+
 
 **VITAL data**
+
+The summary statistics of the VITAL data showed, unlike the acupuncture trial data, there are also baseline variables that contain missing data as well as the post randomised variables. A non-monotic multivariate pattern appears to show here as there is a great proportion of missing data in the knee pain score at the first year post randomisation, which drastically decreases in year 2, then steadily increases again. 
 
 ```{r}
 print(vital_miss_perc_plot)
 ```
-```{r}
-print(vital_miss_perc_plot_fish)
-```
-```{r}
-print(vital_miss_pattern_fish)
-```
+Figure 2.x: Non-monotonic pattern across out knee pain scores in VITAL data. 
 
-  - Missing proportion
-  - Missing pattern
-  - which methods to use based on data
-  
-  
- 
+Recall that the VITAL data set contains 4 different combinations of treatment. Separating this out in the plot below we can see the percentage of missing data in each knee pain time point variable in each group. The proportion appears to be similar in each group with year 2 post randomisation containing the most missing data. 
+
+```{r}
+print(vital_miss_perc_group_plot)
+```
+Figure 2.x: Percentage of missing data across baseline and 4 follow-up time points. Non-monotonic pattern appears similar in 4 randomised groups. 
+
+Looking at the possible missing data patterns in the 4 combinatory groups, they are mostly similar with little anomalies. As this dataset has more time-points recorded than the acupuncture trial data, and more treatmenr groups, there are more possible missing data patterns to observe. The most common data pattern still stands as (1,1,1,1,1) in which data is observed at all time-points.  
+
+```{r}
+print(vital_miss_pattern)
+```
+Figure 2.x: Missing data patterns across 4 treatment groups in VITAL data. 
  
  
  
@@ -633,117 +646,5 @@ cont_heatmap_fishoil_plot
 
 -   further work: simulate complete data, and compare accuracy between
     methods
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Back up writing
-
-## Missing Data Mechanisms
-
-
-
-## Data 
-
-We will analyse 2 longitudinal randomised controlled trials. Both studies are designed differently with two different sample sizes, which is an advantage to our research as we can look to apply these methods in two different settings. 
-
-## Acupuncture for chronic headache in primary care: large, pragmatic, randomised trial (Vickers et al., 2004)
-
-**Study Design**
-
-Vickers et al. conducted a longitudinal randomised controlled trial to determine the effect of acupuncture therapy on headache against a placebo. 
-
-**Characteristics**
-
-table summary
-
-**Missing Data**
-
-
--estimands 
-
-## The Effects of Vitamin D and Marine Omega-3 Fatty Acid Supplementation on Chronic Knee Pain in Older US Adults: Results From a Randomized Trial (MacFarlane et al. 2020)
-
-**Study Design**
-
-**Characteristics**
-
-table summary
-
-**Missing Data**
-
-- estimand 
-
-## Methods
-
-## Complete Case Analysis
-
-- method 
-mechanism
-
-## Single Imputation
-
-mean
-locf 
-mechanism
-
-## Maximum Likelihood
-
-- linear mixed effects model
-- conditions 
-- only suitable with missing outcome 
-mechanism
-
-## Multiple Imputation
-
-- chained equations 
-mechanism
-
-## Sensitivity Analysis 
-
-We conducted a sensitivity analysis on both data sets to determine how sensitive the estimated in the treatment effect is when we assume the data is Missing Not At Random. 
-
-**Purpose of Sensitivity Analysis**
-
-As mentioned in our background section, it is important to investigate the missingness mechanism of the data to assess the choice of data handling method. Although we can never really confirm what type of missingness mechanism follows, we can use sensitivity analysis to test how the data forms under different missingness assumptions. 
-
-**Delta Adjustment**
-
-This is a common approach of sensitivity analysis. A fixed $\delta$ is added or removed from the values that were imputed using multiple imputation using chained equations. Doing this, we are estimating the effect that treatment had on the patient if they were observed. Providing a range of deltas allows potential for unobserved patients responses to treatment to be worse or better than the observed patients. 
-
-**Choosing δ**
-
-In our analysis, we chose which range of $\delta$ values to use based on the outcome of the observed values of each data set. A quantitative estimate would involve determining the mean value of the outcome and the mean predicted value of the missing outcome. 
-
-**Acupuncture**
-
-**VITAL**
-
-
-## Results 
-
-forest plots 
-table of estimates 
-sensitivity analysis 
-
 
 

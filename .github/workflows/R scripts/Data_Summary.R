@@ -26,6 +26,18 @@ acu_var_table <- tibble::tibble(
   )
 )
 
+
+missing_pattern_table<- tibble::tibble(
+  `Missing Data Pattern` = c("Univariate", "Multivariate", "Monotonic", "General", "File Matching", "Factor Analysis"),
+  `Description` = c("Missing values are confined to a single variable",
+                    "Missing values can be present in multiple variables",
+                    "variables $Y_j$ can be ordered if missing, with variables $Y_k$ with $k$ > $j$ are also missing. 
+                    This is a common pattern in longitudinal studies due to patient withdrawal.",
+                    "Missing values appears to have no structure and scattered throughout the data",
+                    "Missing data appears to be statistically matched",
+                    "")
+)
+
 #distribution of age by treatment group
 acu_age_plot<-ggplot(acu_long, aes(x = age)) +
   geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) + 
@@ -369,10 +381,10 @@ pain_yr4_vital_plot<-vital_wide %>%
     plot.background = element_rect(fill = "white", color = NA)
   )
 
----------------------------
+
 save(acu_var_table,pain_base_vital_plot, pain_yr1_vital_plot, pain_yr2_vital_plot, pain_yr3_vital_plot, pain_yr4_vital_plot,
      acu_pk1_plot, acu_pk2_plot, acu_pk5_plot, acu_sex_plot, acu_age_plot, sex_vital_plot, age_vital_plot,
-     bmi_vital_plot, file="report_plots.RData")  
+     bmi_vital_plot, missing_pattern_table, file="report_plots.RData")  
 
 
 
