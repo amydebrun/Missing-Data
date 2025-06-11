@@ -3,11 +3,11 @@ title: Estimating Treatment Effects in Longitudinal Clinical Trials with Missing
 authors:
   - name: Amy Browne
     thanks: The authors would like to thank Neil O'Leary from the University of Galway for his valuable guidance, feedback, and support throughout the development of this project
-    department: Department of Methametics
+    department: Department of Mathametics
     affiliation: University of Galway
     email: k.yip2@universityofgalway.ie
   - name: Tsz Mang Yip
-    department: Department of Methametics
+    department: Department of Mathametics
     affiliation: University of Galway
     email: a.browne47@universityofgalway.ie
 abstract:
@@ -171,7 +171,7 @@ print(missing_pattern_table)
 
 # Real World Data
 
-We have sourced two different data sets to perform our analysis on. They
+We have sourced two different data sets to perform our missingness analysis on. They
 both have different sample sizes and different levels of missing data
 which is an advantage as we can conduct analysis in different settings.
 
@@ -271,6 +271,13 @@ our imputation model.
 
 *Overview*
 
+There are x variables recorded in the VITAL data, the following table refers to a subset of the variables that we frequently use
+
+```{r}
+print(vital_var_table)
+```
+
+
 ```{r warning = FALSE}
 print(vital_summary)
 print(age_vital_plot)
@@ -287,6 +294,7 @@ Figure 2.x shows the distribution of body mass index in each treatment group, th
 Figure 2.x is the distribution of males and females in the VITAL data. Similar to the acupuncture trial, the participants are predominantly female. 
 
 ```{r warning=FALSE}
+
 print(pain_base_vital_plot)
 print(pain_yr1_vital_plot)
 print(pain_yr2_vital_plot)
@@ -402,9 +410,26 @@ which data is observed at all time-points.
 ```{r}
 print(vital_miss_pattern)
 ```
+Figure 2.x: Missing data patterns across 4 treatment groups in VITAL data.
 
-Figure 2.x: Missing data patterns across 4 treatment groups in VITAL
-data.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Methods
 
@@ -734,6 +759,11 @@ cont_heatmap_acu_plot
 # Result
 
 ## Comparing different methods
+
+```{r}
+print(acu_plot_compare)
+```
+
 
 ## Changing estimand
 

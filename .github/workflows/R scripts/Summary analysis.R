@@ -242,7 +242,7 @@ data_miss_count <- data_miss %>%
 vital_miss_pattern<-ggplot(data_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
   geom_tile(color = "white") + 
   geom_text(data = filter(data_miss_count, time_cont == 4), 
-            aes(x = time_cont+1.5, label = paste0(pattern_count," (", pattern_perc, "%)")), size = 4) +
+            aes(x = time_cont+1.5, label = paste0(pattern_count," (", pattern_perc, "%)")), size =3.5) +
   facet_grid(group_vitd~group_oil, scales = "free", switch = "y") +
   theme_bw() +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),

@@ -27,13 +27,25 @@ acu_var_table <- tibble::tibble(
 )
 
 
+vital_var_table <- tibble::tibble(
+  `Variable` = c(
+    "Subject_ID","age", "bmi", "sex", "vitdactive", "fishoilactive", "pain_base", "pain_yrX", "stiffness_base", "stiffness_yrX", "function_base", 
+    "function_yrX", "kneepainfreq"
+  ),
+  `Description` = c("Patient ID code", "Age of patient", "Body mass index of patient", "Sex of patient", 
+  "1=vitamin D, 0=no vitamin D", "1= fish oil, 0= no fish oil",
+  "Knee pain at baseline", "Knee pain X years post randomisation", 
+  "Knee stiffness at baseline", "Knee stiffness X years post randomisation", "Knee function at baseline",
+  "Knee function X years post randomisation", "Frequency of knee pain"
+))
+
+
 missing_pattern_table<- tibble::tibble(
   `Missing Data Pattern` = c("Univariate", "Multivariate", "Monotonic", "General", "File Matching", "Factor Analysis"),
-  `Description` = c("Missing values are confined to a single variable",
-                    "Missing values can be present in multiple variables",
-                    "variables $Y_j$ can be ordered if missing, with variables $Y_k$ with $k$ > $j$ are also missing. 
-                    This is a common pattern in longitudinal studies due to patient withdrawal.",
-                    "Missing values appears to have no structure and scattered throughout the data",
+  `Description` = c("Missing values in a single variable",
+                    "Missing values present in multiple variables",
+                    "variables $Y_j$ can be ordered if missing",
+                    "Missing valueshave no structure and scattered throughout data",
                     "Missing data appears to be statistically matched",
                     "")
 )
@@ -382,7 +394,7 @@ pain_yr4_vital_plot<-vital_wide %>%
   )
 
 
-save(acu_var_table,pain_base_vital_plot, pain_yr1_vital_plot, pain_yr2_vital_plot, pain_yr3_vital_plot, pain_yr4_vital_plot,
+save(acu_var_table, vital_var_table, pain_base_vital_plot, pain_yr1_vital_plot, pain_yr2_vital_plot, pain_yr3_vital_plot, pain_yr4_vital_plot,
      acu_pk1_plot, acu_pk2_plot, acu_pk5_plot, acu_sex_plot, acu_age_plot, sex_vital_plot, age_vital_plot,
      bmi_vital_plot, missing_pattern_table, file="report_plots.RData")  
 
