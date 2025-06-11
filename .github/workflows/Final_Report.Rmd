@@ -24,6 +24,9 @@ biblio-style: unsrt
 output: rticles::arxiv_article
 header-includes:
   - \newcommand{\pandocbounded}[1]{#1}
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE, cache=TRUE}
@@ -48,102 +51,157 @@ load("~/Missing-Data/.github/workflows/report_plots.RData")
 
 ```
 
-
 # Introduction
 
 ## Missing data in longitudinal study
 
 *Longitudinal Study Design*
 
-Longitudinal studies are a type of research design in which repeated measures of variables are collected from participants over different time points. They provide a comprehensive understanding of the direction and degree of change over time, typically in years or even decades. While the information provided in longitudinal studies is beneficial for establishing relationships, the nature of the design faces challenges while attempting to retain the participants involved in the study. 
+Longitudinal studies are a type of research design in which repeated
+measures of variables are collected from participants over different
+time points. They provide a comprehensive understanding of the direction
+and degree of change over time, typically in years or even decades.
+While the information provided in longitudinal studies is beneficial for
+establishing relationships, the nature of the design faces challenges
+while attempting to retain the participants involved in the study.
 
-Longitudinal trials requires data to be collected from participants over set time points using a consistent method of collection. It is important that the researchers attempt to maximize the design so non-contact or non-cooperation is unlikely. However missing data is almost inevitable due to the study duration and complexity. 
+Longitudinal trials requires data to be collected from participants over
+set time points using a consistent method of collection. It is important
+that the researchers attempt to maximize the design so non-contact or
+non-cooperation is unlikely. However missing data is almost inevitable
+due to the study duration and complexity.
 
-Clinical trials are bio medical or behavioural research studies that study the effect of certain interventions or treatment on participants. These trials are also subject to missing participant data which could be due to time consumption, illness or family commitments. This can be an issue as loss of data can reduce robustness of the results. Ignoring the missing data altogether introduces bias in to the results as we are choosing to ignore informative data even if we did not observe it. Removing the missing data unavoidably reduces the sample size of the study therefore reducing statistical power which is important in establishing a valid treatment effect. 
-  
-## Missing mechanism
-  
-Missing data mechanisms are important to consider when choosing which sort of missing data handling method to use. There are three mechanisms which missing data can follow:
+Clinical trials are bio medical or behavioural research studies that
+study the effect of certain interventions or treatment on participants.
+These trials are also subject to missing participant data which could be
+due to time consumption, illness or family commitments. This can be an
+issue as loss of data can reduce robustness of the results. Ignoring the
+missing data altogether introduces bias in to the results as we are
+choosing to ignore informative data even if we did not observe it.
+Removing the missing data unavoidably reduces the sample size of the
+study therefore reducing statistical power which is important in
+establishing a valid treatment effect.
 
-- Missing Completely At Random (MCAR)
-- Missing At Random (MAR)
-- Missing Not At Random (MNAR)
+## Project Objective
 
-Although they may appear similar at first glance, continuing to handle missing data without considering these mechanisms may still result in biased estimates and inaccurate conclusions. Missing data mechanisms appear to be mentioned first by Donald Rubin in 1976. We can formally define these mechanisms using the following notation;
+The objective of this project is to estimate treatment effects using real-world data, with a primary focus on addressing issues that come with missing data. We will examine different assumptions about missing data mechanisms—such as Missing Completely at Random, Missing at Random, and Missing Not at Random and investigate their implications for statistical analysis.
 
-- $R$ represents a missing data indicator which when $R=1$ indicates observed data and $R=0$ indicates unobserved
-- $X$ represents data that is always observed 
-- $Y$ represents data that is potentially missing. 
+While a range of methods are available to handle missing data, they all vary in levels of complexity and assumptions. This project aims to explore these methods, understand the reasons behind their differing performance, and implement them on real-world longitudinal clinical data to compare their effectiveness in estimating treatment effects. 
+
+After initial exploration of the different methods, we also decided to adjust the estimands through data wrangling our chosen datasets to compare how the estimate differs when the estimand is either categorical or continuous and to compare the effects using linear regression or linear mixed effects models. 
+Additionally, we will conduct sensitivity analyses to investigate how treatment effect estimates change under different assumptions about the missing data.
+
+## Missingness Mechanisms
+
+Missing data mechanisms are important to consider when choosing which
+sort of missing data handling method to use. There are three mechanisms
+which missing data can follow:
+
+-   Missing Completely At Random (MCAR)
+-   Missing At Random (MAR)
+-   Missing Not At Random (MNAR)
+
+Although they may appear similar at first glance, continuing to handle
+missing data without considering these mechanisms may still result in
+biased estimates and inaccurate conclusions. Missing data mechanisms
+appear to be mentioned first by Donald Rubin in 1976. We can formally
+define these mechanisms using the following notation;
+
+-   $R$ represents a missing data indicator which when $R=1$ indicates
+    observed data and $R=0$ indicates unobserved
+-   $X$ represents data that is always observed
+-   $Y$ represents data that is potentially missing.
 
 **Missing Completely At Random**
 
 The formal definition of MCAR data is:
 
-$$\quad P(R = 1 \mid Y, X) = P(R = 1)$$
-The probability of the data is observed given observed data and missing data is the same as the probability of being observed without the given data. This mechanism is considered the easiest to deal with as it does not bias the result although data is rarely MCAR. This can occur due to system failure and some data is deleted accidentally, or else there is issues with the treatment system and data cannot be recorded.    
+$$\quad P(R = 1 \mid Y, X) = P(R = 1)$$ The probability of the data is
+observed given observed data and missing data is the same as the
+probability of being observed without the given data. This mechanism is
+considered the easiest to deal with as it does not bias the result
+although data is rarely MCAR. This can occur due to system failure and
+some data is deleted accidentally, or else there is issues with the
+treatment system and data cannot be recorded.
 
+-insert dag
 
 **Missing At Random**
 
-$$\quad P(R = 1 \mid Y, X) = P(R = 1 \mid X)$$
-The probability of data being observed given the rest of the data is the same as the probability being observed given the observed data. In short, the data's missingness is dependent on the observed data. For example, people with a higher body mass index may be more prone to having missing blood pressure data - this is not relative to the missing data. MAR is a more realistic mechanism than MCAR and requires more intensive handling methods. 
+$$\quad P(R = 1 \mid Y, X) = P(R = 1 \mid X)$$ The probability of data
+being observed given the rest of the data is the same as the probability
+being observed given the observed data. In short, the data's missingness
+is dependent on the observed data. For example, people with a higher
+body mass index may be more prone to having missing blood pressure
+data - this is not relative to the missing data. MAR is a more realistic
+mechanism than MCAR and requires more intensive handling methods.
 
+-insert dag
 
 **Missing Not At Random**
 
-$$\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)$$
-The probability of data being observed is not dependent on the observed data. This mechanism is the most difficult to deal with as it relates to the unobserved data, so producing valid results is a challenge. Certain participants in a general health study may avoid answering questions truthfully about smoking habits or their diet in order to make themselves more appealing. Sensitivity analysis is an option to determine the treatment effect when assuming different mechanisms. 
+$$\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)$$ The probability of data
+being observed is not dependent on the observed data. This mechanism is
+the most difficult to deal with as it relates to the unobserved data, so
+producing valid results is a challenge. Certain participants in a
+general health study may avoid answering questions truthfully about
+smoking habits or their diet in order to make themselves more appealing.
+Sensitivity analysis is an option to determine the treatment effect when
+assuming different mechanisms.
 
-  - DAG of missing mechanism (randomised) in progress in R scripts 
-  
-  
+-   DAG of missing mechanism (randomised) in progress in R scripts
+
 ## Different missing data patterns (section tbc)
 
-A missing data pattern describes the pattern of missing data among the observed data. 
-As described by Little & Rubin (2014), it's important to remark the missing data patterns of the data set prior to data handling as some handling methods are intended for certain classified patterns.  
-
+A missing data pattern describes the pattern of missing data among the
+observed data. As described by Little & Rubin (2014), it's important to
+remark the missing data patterns of the data set prior to data handling
+as some handling methods are intended for certain classified patterns.
 
 ```{r}
 print(missing_pattern_table)
 ```
 
+## Literature and Limitations
 
+-   Existing literature reveals inconsistent reporting and handling
+    practices.(Power 2014)
+-   Consequences: bias, reduced efficiency, invalid conclusions if not
+    handled properly.
 
+# Real World Data
 
-## Current approach and limitations
- 
-  - Existing literature reveals inconsistent reporting and handling practices.(Power 2014)
-  - Consequences: bias, reduced efficiency, invalid conclusions if not handled properly.
-  
-
-## Objective of this project
-
-  - Using statistical principled methods
-  - Test how different methods perform in estimating treatment effects using real-world data.
-
-# Data sets
-
-We have sourced two different data sets to perform our analysis on. They both have different sample sizes and different levels of missing data which is an advantage as we can conduct analysis in different settings. 
+We have sourced two different data sets to perform our analysis on. They
+both have different sample sizes and different levels of missing data
+which is an advantage as we can conduct analysis in different settings.
 
 **Acupuncture Data**
 
 *Source*
-  
-Vickers et al. published a paper in 2004 on a trial they conducted to determine the effect of acupuncture therapy on chronic headache in primary care. Vickers released the dataset from the study in 2006 and is publicly available  to download in excel format from https://pmc.ncbi.nlm.nih.gov/articles/PMC1489946/.
+
+Vickers et al. published a paper in 2004 on a trial they conducted to
+determine the effect of acupuncture therapy on chronic headache in
+primary care. Vickers released the dataset from the study in 2006 and is
+publicly available to download in excel format from
+<https://pmc.ncbi.nlm.nih.gov/articles/PMC1489946/>.
 
 *Study Design*
 
-The study design for the acupuncture trial is a longitudinal randomised controlled trial with two follow up time points. 401 participants were gathered from general practices in England and Wales who suffered from migraines. 
+The study design for the acupuncture trial is a longitudinal randomised
+controlled trial with two follow up time points. 401 participants were
+gathered from general practices in England and Wales who suffered from
+migraines.
 
 *Data*
 
-13 variables were recorded during the acupuncture trial. 
+13 variables were recorded during the acupuncture trial.
 
 ```{r}
 print(acu_var_table)
 ```
 
-Variables `pk2` and ``pk5` are the follow-up times at 3 months and 12 months. 
+Variables `pk2` and \``pk5` are the follow-up times at 3 months and 12
+months.
 
 ```{r}
 print(acu_summary)
@@ -152,144 +210,202 @@ print(acu_age_plot)
 ```
 
 
-```{r}
+
+
+Figure 2.x is the summary statistics of the acupuncture trial data. Note pk2 and pk5 are post randomisation variables and contain missing data. 
+Figure 2.x is the distribution of sex in both treatment groups of the acupuncture trial data. The participants are predominantly female. 
+
+Figure 2.x is the distribution of age in both treatment groups. Both distributions are negatively skewed, predominantly middle aged and older. 
+
+```{r warning=FALSE}
 print(acu_pk1_plot)
 print(acu_pk2_plot)
 print(acu_pk5_plot)
 ```
+Figure 2.x,2.x,2.x: These plots show the distribution of the headache severity score at the three measured time-points. Over the three time-points we can see a generally positively skewed distribution with most headache severity scores ranging between 0 and 35. There appears to be minimal difference in headache severity score over the treatment group, and the control group appears to have a lower headache severity score overall. The 3 month and 12 month time-point distributions are incomplete due to the missing values. 
 
 *Original Estimand*
 
-The aim of the original study was to estimate the effect of acupuncture therapy on chronic headache in comparison to general care. Therefore, our estimand with the sourced data set is the difference in mean headache score at the final time point of 12 months between the acupuncture group and the control group. This is modelled parsimoniously by
+The aim of the original study was to estimate the effect of acupuncture
+therapy on chronic headache in comparison to general care. Therefore,
+our estimand with the sourced data set is the difference in mean
+headache score at the final time point of 12 months between the
+acupuncture group and the control group. This is modelled parsimoniously
+by
 
-$$\small\text{pk5}_i = \beta_0 + \beta_1 \text{group}_i + \beta_2 \text{pk1}_i + \varepsilon_i$$
+$$\text{pk5}_i = \beta_0 + \beta_1 \text{group}_i + \beta_2 \text{pk1}_i + \varepsilon_i$$
 where
 
-- $pk5_i$ is the headache severity of individual $i$ at 12 months. 
-- $\beta_0$ is our intercept parameter when there is no treatment group and no recorded baseline headache severity. 
-- $\beta_1$ is the effect of the treatment group. This is our treatment effect of interest. 
-- $\beta_2$ is the effect of the baseline headache severity
-- $\varepsilon_i$ is the residual error term for individual $i$
+-   $pk5_i$ is the headache severity of individual $i$ at 12 months.
+-   $\beta_0$ is our intercept parameter when there is no treatment
+    group and no recorded baseline headache severity.
+-   $\beta_1$ is the effect of the treatment group. This is our
+    treatment effect of interest.
+-   $\beta_2$ is the effect of the baseline headache severity
+-   $\varepsilon_i$ is the residual error term for individual $i$
 
-**VITAL data**  - missing baseline data (vital)
+**VITAL data** - missing baseline data (vital)
 
 *Source*
 
-MacFarlane et al. conducted a study on the therapeutic effects of vitamin D and fish oil on osteoarthritic knee pain. We sourced this data at xyz. 
+MacFarlane et al. conducted a study on the therapeutic effects of
+vitamin D and fish oil on osteoarthritic knee pain. We sourced this data
+at xyz.
 
-*Study Design* 
+*Study Design*
 
-This study was a 2x2 factorial designed longitudinal randomised controlled trial. 1,398 participants in the study was randomised to 4 possible treatment combinations. Participants were randomised to receive either omega-3 oils or vitamin D, both treatments, or randomised to the placebo group. For this research project, we assumed that that the participants were only randomised to either receive the fish oil treatment, vitamin D treatment or the placebo. We did not include the interaction between vitamin D and fish oil in our substantive model or our imputation model. 
-|                   | Vitamin D              | Placebo          |
-|-------------------|------------------------|------------------|
-| **Fish Oil**      | N = 342 (not analysed) | N = 353          |
-| **Placebo**       | N = 332                | N = 371          |
+This study was a 2x2 factorial designed longitudinal randomised
+controlled trial. 1,398 participants in the study was randomised to 4
+possible treatment combinations. Participants were randomised to receive
+either omega-3 oils or vitamin D, both treatments, or randomised to the
+placebo group. For this research project, we assumed that that the
+participants were only randomised to either receive the fish oil
+treatment, vitamin D treatment or the placebo. We did not include the
+interaction between vitamin D and fish oil in our substantive model or
+our imputation model. 
 
+\| \| Vitamin D \| Placebo \|
+\|-------------------\|------------------------\|------------------\| \|
+**Fish Oil** \| N = 342 (not analysed) \| N = 353 \| 
+\| **Placebo** \| N = 332 \| N = 371 \|
 
-  - Data overview
+*Overview*
 
-```{r}
+```{r warning = FALSE}
 print(vital_summary)
 print(age_vital_plot)
 print(bmi_vital_plot)
 print(sex_vital_plot)
 ```
 
-```{r}
+Figure 2.x shows the summary statistics of the VITAL data. It provides information on all 4 treatment groups. Note here that the VITAL data contains missing baseline data as well as post randomisation data. 
+
+Figure 2.x shows the distribution of age in each treatment group, which appear to be normal/ positive skewed distributions. 
+
+Figure 2.x shows the distribution of body mass index in each treatment group, these appear to be positively skewed with a bmi between 20 and 40. This shows a range between healthy weighted and obese participants. 
+
+Figure 2.x is the distribution of males and females in the VITAL data. Similar to the acupuncture trial, the participants are predominantly female. 
+
+```{r warning=FALSE}
 print(pain_base_vital_plot)
 print(pain_yr1_vital_plot)
 print(pain_yr2_vital_plot)
 print(pain_yr3_vital_plot)
 print(pain_yr4_vital_plot)
 ```
-    
+
+Figure 2.x,2.x,2.x,2.x,2.x shows the distribution of the knee pain from baseline until 4 years post randomisation. In all treatment groups it appears that the distributions follow a positive/ near normal distribution and skews more positive as time goes on. This occurs in all groups. Each time-point has an incomplete distribution due to missing data. 
+
+
 *Original estimand in VITAL study*
 
-Our estimand for this dataset is the difference in mean knee pain at the final time point of 4 years post randomisation $pain_yr4$ which is modelled by 
-$$\text{pain_yr4}_i = \beta_0 + \beta_1\text{fishoilactive}_i + \beta_2\text{vitdactive}_i + \beta_3\text{pain_base}_i \varepsilon_i$$ in which
+Our estimand for this dataset is the difference in mean knee pain at the
+final time point of 4 years post randomisation $pain_yr4$ which is
+modelled by
+$$\text{pain_yr4}_i = \beta_0 + \beta_1\text{fishoilactive}_i + \beta_2\text{vitdactive}_i + \beta_3\text{pain_base}_i \varepsilon_i$$
+in which
 
-- $text{pain_yr4}_i$ is the knee pain score for individual $i$ at the final time point of 4 years post randomisation. 
-- $\beta_0$ is the intercept parameter which represents the knee pain score when there is no treatment of vitamin D or fish oil given and no baseline knee pain score is recorded. 
-- $\beta_1$ is the effect of being randomised to the fishoil treatment group. This is the treatment effect of interest in our fishoil only missingness analysis. 
-- $\beta_2$ is the effect of being randomised to the vitamin D treatment group. This is the treatment effect of interest in our vitamin D only missingness analysis. 
-- $\beta_3$ is the effect of the baseline knee pain score pre-randomisation. 
-- $\varepsilon$ is the residual error of individual $i$ 
+-   $text{pain_yr4}_i$ is the knee pain score for individual $i$ at the
+    final time point of 4 years post randomisation.
+-   $\beta_0$ is the intercept parameter which represents the knee pain
+    score when there is no treatment of vitamin D or fish oil given and
+    no baseline knee pain score is recorded.
+-   $\beta_1$ is the effect of being randomised to the fishoil treatment
+    group. This is the treatment effect of interest in our fishoil only
+    missingness analysis.
+-   $\beta_2$ is the effect of being randomised to the vitamin D
+    treatment group. This is the treatment effect of interest in our
+    vitamin D only missingness analysis.
+-   $\beta_3$ is the effect of the baseline knee pain score
+    pre-randomisation.
+-   $\varepsilon$ is the residual error of individual $i$
 
 ## Missing analysis
 
 **Acupuncture Data**
 
-The summary statistics of the acupuncture trial data shows that all baseline variables have been observed. It appears two post-randomisation outcome variables contain missing data. This pattern would be described as a multivariate monotonic pattern as the percentage of missing data increases at each follow up time point, which is common in longitudinal studies. We can visualise this in the plot below. 
+The summary statistics of the acupuncture trial data shows that all
+baseline variables have been observed. It appears two post-randomisation
+outcome variables contain missing data. This pattern would be described
+as a multivariate monotonic pattern as the percentage of missing data
+increases at each follow up time point, which is common in longitudinal
+studies. We can visualise this in the plot below.
 
 ```{r}
 print(acu_miss_perc_plot)
 ```
-Figure 2.x: Proportion of missing data (dark green) in outcome variables $pk2$ and $pk5$. This follows a monotonic missing data pattern.
 
-If we separate the acupuncture trial data into the treatment group and control group, we can observe that there is a higher percentage of missing data in the control group. 
+Figure 2.x: Proportion of missing data (dark green) in outcome variables
+$pk2$ and $pk5$. This follows a monotonic missing data pattern.
+
+If we separate the acupuncture trial data into the treatment group and
+control group, we can observe that there is a higher percentage of
+missing data in the control group.
 
 ```{r}
 print(acu_miss_perc_group)
 ```
-Figure 2.x: Higher percentage of missing data in control group 
 
-If we investigate the missing data pattern in more detail, we can see that the pattern is similar in both groups. In the plot below, we can see that the pattern in which the three headache severity scores $pk1$, $pk2$ and $pk5$ are observed (1,1,1) followed by the pattern in which both post-randomised headache severity scores contain missing data (1,0,0). 
+Figure 2.x: Higher percentage of missing data in control group
+
+If we investigate the missing data pattern in more detail, we can see
+that the pattern is similar in both groups. In the plot below, we can
+see that the pattern in which the three headache severity scores $pk1$,
+$pk2$ and $pk5$ are observed (1,1,1) followed by the pattern in which
+both post-randomised headache severity scores contain missing data
+(1,0,0).
 
 ```{r}
 print(acu_miss_pattern_plot)
 ```
-Figure 2.x: Missing data pattern is similar in both groups (1=observed, 0=missing)
 
+Figure 2.x: Missing data pattern is similar in both groups (1=observed,
+0=missing)
 
 **VITAL data**
 
-The summary statistics of the VITAL data showed, unlike the acupuncture trial data, there are also baseline variables that contain missing data as well as the post randomised variables. A non-monotic multivariate pattern appears to show here as there is a great proportion of missing data in the knee pain score at the first year post randomisation, which drastically decreases in year 2, then steadily increases again. 
+The summary statistics of the VITAL data showed, unlike the acupuncture
+trial data, there are also baseline variables that contain missing data
+as well as the post randomised variables. A non-monotic multivariate
+pattern appears to show here as there is a great proportion of missing
+data in the knee pain score at the first year post randomisation, which
+drastically decreases in year 2, then steadily increases again.
 
 ```{r}
 print(vital_miss_perc_plot)
 ```
-Figure 2.x: Non-monotonic pattern across out knee pain scores in VITAL data. 
 
-Recall that the VITAL data set contains 4 different combinations of treatment. Separating this out in the plot below we can see the percentage of missing data in each knee pain time point variable in each group. The proportion appears to be similar in each group with year 2 post randomisation containing the most missing data. 
+Figure 2.x: Non-monotonic pattern across out knee pain scores in VITAL
+data.
+
+Recall that the VITAL data set contains 4 different combinations of
+treatment. Separating this out in the plot below we can see the
+percentage of missing data in each knee pain time point variable in each
+group. The proportion appears to be similar in each group with year 2
+post randomisation containing the most missing data.
 
 ```{r}
 print(vital_miss_perc_group_plot)
 ```
-Figure 2.x: Percentage of missing data across baseline and 4 follow-up time points. Non-monotonic pattern appears similar in 4 randomised groups. 
 
-Looking at the possible missing data patterns in the 4 combinatory groups, they are mostly similar with little anomalies. As this dataset has more time-points recorded than the acupuncture trial data, and more treatmenr groups, there are more possible missing data patterns to observe. The most common data pattern still stands as (1,1,1,1,1) in which data is observed at all time-points.  
+Figure 2.x: Percentage of missing data across baseline and 4 follow-up
+time points. Non-monotonic pattern appears similar in 4 randomised
+groups.
+
+Looking at the possible missing data patterns in the 4 combinatory
+groups, they are mostly similar with little anomalies. As this dataset
+has more time-points recorded than the acupuncture trial data, and more
+treatmenr groups, there are more possible missing data patterns to
+observe. The most common data pattern still stands as (1,1,1,1,1) in
+which data is observed at all time-points.
 
 ```{r}
 print(vital_miss_pattern)
 ```
-Figure 2.x: Missing data patterns across 4 treatment groups in VITAL data. 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-  
-  
-  
-  
-  
+
+Figure 2.x: Missing data patterns across 4 treatment groups in VITAL
+data.
+
 # Methods
 
 ## Data wrangling
@@ -610,14 +726,10 @@ print(SA_combined_acu_plot)
 print(SA_combined_vital_all_plot)
 ```
 
-#heatmap attempt for acupuncture
-cat_heatmap_acu_plot
+#heatmap attempt for acupuncture cat_heatmap_acu_plot
 cont_heatmap_acu_plot
 
-#heatmap attempt for vital 
-cont_heatmap_fishoil_plot
-
-
+#heatmap attempt for vital cont_heatmap_fishoil_plot
 
 # Result
 
@@ -646,5 +758,3 @@ cont_heatmap_fishoil_plot
 
 -   further work: simulate complete data, and compare accuracy between
     methods
-
-
