@@ -57,30 +57,15 @@ load("~/Missing-Data/.github/workflows/report_plots.RData")
 
 *Longitudinal Study Design*
 
-Longitudinal studies are a type of research design in which repeated
-measures of variables are collected from participants over different
-time points. They provide a comprehensive understanding of the direction
-and degree of change over time, typically in years or even decades.
-While the information provided in longitudinal studies is beneficial for
-establishing relationships, the nature of the design faces challenges
-while attempting to retain the participants involved in the study.
+Longitudinal studies are research designs in which data are collected from the same participants at multiple time points. They provide valuable insights into how variables change over time—often over several years or decades. While this design is powerful for understanding causal relationships and long-term trends, it presents significant challenges in retaining participants across all waves of data collection.
 
-Longitudinal trials requires data to be collected from participants over
-set time points using a consistent method of collection. It is important
-that the researchers attempt to maximize the design so non-contact or
-non-cooperation is unlikely. However missing data is almost inevitable
-due to the study duration and complexity.
+Longitudinal trials require consistent data collection methods at predefined intervals. Researchers must work to minimize participant dropout or non-response. However, due to the extended duration and complexity of these studies, missing data is almost inevitable.
 
-Clinical trials are bio medical or behavioural research studies that
-study the effect of certain interventions or treatment on participants.
-These trials are also subject to missing participant data which could be
-due to time consumption, illness or family commitments. This can be an
-issue as loss of data can reduce robustness of the results. Ignoring the
-missing data altogether introduces bias in to the results as we are
-choosing to ignore informative data even if we did not observe it.
-Removing the missing data unavoidably reduces the sample size of the
-study therefore reducing statistical power which is important in
-establishing a valid treatment effect.
+Similarly, clinical trials which evaluate the effects of biomedical or behavioral interventions are also vulnerable to missing data. Participants may miss follow-ups due to illness or other commitments. This loss of data can compromise the study’s validity. Ignoring missing data introduces bias, as we’re disregarding potentially informative cases. For instance, if participants drop out due to adverse effects from the treatment, the missing data is not random—this introduces attrition bias, which can distort estimates of the treatment’s effect.
+
+Removing incomplete cases reduces the sample size, which in turn decreases statistical power, limiting the ability to detect valid treatment effects.
+
+In statistical software like R, missing values are represented as NA. When fitting models like linear regression, R automatically excludes any subjects with missing values in either predictor or outcome variables. While convenient, this method can lead to selection bias if the missingness is systematic.
 
 ## Project Objective
 
@@ -164,10 +149,43 @@ print(missing_pattern_table)
 
 ## Literature and Limitations
 
--   Existing literature reveals inconsistent reporting and handling
+*Current literature*
+
+(Spineli et al. 2015) 
+- after 2009
+- 190 systematic reviews
+- 175 contained missing data in one study
+- Randomised controlled trial
+- 35% reported implications of missing data
+- 78% performed intention to treat/ including trials imputed outcome data
+- less than 20% performed sensitivity analysis
+
+    
+(Hunt et al 2021) 
+- systematic review 2018 and 2019 
+- 62 studies; 2726 articles
+- 56% studies reported missing data
+  - 11 reported potntial bias
+  - 19 reported missing data handling methid
+    - 13 Complete case
+    - 2 multiple imputation
+    - 2 used CCA and MI
+    - 1 Mean imputation
+    - 1 imputed similar variable info
+    
+- pharmacoepidemiologic multi-database studies
+
+(Baker et al. 2025)
+- 229 studies observational studies UNOS 
+- 78 reported how they use missing data
+- CCA common (41)
+- multiple imp (22)
+- other methods (15)
+- 31 removed covariates from analysis
+
+Existing literature reveals inconsistent reporting and handling
     practices.(Power 2014)
--   Consequences: bias, reduced efficiency, invalid conclusions if not
-    handled properly.
+
 
 # Real World Data
 
@@ -271,7 +289,7 @@ our imputation model.
 
 *Overview*
 
-There are x variables recorded in the VITAL data, the following table refers to a subset of the variables that we frequently use
+There are x variables recorded in the VITAL data, the following table refers to a subset of the variables that we frequently use. 
 
 ```{r}
 print(vital_var_table)
