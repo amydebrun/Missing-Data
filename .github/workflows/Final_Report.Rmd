@@ -521,7 +521,7 @@ We began our analysis with basic methods to serve as a comparison benchmark for 
 For both data sets, given that our estimand is the mean difference in pain scores at the end of the study, we fit a model regressing the final pain score on treatment group and baseline pain score. If the data are Missing Completely At Random (MCAR), complete case analysis (CCA) can yield valid inference. For simplicity and to conserve computational resources, we did not adjust for additional baseline covariates. To maintain comparability across methods, we omit these covariates in the other analyses as well.
 
 We applied the following models for each dataset:
-```{r}
+```{r, eval=FALSE}
 # For acupuncture data set
 acu_CAA <- lm(pk5 ~ group + pk1 , data = acu_wide)
 # For VITAL data set
@@ -546,14 +546,14 @@ Under these assumptions, CCA can provide unbiased estimates. However, they are r
 
 This can be expressed in the mathematics form, assuming outcome of interest Y MAR depends on baseline covaraites X
 
-$$\begin{align*}
+\begin{align*}
   Pr(Ri=r \mid Yi, Xi) = Pr(Ri=r \mid Xi)
-  \end{align*}$$ 
+  \end{align*}
   
 Thus, we can infer under MAR, the distribution of outcome within covaraites is the same in the observed data, the unobserved
 data, and the population. 
 
-$$\begin{align*}
+\begin{align*}
   & Pr(Yi \mid Ri=r, Xi) \\ 
   & = \displaystyle \frac{Pr(Ri=r,Yi,Xi)}{Pr(Ri=r,Xi)} \\
   & = \displaystyle \frac{Pr(Ri=r \mid Yi,Xi)Pr(Yi,Xi)}{Pr(Ri=r \mid Xi)Pr(Xi)} 
@@ -561,7 +561,7 @@ $$\begin{align*}
   & Assuming \ \ \Pr(Ri=r \mid Yi, Xi) = Pr(Ri=r \mid Xi) \\
   & = \displaystyle \frac{Pr(Yi,Xi)}{Pr(Xi)} \\
   & = Pr(Yi \mid Xi)
-  \end{align*}$$
+  \end{align*}
 
 The key issue is that we aim to include as much relevant information as possible in the set of predictors X to make the MAR assumption more plausible and robust. As discussed above, more statistically principled methods—such as multiple imputation or mixed-effects models—allow us to incorporate a broader set of variables and handle missingness more effectively. However, it is important to note that the MAR assumption is fundamentally untestable. Therefore, to assess the robustness of our conclusions, we must perform sensitivity analyses, which are presented in later sections.
 
@@ -573,7 +573,7 @@ However, this assumption is not convincing in either of the datasets analyzed he
 
 Below is the R code used to perform LOCF imputation on the data in wide format. Following imputation, we fitted the resulting dataset using the lm() function, consistent with the approach used in the complete case analysis (CAA):
 
-```{r}
+```{r,eval=FALSE}
 # LOCF function
 LOCF <- function(data, columns){
   for (col in columns) {
@@ -597,7 +597,7 @@ As with LOCF, this assumption is not convincing in either of the datasets analyz
 
 Below is the R code used to perform mean imputation on the data in wide format. Following imputation, we fitted the resulting dataset using the lm() function, as in the complete case analysis (CAA):
 
-```{r}
+```{r, eval=FALSE}
 mean_impute <- function(data) {
   data <- data.frame(
     lapply(data, function(x) {
@@ -643,18 +643,18 @@ Once multiple imputed datasets are generated, Rubin’s rules are used to combin
 2. Fit the substantive model (e.g., a linear model or mixed-effects model) to each imputed dataset, obtaining Parameter estimate $\hat{\beta}_{k}$ and Variance estimate $\hat{\sigma}_{k}^{2}$ for each k=1,2,...,K
 
 3. Compute the pooled estimate $\hat{\beta}_{MI}$ and its total variance $\hat{V}_{MI}$:
-$$\begin{align*}
+\begin{align*}
   \hat{\beta}_{MI} = \frac{1}{K} \sum_{k=1}^{K}{\hat{\beta}_{k}} \\
   \hat{V}_{MI} = \hat{W} + (1 + \frac{1}{K}) \hat{B} \\
   \hat{W} = \frac{1}{K} \sum^{K}_{k=1}{\hat{\sigma}^{2}_{k}} \\
   \hat{B} = \frac{1}{K-1} \sum^{K}_{k=1}({\hat{\beta}_{k}} - \hat{\beta_{MI}})^{2} \\
-  \end{align*}$$
+  \end{align*}
 
 4. To test a null hypothesis $\hat{\beta}_{MI} = \beta^{0}$ use a t-statistic with $\nu$ degrees of freedom. This allows us to construct confidence intervals and perform hypothesis testing, reflecting the additional uncertainty due to imputation.
-$$\begin{align*}. 
+\begin{align*}
   T = \frac{\hat{\beta}_{MI} - \beta^{0}}  {\sqrt{\hat{V}_{MI}}} \\
   \nu = (K-1)[1 + \frac{\hat{W}}{(1 + 1/K) \hat{B}}]^{2}
-  \end{align*}$$
+  \end{align*}
 
 #### Sequential regression MI
 
@@ -662,11 +662,11 @@ In many longitudinal studies, the missing data pattern is approximately monotoni
 
 To justify this, consider the joint distribution of the outcome vector for individual $i$ can be factorized as:
 
-$$\begin{align*}
+\begin{align*}
     f(Y_{i,1},Y_{i,2},...,Y_{i,p}) = f(Y_{i,p} \mid Y_{i,1},...,Y_{i,p-1}) * 
     f(Y_{i,p-1} \mid Y_{i,1},...,Y_{i,p-2}) * ... * f(Y_{i,2} \mid Y_{i,1}) 
     * f(Y_{i,1})
-    \end{align*}$$
+    \end{align*}
     
 Under a monotonic missingness pattern, for each missing value $Y_{i,j}$ all preceding values $Y_{i,1},...,Y_{i,j-1}$ are observed. If we also assume Missing At Random (MAR), then each of these conditional distributions can be estimated directly from the observed data. This provides a principled basis for sequential regression imputation, where each variable is regressed on the variables preceding it in order, and missing values are imputed based on those conditional models.
 
@@ -674,20 +674,20 @@ Suppose we have $i=1,...,n$ individual with $j=1,...,p$ variables. When the miss
 
 1. specify the model
 
-$$\begin{align*}    
+\begin{align*}    
     Y_{i,j} = (1,Y_{i,1},...,Y_{i,j-1})^{T} * \beta_{j} + 
     e_{i,j},\ {e_{i,j}^{i.i.d.} \sim{N} (0,\sigma^{2}_{j})}
-    \end{align*}$$
+    \end{align*}
     
 2. Under the monotonic pattern, for every missing $Y_{i,j}$ we assume that $Y_{i,1},...,Y_{i,j-1}$ are fully observed. We fit the regression model using ordinary least squares (OLS) to obtain estimates $\hat{\beta}_{j},\hat{\sigma}_{j}^{2}$
 
 3. To incorporate uncertainty, we draw new parameters $\beta_{j}^{*},\sigma_{j}^{*2}$ from their posterior distributions:
 
-$$\begin{align*}
+\begin{align*}
    \sigma_j^{*2} = \frac{\hat{\sigma}_j^2 (n_j - j)}{z} \\
    \beta^* \sim N(\hat{\beta}, \sigma_j^{*2} A_j) \\
    A_j = (\sum_{i=1}^{n_j} x_{i,j} x_{i,j}^T)^{-1}
-   \end{align*}$$
+   \end{align*}
 
 4. For individuals with missing $Y_{i,j}$ generate imputations from the model: 
 $Y_{i,j} = (1,Y_{i,1},...,Y_{i,j-1}) \beta^{*} + e^{*}_{i,j}$, $e_{i,j}^{*} \sim{N} (0,\sigma^{*2}_{j})$
@@ -701,12 +701,12 @@ This sequential regression method is applicable to datasets with a monotonic mis
 When the missing data pattern is non-monotonic, as in the VITAL dataset, sequential regression is no longer appropriate. Instead, we can apply joint modeling, which makes no assumption about the missingness pattern but assumes the missing data mechanism is ignorable (typically, Missing At Random).
 
 Under joint modeling, we assume that the complete multivariate outcome vector follows a multivariate normal distribution:
-$$\begin{align*}
+\begin{align*}
     & Y \sim N(\beta,\ \Omega) \\
     & Y = (Y_{i,1},Y_{i,2},...,Y_{i,p})^{T} \\
     & \beta = (\beta_{0,1},\beta_{0,2},...,\beta_{0,p})^{T} \\
     & \Omega \ \text{is the covariance matrix}
-    \end{align*}$$
+    \end{align*}
  
 To estimate the parameters $\beta$ and $\Omega$ and impute missing values, Gibbs sampling is one of the approaches. This algorithm draws each parameter in turn, conditional on the current values of all other parameters and the data.
 
