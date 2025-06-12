@@ -30,26 +30,13 @@ editor_options:
     wrap: 72
 ---
 
-```{r setup, include=FALSE, cache=TRUE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
-library(mice)
-library(tidyverse)
-library(haven)
-library(lme4)
-library(broom.mixed)
 library(meta)
-library(dplyr)
-library(naniar)
-library(tidymodels)
 library(gtsummary)
-library(tinytex)
 library(ggdag)
 library(ggplot2)
-source("R scripts/Functions.R")
-source("R scripts/VITAL data formats.R")
-source("R scripts/Acupuncture data formats.R")
 load("~/Missing-Data/.github/workflows/report_plots.RData")
-
 ```
 
 # Introduction
