@@ -174,6 +174,50 @@ percent_miss <- acu_miss / (acu_miss + acu_observed)
 percent_miss
 ```
 
+```{r, eval=FALSE}
+# Code to save plots and tables, only run when required
+save(
+  # Tables and summaries
+  missing_pattern_table,
+  acu_var_table,
+  acu_summary,
+  vital_var_table,
+  vital_summary,
+
+  # Acupuncture plots
+  acu_sex_plot,
+  acu_age_plot,
+  acu_pk1_plot,
+  acu_pk2_plot,
+  acu_pk5_plot,
+  acu_miss_perc_plot,
+  acu_miss_perc_group,
+  acu_miss_pattern_plot,
+  acu_plot_categorical,
+  acu_plot_compare,
+  acu_plot_imp,
+
+  # VITAL plots
+  sex_vital_plot,
+  age_vital_plot,
+  bmi_vital_plot,
+  pain_base_vital_plot,
+  pain_yr1_vital_plot,
+  pain_yr2_vital_plot,
+  pain_yr3_vital_plot,
+  pain_yr4_vital_plot,
+  vital_miss_perc_plot,
+  vital_miss_perc_group_plot,
+  vital_miss_pattern,
+  vital_plot_categorical,
+  vital_plot_compare,
+  vital_plot_impt,
+
+  # File path
+  file = "report_plots.RData"
+)
+ 
+```
 
 
 
