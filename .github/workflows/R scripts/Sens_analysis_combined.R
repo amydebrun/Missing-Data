@@ -86,7 +86,7 @@ SA_combined_acu_plot <- ggplot(
     panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
     panel.background = element_rect(fill = "white", color = NA),
     plot.background = element_rect(fill = "white", color = NA),
-    legend.position = "bottom"
+    legend.position = "none"
   )
 
 #vital data continous 
