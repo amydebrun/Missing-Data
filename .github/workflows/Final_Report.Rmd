@@ -36,7 +36,7 @@ library(meta)
 library(gtsummary)
 library(ggdag)
 library(ggplot2)
-load("~/Missing-Data/.github/workflows/report_plots.RData")
+load("report_plots.RData")
 ```
 
 # Introduction
@@ -316,7 +316,7 @@ Figure 2.x,2.x,2.x,2.x,2.x shows the distribution of the knee pain from baseline
 Our estimand for this dataset is the difference in mean knee pain at the
 final time point of 4 years post randomisation $pain_yr4$ which is
 modelled by
-$$\text{pain_yr4}_i = \beta_0 + \beta_1\text{fishoilactive}_i + \beta_2\text{vitdactive}_i + \beta_3\text{pain_base}_i \varepsilon_i$$
+$$painyear4_i = \beta_0 + \beta_1 fishoilactive_i + \beta_2 vitdactive_i + \beta_3 painbase_i + \varepsilon_i$$
 in which
 
 -   $text{pain_yr4}_i$ is the knee pain score for individual $i$ at the
@@ -869,7 +869,7 @@ For the VITAL dataset, which has around 50% missingness, we increased K from 5 t
 -   Violation of MAR possible
 -   shifting method (choosing delta, how to model)
 
-```{r}
+```{r, eval=FALSE}
 print(SA_combined_acu_plot)
 print(SA_combined_vital_all_plot)
 ```
