@@ -769,7 +769,7 @@ A key parameter in determiningK is $\gamma_{0}$, which represents the fraction o
 
 To address this, Bodner (2008) proposed a simple and conservative strategy: using the proportion of complete cases in the dataset as a proxy for $1-\gamma_{0}$, thereby estimating $\gamma_{0}$ conservatively. This approach allows for an informed yet practical choice of K, especially when precise calculation of the missing information is not feasible.
 
-In our analysis, we used K=5 imputations as a baseline, while recognizing that more imputations may be needed in cases with higher levels of missingness or if more precise estimates of standard errors are required.
+In our analysis, we used K=5 imputations as a baseline, while recognizing that more imputations may be needed in cases with higher levels of missingness or if more precise estimates of standard errors are required. We will explore the implication of changing K in the following sessions.
 
 **Choose 3-5 imputations**
     
@@ -813,22 +813,58 @@ This rule provides a useful upper bound for choosing K, especially when balancin
 
 ## Changing substantive model
 
--   Simple linear regression
--   LME (completed, imputed properly or not, better method to account for repeat measurement)
--   Change estimand
--   Change linear regression to polynomial, splie...
+Another important decision point in the missing data handling process is the choice of the substantive model—the model used for the final analysis after imputation. One natural alternative to standard multiple linear regression is the linear mixed-effects model (LME).
+
+As discussed earlier, LME has the advantage of leveraging all available observed data, even in the presence of missingness. In fact, under certain conditions, LME can yield valid inferences without requiring multiple imputation, as long as the missingness mechanism is ignorable (e.g., MAR) and auxiliary variables are not essential.
+
+Moreover, even with fully observed data—either originally complete or completed through imputation—LME remains a superior choice in many longitudinal settings because it explicitly accounts for within-subject correlation from repeated measurements. This leads to more accurate estimates and better statistical efficiency than standard linear models, which ignore the data’s hierarchical structure.
+
+In this project, we focus on multiple linear regression and LME, both of which assume a linear relationship between covariates and the outcome. However, when selecting a substantive model, it's important to evaluate this assumption. In cases where linearity is questionable, alternative models—such as polynomial regression or spline-based models—may provide a better fit and should be considered.
+
+An additional benefit of using LME is that it allows for flexible modeling of time. Specifically, it enables us to treat time as a continuous variable, rather than as a categorical factor, which can improve interpretability and statistical power. This modeling choice will be explored further in a later section.
 
 ## Examing using forest plot
 
--   We use several forest plot to show how our estimand changes between
-    methods
--   First plot compared 6 methods...
--   2nd plot we changed estimand... ...
--   3rd plot we change MI methods
--   At its simplest, this means regressing the response on the constant
-    alone, which estimates its marginal mean.
+To visually compare how our estimand (treatment effect) changes across different missing data methods, we present results using a series of forest plots. These plots allow us to directly assess the impact of each imputation or modeling strategy on the estimated effect and its confidence interval.
 
-## Sensitive analysis
+The same process was applied to both the Acupuncture and VITAL datasets. For the VITAL trial, which follows a 2×2 factorial design, we simplify the analysis—as previously discussed—by treating fish oil and vitamin D as if they were tested in two separate randomized controlled trials. This means we ignore potential interaction effects between the two treatments and estimate their effects independently, which allows for a more straightforward comparison across methods.
+
+### Change imputation method and substantive model
+
+We evaluated the impact of missing data by systematically varying both the imputation method and the substantive model used in the analysis. By doing that, we try to isolate the effects of changing either the imputation strategy or the analysis model, and highlights the practical impact of each decision on the resulting treatment effect estimates.
+
+First, as described earlier, we applied three anchoring methods: Complete Case Analysis (CAA), Last Observation Carried Forward (LOCF), and mean imputation. Each was followed by multiple linear regression to estimate the treatment effect.
+
+Next, we performed Multiple Imputation (MI) using the predictive mean matching method with 5 imputations, again analyzing the imputed datasets using multiple linear regression—maintaining consistency with the anchoring models for fair comparison.
+
+Then, we changed the substantive model to a linear mixed-effects model (LME), without performing any imputation. This approach uses all available observed data and accounts for repeated measurements, offering a more efficient use of the data under the MAR assumption.
+
+Finally, we combined both improvements: we performed MI using predictive mean matching with 5 imputations, and analyzed the completed datasets using the LME model.
+
+### Change estimand
+
+Assuming our primary interest remains in estimating the mean difference in pain scores at the end of the study for both datasets, we explore how this estimand can be more efficiently estimated using interim outcome data.
+
+In the two methods that used Linear Mixed-Effects (LME) models as the substantive model in the previous section, we took advantage of the repeated measures structure by treating time as a continuous variable. This approach allows us to model pain trajectories over time, rather than focusing only on discrete timepoints. By doing so, we are able to leverage all available interim outcomes, improving the precision of the estimated treatment effect at the final timepoint—even when some observations are missing.
+
+### Change FSC methods
+
+Even within the FCS (Fully Conditional Specification) framework, there are multiple imputation strategies we can explore. We begin with deterministic prediction (method="norm.predict"), which imputes missing values using predicted values from a linear regression model. Since no uncertainty is added, this is not technically multiple imputation—each missing value is replaced by a single fixed estimate.
+
+To account for uncertainty in the outcome, we adds random noise to the regression prediction (method="norm.nob"). Further, to reflect uncertainty in the model parameters, norm draws both regression coefficients and residual variance from their posterior distributions, providing a fully Bayesian imputation (method="norm").
+
+Alternatively, instead of model-based predictions, we can impute using observed values. predictive mean matching (method="pmm") selects donor values from observed data that are closest in predicted value to the missing case. Weighted predictive mean matching (method="midastouch") extends this by weighting the distance between predicted values, offering a more robust variant of PMM.
+
+Or even, if we prefer a non-parametric imputation approach, we can use the methods like random sampling (method="sample"), which imputes missing values by randomly sampling from the observed values of the same variable. This method does not rely on any model or predictor variables, and instead preserves the marginal distribution of the variable. 
+
+### Change imputation numbers
+
+As discussed above, there are various arguments for choosing a higher number of imputations based on the fraction of missing information and the desired precision of inference. To explore the impact of increasing K, we adjusted the number of imputations accordingly in both datasets.
+
+For the Acupuncture dataset, where approximately 25% of cases have missing data, we increased K from the default 5 to 20 and 25.
+For the VITAL dataset, which has around 50% missingness, we increased K from 5 to 20 and then to 50.
+
+### Sensitive analysis
 
 -   Violation of MAR possible
 -   shifting method (choosing delta, how to model)
@@ -838,18 +874,33 @@ print(SA_combined_acu_plot)
 print(SA_combined_vital_all_plot)
 ```
 
-#heatmap attempt for acupuncture cat_heatmap_acu_plot
+#### heatmap attempt for acupuncture cat_heatmap_acu_plot
 cont_heatmap_acu_plot
 
-#heatmap attempt for vital cont_heatmap_fishoil_plot
+#### heatmap attempt for vital cont_heatmap_fishoil_plot
 
 # Result
 
 ## Comparing different methods
 
+```{r}
+acu_plot_categorical
+vital_plot_categorical
+```
+
 ## Changing estimand
 
-## Changing imputation methods
+```{r}
+acu_plot_compare
+vital_plot_compare
+```
+
+## Changing imputation methods and imputation numbers
+
+```{r}
+acu_plot_imp
+vital_plot_impt
+```
 
 ## Sensitive analysis
 
@@ -870,3 +921,5 @@ cont_heatmap_acu_plot
 
 -   further work: simulate complete data, and compare accuracy between
     methods
+-   Change substantive model
+-   Use joint modelling
