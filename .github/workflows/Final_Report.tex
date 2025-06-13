@@ -75,7 +75,7 @@ under circumstances.Supplement information. Code Available at
     Missingness Mechanisms
   }
 
-\section{Introduction}\label{introduction}
+\section{Introduction - amy}\label{introduction---amy}
 
 \subsection{Missing data in longitudinal
 study}\label{missing-data-in-longitudinal-study}
@@ -339,10 +339,14 @@ months and 12 months.
 
 Figure 2.x is the summary statistics of the acupuncture trial data. Note
 pk2 and pk5 are post randomisation variables and contain missing data.
+
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-4-1.pdf}}
+
 Figure 2.x is the distribution of sex in both treatment groups of the
 acupuncture trial data. The participants are predominantly female.
+
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-5-1.pdf}}
+
 Figure 2.x is the distribution of age in both treatment groups. Both
 distributions are negatively skewed, predominantly middle aged and
 older.
@@ -646,7 +650,7 @@ which data is observed at all time-points.
 Figure 2.x: Missing data patterns across 4 treatment groups in VITAL
 data.
 
-\section{Methods}\label{methods}
+\section{Methods - kent}\label{methods---kent}
 
 \subsection{Data wrangling}\label{data-wrangling}
 
@@ -1420,52 +1424,67 @@ missing data, we increased K from the default 5 to 20 and 25. For the
 VITAL dataset, which has around 50\% missingness, we increased K from 5
 to 20 and then to 50.
 
-\subsubsection{Sensitive analysis}\label{sensitive-analysis}
+\subsubsection{Sensitive analysis - Amy}\label{sensitive-analysis---amy}
 
-As mentioned in our introductory section, the missingness mechanisms are
-unverifiable. It is most common to assess data as if they were MAR
-although the could fall under MNAR. We decided to conduct a sensitivity
-analysis as we decided it was important to investigate the robustness of
-the estimated treatment effect when assuming different missingness
-mechanism assumptions. Sensitivity analysis is a recommended assessment
-yet rarely conducted in practice. This could be due to overall
-unappreciated missing data in studies. It is also complex and time
-consuming to perform, which requires specialised knowledge.
+As mentioned in our introduction, missing data mechanisms are
+unverifiable. While it is most common to assume that data are MAR, in
+reality, the mechanism could fall under MNAR. We conducted a sensitivity
+analysis to assess the robustness of the estimated treatment effect
+under alternative missingness assumptions. Sensitivity analysis is
+recommended by the National Research Council (2010) as a best practice
+for handling missing data; however, it is rarely conducted in practice.
+This may reflect an underappreciation of the impact of missing data in
+many studies, as well as the complexity and specialised expertise
+required to perform such analyses.
 
-Fiero et al.~2016 - systematic review of 86 cluster randomised trials,
-80 reported missing outcome data, 14 trials reported sensitivity
-analysis
+A systematic review by Fiero et al.~(2016) examined 86 cluster
+randomised trials published between 2013 and 2014. Among the 80 trials
+that reported missing outcome data, only 14 (18\%) reported conducting a
+sensitivity analysis.
 
-Our chosen method of sensitivity analysis is multiple imputation with
-\(\delta\) adjustment.
+In our study, we implemented multiple imputation with \(\delta\)
+-adjustment as our sensitivity analysis approach. In this method, a
+constant shift \(\delta\) is added to the imputed values after the
+initial imputation step. This enables us to explore a range of plausible
+scenarios by re-estimating the treatment effect under different
+assumptions about the missing data mechanism. By applying these shift
+parameters, we can model situations in which participants with missing
+data are assumed to have systematically better or worse outcomes than
+those observed, thereby testing the stability of our conclusions when
+relaxing the MAR assumption.
+
+The shift can be broken down in to:
+
+\[\delta = \delta_\mathrm{MAR} + \delta_\mathrm{MNAR}\] where -
+\(\delta_\mathrm{MAR}\): mean difference caused by the predictors in the
+imputation models - \(\delta_\mathrm{MNAR}\): mean difference caused by
+an additional non-ignorable part of the imputation model
 
 \begin{itemize}
 \item
   imputation model; we used a model similar to the our imputation model
-  that we used when perfomring the missing data handling methods
-\item
-  estimands categorical and cotinuous
+  that we used when performing the missing data handling methods
 \item
   choosing delta
 \end{itemize}
 
-wide, impute, data to long
+\(\delta\) -adjustment process:
 
-\begin{itemize}
-\tightlist
-\item
-  code: creating an inlist of predictors for the outcome variable
-\item
-  predictor matrix
-\item
-  post processing; add delta values to the imputed values
-\item
-  loop over delta values which represent a potential bias added to
-  imputed values
-\item
-  runs linear regression for each dataset; maxit =10 max number of
-  iteration pools results -extracts group
-\end{itemize}
+\emph{Acupuncture trial}
+
+The mice() function was used on the wide format of the acupuncture trial
+data with predictors \texttt{group}, \texttt{pk1}. An initial iteration
+was conducted with m=1 in order to extract the post processing command.
+This allows us to add the \(\delta\) to the missing values after they
+have been imputed. This is looped over the range of \(\delta\) values.
+
+Next we performed the main imputation, indicating post processing, using
+predictive mean matching method and maxit=10 to indicate maximum of 10
+iterations. After imputation, a regression model like our substantive
+model is fitted, \(\beta_0 + \beta_1group+\beta_2pk1_i+\varepsilon_i\),
+and the estimates are pooled together.
+
+estimands categorical and continuous
 
 other future methods
 
@@ -1487,26 +1506,26 @@ cont\_heatmap\_acu\_plot
 \paragraph{heatmap attempt for vital
 cont\_heatmap\_fishoil\_plot}\label{heatmap-attempt-for-vital-cont_heatmap_fishoil_plot}
 
-\section{Result}\label{result}
+\section{Result - kent}\label{result---kent}
 
 \subsection{Comparing different
 methods}\label{comparing-different-methods}
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-30-1.pdf}}
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-30-2.pdf}}
-
-\subsection{Changing estimand}\label{changing-estimand}
-
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-31-1.pdf}}
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-31-2.pdf}}
 
-\subsection{Changing imputation methods and imputation
-numbers}\label{changing-imputation-methods-and-imputation-numbers}
+\subsection{Changing estimand}\label{changing-estimand}
 
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-32-1.pdf}}
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-32-2.pdf}}
 
-\subsection{Sensitive analysis}\label{sensitive-analysis-1}
+\subsection{Changing imputation methods and imputation
+numbers}\label{changing-imputation-methods-and-imputation-numbers}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-33-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-33-2.pdf}}
+
+\subsection{Sensitive analysis}\label{sensitive-analysis}
 
 \subsection{Missing data in clinical
 research}\label{missing-data-in-clinical-research}
