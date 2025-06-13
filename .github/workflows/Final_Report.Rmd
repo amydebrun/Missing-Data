@@ -210,7 +210,7 @@ Variables `pk2` and \``pk5` are the follow-up times at 3 months and 12
 months.
 
 ```{r}
-print(acu_summary)
+print(gtsummary::as_kable(acu_summary))
 print(acu_sex_plot)
 print(acu_age_plot)
 ```
@@ -285,7 +285,7 @@ print(vital_var_table)
 
 
 ```{r warning = FALSE}
-print(vital_summary)
+print(gtsummary::as_kable(vital_summary))
 print(age_vital_plot)
 print(bmi_vital_plot)
 print(sex_vital_plot)
@@ -883,23 +883,23 @@ cont_heatmap_acu_plot
 
 ## Comparing different methods
 
-```{r}
-acu_plot_categorical
-vital_plot_categorical
+```{r fig.width=5, fig.height=3}
+print(acu_plot_categorical)
+print(vital_plot_categorical)
 ```
 
 ## Changing estimand
 
-```{r}
-acu_plot_compare
-vital_plot_compare
+```{r fig.width=5, fig.height=3}
+print(acu_plot_compare)
+print(vital_plot_compare)
 ```
 
 ## Changing imputation methods and imputation numbers
 
-```{r}
-acu_plot_imp
-vital_plot_impt
+```{r fig.width=5, fig.height=3}
+print(acu_plot_imp)
+print(vital_plot_impt)
 ```
 
 ## Sensitive analysis
