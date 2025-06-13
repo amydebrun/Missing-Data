@@ -1,6 +1,8 @@
 # SENSITIVITY ANALYSIS : DELTA ADJUSTMENT 
+delta_acu <- c(-2.5,-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5)
+delta_vital <- c(-2.5,-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5)
 #continuous acupuncutre
-delta_acu <- c(-5, -2, 0, 2, 5)
+
 inlist <- c("group", "pk1", "pk5", "time_c", "id")
 pred_cont <- quickpred(acu_wide, minpuc = 0.5, include = inlist)
 imp.all.undamped_cont <- vector("list", length(delta_acu))
@@ -57,7 +59,7 @@ delta_results_cont_acu_plot <- ggplot(delta_results_cont_acu, aes(x = estimate, 
 
 
 #continuous acu placebo
-delta_acu <- c(-5, -2, 0, 2, 5)
+
 inlist <- c("group", "pk1", "pk5", "time_c", "id")
 acu_wide_placebo<-acu_wide%>%filter(group==0)
 pred_cont_placebo <- quickpred(acu_wide_placebo, minpuc = 0.5, include = inlist)
@@ -66,7 +68,7 @@ delta_results_cont_acu_placebo <- data.frame()
 
 for (i in seq_along(delta_acu)) {
   d <- delta_acu[i]
-  imp_init <- mice(acu_wide_placebo, m = 5, maxit = 1, predictorMatrix = pred_cont, seed = 100 + i, print = FALSE)
+  imp_init <- mice(acu_wide_placebo, m = 5, maxit = 1, predictorMatrix = pred_cont_placebo, seed = 100 + i, print = FALSE)
   imp.all.undamped_cont[[i]] <- imp_wide 
   method_cont <- imp_init$method
   post_cont <- imp_init$post
@@ -119,7 +121,7 @@ delta_results_cont_acu_placebo_plot <- ggplot(delta_results_cont_acu_placebo, ae
 ##VITAL FISHOIL
 
 #continuous placebo
-delta_vital <- c(-10,-5,-2,0,2,5,10)  
+ 
 inlist <- c("fishoilactive", "vitdactive", "pain", "pain_base", "time_contin", "Subject_ID")
 vital_wide_placebo <- vital_wide %>% filter(fishoilactive == 0, vitdactive == 0)
 pred_cont_placebo <- quickpred(vital_wide_placebo, minpuc = 0.5, include = inlist)
@@ -241,7 +243,7 @@ delta_results_cont_vitd_plot <- ggplot(delta_results_cont_vitd, aes(x = estimate
 
 #continuous fishoil
 
-delta_vital <- c(-10,-5,-2,0,2,5,10)
+
 inlist <- c("fishoilactive", "vitdactive", "pain", "pain_base", "time_contin", "Subject_ID")
 pred_cont <- quickpred(vital_wide, minpuc = 0.5, include = inlist)
 imp.all.undamped_cont <- vector("list", length(delta_vital))

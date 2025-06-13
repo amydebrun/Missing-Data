@@ -1,6 +1,6 @@
 #COMBINING THE TWO PLOTS TOGETHER - Acupuncture 
-delta_vital <- c(-10,-5,-2,0,2,5,10)
-delta_acu <- c(-5,-2,0,2,5)
+delta_acu <- c(-2.5,-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5)
+delta_vital <- c(-2.5,-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5)
 #cont
 delta_combined_cont_acu <- bind_rows(delta_results_cont_acu, delta_results_cont_acu_placebo)
 delta_combined_cont_acu_plot <- ggplot(delta_combined_cont_acu, aes(x = estimate, y = delta_acu)) +
@@ -47,10 +47,12 @@ delta_combined_cat_acu_plot <- ggplot(delta_combined_cat_acu, aes(x = estimate, 
 delta_combined_cat_acu$estimand<- "Categorical time"
 delta_combined_cont_acu$estimand<- "Continuous time"
 delta_combined_acu_cont_cat<- bind_rows(delta_combined_cat_acu,delta_combined_cont_acu)
+delta_combined_acu_cont_cat$delta_factor <- factor(delta_combined_acu_cont_cat$delta_acu,
+                                                   levels = sort(unique(delta_combined_acu_cont_cat$delta_acu)))
 
 SA_combined_acu_plot <- ggplot(
   delta_combined_acu_cont_cat, 
-  aes(x = estimate, y = delta_acu, shape = estimand, colour = estimand)
+  aes(x = estimate, y = delta_factor, shape = estimand, colour = estimand)
 ) + geom_point(
     data = subset(delta_combined_acu_cont_cat, estimand == "Categorical time"),
     size = 4, position = position_nudge(y = -0.15)

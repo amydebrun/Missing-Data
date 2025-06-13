@@ -19,6 +19,9 @@ keywords:
   - Longitudinal Data
   - Randomized Clinical Trial
   - Real World Data Analysis
+  - Sensitivity Analysis
+  - Multiple Imputation
+  - Missingness Mechanisms
 bibliography: references.bib
 biblio-style: unsrt
 output: rticles::arxiv_article
@@ -64,7 +67,7 @@ While a range of methods are available to handle missing data, they all vary in 
 After initial exploration of the different methods, we also decided to adjust the estimands through data wrangling our chosen datasets to compare how the estimate differs when the estimand is either categorical or continuous and to compare the effects using linear regression or linear mixed effects models. 
 Additionally, we will conduct sensitivity analyses to investigate how treatment effect estimates change under different assumptions about the missing data.
 
-## Missingness Mechanisms
+## Missingness Mechanisms - unverifiable, mcar little test 
 
 Missing data mechanisms are important to consider when choosing which
 sort of missing data handling method to use. There are three mechanisms
@@ -866,13 +869,41 @@ For the VITAL dataset, which has around 50% missingness, we increased K from 5 t
 
 ### Sensitive analysis
 
--   Violation of MAR possible
--   shifting method (choosing delta, how to model)
+As mentioned in our introductory section, the missingness mechanisms are unverifiable. It is most common to assess data as if they were MAR although the could fall under MNAR. We decided to conduct a sensitivity analysis as we decided it was important to investigate the robustness of the estimated treatment effect when assuming different missingness mechanism assumptions. 
+Sensitivity analysis is a recommended assessment yet rarely conducted in practice. This could be due to overall unappreciated missing data in studies. It is also complex and time consuming to perform, which requires specialised knowledge. 
 
-```{r, eval=FALSE}
-print(SA_combined_acu_plot)
-print(SA_combined_vital_all_plot)
-```
+Fiero et al. 2016 - systematic review of 86 cluster randomised trials, 80 reported missing outcome data, 14 trials reported sensitivity analysis 
+
+Our chosen method of sensitivity analysis is multiple imputation with $\delta$ adjustment.
+
+- imputation model;  we used a model similar to the our imputation model that we used when perfomring the missing data handling methods 
+
+- estimands categorical and cotinuous 
+
+- choosing delta 
+
+
+
+wide, impute, data to long 
+
+- code: creating an inlist of predictors for the outcome variable
+- predictor matrix
+- post processing; add delta values to the imputed values 
+- loop over delta values which represent a potential bias added to imputed values
+- runs linear regression for each dataset; maxit =10 max number of iteration 
+pools results
+-extracts group
+
+other future methods
+
+pattern mixture model: this is an alternative method of sensitivity analysis in which the distribution of the outcome is modelled by combining the distribution of the missing values and the observed values. 
+
+$$P(Y,R)=P(Y|R)P(R)=P(Y|R=1)P(R=1)+P(Y|R=0)P(R=0)$$
+
+selection model; model the probability of missingness as a function of the data
+
+
+
 
 #### heatmap attempt for acupuncture cat_heatmap_acu_plot
 cont_heatmap_acu_plot
@@ -903,6 +934,11 @@ print(vital_plot_impt)
 ```
 
 ## Sensitive analysis
+
+```{r, eval=FALSE}
+print(SA_combined_acu_plot)
+print(SA_combined_vital_all_plot)
+```
 
 ## Missing data in clinical research
 

@@ -1,6 +1,6 @@
 # Acupuncture 
-delta_acu <- c(-5,-2,0,2,5)
-delta_vital <- c(-10,-5,-2,0,2,5,10)
+delta_acu <- c(-2.5,-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5)
+delta_vital <- c(-2.5,-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5)
 # Acupuncture categorical treatment
 inlist <- c("group", "pk5", "pk1")
 pred_cat <- quickpred(acu_wide, minpuc = 0.5, include = inlist)
@@ -12,7 +12,7 @@ for (i in 1:length(delta_acu)) {
   d <- delta_acu[i]
   cmd <- paste0(
     "idx <- which(data[,'group'] == 1 & is.na(data[,'pk5'])); ",
-    "imp[[j]]$pk5[idx] <- imp[[j]]$pk5[idx] + ",d)
+    "imp[[j]]$pk5[idx] <- imp[[j]]$pk5[idx] + ",d, ";")
   post_cat["pk5"] <- cmd
   imp_cat <- mice(acu_wide, pred = pred_cat, post = post_cat, maxit = 10,
                   seed = i * 22, print=FALSE)
