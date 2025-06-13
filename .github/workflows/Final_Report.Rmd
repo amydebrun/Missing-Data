@@ -833,6 +833,16 @@ This rule provides a useful upper bound for choosing K, especially when balancin
 -   Violation of MAR possible
 -   shifting method (choosing delta, how to model)
 
+```{r}
+print(SA_combined_acu_plot)
+print(SA_combined_vital_all_plot)
+```
+
+#heatmap attempt for acupuncture cat_heatmap_acu_plot
+cont_heatmap_acu_plot
+
+#heatmap attempt for vital cont_heatmap_fishoil_plot
+
 # Result
 
 ## Comparing different methods
