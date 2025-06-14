@@ -146,8 +146,8 @@ vital_result_oil_cont$treatment <- "Fish Oil"
 vital_result_all <- rbind(vital_result_vitd, vital_result_oil)[5:6,]
 vital_result_all_cont <- rbind(vital_result_vitd_cont, vital_result_oil_cont)
 vital_plot_table <- cbind(vital_result_all, vital_result_all_cont)[,-c(7,8)]
-vital_plot_table[,1] <- factor(c("LME", "LME_MI_pmm"),
-                             levels = rev(c("LME", "LME_MI_pmm")))
+vital_plot_table[,1] <- factor(c("LME", "LME+MI"),
+                             levels = rev(c("LME", "LME+MI")))
 
 vital_plot_compare <- ggplot(vital_plot_table, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
   geom_point(size = 4, aes(color = treatment), color="#a80050", position = position_nudge(y = 0.15)) +
@@ -159,9 +159,9 @@ vital_plot_compare <- ggplot(vital_plot_table, aes(x = estimate, y = Method, xmi
                  height = 0.4, color = "lawngreen", position = position_nudge(y = -0.15)) +
   facet_wrap(~ treatment, scales = "free_x") +
   labs(
-    x = "Treatment Effect",
+    x = "Mean differnce in pain score by the end of study",
     y = "Method",
-    title = "Treatment Effects with 95% CI for Fish oil and Vitamin D treatment"
+    title = "Fig4. VITAL, different estimands"
   ) +
   theme_minimal() + 
   theme(
@@ -177,8 +177,8 @@ vital_plot_compare <- ggplot(vital_plot_table, aes(x = estimate, y = Method, xmi
 
 # ACU Forest plot
 acu_plot_table <- cbind(acu_result[5:6,], acu_cont_result)[,-c(7,8,14)]
-acu_plot_table[,1] <- factor(c("LME", "LME_MI_pmm"),
-                             levels = rev(c("LME", "LME_MI_pmm")))
+acu_plot_table[,1] <- factor(c("LME", "LME+MI"),
+                             levels = rev(c("LME", "LME+MI")))
 acu_plot_table$group<-"Acupuncture"
 acu_plot_compare <- ggplot(acu_plot_table, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
   geom_point(size = 4, color = "#a80050", position = position_nudge(y = 0.15)) + 
@@ -189,9 +189,9 @@ acu_plot_compare <- ggplot(acu_plot_table, aes(x = estimate, y = Method, xmin = 
                  height = 0.4, color = "lawngreen", position = position_nudge(y = -0.15)) + facet_wrap(~group)+
   geom_vline(xintercept = 0, linetype="dashed", color="red") +
   labs(
-    x = "Treatment Effect",
+    x = "Mean differnce in pain score by the end of study",
     y = "Method",
-    title = "Treatment effect with 95% Confidence Interval") +
+    title = "Fig3. Acupuncture, different estimands") +
   theme_minimal() + 
   theme(
     strip.background = element_rect(fill = "lawngreen", color = "black"),  
@@ -199,8 +199,3 @@ acu_plot_compare <- ggplot(acu_plot_table, aes(x = estimate, y = Method, xmin = 
     panel.background = element_rect(fill = "white", color = NA),
     plot.background = element_rect(fill = "white", color = NA)
   )
-
-
-
-
-save(acu_plot_compare, vital_plot_compare, vitd_compare_result, acu_compare_result, file="report_plots.RData")

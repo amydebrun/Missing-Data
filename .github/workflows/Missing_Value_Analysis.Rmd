@@ -123,6 +123,13 @@ print(vital_impt_result_oil)
 vital_plot_impt
 ```
 
+# Different Imputation number
+
+```{r}
+acu_plot_imp_k
+vital_plot_impt_k
+```
+
 # Sensitive Analysis
 
 ```{r}
@@ -197,6 +204,7 @@ save(
   acu_plot_categorical,
   acu_plot_compare,
   acu_plot_imp,
+  acu_plot_imp_k,
 
   # VITAL plots
   sex_vital_plot,
@@ -213,6 +221,7 @@ save(
   vital_plot_categorical,
   vital_plot_compare,
   vital_plot_impt,
+  vital_plot_impt_k,
 
   # File path
   file = "report_plots.RData"

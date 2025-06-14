@@ -1406,7 +1406,6 @@ We begin by comparing our anchoring methods with more statistically principled a
 ```{r fig.width=5, fig.height=3}
 print(acu_plot_categorical) 
 print(vital_plot_categorical)
-#Need title, change method names, figure number
 ```
 
 Methods from top to bottom
@@ -1445,7 +1444,8 @@ print(vital_plot_impt)
 Next, we assess the impact of changing the number of imputations, using predictive mean method. 
 
 ```{r}
-# Do the K=25 plot
+print(acu_plot_imp_k)
+print(vital_plot_impt_k)
 ```
 
 ## Sensitive analysis

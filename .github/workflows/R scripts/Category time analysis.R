@@ -168,10 +168,10 @@ vital_MI_LME_result_vitd <- tidy(vital_MI_LME_pool, conf.int = TRUE, conf.method
 # Result and ordering
 
 # Result table tools
-Method <- factor(c("CAAcat", "LOCFcat", "MOCFcat", "LRcat+MI+pmm", "LMEcat", "LMEcat+MI+pmm"),
-                 levels = rev(c("CAAcat", "LOCFcat", "MOCFcat", "LRcat+MI+pmm", "LMEcat", "LMEcat+MI+pmm")))
+Method <- factor(c("CAA", "LOCF", "MO", "MI", "LME", "MI+LME"),
+                 levels = rev(c("CAA", "LOCF", "MO", "MI", "LME", "MI+LME")))
 
-properties <- data.frame(Estimate = c("LR + category time", "LR + category time", "LR + category time", "LR + category time", "LME + category time", "LME + category time"),
+properties <- data.frame(Estimate = c("CAA", "LOCF", "MO", "MI", "LME", "MI+LME"),
                          Missing_method = c("N/A", "Simple", "Simple", "Multiple", "N/A", "Multiple"),
                          Imputation_method = c("N/A", "Last", "Mean", "pmm", "N/A", "pmm"))
 
@@ -242,9 +242,9 @@ vital_plot_categorical <- ggplot(vital_result_all, aes(x = estimate, y = Method,
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +
   facet_wrap(~ treatment, scales = "free_x") +
   labs(
-    x = "Treatment Effect",
+    x = "Mean differnce in pain score by the end of study",
     y = "Method",
-    title = "Treatment Effects with 95% CI for Fish oil and Vitamin D treatment"
+    title = "Fig2. VITAL, different methods"
   ) +
   theme_minimal() + 
   theme(
@@ -265,9 +265,9 @@ acu_plot_categorical <- ggplot(acu_result, aes(x = estimate, y = Method, xmin = 
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color = "black") + 
   facet_wrap(~ group)+
   labs(
-    x = "Treatment Effect",
+    x = "Mean differnce in pain score by the end of study",
     y = "Method",
-    title = "Treatment effect with 95% Confidence Interval") +
+    title = "Fig1. Acupuncture, different methods") +
   theme_minimal() + 
   theme(
     strip.background = element_rect(fill = "lawngreen", color = "black"),  

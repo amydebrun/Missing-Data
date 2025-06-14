@@ -166,12 +166,20 @@ vital_MI_MICE_midastouch_result_oil <- tidy(vital_MI_MICE_midastouch_pool, conf.
 
 
 # Result table
+
+Method_2 <- factor(c("predict", "predict+noise", "bayesian predict+noise", 
+                   "predictive mean", "random draw", "weighted predictive mean"),
+                 levels = rev(c("predict", "predict+noise", 
+                                "bayesian predict+noise", "predictive mean", 
+                                "random draw", "weighted predictive mean")))
+
 acu_impt_result <- rbind(acu_LM_MICE_predict_result,
                          acu_LM_MICE_predict_noise_result,
                          acu_LM_MICE_bayesian_result,
                          acu_LM_MICE_default_result,
                          acu_LM_MICE_random_result,
                          acu_LM_MICE_midastouch_result)
+acu_impt_result$Method <- Method_2
 acu_impt_result <- acu_impt_result %>%
   mutate(
     p.value = round(p.value, 5),
@@ -186,6 +194,7 @@ vital_impt_result_vitd <- rbind(vital_MI_MICE_predict_result_vitd,
                                 vital_MI_MICE_default_result_vitd,
                                 vital_MI_MICE_random_result_vitd,
                                 vital_MI_MICE_midastouch_result_vitd)
+vital_impt_result_vitd$Method <- Method_2
 vital_impt_result_vitd <- vital_impt_result_vitd %>%
   mutate(
     p.value = round(p.value, 5),
@@ -200,6 +209,7 @@ vital_impt_result_oil <- rbind(vital_MI_MICE_predict_result_oil,
                                vital_MI_MICE_default_result_oil,
                                vital_MI_MICE_random_result_oil,
                                vital_MI_MICE_midastouch_result_oil)
+vital_impt_result_oil$Method <- Method_2
 vital_impt_result_oil <- vital_impt_result_oil %>%
   mutate(
     p.value = round(p.value, 5),
@@ -224,9 +234,9 @@ acu_plot_imp <- ggplot(acu_impt_result, aes(x = estimate, y = Method, xmin = con
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color = "black") + 
   facet_wrap(~ group)+
   labs(
-    x = "Treatment Effect",
+    x = "Mean differnce in pain score by the end of study",
     y = "Method",
-    title = "Treatment effect with 95% Confidence Interval") +
+    title = "Fig5. Acupuncture, change FCS methods") +
   theme_minimal() + 
   theme(
     strip.background = element_rect(fill = "lawngreen", color = "black"),  
@@ -245,9 +255,9 @@ vital_plot_impt <- ggplot(vital_impt_result_all, aes(x = estimate, y = Method, x
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +
   facet_wrap(~ treatment, scales = "free_x") +
   labs(
-    x = "Treatment Effect",
+    x = "Mean differnce in pain score by the end of study",
     y = "Method",
-    title = "Treatment Effects with 95% CI for Fish oil and Vitamin D treatment"
+    title = "Fig6. VITAL, change FCS methods"
   ) +
   theme_minimal() + 
   theme(
@@ -265,4 +275,141 @@ vital_plot_impt <- ggplot(vital_impt_result_all, aes(x = estimate, y = Method, x
 
 
 
-save(acu_plot_imp,vital_plot_impt, acu_impt_result, vital_impt_result_oil, vital_impt_result_vitd, file="report_plots.RData")
+
+
+
+
+
+# Different imputation number
+
+# Acu
+
+# K=20
+acu_LM_MICE_default_20_result <- tidy(acu_LM_MICE_default_pool_20, conf.int = TRUE, conf.method = "Wald") %>% 
+  filter(term == "group") %>%
+  select(estimate, conf.low, conf.high, std.error, p.value) %>%
+  mutate(Method = "K=20", .before = estimate)
+
+# K=25
+acu_LM_MICE_default_25_result <- tidy(acu_LM_MICE_default_pool_20, conf.int = TRUE, conf.method = "Wald") %>% 
+  filter(term == "group") %>%
+  select(estimate, conf.low, conf.high, std.error, p.value) %>%
+  mutate(Method = "K=25", .before = estimate)
+
+# VitD
+
+# K=20
+vital_MI_SLR_20_result_vitd <- summary(vital_MI_SLR_pool_20, conf.int = TRUE, conf.method = "Wald")%>% 
+  filter(term == "vitdactive") %>%
+  select(estimate, conf.low, conf.high, std.error, p.value) %>%
+  mutate(Method = "MICE_LR_default", .before = estimate)
+
+# K=50
+vital_MI_SLR_50_result_vitd <- summary(vital_MI_SLR_pool_50, conf.int = TRUE, conf.method = "Wald")%>% 
+  filter(term == "vitdactive") %>%
+  select(estimate, conf.low, conf.high, std.error, p.value) %>%
+  mutate(Method = "MICE_LR_default", .before = estimate)
+
+# Fishoil
+
+# K=20
+vital_MI_SLR_20_result_oil <- summary(vital_MI_SLR_pool_20, conf.int = TRUE, conf.method = "Wald")%>% 
+  filter(term == "fishoilactive") %>%
+  select(estimate, conf.low, conf.high, std.error, p.value) %>%
+  mutate(Method = "MICE_LR_default", .before = estimate)
+
+# K=50
+vital_MI_SLR_50_result_oil <- summary(vital_MI_SLR_pool_50, conf.int = TRUE, conf.method = "Wald")%>% 
+  filter(term == "fishoilactive") %>%
+  select(estimate, conf.low, conf.high, std.error, p.value) %>%
+  mutate(Method = "MICE_LR_default", .before = estimate)
+
+# Result table
+
+Method_3 <- factor(c("K=5","K=20","K=100lambda"),
+                   levels = rev(c("K=5","K=20","K=100lambda")))
+
+acu_impt_k_result <- rbind(acu_LM_MICE_default_result,
+                           acu_LM_MICE_default_20_result,
+                           acu_LM_MICE_default_25_result)
+acu_impt_k_result$Method <- Method_3
+acu_impt_k_result <- acu_impt_k_result %>%
+  mutate(
+    p.value = round(p.value, 5),
+    estimate = round(estimate, 2),
+    conf.low = round(conf.low, 2),
+    conf.high = round(conf.high, 2),
+    std.error = round(std.error, 2))
+
+vital_impt_k_result_vitd <- rbind(vital_MI_SLR_result_vitd,
+                                vital_MI_SLR_20_result_vitd,
+                                vital_MI_SLR_50_result_vitd)
+vital_impt_k_result_vitd$Method <- Method_3
+vital_impt_k_result_vitd <- vital_impt_k_result_vitd %>%
+  mutate(
+    p.value = round(p.value, 5),
+    estimate = round(estimate, 2),
+    conf.low = round(conf.low, 2),
+    conf.high = round(conf.high, 2),
+    std.error = round(std.error, 2))
+
+vital_impt_k_result_oil <- rbind(vital_MI_SLR_result_oil,
+                               vital_MI_SLR_20_result_oil,
+                               vital_MI_SLR_50_result_oil)
+vital_impt_k_result_oil$Method <- Method_3
+vital_impt_k_result_oil <- vital_impt_k_result_oil %>%
+  mutate(
+    p.value = round(p.value, 5),
+    estimate = round(estimate, 2),
+    conf.low = round(conf.low, 2),
+    conf.high = round(conf.high, 2),
+    std.error = round(std.error, 2))
+
+# Forest plot
+
+# Acupuncture
+acu_impt_k_result$group<-"Acupuncture Treatment"
+acu_plot_imp_k <- ggplot(acu_impt_k_result, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
+  geom_point(size = 4, color = "#a80050") + geom_vline(xintercept = 0, linetype="dashed", color="red") +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color = "black") + 
+  facet_wrap(~ group)+
+  labs(
+    x = "Mean differnce in pain score by the end of study",
+    y = "Imputation number K",
+    title = "Fig7. Acupuncture, change imputation number") +
+  theme_minimal() + 
+  theme(
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+# VITAL
+vital_impt_k_result_vitd$treatment <- "Vitamin D"
+vital_impt_k_result_oil$treatment <- "Fish Oil"
+vital_impt_k_result_all <- rbind(vital_impt_k_result_vitd, vital_impt_k_result_oil)
+vital_plot_impt_k <- ggplot(vital_impt_k_result_all, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
+  geom_point(size = 4, aes(color = treatment)) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +
+  facet_wrap(~ treatment, scales = "free_x") +
+  labs(
+    x = "Mean differnce in pain score by the end of study",
+    y = "Imputation number K",
+    title = "Fig8. VITAL, change imputation number"
+  ) +
+  theme_minimal() + 
+  theme(
+    legend.position = "none",
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),     
+    plot.background = element_rect(fill = "white", color = NA),       
+    strip.background = element_rect(fill = "lawngreen", color = "black"),
+    panel.spacing = unit(1, "lines")                                  
+  ) +
+  scale_color_manual(values = c("Vitamin D" = "#a80050", "Fish Oil" = "#a80050"))
+
+
+
+
