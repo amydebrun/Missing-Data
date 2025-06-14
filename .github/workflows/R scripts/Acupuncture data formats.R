@@ -5,7 +5,11 @@ head(acu_wide)
 # Acupuncture Long format 
 acu_long <- to_long_format_acu_cat(acu_wide)
 
-
+# Making time continuous
+# long
+acu_long_cont <- to_long_format_acu_cont(acu_wide)
+acu_long_cont <- acu_long_cont %>%
+  mutate(time_c = time - 12)
 
 #rule of thumb for imputation
 acu_miss <- sum(is.na(acu_long))
