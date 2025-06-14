@@ -86,6 +86,7 @@ save(
   acu_mice_predict_noise,
   acu_mice_bayesian,
   acu_mice_data_obj_long,
+  acu_mice_data_obj_long_cont,
   acu_LM_MICE_default_pool_20,
   acu_LM_MICE_default_pool_25,
      
