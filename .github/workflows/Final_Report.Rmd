@@ -1397,52 +1397,99 @@ cont_heatmap_acu_plot
 
 #### heatmap attempt for vital cont_heatmap_fishoil_plot
 
-# Result - kent
+# Result
 
 ## Comparing different methods
 
+We begin by comparing our anchoring methods with more statistically principled approaches.
+
 ```{r fig.width=5, fig.height=3}
-print(acu_plot_categorical)
+print(acu_plot_categorical) 
 print(vital_plot_categorical)
+#Need title, change method names, figure number
 ```
 
+Methods from top to bottom
+-   CAA: complete case analysis
+-   LOCR: last observation carry forward
+-   MO: mean observation 
+-   MI: multiple imputation and multiple linear regression
+-   LME: linear mix model without imputations
+-   MI+LME: multiple imputation and linear miex model
+
 ## Changing estimand
+
+In this section, we explore how changing the estimand (hwo time is modeled) to see how that affects our conclusions.
 
 ```{r fig.width=5, fig.height=3}
 print(acu_plot_compare)
 print(vital_plot_compare)
 ```
 
+Method on top: LME: linear mix model without imputations
+Method on bottom: MI+LME: multiple imputation and linear miex model
+Purple line (Reference) estimand: The mean difference of pain score at the end of study, treating time as categorical variable
+Green line (Changed) estimand: The mean difference of pain score at the end of study, treating time as continuous variable
+
 ## Changing imputation methods and imputation numbers
 
+In this session. We keep our estimand treating time as a categorical variable and using multiple linear regression as substantive model. 
+
+We first compared different imputation methods within the FCS framework, using 5 imputations.
+
 ```{r fig.width=5, fig.height=3}
-print(acu_plot_imp)
+print(acu_plot_imp) 
 print(vital_plot_impt)
 ```
 
-## Sensitive analysis
+Next, we assess the impact of changing the number of imputations, using predictive mean method. 
 
-```{r fig.width=6, fig.height=4,  eval=FALSE}
-print(SA_combined_acu_plot)
-print(SA_combined_vital_all_plot)
+```{r}
+# Do the K=25 plot
 ```
+
+## Sensitive analysis
 
 ## Missing data in clinical research
 
 # Discussion
 
--   No meaningful difference observed
--   Change estimand: Almost no impact in acupuncture study due to 2
-    follow-up
+Across all analyses, no meaningful difference was observed in the final treatment effect estimates across the various methods and settings explored.
 
-## Limitations
+However, several points are worth noting:
 
--   limitation: only 2 follow up for acupuncture
--   limitation: VITAL only have weak therapeutic effect
+-   In Figures 1 and 2, we observe that methods involving multiple imputation (MI) show more variation in the estimated treatment effects. This is expected, as MI leverages all available observed data, while the other four methods (CAA, LOCF, MO, and LME without imputation) use only a subset—typically including only group and baseline pain score.
+
+-   When we changed the estimand to treat time as a continuous variable, the impact was minimal in the Acupuncture study, which is unsurprising given that it includes only two follow-up time points. In such cases, modeling time continuously offers limited additional information.
+    
+It is important to emphasize that the goal of this project is not to revise prior conclusions from the original studies, but rather to gain practical insights by applying and comparing different methods for handling missing data.
+
+The fact that our results are broadly consistent across methods should not be taken to imply that simpler approaches like complete case analysis (CAA) are equivalent to more principled methods. Even in a similar future study, the same results may not hold, especially under different missing data patterns or assumptions.
+
+This project has highlighted that there are many valid approaches to handling missing data, and that these can be combined in different ways depending on the context. It is crucial to understand which methods are most appropriate under which conditions.
+
+For example:
+
+-   LME is a powerful tool for analyzing longitudinal data and can yield unbiased results even without imputation—if the assumptions are met. However, in the Acupuncture dataset, its utility is limited due to the small number of timepoints and its inability to incorporate auxiliary variables like pain frequency.
+
+-   In the VITAL dataset, although there are more timepoints, baseline pain scores are sometimes missing. As a result, when fitting LME without imputation, those individuals are excluded. The exclusion number will be much higher when more covariates with missing data are added to the model, as any individuals with any baseline missing will be removed, potentially leading to substantial loss of information.
+
+## Limitations of the project
+
+There are several limitations stemming from the inherent characteristics of the datasets used in this project.These limitations are not a result of analytic choices but rather reflect the practical boundaries of the available data.
+
+-   *Limited follow-up in Acupuncture dataset:* The Acupuncture study includes only two follow-up timepoints (3 and 12 months), which limits the ability to model time flexibly or detect subtle longitudinal trends. As a result, methods like linear mixed-effects models offer limited additional benefit in this context.
+
+-   *Weak treatment effect in VITAL:* The VITAL dataset shows relatively small therapeutic effects, making it difficult to detect meaningful differences between methods. This also reduces the practical impact of using more advanced imputation strategies.
+
+-   *No access to the full complete data:* Since we only work with partially observed datasets, we cannot assess the true accuracy of different imputation methods. Having access to fully observed data would allow direct comparison between imputed and actual values.
 
 ## Future work
 
--   further work: simulate complete data, and compare accuracy between
-    methods
--   Change substantive model
--   Use joint modelling
+In addition, there are methodological aspects that could be improved or explored further in future work. These include choices related to model specification, variable adjustment, and the diversity of imputation techniques employed. Addressing these areas could enhance the robustness and generalizability of findings, especially in more complex or data-rich clinical contexts.
+
+-   *Model specification:* Both linear regression and LME assume linearity and normally distributed residuals. These assumptions were not formally tested, and violations (e.g., non-linearity or skewness in outcome) could compromise model validity.
+
+-   *Single imputation method for main analysis:* While different imputation methods were explored, the main analyses relied on predictive mean matching. Other valid methods (e.g., Bayesian ridge regression, classification models for categorical variables) were not applied or compared in depth.
+
+-   *Limited covariate adjustment:* In all models, we only adjusted for treatment group and baseline pain score. While this was done for comparability across methods, it may limit model performance and bias control, particularly if other relevant covariates are predictive of missingness or outcomes.
