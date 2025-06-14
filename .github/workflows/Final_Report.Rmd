@@ -509,7 +509,7 @@ long-format data. To address this, the data was reshaped to long format
 using pivot_longer(), as illustrated in the example code provided for
 VITAL.
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, echo=TRUE}
 # Function for transform
 to_long_format_vital <- function(data_wide) {
   data_wide %>%
@@ -533,7 +533,7 @@ more flexible timing of follow-up assessments. An example code snippet
 demonstrates how the acupunture imputed dataset was processed and
 analyzed using this method.
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, echo=TRUE}
 # Multi-imputation in wide format data
 acu_mice <- mice(acu_wide, m = 5, method = 'pmm', seed = 123, print=FALSE)
 # Stack 5 imputations together
@@ -596,7 +596,7 @@ other analyses as well.
 
 We applied the following models for each dataset:
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, echo=TRUE}
 # For acupuncture data set
 acu_CAA <- lm(pk5 ~ group + pk1 , data = acu_wide)
 # For VITAL data set
@@ -707,7 +707,7 @@ format. Following imputation, we fitted the resulting dataset using the
 lm() function, consistent with the approach used in the complete case
 analysis (CAA):
 
-```{r,eval=FALSE}
+```{r,eval=FALSE, echo=TRUE}
 # LOCF function
 LOCF <- function(data, columns){
   for (col in columns) {
@@ -746,7 +746,7 @@ Below is the R code used to perform mean imputation on the data in wide
 format. Following imputation, we fitted the resulting dataset using the
 lm() function, as in the complete case analysis (CAA):
 
-```{r, eval=FALSE}
+```{r, eval=FALSE,, echo=TRUE}
 mean_impute <- function(data) {
   data <- data.frame(
     lapply(data, function(x) {
@@ -1159,11 +1159,11 @@ research, due to its simplicity and strong theoretical support. The key
 idea is that the number of imputations should roughly match the
 percentage of individuals with any missing data.
 
-```         
-- The Monte Carlo error of the pooled point estimate $\hat{\beta}$ is approximately 10% of its standard error.
-- The Monte Carlo error of the test statistic $\hat{\beta}/SE_{\hat{\beta}}$ is roughly 0.1.
-- The Monte Carlo error of a p-value is approximately 0.01 when the true p-value is 0.05.
-```
+-   The Monte Carlo error of the pooled point estimate $\hat{\beta}$ is approximately 10% of its standard error.
+
+-   The Monte Carlo error of the test statistic $\hat{\beta}/SE_{\hat{\beta}}$ is roughly 0.1.
+
+-   The Monte Carlo error of a p-value is approximately 0.01 when the true p-value is 0.05.
 
 These error bounds are typically acceptable in applied research,
 ensuring stable estimates and valid inference without requiring an
@@ -1409,12 +1409,18 @@ print(vital_plot_categorical)
 ```
 
 Methods from top to bottom
+
 -   CAA: complete case analysis
+
 -   LOCR: last observation carry forward
+
 -   MO: mean observation 
+
 -   MI: multiple imputation and multiple linear regression
+
 -   LME: linear mix model without imputations
--   MI+LME: multiple imputation and linear miex model
+
+-   MI+LME: multiple imputation and linear mix model
 
 ## Changing estimand
 
@@ -1426,8 +1432,11 @@ print(vital_plot_compare)
 ```
 
 Method on top: LME: linear mix model without imputations
+
 Method on bottom: MI+LME: multiple imputation and linear miex model
+
 Purple line (Reference) estimand: The mean difference of pain score at the end of study, treating time as categorical variable
+
 Green line (Changed) estimand: The mean difference of pain score at the end of study, treating time as continuous variable
 
 ## Changing imputation methods and imputation numbers
@@ -1443,7 +1452,7 @@ print(vital_plot_impt)
 
 Next, we assess the impact of changing the number of imputations, using predictive mean method. 
 
-```{r}
+```{r fig.width=5, fig.height=3}
 print(acu_plot_imp_k)
 print(vital_plot_impt_k)
 ```
