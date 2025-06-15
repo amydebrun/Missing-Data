@@ -184,8 +184,6 @@ print(missing_pattern_table)
 
 ## Literature and Limitations
 
-*Current literature*
-
 While reviewing the literature on missing data, it became evident that despite the use of established handling methods, there remains room for improvement in how missing data are addressed in reports and in the selection of appropriate methods.
 
 In 2014, Powney et al. reviewed 100 longitudinal clinical trials conducted between 2005 and 2012 and found that only 44 reported an adequate method to handle missing data, while 30 used potentially inadequate methods.
@@ -194,7 +192,7 @@ Spineli et al. (2015) examined 190 systematic reviews published after 2009 to in
 
 Hunt et al. (2021) reviewed 62 pharmacoepidemiologic multi-database studies from 2018 to 2019 to assess missing data reporting and handling. Thirty-five studies reported missing data, but only 19 described methods for handling it. The most popular approach was complete case analysis (CCA) used in 13 studies, followed by multiple imputation (MI) in 2 studies.
 
-Complete case analysis was also the predominant method in a systematic review of 229 observational studies from the United Network for Organ Sharing (UNOS) database (Baker et al., 2025). Forty-one studies used CCA, 22 reported MI, and notably, 31 studies removed covariates due to missing values—an action that could introduce further bias depending on the covariate’s relationship with other predictors.
+Complete case analysis was also the predominant method in a systematic review of 229 observational studies from the United Network for Organ Sharing (UNOS) database (Baker et al., 2025). Forty-one studies used CCA, 22 reported MI, and notably, 31 studies removed covariates due to missing values—an action that could introduce further bias depending on the covariates' relationship with other predictors.
 
 \newpage
 
@@ -298,7 +296,7 @@ where
 -   $\beta_2$ is the effect of the baseline headache severity
 -   $\varepsilon_i$ is the residual error term for individual $i$
 
-**VITAL data** - missing baseline data (vital)
+**VITAL data** 
 
 *Source*
 
