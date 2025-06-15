@@ -1,20 +1,4 @@
----
-title: "DAGS"
-author: ""
-date: "2025-06-09"
-output: html_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(ggdag)
 library(dagitty)
-library(ggplot2)
-library(dplyr)
-
-```
-
-```{r}
 acu_dag1 <- dagitty('dag {
     randomisation [pos="0,1"]
     group [pos="1,2"]
@@ -42,9 +26,8 @@ acu_dag2 <- dagitty('dag {
 }')
 
 plot(acu_dag2) #observed data has nothing to do with the missingness?
-```
 
-```{r}
+
 random_vital_dag <- dagitty('dag {
     randomisation [pos="0,1"]
     fishoilactive [pos="1,2"]
@@ -60,11 +43,7 @@ random_vital_dag <- dagitty('dag {
     pain_base -> pain_yr4
 }')
 
-plot(random_vital_dag)
-```
 
-
-```{r}
 MCAR_dag <- dagitty('dag {
     R_Y [pos="0,1"]
     X [pos="1,1"]
@@ -75,9 +54,6 @@ MCAR_dag <- dagitty('dag {
 }')
 
 
-```
-
-```{r}
 MAR_dag <- dagitty('dag {
     R_Y [pos="0,1"]
     X [pos="1,1"]
@@ -87,10 +63,6 @@ MAR_dag <- dagitty('dag {
     X -> R_Y
 }')
 
-```
-
-
-```{r}
 MNAR_dag <- dagitty('dag {
     R_Y [pos="0,1"]
     X [pos="1,1"]
@@ -100,15 +72,12 @@ MNAR_dag <- dagitty('dag {
     Y -> R_Y
 }')
 
-```
 
-```{r}
 plot(MCAR_dag)
 plot(MAR_dag)
 plot(MNAR_dag)
 ```
 
-```{r}
 dag_outcome_base_miss <- dagitty('dag {
   randomisation         [pos="0,2"]
   treatment             [pos="1.5,2.5"]
@@ -130,10 +99,9 @@ dag_outcome_base_miss <- dagitty('dag {
     randomisation -> missing_outcome 
 }')
 
-plot(dag_outcome_base_miss)
 
 
-dag_outcome_miss <- dagitty('dag {
+MAR_dag <- dagitty('dag {
   randomisation         [pos="0,2"]
   treatment             [pos="1.5,2.5"]
   observed_outcome      [pos="3,2"]
@@ -150,7 +118,6 @@ dag_outcome_miss <- dagitty('dag {
     randomisation -> missing_outcome 
 }')
 
-plot(dag_outcome_miss)
 
 
 dag_base_miss <- dagitty('dag {
@@ -169,6 +136,4 @@ dag_base_miss <- dagitty('dag {
     randomisation -> observed_outcome
 }')
 
-plot(dag_base_miss)
-```
 

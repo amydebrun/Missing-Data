@@ -37,7 +37,7 @@ editor_options:
 knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
 library(meta)
 library(gtsummary)
-library(ggdag)
+library(dagitty)
 library(ggplot2)
 load("report_plots.RData")
 ```
@@ -149,7 +149,10 @@ body mass index may be more prone to having missing blood pressure
 data - this is not relative to the missing data. MAR is a more realistic
 mechanism than MCAR and requires more intensive handling methods.
 
--insert dag
+```{r}
+plot(MAR_dag)
+```
+
 
 **Missing Not At Random**
 
