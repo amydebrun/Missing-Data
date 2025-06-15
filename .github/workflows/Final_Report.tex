@@ -35,11 +35,63 @@ throughout the development of this project}
   \texttt{\href{mailto:k.yip2@universityofgalway.ie}{\nolinkurl{k.yip2@universityofgalway.ie}}} \\
   }
 
+% Pandoc syntax highlighting
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 
 % tightlist command for lists without linebreak
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
+% From pandoc table feature
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
 
 
 \usepackage{amsmath}
@@ -74,6 +126,8 @@ under circumstances.Supplement information. Code Available at
    \and
     Missingness Mechanisms
   }
+
+\newpage
 
 \section{Introduction - amy}\label{introduction---amy}
 
@@ -226,10 +280,10 @@ as some handling methods are intended for certain classified patterns.
 ## # A tibble: 6 x 2
 ##   `Missing Data Pattern` Description                                            
 ##   <chr>                  <chr>                                                  
-## 1 Univariate             "Missing values are confined to a single variable"     
-## 2 Multivariate           "Missing values can be present in multiple variables"  
-## 3 Monotonic              "variables $Y_j$ can be ordered if missing, with varia~
-## 4 General                "Missing values appears to have no structure and scatt~
+## 1 Univariate             "Missing values in a single variable"                  
+## 2 Multivariate           "Missing values present in multiple variables"         
+## 3 Monotonic              "variables $Y_j$ can be ordered if missing"            
+## 4 General                "Missing valueshave no structure and scattered through~
 ## 5 File Matching          "Missing data appears to be statistically matched"     
 ## 6 Factor Analysis        ""
 \end{verbatim}
@@ -263,6 +317,8 @@ reported how they use missing data - CCA common (41) - multiple imp (22)
 
 Existing literature reveals inconsistent reporting and handling
 practices.(Power 2014)
+
+\newpage
 
 \section{Real World Data}\label{real-world-data}
 
@@ -351,11 +407,11 @@ Figure 2.x is the distribution of age in both treatment groups. Both
 distributions are negatively skewed, predominantly middle aged and
 older.
 
-\begin{center}\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-6-1} \end{center}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-6-1.pdf}}
 
-\begin{center}\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-7-1} \end{center}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-7-1.pdf}}
 
-\begin{center}\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-8-1} \end{center}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-8-1.pdf}}
 
 Figure 2.x,2.x,2.x: These plots show the distribution of the headache
 severity score at the three measured time-points. Over the three
@@ -414,11 +470,16 @@ treatment, vitamin D treatment or the placebo. We did not include the
 interaction between vitamin D and fish oil in our substantive model or
 our imputation model.
 
-\textbar{} \textbar{} Vitamin D \textbar{} Placebo \textbar{}
-\textbar-------------------\textbar------------------------\textbar------------------\textbar{}
-\textbar{} \textbf{Fish Oil} \textbar{} N = 342 (not analysed)
-\textbar{} N = 353 \textbar{} \textbar{} \textbf{Placebo} \textbar{} N =
-332 \textbar{} N = 371 \textbar{}
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+& \textbf{Vitamin D} & \textbf{Placebo} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Fish Oil} & N = 342 \emph{(not analysed)} & N = 353 \\
+\textbf{Placebo} & N = 332 & N = 371 \\
+\end{longtable}
 
 \emph{Overview}
 
@@ -521,21 +582,21 @@ Figure 2.x shows the distribution of body mass index in each treatment
 group, these appear to be positively skewed with a bmi between 20 and
 40. This shows a range between healthy weighted and obese participants.
 
-\begin{center}\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-13-1} \end{center}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-13-1.pdf}}
 
 Figure 2.x is the distribution of males and females in the VITAL data.
 Similar to the acupuncture trial, the participants are predominantly
 female.
 
-\begin{center}\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-14-1} \end{center}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-14-1.pdf}}
 
-\begin{center}\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-15-1} \end{center}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-15-1.pdf}}
 
-\begin{center}\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-16-1} \end{center}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-16-1.pdf}}
 
-\begin{center}\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-17-1} \end{center}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf}}
 
-\begin{center}\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-18-1} \end{center}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf}}
 
 Figure 2.x,2.x,2.x,2.x,2.x shows the distribution of the knee pain from
 baseline until 4 years post randomisation. In all treatment groups it
@@ -575,6 +636,8 @@ in which
 \item
   \(\varepsilon\) is the residual error of individual \(i\)
 \end{itemize}
+
+\newpage
 
 \subsection{Missing analysis}\label{missing-analysis}
 
@@ -648,9 +711,7 @@ which data is observed at all time-points.
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-24-1.pdf}}
 
 Figure 2.x: Missing data patterns across 4 treatment groups in VITAL
-data.
-
-\section{Methods - kent}\label{methods---kent}
+data. \newpage \# Methods - kent
 
 \subsection{Data wrangling}\label{data-wrangling}
 
@@ -659,6 +720,22 @@ for methods like linear mixed-effects models (LME) that require
 long-format data. To address this, the data was reshaped to long format
 using pivot\_longer(), as illustrated in the example code provided for
 VITAL.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Function for transform}
+\NormalTok{to\_long\_format\_vital }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(data\_wide) \{}
+\NormalTok{  data\_wide }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{pivot\_longer}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{matches}\NormalTok{(}\StringTok{"\_yr[[:digit:]]$"}\NormalTok{),}
+                 \AttributeTok{names\_to =} \FunctionTok{c}\NormalTok{(}\StringTok{".value"}\NormalTok{, }\StringTok{"time"}\NormalTok{), }
+                 \AttributeTok{names\_sep =} \StringTok{"\_"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{time\_contin =} \FunctionTok{as.integer}\NormalTok{(}\FunctionTok{gsub}\NormalTok{(}\StringTok{"yr"}\NormalTok{, }\StringTok{""}\NormalTok{, time)),}
+           \AttributeTok{time\_contin\_cent =}\NormalTok{ time\_contin }\SpecialCharTok{{-}} \DecValTok{4}\NormalTok{)}
+\NormalTok{\}}
+\CommentTok{\# Apply function}
+\NormalTok{vital\_long }\OtherTok{\textless{}{-}} \FunctionTok{to\_long\_format\_vital}\NormalTok{(vital\_wide)}
+\end{Highlighting}
+\end{Shaded}
 
 In the case of multiple imputation (MI), imputation was first performed
 on the wide-format data using the mice() function. The resulting imputed
@@ -669,6 +746,49 @@ accounts for repeated measurements over time. Moreover, it accommodates
 more flexible timing of follow-up assessments. An example code snippet
 demonstrates how the acupunture imputed dataset was processed and
 analyzed using this method.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Multi{-}imputation in wide format data}
+\NormalTok{acu\_mice }\OtherTok{\textless{}{-}} \FunctionTok{mice}\NormalTok{(acu\_wide, }\AttributeTok{m =} \DecValTok{5}\NormalTok{, }\AttributeTok{method =} \StringTok{\textquotesingle{}pmm\textquotesingle{}}\NormalTok{, }\AttributeTok{seed =} \DecValTok{123}\NormalTok{, }\AttributeTok{print=}\ConstantTok{FALSE}\NormalTok{)}
+\CommentTok{\# Stack 5 imputations together}
+\NormalTok{acu\_mice\_data\_wide }\OtherTok{\textless{}{-}} \FunctionTok{complete}\NormalTok{(}\AttributeTok{data =}\NormalTok{ acu\_mice, }\AttributeTok{action =} \StringTok{"long"}\NormalTok{, }\AttributeTok{include =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# Function to transform wide imputed data to long}
+\NormalTok{to\_long\_format\_acu\_cat\_MICE }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(data\_wide) \{}
+\NormalTok{  data\_wide }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{pivot\_longer}\NormalTok{(}
+      \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}pk2\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}pk5\textquotesingle{}}\NormalTok{), }
+      \AttributeTok{names\_to =} \StringTok{\textquotesingle{}pk\_time\textquotesingle{}}\NormalTok{,}
+      \AttributeTok{values\_to =} \StringTok{\textquotesingle{}pk\_score\textquotesingle{}}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{pivot\_longer}\NormalTok{(}
+      \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}f2\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}f5\textquotesingle{}}\NormalTok{), }
+      \AttributeTok{names\_to =} \StringTok{\textquotesingle{}freq\_time\textquotesingle{}}\NormalTok{,}
+      \AttributeTok{values\_to =} \StringTok{\textquotesingle{}freq\_score\textquotesingle{}}\NormalTok{,}
+      \AttributeTok{names\_repair =} \StringTok{\textquotesingle{}unique\textquotesingle{}}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{((pk\_time }\SpecialCharTok{==} \StringTok{\textquotesingle{}pk2\textquotesingle{}} \SpecialCharTok{\&}\NormalTok{ freq\_time }\SpecialCharTok{==} \StringTok{\textquotesingle{}f2\textquotesingle{}}\NormalTok{) }\SpecialCharTok{|}\NormalTok{ (pk\_time }\SpecialCharTok{==} \StringTok{\textquotesingle{}pk5\textquotesingle{}} \SpecialCharTok{\&}\NormalTok{ freq\_time }\SpecialCharTok{==} \StringTok{\textquotesingle{}f5\textquotesingle{}}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}
+      \AttributeTok{time =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{        pk\_time }\SpecialCharTok{==} \StringTok{\textquotesingle{}pk2\textquotesingle{}} \SpecialCharTok{\textasciitilde{}} \StringTok{"3m"}\NormalTok{,}
+\NormalTok{        pk\_time }\SpecialCharTok{==} \StringTok{\textquotesingle{}pk5\textquotesingle{}} \SpecialCharTok{\textasciitilde{}} \StringTok{"12m"}
+\NormalTok{      )}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{pk\_time, }\SpecialCharTok{{-}}\NormalTok{freq\_time) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(.imp) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{.id =} \FunctionTok{row\_number}\NormalTok{())}
+\NormalTok{\}}
+\CommentTok{\# Apply function}
+\NormalTok{acu\_mice\_data\_long }\OtherTok{\textless{}{-}} \FunctionTok{to\_long\_format\_acu\_cat\_MICE}\NormalTok{(acu\_mice\_data\_wide)}
+\CommentTok{\# Transform object to mid}
+\NormalTok{acu\_mice\_data\_obj\_long }\OtherTok{\textless{}{-}} \FunctionTok{as.mids}\NormalTok{(acu\_mice\_data\_long)}
+\CommentTok{\# Apply LME as substantive model}
+\NormalTok{acu\_LME\_MI\_default }\OtherTok{\textless{}{-}} \FunctionTok{with}\NormalTok{(acu\_mice\_data\_obj\_long, }
+                           \FunctionTok{lmer}\NormalTok{(pk\_score }\SpecialCharTok{\textasciitilde{}}\NormalTok{ group}\SpecialCharTok{*}\NormalTok{time }\SpecialCharTok{+}\NormalTok{ pk1 }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{id)))}
+\CommentTok{\# Pool for parameter estimation}
+\NormalTok{acu\_LME\_MI\_default\_pool }\OtherTok{\textless{}{-}} \FunctionTok{pool}\NormalTok{(acu\_LME\_MI\_default)}
+\end{Highlighting}
+\end{Shaded}
 
 \subsection{Anchoring methods}\label{anchoring-methods}
 
@@ -691,6 +811,15 @@ maintain comparability across methods, we omit these covariates in the
 other analyses as well.
 
 We applied the following models for each dataset:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# For acupuncture data set}
+\NormalTok{acu\_CAA }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(pk5 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ group }\SpecialCharTok{+}\NormalTok{ pk1 , }\AttributeTok{data =}\NormalTok{ acu\_wide)}
+\CommentTok{\# For VITAL data set}
+\NormalTok{vital\_complete }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(pain\_yr4 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ fishoilactive }\SpecialCharTok{+}\NormalTok{ vitdactive }\SpecialCharTok{+}\NormalTok{ pain\_base, }\AttributeTok{data =}\NormalTok{ vital\_wide)}
+\end{Highlighting}
+\end{Shaded}
 
 One of the main drawbacks of using complete case analysis (CCA) is the
 loss of power due to reduced sample size, along with the risk of
@@ -803,6 +932,22 @@ format. Following imputation, we fitted the resulting dataset using the
 lm() function, consistent with the approach used in the complete case
 analysis (CAA):
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# LOCF function}
+\NormalTok{LOCF }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(data, columns)\{}
+  \ControlFlowTok{for}\NormalTok{ (col }\ControlFlowTok{in}\NormalTok{ columns) \{}
+    \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(data)) \{  }
+      \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{is.na}\NormalTok{(data[i, col])) \{}
+\NormalTok{        data[i, col] }\OtherTok{\textless{}{-}}\NormalTok{ data[i, col }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{]  }
+\NormalTok{      \}}
+\NormalTok{    \}}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(data)  }
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
 \subsubsection{Mean observation method}\label{mean-observation-method}
 
 Mean imputation is another simple method that fills in missing values by
@@ -827,6 +972,23 @@ biased treatment effect estimates.
 Below is the R code used to perform mean imputation on the data in wide
 format. Following imputation, we fitted the resulting dataset using the
 lm() function, as in the complete case analysis (CAA):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mean\_impute }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(data) \{}
+\NormalTok{  data }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+    \FunctionTok{lapply}\NormalTok{(data, }\ControlFlowTok{function}\NormalTok{(x) \{}
+      \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{is.numeric}\NormalTok{(x)) \{}
+        \FunctionTok{return}\NormalTok{(}\FunctionTok{ifelse}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(x), }\FunctionTok{mean}\NormalTok{(x, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), x))}
+\NormalTok{      \} }\ControlFlowTok{else}\NormalTok{ \{}
+        \FunctionTok{return}\NormalTok{(x)}
+\NormalTok{      \}}
+\NormalTok{    \})}
+\NormalTok{  )}
+  \FunctionTok{return}\NormalTok{(data)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
 
 \subsection{Changing imputation
 methods}\label{changing-imputation-methods}
@@ -1267,11 +1429,17 @@ research, due to its simplicity and strong theoretical support. The key
 idea is that the number of imputations should roughly match the
 percentage of individuals with any missing data.
 
-\begin{verbatim}
-- The Monte Carlo error of the pooled point estimate $\hat{\beta}$ is approximately 10% of its standard error.
-- The Monte Carlo error of the test statistic $\hat{\beta}/SE_{\hat{\beta}}$ is roughly 0.1.
-- The Monte Carlo error of a p-value is approximately 0.01 when the true p-value is 0.05.
-\end{verbatim}
+\begin{itemize}
+\item
+  The Monte Carlo error of the pooled point estimate \(\hat{\beta}\) is
+  approximately 10\% of its standard error.
+\item
+  The Monte Carlo error of the test statistic
+  \(\hat{\beta}/SE_{\hat{\beta}}\) is roughly 0.1.
+\item
+  The Monte Carlo error of a p-value is approximately 0.01 when the true
+  p-value is 0.05.
+\end{itemize}
 
 These error bounds are typically acceptable in applied research,
 ensuring stable estimates and valid inference without requiring an
@@ -1455,22 +1623,29 @@ relaxing the MAR assumption.
 
 The shift can be broken down in to:
 
-\[\delta = \delta_\mathrm{MAR} + \delta_\mathrm{MNAR}\] where -
+\[\delta = \delta_\mathrm{MAR} + \delta_\mathrm{MNAR}\] where; -
 \(\delta_\mathrm{MAR}\): mean difference caused by the predictors in the
 imputation models - \(\delta_\mathrm{MNAR}\): mean difference caused by
 an additional non-ignorable part of the imputation model
 
-\begin{itemize}
-\item
-  imputation model; we used a model similar to the our imputation model
-  that we used when performing the missing data handling methods
-\item
-  choosing delta
-\end{itemize}
+Essentially, \(\delta\) is the mean difference between the imputed
+values and the true values that we did not observe.
 
-\(\delta\) -adjustment process:
+Deciding which \(\delta\) values are suitable is subjective. We need to
+include \(\delta=0\) as that assumes the data is MAR which acts as our
+baseline, and we add the non-zero \(\delta\) values to test the
+sensitivity to the MNAR assumption. We decided to base our \(\delta\)
+values on the standard errors of the treatment effect estimates, for
+which ranges between 1.08 and 1.27 in the acupuncture trial data and
+between 0.76 and 1.21 in the VITAL data.
 
-\emph{Acupuncture trial}
+We decided an increasing and decreasing range that do not deter much
+from these values should suffice. Our chosen \(\delta\) values are;
+
+\(\delta_\mathrm{Acupuncture} = -2.5,-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5\)
+\(\delta_\mathrm{VITAL} -2.5,-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5\)
+
+\textbf{Sensitivity Analysis; the process}
 
 The mice() function was used on the wide format of the acupuncture trial
 data with predictors \texttt{group}, \texttt{pk1}. An initial iteration
@@ -1482,9 +1657,139 @@ Next we performed the main imputation, indicating post processing, using
 predictive mean matching method and maxit=10 to indicate maximum of 10
 iterations. After imputation, a regression model like our substantive
 model is fitted, \(\beta_0 + \beta_1group+\beta_2pk1_i+\varepsilon_i\),
-and the estimates are pooled together.
+and the estimates are pooled together. \newpage
 
-estimands categorical and continuous
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#predictors}
+\NormalTok{inlist }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"group"}\NormalTok{, }\StringTok{"pk5"}\NormalTok{, }\StringTok{"pk1"}\NormalTok{)}
+\CommentTok{\#predictor matrix}
+\NormalTok{pred\_cat }\OtherTok{\textless{}{-}} \FunctionTok{quickpred}\NormalTok{(acu\_wide, }\AttributeTok{minpuc =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{include =}\NormalTok{ inlist)}
+\CommentTok{\#initial imputation to extract post processing }
+\NormalTok{imp.default\_cat }\OtherTok{\textless{}{-}} \FunctionTok{mice}\NormalTok{(acu\_wide, }\AttributeTok{m =} \DecValTok{1}\NormalTok{, }\AttributeTok{maxit =} \DecValTok{1}\NormalTok{, }\AttributeTok{predictorMatrix =}\NormalTok{ pred\_cat, }\AttributeTok{seed =} \DecValTok{123}\NormalTok{, }\AttributeTok{print=} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{post\_cat }\OtherTok{\textless{}{-}}\NormalTok{ imp.default\_cat}\SpecialCharTok{$}\NormalTok{post}
+\NormalTok{imp.all.undamped\_cat }\OtherTok{\textless{}{-}} \FunctionTok{vector}\NormalTok{(}\StringTok{"list"}\NormalTok{, }\FunctionTok{length}\NormalTok{(delta\_acu))}
+
+\CommentTok{\#loop over delta values}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(delta)) \{}
+\NormalTok{  d }\OtherTok{\textless{}{-}}\NormalTok{ delta[i]}
+\NormalTok{  cmd }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}
+    \StringTok{"idx \textless{}{-} which(data[,\textquotesingle{}group\textquotesingle{}] == 1 \& is.na(data[,\textquotesingle{}pk5\textquotesingle{}])); "}\NormalTok{,}
+    \StringTok{"imp[[j]]$pk5[idx] \textless{}{-} imp[[j]]$pk5[idx] + "}\NormalTok{,d, }\StringTok{";"}\NormalTok{) }\CommentTok{\#treatment group and imputing pk5}
+\NormalTok{  post\_cat[}\StringTok{"pk5"}\NormalTok{] }\OtherTok{\textless{}{-}}\NormalTok{ cmd}
+\NormalTok{  imp\_cat }\OtherTok{\textless{}{-}} \FunctionTok{mice}\NormalTok{(acu\_wide, }\AttributeTok{pred =}\NormalTok{ pred\_cat, }\AttributeTok{post =}\NormalTok{ post\_cat, }\AttributeTok{maxit =} \DecValTok{10}\NormalTok{,}
+                  \AttributeTok{seed =}\NormalTok{ i }\SpecialCharTok{*} \DecValTok{22}\NormalTok{, }\AttributeTok{print=}\ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{  imp.all.undamped\_cat[[i]] }\OtherTok{\textless{}{-}}\NormalTok{ imp\_cat}
+\NormalTok{\}}
+\NormalTok{delta\_results\_cat }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{()}
+
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \FunctionTok{seq\_along}\NormalTok{(imp.all.undamped\_cat)) \{}
+\NormalTok{  imp\_cat }\OtherTok{\textless{}{-}}\NormalTok{ imp.all.undamped\_cat[[i]]}
+\NormalTok{  d }\OtherTok{\textless{}{-}}\NormalTok{ delta[i]}
+\NormalTok{  fit\_cat }\OtherTok{\textless{}{-}} \FunctionTok{with}\NormalTok{(imp\_cat, }\FunctionTok{lm}\NormalTok{(pk5 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ group }\SpecialCharTok{+}\NormalTok{ pk1))}
+\NormalTok{  pooled\_cat }\OtherTok{\textless{}{-}} \FunctionTok{pool}\NormalTok{(fit\_cat)}
+\NormalTok{  est\_cat }\OtherTok{\textless{}{-}} \FunctionTok{tidy}\NormalTok{(pooled\_cat, }\AttributeTok{conf.int =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(term }\SpecialCharTok{==} \StringTok{"group"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{select}\NormalTok{(estimate, std.error, conf.low, conf.high, p.value) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{delta\_acu =}\NormalTok{ d)}
+    
+\NormalTok{  delta\_results\_cat }\OtherTok{\textless{}{-}} \FunctionTok{bind\_rows}\NormalTok{(delta\_results\_cat, est\_cat)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+We repeated this process exactly on the \texttt{acu\_wide} data in which
+we added a filter(group==0) in order to extract the results in the
+control group for comparison, creating \texttt{acu\_wide\_placebo}.
+
+A similar process was implemented on to the VITAL trial data in wide
+format. We chose our inlist predictors \texttt{pain\_base},
+\texttt{vitdactive},\texttt{fishoilactive}, and our outcome as
+\texttt{pain\_yr4}. After pooling our estimates, we filtered out the
+treatment groups by setting `term == fishoilactive' and `term ==
+vitdactive' so we can observe the results by treatment. For the control
+group we filtered the \texttt{vital\_wide} data as fishoilactive==0 and
+vitdactive==0.
+
+We performed sensitivity analysis in a similar fashion to test the
+robustness of the treatment effect on our alternative estimand. This was
+more intensive as we had to implement the multiple imputation on the
+wide format then transform the data in to long format.
+
+For the acupuncture trial; we used our
+to\_long\_format\_acu\_cont\_MICE() function post imputation to
+transform to long format. Due to the nature of the long format, we used
+the linear mixed effects model to estimate our treatment effect before
+pooling the estimates. Our imputation model here is;
+
+\(\text{pk\_score}_{ij} = \beta_0 + \beta_1 \text{group} + \beta_2  \text{time\_c} + \beta_3  (\text{group}  \text{time\_c}) + \beta_4  \text{pk1} + b_0 + \varepsilon_{ij}\)
+
+\newpage
+
+For the VITAL data; we created a similar function to our
+to\_long\_format\_vital\_MICE() function with a minor adjustment;
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{to\_long\_format\_vital\_mice\_SA }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(data\_wide) \{}
+\NormalTok{  data\_wide }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{pivot\_longer}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{matches}\NormalTok{(}\StringTok{"\_yr[[:digit:]]$"}\NormalTok{),}
+                 \AttributeTok{names\_to =} \FunctionTok{c}\NormalTok{(}\StringTok{".value"}\NormalTok{, }\StringTok{"time"}\NormalTok{), }
+                 \AttributeTok{names\_sep =} \StringTok{"\_"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(.imp) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{.id =} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{n}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{time\_contin =} \FunctionTok{as.integer}\NormalTok{(}\FunctionTok{gsub}\NormalTok{(}\StringTok{"yr"}\NormalTok{, }\StringTok{""}\NormalTok{, time)),}
+           \AttributeTok{time\_contin\_cent =}\NormalTok{ time\_contin }\SpecialCharTok{{-}} \DecValTok{4}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+We used
+\(pain_{ij}=\beta_0+\beta_1fishoil_i+\beta_2time_{ij}+\beta_3(fishoil_itime_{ij})+\beta_4vitd_i+\beta_5vitd_itime_{ij}+\beta_6(pain_base)_i+b_{0i}+\varepsilon_{ij}\)
+as our imputation model in each of the imputed data sets.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{inlist }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"fishoilactive"}\NormalTok{, }\StringTok{"vitdactive"}\NormalTok{, }\StringTok{"pain"}\NormalTok{, }\StringTok{"pain\_base"}\NormalTok{, }\StringTok{"time\_contin"}\NormalTok{, }\StringTok{"Subject\_ID"}\NormalTok{) }
+\NormalTok{pred\_cont }\OtherTok{\textless{}{-}} \FunctionTok{quickpred}\NormalTok{(vital\_wide, }\AttributeTok{minpuc =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{include =}\NormalTok{ inlist)}
+\NormalTok{imp.all.undamped\_cont }\OtherTok{\textless{}{-}} \FunctionTok{vector}\NormalTok{(}\StringTok{"list"}\NormalTok{, }\FunctionTok{length}\NormalTok{(delta\_vital))}
+\NormalTok{delta\_results\_cont\_fishoil }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{()}
+
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \FunctionTok{seq\_along}\NormalTok{(delta\_vital)) \{}
+\NormalTok{  d }\OtherTok{\textless{}{-}}\NormalTok{ delta\_vital[i]}
+\NormalTok{  imp\_init }\OtherTok{\textless{}{-}} \FunctionTok{mice}\NormalTok{(vital\_wide, }\AttributeTok{m =} \DecValTok{5}\NormalTok{, }\AttributeTok{maxit =} \DecValTok{1}\NormalTok{, }\AttributeTok{predictorMatrix =}\NormalTok{ pred\_cont, }\AttributeTok{seed =} \DecValTok{100} \SpecialCharTok{+}\NormalTok{ i, }\AttributeTok{print =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{  post\_cont }\OtherTok{\textless{}{-}}\NormalTok{ imp\_init}\SpecialCharTok{$}\NormalTok{post}
+\NormalTok{  method\_cont }\OtherTok{\textless{}{-}}\NormalTok{ imp\_init}\SpecialCharTok{$}\NormalTok{method}
+\NormalTok{  years }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}\StringTok{"pain\_yr"}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{4}\NormalTok{) }\CommentTok{\#imputing over 4 years}
+\NormalTok{  method\_cont[years] }\OtherTok{\textless{}{-}} \StringTok{"pmm"} \CommentTok{\# predictive mean matching}
+\NormalTok{  method\_cont[}\StringTok{"pain\_base"}\NormalTok{] }\OtherTok{\textless{}{-}} \StringTok{"pmm"} \CommentTok{\#imputing base pain}
+  \ControlFlowTok{for}\NormalTok{ (yr }\ControlFlowTok{in}\NormalTok{ years) \{}
+\NormalTok{    post\_cont[yr] }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}
+      \StringTok{"idx \textless{}{-} which(data[,\textquotesingle{}fishoilactive\textquotesingle{}] == 1 \& data[,\textquotesingle{}vitdactive\textquotesingle{}] == 0 \& is.na(data[,\textquotesingle{}"}\NormalTok{, yr, }\StringTok{"\textquotesingle{}])); "}\NormalTok{,}
+      \StringTok{"imp[[j]]$"}\NormalTok{, yr, }\StringTok{"[idx] \textless{}{-} imp[[j]]$"}\NormalTok{, yr, }\StringTok{"[idx] + "}\NormalTok{, d, }\StringTok{";"} \CommentTok{\#fishoil only }
+\NormalTok{    )}
+\NormalTok{  \}}
+\NormalTok{  imp\_wide }\OtherTok{\textless{}{-}} \FunctionTok{mice}\NormalTok{(vital\_wide, }\AttributeTok{m =} \DecValTok{5}\NormalTok{, }\AttributeTok{maxit =} \DecValTok{10}\NormalTok{, }\AttributeTok{predictorMatrix =}\NormalTok{ pred\_cont,}
+                   \AttributeTok{post =}\NormalTok{ post\_cont, }\AttributeTok{method=}\NormalTok{method\_cont, }\AttributeTok{seed =} \DecValTok{200} \SpecialCharTok{+}\NormalTok{ i, }\AttributeTok{print =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{  imp.all.undamped\_cont[[i]] }\OtherTok{\textless{}{-}}\NormalTok{ imp\_wide }
+\NormalTok{  imp\_data\_long }\OtherTok{\textless{}{-}} \FunctionTok{complete}\NormalTok{(imp\_wide, }\AttributeTok{action =} \StringTok{"long"}\NormalTok{, }\AttributeTok{include =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{to\_long\_format\_vital\_mice\_SA}\NormalTok{() }\CommentTok{\#transform to long data}
+\NormalTok{  imp\_data\_list }\OtherTok{\textless{}{-}} \FunctionTok{split}\NormalTok{(imp\_data\_long, imp\_data\_long}\SpecialCharTok{$}\NormalTok{.imp)}
+  
+\NormalTok{  fit\_list }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(imp\_data\_list, }\ControlFlowTok{function}\NormalTok{(df) \{}
+    \FunctionTok{lmer}\NormalTok{(pain }\SpecialCharTok{\textasciitilde{}}\NormalTok{ fishoilactive}\SpecialCharTok{*}\NormalTok{time\_contin }\SpecialCharTok{+}\NormalTok{ vitdactive}\SpecialCharTok{*}\NormalTok{time\_contin }\SpecialCharTok{+}\NormalTok{ pain\_base }\SpecialCharTok{+} 
+\NormalTok{           (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ Subject\_ID), }\AttributeTok{data =}\NormalTok{ df)}
+\NormalTok{  \})}
+\NormalTok{  pooled\_cont }\OtherTok{\textless{}{-}} \FunctionTok{pool}\NormalTok{(fit\_list)}
+\NormalTok{  est\_cont }\OtherTok{\textless{}{-}} \FunctionTok{tidy}\NormalTok{(pooled\_cont, }\AttributeTok{conf.int =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(term }\SpecialCharTok{==} \StringTok{"fishoilactive"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{select}\NormalTok{(estimate, std.error, conf.low, conf.high) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{delta\_vital =}\NormalTok{ d)}
+  
+\NormalTok{  delta\_results\_cont\_fishoil }\OtherTok{\textless{}{-}} \FunctionTok{bind\_rows}\NormalTok{(delta\_results\_cont\_fishoil, est\_cont)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
 
 other future methods
 
@@ -1506,62 +1811,229 @@ cont\_heatmap\_acu\_plot
 \paragraph{heatmap attempt for vital
 cont\_heatmap\_fishoil\_plot}\label{heatmap-attempt-for-vital-cont_heatmap_fishoil_plot}
 
-\section{Result - kent}\label{result---kent}
+\section{Result}\label{result}
 
 \subsection{Comparing different
 methods}\label{comparing-different-methods}
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-31-1.pdf}}
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-31-2.pdf}}
-
-\subsection{Changing estimand}\label{changing-estimand}
-
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-32-1.pdf}}
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-32-2.pdf}}
-
-\subsection{Changing imputation methods and imputation
-numbers}\label{changing-imputation-methods-and-imputation-numbers}
+We begin by comparing our anchoring methods with more statistically
+principled approaches.
 
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-33-1.pdf}}
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-33-2.pdf}}
 
+Methods from top to bottom
+
+\begin{itemize}
+\item
+  CAA: complete case analysis
+\item
+  LOCR: last observation carry forward
+\item
+  MO: mean observation
+\item
+  MI: multiple imputation and multiple linear regression
+\item
+  LME: linear mix model without imputations
+\item
+  MI+LME: multiple imputation and linear mix model
+\end{itemize}
+
+\subsection{Changing estimand}\label{changing-estimand}
+
+In this section, we explore how changing the estimand (how time is
+modeled) to see how that affects our conclusions.
+
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-34-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-34-2.pdf}}
+
+Method on top: LME: linear mix model without imputations
+
+Method on bottom: MI+LME: multiple imputation and linear miex model
+
+Purple line (Reference) estimand: The mean difference of pain score at
+the end of study, treating time as categorical variable
+
+Green line (Changed) estimand: The mean difference of pain score at the
+end of study, treating time as continuous variable
+
+\subsection{Changing imputation methods and imputation
+numbers}\label{changing-imputation-methods-and-imputation-numbers}
+
+In this session. We keep our estimand treating time as a categorical
+variable and using multiple linear regression as substantive model.
+
+We first compared different imputation methods within the FCS framework,
+using 5 imputations.
+
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-35-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-35-2.pdf}}
+
+Next, we assess the impact of changing the number of imputations, using
+predictive mean method.
+
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-36-2.pdf}}
+
 \subsection{Sensitive analysis}\label{sensitive-analysis}
 
-\subsection{Missing data in clinical
-research}\label{missing-data-in-clinical-research}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-37-2.pdf}}
+
+This forest plot illustrates the robustness of the estimated treatment
+effects under varying missing data assumptions using
+\(\delta\)-adjustment. Each point represents the estimated treatment
+effect at a given \(\delta\) value, where:
+
+\begin{itemize}
+\tightlist
+\item
+  Purple represent the reference estimand, in which time is treated as a
+  categorical variable.
+\item
+  Green represent the changed estimand, in which time is modeled as a
+  continuous variable.
+\item
+  Horizontal lines denote the 95\% confidence intervals.
+\end{itemize}
+
+The vertical red dashed line at 0 marks the threshold of no treatment
+effect. The panels are stratified to compare the acupuncture group and
+the control group in figure x. This goes for the VITAL plot in figure y
+as well where we compare fish oil, vitamin D and control group. The
+\(\delta\) parameter shifts the imputed values to simulate scenarios
+where missing outcomes are systematically better or worse than observed
+ones. Positive \(\delta\) values imply better unobserved outcomes;
+negative \(\delta\) values imply worse. The consistency of effect
+estimates across the \(\delta\) range suggests the treatment effect is
+robust to departures from the MAR assumption.
+
+\newpage
+
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-3.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-4.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-5.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-6.pdf}}
+
+We created heatmaps plotting the \(\delta\) values for both the control
+group and treatment group to visualise the change in treatment effect
+when varying the \(\delta\) adjustments under MNAR. The aim here is to
+show the robustness of the initial estimated treatment effect when
+assumed under a different mechanism.
 
 \section{Discussion}\label{discussion}
 
+Across all analyses, no meaningful difference was observed in the final
+treatment effect estimates across the various methods and settings
+explored.
+
+However, several points are worth noting:
+
 \begin{itemize}
-\tightlist
 \item
-  No meaningful difference observed
+  In Figures 1 and 2, we observe that methods involving multiple
+  imputation (MI) show more variation in the estimated treatment
+  effects. This is expected, as MI leverages all available observed
+  data, while the other four methods (CAA, LOCF, MO, and LME without
+  imputation) use only a subset---typically including only group and
+  baseline pain score.
 \item
-  Change estimand: Almost no impact in acupuncture study due to 2
-  follow-up
+  When we changed the estimand to treat time as a continuous variable,
+  the impact was minimal in the Acupuncture study, which is unsurprising
+  given that it includes only two follow-up time points. In such cases,
+  modeling time continuously offers limited additional information.
 \end{itemize}
 
-\subsection{Limitations}\label{limitations}
+It is important to emphasize that the goal of this project is not to
+revise prior conclusions from the original studies, but rather to gain
+practical insights by applying and comparing different methods for
+handling missing data.
+
+The fact that our results are broadly consistent across methods should
+not be taken to imply that simpler approaches like complete case
+analysis (CAA) are equivalent to more principled methods. Even in a
+similar future study, the same results may not hold, especially under
+different missing data patterns or assumptions.
+
+This project has highlighted that there are many valid approaches to
+handling missing data, and that these can be combined in different ways
+depending on the context. It is crucial to understand which methods are
+most appropriate under which conditions.
+
+For example:
 
 \begin{itemize}
-\tightlist
 \item
-  limitation: only 2 follow up for acupuncture
+  LME is a powerful tool for analyzing longitudinal data and can yield
+  unbiased results even without imputation---if the assumptions are met.
+  However, in the Acupuncture dataset, its utility is limited due to the
+  small number of timepoints and its inability to incorporate auxiliary
+  variables like pain frequency.
 \item
-  limitation: VITAL only have weak therapeutic effect
+  In the VITAL dataset, although there are more timepoints, baseline
+  pain scores are sometimes missing. As a result, when fitting LME
+  without imputation, those individuals are excluded. The exclusion
+  number will be much higher when more covariates with missing data are
+  added to the model, as any individuals with any baseline missing will
+  be removed, potentially leading to substantial loss of information.
+\end{itemize}
+
+\subsection{Limitations of the
+project}\label{limitations-of-the-project}
+
+There are several limitations stemming from the inherent characteristics
+of the datasets used in this project.These limitations are not a result
+of analytic choices but rather reflect the practical boundaries of the
+available data.
+
+\begin{itemize}
+\item
+  \emph{Limited follow-up in Acupuncture dataset:} The Acupuncture study
+  includes only two follow-up timepoints (3 and 12 months), which limits
+  the ability to model time flexibly or detect subtle longitudinal
+  trends. As a result, methods like linear mixed-effects models offer
+  limited additional benefit in this context.
+\item
+  \emph{Weak treatment effect in VITAL:} The VITAL dataset shows
+  relatively small therapeutic effects, making it difficult to detect
+  meaningful differences between methods. This also reduces the
+  practical impact of using more advanced imputation strategies.
+\item
+  \emph{No access to the full complete data:} Since we only work with
+  partially observed datasets, we cannot assess the true accuracy of
+  different imputation methods. Having access to fully observed data
+  would allow direct comparison between imputed and actual values.
 \end{itemize}
 
 \subsection{Future work}\label{future-work}
 
+In addition, there are methodological aspects that could be improved or
+explored further in future work. These include choices related to model
+specification, variable adjustment, and the diversity of imputation
+techniques employed. Addressing these areas could enhance the robustness
+and generalizability of findings, especially in more complex or
+data-rich clinical contexts.
+
 \begin{itemize}
-\tightlist
 \item
-  further work: simulate complete data, and compare accuracy between
-  methods
+  \emph{Model specification:} Both linear regression and LME assume
+  linearity and normally distributed residuals. These assumptions were
+  not formally tested, and violations (e.g., non-linearity or skewness
+  in outcome) could compromise model validity.
 \item
-  Change substantive model
+  \emph{Single imputation method for main analysis:} While different
+  imputation methods were explored, the main analyses relied on
+  predictive mean matching. Other valid methods (e.g., Bayesian ridge
+  regression, classification models for categorical variables) were not
+  applied or compared in depth.
 \item
-  Use joint modelling
+  \emph{Limited covariate adjustment:} In all models, we only adjusted
+  for treatment group and baseline pain score. While this was done for
+  comparability across methods, it may limit model performance and bias
+  control, particularly if other relevant covariates are predictive of
+  missingness or outcomes.
 \end{itemize}
 
 \bibliographystyle{unsrt}

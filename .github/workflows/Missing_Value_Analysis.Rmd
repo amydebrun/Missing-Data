@@ -26,7 +26,9 @@ source("R scripts/Data_Summary.R")
 source("R scripts/Category time analysis.R")
 source("R scripts/Continuous time analysis.R")
 source("R scripts/Different Imputation Method.R")
-source("R scripts/Sensitive Analysis.R")
+source("R scripts/Sens_analysis_combined.R")
+source("R scripts/Sens_analysis_cont.R")
+source("R scripts/Sens_analysis_cat.R")
 
 ```
 
@@ -182,6 +184,15 @@ acu_observed <- sum(!is.na(acu_long))
 percent_miss <- acu_miss / (acu_miss + acu_observed)
 percent_miss
 ```
+```{r}
+cont_heatmap_fishoil_plot
+cat_heatmap_fishoil_plot
+cont_heatmap_acu_plot
+cat_heatmap_acu_plot
+cat_heatmap_vitd_plot
+cont_heatmap_vitd_plot
+
+```
 
 ```{r, eval=FALSE}
 # Code to save plots and tables, only run when required
@@ -223,6 +234,16 @@ save(
   vital_plot_compare,
   vital_plot_impt,
   vital_plot_impt_k,
+  
+  # sensitivity analysis
+  SA_combined_vital_all_plot,
+  SA_combined_acu_plot,
+cont_heatmap_fishoil_plot,
+cat_heatmap_fishoil_plot,
+cont_heatmap_acu_plot,
+cat_heatmap_acu_plot,
+cat_heatmap_vitd_plot,
+cont_heatmap_vitd_plot,
 
   # File path
   file = "report_plots.RData"

@@ -216,10 +216,10 @@ cat_heatmap_acu_plot<- ggplot(cat_heatmap_data, aes(x = delta_1, y = delta_2, fi
     limits = c(midpoint_cat - spread_cat, midpoint_cat + spread_cat)
   ) +
   labs(
-    title = "Heatmap of categorical SA acupuncture",
+    title = "Map1; original estimand",
     x = "Control Delta ",
     y = "Acupuncture Delta",
-    fill = "Treatment Effect"
+    fill = "Effect"
   ) +
   theme_minimal() +
   theme(panel.grid = element_blank())
@@ -236,10 +236,10 @@ cont_heatmap_acu_plot<-ggplot(cont_heatmap_data, aes(x = delta_1, y = delta_2, f
     limits = c(midpoint_cont - spread_cont, midpoint_cont + spread_cont)
   ) +
   labs(
-    title = "Heatmap continuous acu",
+    title = "Map2; changed estimand",
     x = "Control Delta ",
     y = "Acupuncture Delta",
-    fill = "Treatment Effect"
+    fill = "Effect"
   ) +
   theme_minimal() +
   theme(panel.grid = element_blank())
@@ -253,9 +253,9 @@ cat_placebo <- SA_combined_vital_all %>%
 cat_fishoil <- SA_combined_vital_all %>%
   filter(estimand == "Categorical", treatment == "Fish Oil")
 cont_placebo <- SA_combined_vital_all %>%
-  filter(estimand == "Continuous time", treatment == "Control")
+  filter(estimand == "Continuous", treatment == "Control")
 cont_fishoil <- SA_combined_vital_all %>%
-  filter(estimand == "Continuous time", treatment == "Fish Oil")
+  filter(estimand == "Continuous", treatment == "Fish Oil")
 cat_heatmap_data <- tidyr::expand_grid(
   delta_1 = cat_placebo$delta_vital,  
   delta_2 = cat_fishoil$delta_vital      
@@ -289,10 +289,10 @@ cat_heatmap_fishoil_plot<- ggplot(cat_heatmap_data, aes(x = delta_1, y = delta_2
     limits = c(midpoint_cat - spread_cat, midpoint_cat + spread_cat)
   ) +
   labs(
-    title = "Heatmap of categorical SA fishoil",
+    title = "Map3; original fishoil estimand",
     x = "Control Delta ",
     y = "Fish Oil Delta",
-    fill = "Treatment Effect"
+    fill = "Effect"
   ) +
   theme_minimal() +
   theme(panel.grid = element_blank())
@@ -309,15 +309,83 @@ cont_heatmap_fishoil_plot<-ggplot(cont_heatmap_data, aes(x = delta_1, y = delta_
     limits = c(midpoint_cont - spread_cont, midpoint_cont + spread_cont)
   ) +
   labs(
-    title = "Heatmap continuous fishoil",
+    title ="Map4; changed fishoil estimand",
     x = "Control Delta ",
     y = "Fish Oil Delta",
-    fill = "Treatment Effect"
+    fill = "Effect"
   ) +
   theme_minimal() +
   theme(panel.grid = element_blank())
 
 
-save(SA_combined_vital_all_plot , SA_combined_acu_plot, file ="report_plots.RData")
+#vital heatmap vitamin D
 
+cat_placebo <- SA_combined_vital_all %>%
+  filter(estimand == "Categorical", treatment == "Control")
+cat_vitd <- SA_combined_vital_all %>%
+  filter(estimand == "Categorical", treatment == "Vitamin D")
+cont_placebo <- SA_combined_vital_all %>%
+  filter(estimand == "Continuous", treatment == "Control")
+cont_vitd <- SA_combined_vital_all %>%
+  filter(estimand == "Continuous", treatment == "Vitamin D")
+cat_heatmap_data <- tidyr::expand_grid(
+  delta_1 = cat_placebo$delta_vital,  
+  delta_2 = cat_vitd$delta_vital      
+) %>%
+  left_join(cat_placebo %>% select(delta_1 = delta_vital, placebo_est = estimate), by = "delta_1") %>%
+  left_join(cat_vitd %>% select(delta_2 = delta_vital, vitd_est = estimate), by = "delta_2") %>%
+  mutate(
+    treatment_effect = vitd_est - placebo_est,
+    estimand = "Categorical"
+  )
+cont_heatmap_data <- tidyr::expand_grid(
+  delta_1 = cont_placebo$delta_vital,
+  delta_2 = cont_vitd$delta_vital
+) %>%
+  left_join(cont_placebo %>% select(delta_1 = delta_vital, placebo_est = estimate), by = "delta_1") %>%
+  left_join(cont_vitd %>% select(delta_2 = delta_vital, vitd_est = estimate), by = "delta_2") %>%
+  mutate(
+    treatment_effect = vitd_est - placebo_est,
+    estimand = "Continuous"
+  )
+
+range_est_cat <- range(cat_heatmap_data$treatment_effect, na.rm = TRUE)
+midpoint_cat <- mean(range_est_cat)
+spread_cat <- max(abs(range_est_cat - midpoint_cat))
+
+cat_heatmap_vitd_plot<- ggplot(cat_heatmap_data, aes(x = delta_1, y = delta_2, fill = treatment_effect)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient2(
+    low = "#a80050", mid = "white", high = "lawngreen",
+    midpoint = midpoint_cat,
+    limits = c(midpoint_cat - spread_cat, midpoint_cat + spread_cat)
+  ) +
+  labs(
+    title = "Map5; original vitd estimand",
+    x = "Control Delta ",
+    y = "VitD Delta",
+    fill = "Effect"
+  ) +
+  theme_minimal() +
+  theme(panel.grid = element_blank())
+
+range_est_cont <- range(cont_heatmap_data$treatment_effect, na.rm = TRUE)
+midpoint_cont <- mean(range_est_cont)
+spread_cont <- max(abs(range_est_cont - midpoint_cont))
+
+cont_heatmap_vitd_plot<-ggplot(cont_heatmap_data, aes(x = delta_1, y = delta_2, fill = treatment_effect)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient2(
+    low = "#a80050", mid = "white", high = "lawngreen",
+    midpoint = midpoint_cont,
+    limits = c(midpoint_cont - spread_cont, midpoint_cont + spread_cont)
+  ) +
+  labs(
+    title ="Map6; changed vitd estimand",
+    x = "Control Delta ",
+    y = "VitD Delta",
+    fill = "Effect"
+  ) +
+  theme_minimal() +
+  theme(panel.grid = element_blank())
 
