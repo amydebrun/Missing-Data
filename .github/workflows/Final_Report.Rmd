@@ -135,9 +135,14 @@ probability of being observed without the given data. This mechanism is
 considered the easiest to deal with as it does not bias the result
 although data is rarely MCAR. This can occur due to system failure and
 some data is deleted accidentally, or else there is issues with the
-treatment system and data cannot be recorded.
+treatment system and data cannot be recorded. The DAG below visualises an
+example of this mechanism based on a randomised trial. `missing_outcome` is independent 
+from the observed baseline variables and outcome variable. 
 
--insert dag
+
+```{r echo=FALSE}
+plot(MCAR_dag) 
+```
 
 **Missing At Random**
 
@@ -147,12 +152,13 @@ being observed given the observed data. In short, the data's missingness
 is dependent on the observed data. For example, people with a higher
 body mass index may be more prone to having missing blood pressure
 data - this is not relative to the missing data. MAR is a more realistic
-mechanism than MCAR and requires more intensive handling methods.
+mechanism than MCAR and requires more intensive handling methods. The DAG shows
+that the `missing_outcome` is influenced by the observed outcome, observed baseline 
+variables and the treatment. 
 
-```{r}
+```{r echo=FALSE}
 plot(MAR_dag)
 ```
-
 
 **Missing Not At Random**
 
@@ -163,9 +169,13 @@ producing valid results is a challenge. Certain participants in a
 general health study may avoid answering questions truthfully about
 smoking habits or their diet in order to make themselves more appealing.
 Sensitivity analysis is an option to determine the treatment effect when
-assuming different mechanisms.
+assuming different mechanisms. The following DAG includes the missing data indicator $R$, 
+which denotes whether the outcome is observed ($R = 1$) or missing ($R = 0$). 
+In this structure, the potentially missing outcome variable directly influences $R$. 
 
--   DAG of missing mechanism (randomised) in progress in R scripts
+```{r echo=FALSE}
+plot(MNAR_dag) 
+```
 
 Although these considerations are important, the mechanism underlying missing 
 data is fundamentally untestable. Since the true values of missing observations 

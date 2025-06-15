@@ -118,7 +118,34 @@ MAR_dag <- dagitty('dag {
     randomisation -> missing_outcome 
 }')
 
+MCAR_dag <- dagitty('dag {
+  randomisation         [pos="0,2"]
+  treatment             [pos="1.5,2.5"]
+  observed_outcome      [pos="3,2"]
+  missing_outcome       [pos="3,3"]
+  baseline_variable1_obs [pos="1,3.5"]
+  baseline_variable2_obs [pos="1,1.5"]
+  
+    randomisation -> treatment
+    treatment -> observed_outcome 
+    baseline_variable1_obs -> observed_outcome <- baseline_variable2_obs
+    randomisation -> observed_outcome
+}')
 
+MNAR_dag <- dagitty('dag {
+  randomisation         [pos="0,2"]
+  treatment             [pos="1.5,2.5"]
+  outcome      [pos="3,2"]
+  R                     [pos="3,3"]
+  baseline_variable1_obs [pos="1,3.5"]
+  baseline_variable2_obs [pos="1,1.5"]
+  
+  randomisation -> treatment
+  treatment -> outcome
+  baseline_variable1_obs -> outcome <- baseline_variable2_obs
+  randomisation -> outcome
+  outcome -> R
+}')
 
 dag_base_miss <- dagitty('dag {
   randomisation         [pos="0,2"]
