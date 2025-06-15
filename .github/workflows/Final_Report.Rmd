@@ -164,6 +164,13 @@ assuming different mechanisms.
 
 -   DAG of missing mechanism (randomised) in progress in R scripts
 
+Although these considerations are important, the mechanism underlying missing 
+data is fundamentally untestable. Since the true values of missing observations 
+are never observed, we cannot definitively determine which missingness 
+assumption holds in practice. There is limited hypothesis test available to see
+whether data is MCAR (*Little's MCAR test*).  It is a likelihood-ratio test that groups missing data patterns, estimates the expected means under a multivariate normal model using maximum likelihood, and computes a chi-square statistic to assess model fit. 
+It is limited as it does not necessarily confirm MCAR but provides no evidence to reject that the data MCAR. If the test has a significant p-value, it suggests that the data is MAR or MNAR, but we do not know which one. 
+
 ## Different missing data patterns (section tbc)
 
 A missing data pattern describes the pattern of missing data among the
@@ -179,28 +186,18 @@ print(missing_pattern_table)
 
 *Current literature*
 
-(Spineli et al. 2015) - after 2009 - 190 systematic reviews - 175
-contained missing data in one study - Randomised controlled trial - 35%
-reported implications of missing data - 78% performed intention to
-treat/ including trials imputed outcome data - less than 20% performed
-sensitivity analysis
+While reviewing the literature on missing data, it became evident that despite the use of established handling methods, there remains room for improvement in how missing data are addressed in reports and in the selection of appropriate methods.
 
-(Hunt et al 2021) - systematic review 2018 and 2019 - 62 studies; 2726
-articles - 56% studies reported missing data - 11 reported potntial
-bias - 19 reported missing data handling methid - 13 Complete case - 2
-multiple imputation - 2 used CCA and MI - 1 Mean imputation - 1 imputed
-similar variable info
+In 2014, Powney et al. reviewed 100 longitudinal clinical trials conducted between 2005 and 2012 and found that only 44 reported an adequate method to handle missing data, while 30 used potentially inadequate methods.
 
--   pharmacoepidemiologic multi-database studies
+Spineli et al. (2015) examined 190 systematic reviews published after 2009 to investigate how missing data were reported in randomized controlled trials. Although 175 of these reviews mentioned missing data, only 61 discussed its implications.
 
-(Baker et al. 2025) - 229 studies observational studies UNOS - 78
-reported how they use missing data - CCA common (41) - multiple imp
-(22) - other methods (15) - 31 removed covariates from analysis
+Hunt et al. (2021) reviewed 62 pharmacoepidemiologic multi-database studies from 2018 to 2019 to assess missing data reporting and handling. Thirty-five studies reported missing data, but only 19 described methods for handling it. The most popular approach was complete case analysis (CCA) used in 13 studies, followed by multiple imputation (MI) in 2 studies.
 
-Existing literature reveals inconsistent reporting and handling
-practices.(Power 2014)
+Complete case analysis was also the predominant method in a systematic review of 229 observational studies from the United Network for Organ Sharing (UNOS) database (Baker et al., 2025). Forty-one studies used CCA, 22 reported MI, and notably, 31 studies removed covariates due to missing values—an action that could introduce further bias depending on the covariate’s relationship with other predictors.
 
 \newpage
+
 # Real World Data
 
 We have sourced two different data sets to perform our missingness
@@ -322,7 +319,7 @@ interaction between vitamin D and fish oil in our substantive model or
 our imputation model.
 
 |              | **Vitamin D**            | **Placebo** |
-| ------------ | ------------------------ | ----------- |
+|--------------|--------------------------|-------------|
 | **Fish Oil** | N = 342 *(not analysed)* | N = 353     |
 | **Placebo**  | N = 332                  | N = 371     |
 
@@ -417,6 +414,7 @@ in which
 -   $\varepsilon$ is the residual error of individual $i$
 
 \newpage
+
 ## Missing analysis
 
 **Acupuncture Data**
@@ -501,9 +499,7 @@ print(vital_miss_pattern)
 ```
 
 Figure 2.x: Missing data patterns across 4 treatment groups in VITAL
-data.
-\newpage
-# Methods - kent
+data. \newpage \# Methods - kent
 
 ## Data wrangling
 
@@ -1331,7 +1327,7 @@ recommended by the National Research Council (2010) as a best practice
 for handling missing data; however, it is rarely conducted in practice.
 This may reflect an underappreciation of the impact of missing data in
 many studies, as well as the complexity and specialised expertise
-required to perform such analyses.
+required to perform such analyses. 
 
 A systematic review by Fiero et al. (2016) examined 86 cluster
 randomised trials published between 2013 and 2014. Among the 80 trials
@@ -1351,10 +1347,9 @@ relaxing the MAR assumption.
 
 The shift can be broken down in to:
 
-$$\delta = \delta_\mathrm{MAR} + \delta_\mathrm{MNAR}$$ where; 
-- $\delta_\mathrm{MAR}$: mean difference caused by the predictors in the
-imputation models 
-- $\delta_\mathrm{MNAR}$: mean difference caused by an
+$$\delta = \delta_\mathrm{MAR} + \delta_\mathrm{MNAR}$$ where; -
+$\delta_\mathrm{MAR}$: mean difference caused by the predictors in the
+imputation models - $\delta_\mathrm{MNAR}$: mean difference caused by an
 additional non-ignorable part of the imputation model
 
 Essentially, $\delta$ is the mean difference between the imputed values
@@ -1386,8 +1381,8 @@ Next we performed the main imputation, indicating post processing, using
 predictive mean matching method and maxit=10 to indicate maximum of 10
 iterations. After imputation, a regression model like our substantive
 model is fitted, $\beta_0 + \beta_1group+\beta_2pk1_i+\varepsilon_i$,
-and the estimates are pooled together.
-\newpage
+and the estimates are pooled together. \newpage
+
 ```{r eval=FALSE, echo=TRUE}
 #predictors
 inlist <- c("group", "pk5", "pk1")
@@ -1425,14 +1420,17 @@ for (i in seq_along(imp.all.undamped_cat)) {
 }
 ```
 
-We repeated this process exactly on the `acu_wide` data in which we added a filter(group==0) in order to extract the results in the control group for comparison, creating `acu_wide_placebo`. 
+We repeated this process exactly on the `acu_wide` data in which we
+added a filter(group==0) in order to extract the results in the control
+group for comparison, creating `acu_wide_placebo`.
 
 A similar process was implemented on to the VITAL trial data in wide
 format. We chose our inlist predictors `pain_base`,
 `vitdactive`,`fishoilactive`, and our outcome as `pain_yr4`. After
 pooling our estimates, we filtered out the treatment groups by setting
 'term == fishoilactive' and 'term == vitdactive' so we can observe the
-results by treatment. For the control group we filtered the `vital_wide` data as fishoilactive==0 and vitdactive==0. 
+results by treatment. For the control group we filtered the `vital_wide`
+data as fishoilactive==0 and vitdactive==0.
 
 We performed sensitivity analysis in a similar fashion to test the
 robustness of the treatment effect on our alternative estimand. This was
@@ -1445,11 +1443,10 @@ of the long format, we used the linear mixed effects model to estimate
 our treatment effect before pooling the estimates. Our imputation model
 here is;
 
-\(
-\text{pk\_score}_{ij} = \beta_0 + \beta_1 \text{group} + \beta_2  \text{time\_c} + \beta_3  (\text{group}  \text{time\_c}) + \beta_4  \text{pk1} + b_0 + \varepsilon_{ij}
-\)
+$\text{pk\_score}_{ij} = \beta_0 + \beta_1 \text{group} + \beta_2  \text{time\_c} + \beta_3  (\text{group}  \text{time\_c}) + \beta_4  \text{pk1} + b_0 + \varepsilon_{ij}$
 
 \newpage
+
 For the VITAL data; we created a similar function to our
 to_long_format_vital_MICE() function with a minor adjustment;
 
@@ -1471,6 +1468,7 @@ $pain_{ij}=\beta_0+\beta_1fishoil_i+\beta_2time_{ij}+\beta_3(fishoil_itime_{ij})
 as our imputation model in each of the imputed data sets.
 
 ```{r eval=FALSE, echo=TRUE}
+#predictors
 inlist <- c("fishoilactive", "vitdactive", "pain", "pain_base", "time_contin", "Subject_ID") 
 pred_cont <- quickpred(vital_wide, minpuc = 0.5, include = inlist)
 imp.all.undamped_cont <- vector("list", length(delta_vital))
@@ -1511,7 +1509,6 @@ for (i in seq_along(delta_vital)) {
 }
 ```
 
-
 other future methods
 
 pattern mixture model: this is an alternative method of sensitivity
@@ -1523,12 +1520,6 @@ $$P(Y,R)=P(Y|R)P(R)=P(Y|R=1)P(R=1)+P(Y|R=0)P(R=0)$$
 
 selection model; model the probability of missingness as a function of
 the data
-
-#### heatmap attempt for acupuncture cat_heatmap_acu_plot
-
-cont_heatmap_acu_plot
-
-#### heatmap attempt for vital cont_heatmap_fishoil_plot
 
 # Result
 
@@ -1604,14 +1595,27 @@ SA_combined_vital_all_plot
 SA_combined_acu_plot
 ```
 
-This forest plot illustrates the robustness of the estimated treatment effects under varying missing data assumptions using  $\delta$-adjustment. Each point represents the estimated treatment effect at a given  $\delta$  value, where:
+This forest plot illustrates the robustness of the estimated treatment
+effects under varying missing data assumptions using
+$\delta$-adjustment. Each point represents the estimated treatment
+effect at a given $\delta$ value, where:
 
-- Purple represent the reference estimand, in which time is treated as a categorical variable.
-- Green represent the changed estimand, in which time is modeled as a continuous variable.
-- Horizontal lines denote the 95% confidence intervals.
+-   Purple represent the reference estimand, in which time is treated as
+    a categorical variable.
+-   Green represent the changed estimand, in which time is modeled as a
+    continuous variable.
+-   Horizontal lines denote the 95% confidence intervals.
 
-The vertical red dashed line at 0 marks the threshold of no treatment effect. The panels are stratified to compare the acupuncture group and the control group in figure x. This goes for the VITAL plot in figure y as well where we compare fish oil, vitamin D and control group.
-The $\delta$ parameter shifts the imputed values to simulate scenarios where missing outcomes are systematically better or worse than observed ones. Positive $\delta$  values imply better unobserved outcomes; negative  $\delta$ values imply worse. The consistency of effect estimates across the $\delta$  range suggests the treatment effect is robust to departures from the MAR assumption.
+The vertical red dashed line at 0 marks the threshold of no treatment
+effect. The panels are stratified to compare the acupuncture group and
+the control group in figure x. This goes for the VITAL plot in figure y
+as well where we compare fish oil, vitamin D and control group. The
+$\delta$ parameter shifts the imputed values to simulate scenarios where
+missing outcomes are systematically better or worse than observed ones.
+Positive $\delta$ values imply better unobserved outcomes; negative
+$\delta$ values imply worse. The consistency of effect estimates across
+the $\delta$ range suggests the treatment effect is robust to departures
+from the MAR assumption.
 
 \newpage
 
@@ -1624,7 +1628,13 @@ cat_heatmap_vitd_plot
 cont_heatmap_vitd_plot
 ```
 
-We created heatmaps plotting the $\delta$ values for both the control group and treatment group to visualise the change in treatment effect when varying the $\delta$ adjustments under MNAR. The aim here is to show the robustness of the initial estimated treatment effect when assumed under a different mechanism. A similar range of colours would be interpretable as a strong estimate as there was not much change in the estimate after adding the $\delta$ shifts. 
+We created heatmaps plotting the $\delta$ values for both the control
+group and treatment group to visualise the change in treatment effect
+when varying the $\delta$ adjustments under MNAR. The aim here is to
+show the robustness of the initial estimated treatment effect when
+assumed under a different mechanism. A similar range of colours would be
+interpretable as a strong estimate as there was not much change in the
+estimate after adding the $\delta$ shifts.
 
 # Discussion
 
