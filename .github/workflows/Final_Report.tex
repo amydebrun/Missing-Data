@@ -169,10 +169,10 @@ missingness is systematic.
 
 The objective of this project is to estimate treatment effects using
 real-world data, with a primary focus on addressing issues that come
-with missing data. We will examine different assumptions about missing
-data mechanisms---such as Missing Completely at Random, Missing at
-Random, and Missing Not at Random and investigate their implications for
-statistical analysis.
+with missing data. We will briefly discuss different assumptions about
+missing data mechanisms---such as Missing Completely at Random, Missing
+at Random, and Missing Not at Random and investigate their implications
+for statistical analysis.
 
 While a range of methods are available to handle missing data, they all
 vary in levels of complexity and assumptions. This project aims to
@@ -188,8 +188,7 @@ linear mixed effects models. Additionally, we will conduct sensitivity
 analyses to investigate how treatment effect estimates change under
 different assumptions about the missing data.
 
-\subsection{Missingness Mechanisms - unverifiable, mcar little
-test}\label{missingness-mechanisms---unverifiable-mcar-little-test}
+\subsection{Missingness Mechanisms}\label{missingness-mechanisms}
 
 Missing data mechanisms are important to consider when choosing which
 sort of missing data handling method to use. There are three mechanisms
@@ -233,9 +232,11 @@ considered the easiest to deal with as it does not bias the result
 although data is rarely MCAR. This can occur due to system failure and
 some data is deleted accidentally, or else there is issues with the
 treatment system and data cannot be recorded. The DAG below visualises
-an example of this mechanism based on a randomised trial.
-\texttt{missing\_outcome} is independent from the observed baseline
-variables and outcome variable.
+an example of this mechanism based on a randomised trial with
+randomisation variable \(L\). Missing indicator \(R\), which denotes
+whether the outcome is observed (\(R = 1\)) or missing (\(R = 0\)), is
+independent from the observed baseline variables \(X1\) and \(X2\) and
+outcome variable \(Y\) (which contains potentially missing data).
 
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf}}
 
@@ -248,8 +249,8 @@ is dependent on the observed data. For example, people with a higher
 body mass index may be more prone to having missing blood pressure data
 - this is not relative to the missing data. MAR is a more realistic
 mechanism than MCAR and requires more intensive handling methods. The
-DAG shows that the \texttt{missing\_outcome} is influenced by the
-observed outcome, observed baseline variables and the treatment.
+DAG shows that the \(R\) is influenced by the \(Y\), \(X1\), \(X2\) and
+treatment \(A\).
 
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf}}
 
@@ -263,9 +264,8 @@ general health study may avoid answering questions truthfully about
 smoking habits or their diet in order to make themselves more appealing.
 Sensitivity analysis is an option to determine the treatment effect when
 assuming different mechanisms. The following DAG includes the missing
-data indicator \(R\), which denotes whether the outcome is observed
-(\(R = 1\)) or missing (\(R = 0\)). In this structure, the potentially
-missing outcome variable directly influences \(R\).
+data indicator \(R\). In this structure, the potentially missing outcome
+variable \(Y\) directly influences \(R\).
 
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf}}
 
@@ -360,7 +360,7 @@ controlled trial with two follow up time points. 401 participants were
 gathered from general practices in England and Wales who suffered from
 migraines.
 
-\emph{Data}
+\emph{Data Overview}
 
 13 variables were recorded during the acupuncture trial.
 
@@ -497,7 +497,7 @@ our imputation model.
 \textbf{Placebo} & N = 332 & N = 371 \\
 \end{longtable}
 
-\emph{Overview}
+\emph{Data Overview}
 
 There are x variables recorded in the VITAL data, the following table
 refers to a subset of the variables that we frequently use.
@@ -1677,7 +1677,9 @@ Next we performed the main imputation, indicating post processing, using
 predictive mean matching method and maxit=10 to indicate maximum of 10
 iterations. After imputation, a regression model like our substantive
 model is fitted, \(\beta_0 + \beta_1group+\beta_2pk1_i+\varepsilon_i\),
-and the estimates are pooled together. \newpage
+and the estimates are pooled together.
+
+\newpage
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1695,7 +1697,7 @@ and the estimates are pooled together. \newpage
 \NormalTok{  d }\OtherTok{\textless{}{-}}\NormalTok{ delta[i]}
 \NormalTok{  cmd }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}
     \StringTok{"idx \textless{}{-} which(data[,\textquotesingle{}group\textquotesingle{}] == 1 \& is.na(data[,\textquotesingle{}pk5\textquotesingle{}])); "}\NormalTok{,}
-    \StringTok{"imp[[j]]$pk5[idx] \textless{}{-} imp[[j]]$pk5[idx] + "}\NormalTok{,d, }\StringTok{";"}\NormalTok{) }\CommentTok{\#treatment group and imputing pk5}
+    \StringTok{"imp[[j]]$pk5[idx] \textless{}{-} imp[[j]]$pk5[idx] + "}\NormalTok{,d, }\StringTok{";"}\NormalTok{) }\CommentTok{\#treatment group and imputing pk5, adding delta d}
 \NormalTok{  post\_cat[}\StringTok{"pk5"}\NormalTok{] }\OtherTok{\textless{}{-}}\NormalTok{ cmd}
 \NormalTok{  imp\_cat }\OtherTok{\textless{}{-}} \FunctionTok{mice}\NormalTok{(acu\_wide, }\AttributeTok{pred =}\NormalTok{ pred\_cat, }\AttributeTok{post =}\NormalTok{ post\_cat, }\AttributeTok{maxit =} \DecValTok{10}\NormalTok{,}
                   \AttributeTok{seed =}\NormalTok{ i }\SpecialCharTok{*} \DecValTok{22}\NormalTok{, }\AttributeTok{print=}\ConstantTok{FALSE}\NormalTok{)}
@@ -1706,8 +1708,8 @@ and the estimates are pooled together. \newpage
 \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \FunctionTok{seq\_along}\NormalTok{(imp.all.undamped\_cat)) \{}
 \NormalTok{  imp\_cat }\OtherTok{\textless{}{-}}\NormalTok{ imp.all.undamped\_cat[[i]]}
 \NormalTok{  d }\OtherTok{\textless{}{-}}\NormalTok{ delta[i]}
-\NormalTok{  fit\_cat }\OtherTok{\textless{}{-}} \FunctionTok{with}\NormalTok{(imp\_cat, }\FunctionTok{lm}\NormalTok{(pk5 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ group }\SpecialCharTok{+}\NormalTok{ pk1))}
-\NormalTok{  pooled\_cat }\OtherTok{\textless{}{-}} \FunctionTok{pool}\NormalTok{(fit\_cat)}
+\NormalTok{  fit\_cat }\OtherTok{\textless{}{-}} \FunctionTok{with}\NormalTok{(imp\_cat, }\FunctionTok{lm}\NormalTok{(pk5 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ group }\SpecialCharTok{+}\NormalTok{ pk1)) }\CommentTok{\#imputation model}
+\NormalTok{  pooled\_cat }\OtherTok{\textless{}{-}} \FunctionTok{pool}\NormalTok{(fit\_cat) }\CommentTok{\#pooling estimates}
 \NormalTok{  est\_cat }\OtherTok{\textless{}{-}} \FunctionTok{tidy}\NormalTok{(pooled\_cat, }\AttributeTok{conf.int =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
     \FunctionTok{filter}\NormalTok{(term }\SpecialCharTok{==} \StringTok{"group"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
     \FunctionTok{select}\NormalTok{(estimate, std.error, conf.low, conf.high, p.value) }\SpecialCharTok{\%\textgreater{}\%}
@@ -1772,7 +1774,7 @@ as our imputation model in each of the imputed data sets.
 \begin{Highlighting}[]
 \CommentTok{\#predictors}
 \NormalTok{inlist }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"fishoilactive"}\NormalTok{, }\StringTok{"vitdactive"}\NormalTok{, }\StringTok{"pain"}\NormalTok{, }\StringTok{"pain\_base"}\NormalTok{, }\StringTok{"time\_contin"}\NormalTok{, }\StringTok{"Subject\_ID"}\NormalTok{) }
-\NormalTok{pred\_cont }\OtherTok{\textless{}{-}} \FunctionTok{quickpred}\NormalTok{(vital\_wide, }\AttributeTok{minpuc =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{include =}\NormalTok{ inlist)}
+\NormalTok{pred\_cont }\OtherTok{\textless{}{-}} \FunctionTok{quickpred}\NormalTok{(vital\_wide, }\AttributeTok{minpuc =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{include =}\NormalTok{ inlist) }\CommentTok{\#prediction matrix}
 \NormalTok{imp.all.undamped\_cont }\OtherTok{\textless{}{-}} \FunctionTok{vector}\NormalTok{(}\StringTok{"list"}\NormalTok{, }\FunctionTok{length}\NormalTok{(delta\_vital))}
 \NormalTok{delta\_results\_cont\_fishoil }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{()}
 
@@ -1811,18 +1813,6 @@ as our imputation model in each of the imputed data sets.
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
-
-other future methods
-
-pattern mixture model: this is an alternative method of sensitivity
-analysis in which the distribution of the outcome is modelled by
-combining the distribution of the missing values and the observed
-values.
-
-\[P(Y,R)=P(Y|R)P(R)=P(Y|R=1)P(R=1)+P(Y|R=0)P(R=0)\]
-
-selection model; model the probability of missingness as a function of
-the data
 
 \section{Result}\label{result}
 
