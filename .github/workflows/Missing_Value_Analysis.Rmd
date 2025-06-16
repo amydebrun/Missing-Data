@@ -263,6 +263,8 @@ save(
 save(
  #DAGs
   MAR_dag,
+  MNAR_dag,
+  MCAR_dag,
   
  # sensitivity analysis
   SA_combined_vital_all_plot,

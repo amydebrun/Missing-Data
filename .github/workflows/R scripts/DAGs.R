@@ -102,51 +102,50 @@ dag_outcome_base_miss <- dagitty('dag {
 
 
 MAR_dag <- dagitty('dag {
-  randomisation         [pos="0,2"]
-  treatment             [pos="1.5,2.5"]
-  observed_outcome      [pos="3,2"]
-  missing_outcome       [pos="3,3"]
-  baseline_variable1_obs [pos="1,3.5"]
-  baseline_variable2_obs [pos="1,1.5"]
+  L         [pos="0,2"]
+  A             [pos="1.5,2.5"]
+  Y       [pos="3,2"]
+  R       [pos="3,3"]
+  X1      [pos="1,3.5"]
+  X2      [pos="1,1.5"]
   
-    randomisation -> treatment
-    treatment -> observed_outcome 
-    observed_outcome -> missing_outcome <- treatment
-    baseline_variable1_obs -> observed_outcome <- baseline_variable2_obs
-    baseline_variable1_obs -> missing_outcome <- baseline_variable2_obs
-    randomisation -> observed_outcome
-    randomisation -> missing_outcome 
+    L -> A
+    A -> Y
+    Y -> R <- A
+    X1 -> Y <- X2
+    X1-> R <- X2
+    L -> Y
+    L -> R 
 }')
 
 MCAR_dag <- dagitty('dag {
-  randomisation         [pos="0,2"]
-  treatment             [pos="1.5,2.5"]
-  observed_outcome      [pos="3,2"]
-  missing_outcome       [pos="3,3"]
-  baseline_variable1_obs [pos="1,3.5"]
-  baseline_variable2_obs [pos="1,1.5"]
+ L       [pos="0,2"]
+ A            [pos="1.5,2.5"]
+ Y             [pos="3,2"]
+ R                    [pos="3,3"]
+ X1 [pos="1,3.5"]
+ X2 [pos="1,1.5"]
   
-    randomisation -> treatment
-    treatment -> observed_outcome 
-    baseline_variable1_obs -> observed_outcome <- baseline_variable2_obs
-    randomisation -> observed_outcome
+     L -> A
+     A -> Y
+     X1 -> Y <- X2
+     L -> Y
 }')
 
 MNAR_dag <- dagitty('dag {
-  randomisation         [pos="0,2"]
-  treatment             [pos="1.5,2.5"]
-  outcome      [pos="3,2"]
-  R                     [pos="3,3"]
-  baseline_variable1_obs [pos="1,3.5"]
-  baseline_variable2_obs [pos="1,1.5"]
+  L         [pos="0,2"]
+  A             [pos="1.5,2.5"]
+  Y       [pos="3,2"]
+  R       [pos="3,3"]
+  X1      [pos="1,3.5"]
+  X2      [pos="1,1.5"]
   
-  randomisation -> treatment
-  treatment -> outcome
-  baseline_variable1_obs -> outcome <- baseline_variable2_obs
-  randomisation -> outcome
-  outcome -> R
+    L -> A
+    A -> Y
+    X1 -> Y <- X2
+    L -> Y
+    Y -> R 
 }')
-
 dag_base_miss <- dagitty('dag {
   randomisation         [pos="0,2"]
   treatment             [pos="1.5,2.5"]

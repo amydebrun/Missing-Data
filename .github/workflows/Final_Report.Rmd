@@ -86,9 +86,9 @@ missingness is systematic.
 
 The objective of this project is to estimate treatment effects using
 real-world data, with a primary focus on addressing issues that come
-with missing data. We will examine different assumptions about missing
-data mechanisms—such as Missing Completely at Random, Missing at Random,
-and Missing Not at Random and investigate their implications for
+with missing data. We will briefly discuss different assumptions about
+missing data mechanisms—such as Missing Completely at Random, Missing at
+Random, and Missing Not at Random and investigate their implications for
 statistical analysis.
 
 While a range of methods are available to handle missing data, they all
@@ -105,7 +105,7 @@ linear mixed effects models. Additionally, we will conduct sensitivity
 analyses to investigate how treatment effect estimates change under
 different assumptions about the missing data.
 
-## Missingness Mechanisms - unverifiable, mcar little test
+## Missingness Mechanisms
 
 Missing data mechanisms are important to consider when choosing which
 sort of missing data handling method to use. There are three mechanisms
@@ -136,25 +136,14 @@ probability of being observed without the given data. This mechanism is
 considered the easiest to deal with as it does not bias the result
 although data is rarely MCAR. This can occur due to system failure and
 some data is deleted accidentally, or else there is issues with the
-treatment system and data cannot be recorded. The DAG below visualises an
-example of this mechanism based on a randomised trial. `missing_outcome` is independent 
-from the observed baseline variables and outcome variable. 
-
+treatment system and data cannot be recorded. The DAG below visualises
+an example of this mechanism based on a randomised trial with
+randomisation variable $L$. Missing indicator $R$, which denotes whether
+the outcome is observed ($R = 1$) or missing ($R = 0$), is independent
+from the observed baseline variables $X1$ and $X2$ and outcome variable
+$Y$ (which contains potentially missing data).
 
 ```{r echo=FALSE}
-MCAR_dag <- dagitty('dag {
-  randomisation         [pos="0,2"]
-  treatment             [pos="1.5,2.5"]
-  observed_outcome      [pos="3,2"]
-  missing_outcome       [pos="3,3"]
-  baseline_variable1_obs [pos="1,3.5"]
-  baseline_variable2_obs [pos="1,1.5"]
-  
-    randomisation -> treatment
-    treatment -> observed_outcome 
-    baseline_variable1_obs -> observed_outcome <- baseline_variable2_obs
-    randomisation -> observed_outcome
-}')
 plot(MCAR_dag) 
 ```
 
@@ -166,27 +155,11 @@ being observed given the observed data. In short, the data's missingness
 is dependent on the observed data. For example, people with a higher
 body mass index may be more prone to having missing blood pressure
 data - this is not relative to the missing data. MAR is a more realistic
-mechanism than MCAR and requires more intensive handling methods. The DAG shows
-that the `missing_outcome` is influenced by the observed outcome, observed baseline 
-variables and the treatment. 
+mechanism than MCAR and requires more intensive handling methods. The
+DAG shows that the $R$ is influenced by the $Y$, $X1$, $X2$ and
+treatment $A$.
 
 ```{r echo=FALSE}
-MAR_dag <- dagitty('dag {
-  randomisation         [pos="0,2"]
-  treatment             [pos="1.5,2.5"]
-  observed_outcome      [pos="3,2"]
-  missing_outcome       [pos="3,3"]
-  baseline_variable1_obs [pos="1,3.5"]
-  baseline_variable2_obs [pos="1,1.5"]
-  
-    randomisation -> treatment
-    treatment -> observed_outcome 
-    observed_outcome -> missing_outcome <- treatment
-    baseline_variable1_obs -> observed_outcome <- baseline_variable2_obs
-    baseline_variable1_obs -> missing_outcome <- baseline_variable2_obs
-    randomisation -> observed_outcome
-    randomisation -> missing_outcome 
-}')
 plot(MAR_dag)
 ```
 
@@ -199,34 +172,26 @@ producing valid results is a challenge. Certain participants in a
 general health study may avoid answering questions truthfully about
 smoking habits or their diet in order to make themselves more appealing.
 Sensitivity analysis is an option to determine the treatment effect when
-assuming different mechanisms. The following DAG includes the missing data indicator $R$, 
-which denotes whether the outcome is observed ($R = 1$) or missing ($R = 0$). 
-In this structure, the potentially missing outcome variable directly influences $R$. 
+assuming different mechanisms. The following DAG includes the missing
+data indicator $R$. In this structure, the potentially missing outcome
+variable $Y$ directly influences $R$.
 
 ```{r echo=FALSE}
-MNAR_dag <- dagitty('dag {
-  randomisation         [pos="0,2"]
-  treatment             [pos="1.5,2.5"]
-  outcome      [pos="3,2"]
-  R                     [pos="3,3"]
-  baseline_variable1_obs [pos="1,3.5"]
-  baseline_variable2_obs [pos="1,1.5"]
-  
-  randomisation -> treatment
-  treatment -> outcome
-  baseline_variable1_obs -> outcome <- baseline_variable2_obs
-  randomisation -> outcome
-  outcome -> R
-}')
 plot(MNAR_dag) 
 ```
 
-Although these considerations are important, the mechanism underlying missing 
-data is fundamentally untestable. Since the true values of missing observations 
-are never observed, we cannot definitively determine which missingness 
-assumption holds in practice. There is limited hypothesis test available to see
-whether data is MCAR (*Little's MCAR test*).  It is a likelihood-ratio test that groups missing data patterns, estimates the expected means under a multivariate normal model using maximum likelihood, and computes a chi-square statistic to assess model fit. 
-It is limited as it does not necessarily confirm MCAR but provides no evidence to reject that the data MCAR. If the test has a significant p-value, it suggests that the data is MAR or MNAR, but we do not know which one. 
+Although these considerations are important, the mechanism underlying
+missing data is fundamentally untestable. Since the true values of
+missing observations are never observed, we cannot definitively
+determine which missingness assumption holds in practice. There is
+limited hypothesis test available to see whether data is MCAR (*Little's
+MCAR test*). It is a likelihood-ratio test that groups missing data
+patterns, estimates the expected means under a multivariate normal model
+using maximum likelihood, and computes a chi-square statistic to assess
+model fit. It is limited as it does not necessarily confirm MCAR but
+provides no evidence to reject that the data MCAR. If the test has a
+significant p-value, it suggests that the data is MAR or MNAR, but we do
+not know which one.
 
 ## Different missing data patterns (section tbc)
 
@@ -241,15 +206,34 @@ print(missing_pattern_table)
 
 ## Literature and Limitations
 
-While reviewing the literature on missing data, it became evident that despite the use of established handling methods, there remains room for improvement in how missing data are addressed in reports and in the selection of appropriate methods.
+While reviewing the literature on missing data, it became evident that
+despite the use of established handling methods, there remains room for
+improvement in how missing data are addressed in reports and in the
+selection of appropriate methods.
 
-In 2014, Powney et al. reviewed 100 longitudinal clinical trials conducted between 2005 and 2012 and found that only 44 reported an adequate method to handle missing data, while 30 used potentially inadequate methods.
+In 2014, Powney et al. reviewed 100 longitudinal clinical trials
+conducted between 2005 and 2012 and found that only 44 reported an
+adequate method to handle missing data, while 30 used potentially
+inadequate methods.
 
-Spineli et al. (2015) examined 190 systematic reviews published after 2009 to investigate how missing data were reported in randomized controlled trials. Although 175 of these reviews mentioned missing data, only 61 discussed its implications.
+Spineli et al. (2015) examined 190 systematic reviews published after
+2009 to investigate how missing data were reported in randomized
+controlled trials. Although 175 of these reviews mentioned missing data,
+only 61 discussed its implications.
 
-Hunt et al. (2021) reviewed 62 pharmacoepidemiologic multi-database studies from 2018 to 2019 to assess missing data reporting and handling. Thirty-five studies reported missing data, but only 19 described methods for handling it. The most popular approach was complete case analysis (CCA) used in 13 studies, followed by multiple imputation (MI) in 2 studies.
+Hunt et al. (2021) reviewed 62 pharmacoepidemiologic multi-database
+studies from 2018 to 2019 to assess missing data reporting and handling.
+Thirty-five studies reported missing data, but only 19 described methods
+for handling it. The most popular approach was complete case analysis
+(CCA) used in 13 studies, followed by multiple imputation (MI) in 2
+studies.
 
-Complete case analysis was also the predominant method in a systematic review of 229 observational studies from the United Network for Organ Sharing (UNOS) database (Baker et al., 2025). Forty-one studies used CCA, 22 reported MI, and notably, 31 studies removed covariates due to missing values—an action that could introduce further bias depending on the covariates' relationship with other predictors.
+Complete case analysis was also the predominant method in a systematic
+review of 229 observational studies from the United Network for Organ
+Sharing (UNOS) database (Baker et al., 2025). Forty-one studies used
+CCA, 22 reported MI, and notably, 31 studies removed covariates due to
+missing values—an action that could introduce further bias depending on
+the covariates' relationship with other predictors.
 
 \newpage
 
@@ -277,7 +261,7 @@ controlled trial with two follow up time points. 401 participants were
 gathered from general practices in England and Wales who suffered from
 migraines.
 
-*Data*
+*Data Overview*
 
 13 variables were recorded during the acupuncture trial.
 
@@ -353,7 +337,7 @@ where
 -   $\beta_2$ is the effect of the baseline headache severity
 -   $\varepsilon_i$ is the residual error term for individual $i$
 
-**VITAL data** 
+**VITAL data**
 
 *Source*
 
@@ -378,7 +362,7 @@ our imputation model.
 | **Fish Oil** | N = 342 *(not analysed)* | N = 353     |
 | **Placebo**  | N = 332                  | N = 371     |
 
-*Overview*
+*Data Overview*
 
 There are x variables recorded in the VITAL data, the following table
 refers to a subset of the variables that we frequently use.
@@ -554,7 +538,7 @@ print(vital_miss_pattern)
 ```
 
 Figure 2.x: Missing data patterns across 4 treatment groups in VITAL
-data. 
+data.
 
 \newpage
 
@@ -1386,7 +1370,7 @@ recommended by the National Research Council (2010) as a best practice
 for handling missing data; however, it is rarely conducted in practice.
 This may reflect an underappreciation of the impact of missing data in
 many studies, as well as the complexity and specialised expertise
-required to perform such analyses. 
+required to perform such analyses.
 
 A systematic review by Fiero et al. (2016) examined 86 cluster
 randomised trials published between 2013 and 2014. Among the 80 trials
@@ -1440,7 +1424,9 @@ Next we performed the main imputation, indicating post processing, using
 predictive mean matching method and maxit=10 to indicate maximum of 10
 iterations. After imputation, a regression model like our substantive
 model is fitted, $\beta_0 + \beta_1group+\beta_2pk1_i+\varepsilon_i$,
-and the estimates are pooled together. \newpage
+and the estimates are pooled together. 
+
+\newpage
 
 ```{r eval=FALSE, echo=TRUE}
 #predictors
@@ -1457,7 +1443,7 @@ for (i in 1:length(delta)) {
   d <- delta[i]
   cmd <- paste0(
     "idx <- which(data[,'group'] == 1 & is.na(data[,'pk5'])); ",
-    "imp[[j]]$pk5[idx] <- imp[[j]]$pk5[idx] + ",d, ";") #treatment group and imputing pk5
+    "imp[[j]]$pk5[idx] <- imp[[j]]$pk5[idx] + ",d, ";") #treatment group and imputing pk5, adding delta d
   post_cat["pk5"] <- cmd
   imp_cat <- mice(acu_wide, pred = pred_cat, post = post_cat, maxit = 10,
                   seed = i * 22, print=FALSE)
@@ -1468,8 +1454,8 @@ delta_results_cat <- data.frame()
 for (i in seq_along(imp.all.undamped_cat)) {
   imp_cat <- imp.all.undamped_cat[[i]]
   d <- delta[i]
-  fit_cat <- with(imp_cat, lm(pk5 ~ group + pk1))
-  pooled_cat <- pool(fit_cat)
+  fit_cat <- with(imp_cat, lm(pk5 ~ group + pk1)) #imputation model
+  pooled_cat <- pool(fit_cat) #pooling estimates
   est_cat <- tidy(pooled_cat, conf.int = TRUE) %>%
     filter(term == "group") %>% 
     select(estimate, std.error, conf.low, conf.high, p.value) %>%
@@ -1529,7 +1515,7 @@ as our imputation model in each of the imputed data sets.
 ```{r eval=FALSE, echo=TRUE}
 #predictors
 inlist <- c("fishoilactive", "vitdactive", "pain", "pain_base", "time_contin", "Subject_ID") 
-pred_cont <- quickpred(vital_wide, minpuc = 0.5, include = inlist)
+pred_cont <- quickpred(vital_wide, minpuc = 0.5, include = inlist) #prediction matrix
 imp.all.undamped_cont <- vector("list", length(delta_vital))
 delta_results_cont_fishoil <- data.frame()
 
@@ -1568,17 +1554,6 @@ for (i in seq_along(delta_vital)) {
 }
 ```
 
-other future methods
-
-pattern mixture model: this is an alternative method of sensitivity
-analysis in which the distribution of the outcome is modelled by
-combining the distribution of the missing values and the observed
-values.
-
-$$P(Y,R)=P(Y|R)P(R)=P(Y|R=1)P(R=1)+P(Y|R=0)P(R=0)$$
-
-selection model; model the probability of missingness as a function of
-the data
 
 # Result
 
