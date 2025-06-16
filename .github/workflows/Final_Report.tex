@@ -18,18 +18,15 @@ Missing Data}
 
 \author{
     Amy Browne
-    \thanks{The authors would like to thank Neil O'Leary from the
-University of Galway for his valuable guidance, feedback, and support
-throughout the development of this project}
    \\
-    Department of Mathametics \\
+    Department of Mathemetics \\
     University of Galway \\
    \\
   \texttt{\href{mailto:a.browne47@universityofgalway.ie}{\nolinkurl{a.browne47@universityofgalway.ie}}} \\
    \And
     Tsz Mang Yip
    \\
-    Department of Mathametics \\
+    Department of Mathemetics \\
     University of Galway \\
    \\
   \texttt{\href{mailto:k.yip2@universityofgalway.ie}{\nolinkurl{k.yip2@universityofgalway.ie}}} \\
@@ -101,14 +98,14 @@ throughout the development of this project}
 
 
 \begin{abstract}
-Motivation. Missing data is a pervasive issue in longitudinal clinical
-trials, risking bias and reduced power. This study compares several
-statistical methods for estimating treatment effects in the presence of
-missing data.Result. No meaningful differences between methods for both
-data sets. To understanding there are many ways to handle missing data,
-and it is crutial to understand the mechanism to make corret choise
-under circumstances.Supplement information. Code Available at
-\url{https://github.com/amydebrun/Missing-Data}
+\textbf{Motivation} Missing data is a pervasive issue in longitudinal
+clinical trials, potentially introducing bias and reducing statistical
+power. This project tested different missing data handling techniques,
+using two real-world longitudinal randomized clinical trial (RCT)
+datasets. \textbf{Results} No substantial differences were observed
+between the methods across both datasets.
+\textbf{Supplementary Information} Code is available at
+\url{https://github.com/amydebrun/Missing-Data}.
 \end{abstract}
 
 \keywords{
@@ -235,9 +232,12 @@ probability of being observed without the given data. This mechanism is
 considered the easiest to deal with as it does not bias the result
 although data is rarely MCAR. This can occur due to system failure and
 some data is deleted accidentally, or else there is issues with the
-treatment system and data cannot be recorded.
+treatment system and data cannot be recorded. The DAG below visualises
+an example of this mechanism based on a randomised trial.
+\texttt{missing\_outcome} is independent from the observed baseline
+variables and outcome variable.
 
--insert dag
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf}}
 
 \textbf{Missing At Random}
 
@@ -247,9 +247,11 @@ being observed given the observed data. In short, the data's missingness
 is dependent on the observed data. For example, people with a higher
 body mass index may be more prone to having missing blood pressure data
 - this is not relative to the missing data. MAR is a more realistic
-mechanism than MCAR and requires more intensive handling methods.
+mechanism than MCAR and requires more intensive handling methods. The
+DAG shows that the \texttt{missing\_outcome} is influenced by the
+observed outcome, observed baseline variables and the treatment.
 
--insert dag
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf}}
 
 \textbf{Missing Not At Random}
 
@@ -260,13 +262,25 @@ producing valid results is a challenge. Certain participants in a
 general health study may avoid answering questions truthfully about
 smoking habits or their diet in order to make themselves more appealing.
 Sensitivity analysis is an option to determine the treatment effect when
-assuming different mechanisms.
+assuming different mechanisms. The following DAG includes the missing
+data indicator \(R\), which denotes whether the outcome is observed
+(\(R = 1\)) or missing (\(R = 0\)). In this structure, the potentially
+missing outcome variable directly influences \(R\).
 
-\begin{itemize}
-\tightlist
-\item
-  DAG of missing mechanism (randomised) in progress in R scripts
-\end{itemize}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf}}
+
+Although these considerations are important, the mechanism underlying
+missing data is fundamentally untestable. Since the true values of
+missing observations are never observed, we cannot definitively
+determine which missingness assumption holds in practice. There is
+limited hypothesis test available to see whether data is MCAR
+(\emph{Little's MCAR test}). It is a likelihood-ratio test that groups
+missing data patterns, estimates the expected means under a multivariate
+normal model using maximum likelihood, and computes a chi-square
+statistic to assess model fit. It is limited as it does not necessarily
+confirm MCAR but provides no evidence to reject that the data MCAR. If
+the test has a significant p-value, it suggests that the data is MAR or
+MNAR, but we do not know which one.
 
 \subsection{Different missing data patterns (section
 tbc)}\label{different-missing-data-patterns-section-tbc}
@@ -291,32 +305,34 @@ as some handling methods are intended for certain classified patterns.
 \subsection{Literature and
 Limitations}\label{literature-and-limitations}
 
-\emph{Current literature}
+While reviewing the literature on missing data, it became evident that
+despite the use of established handling methods, there remains room for
+improvement in how missing data are addressed in reports and in the
+selection of appropriate methods.
 
-(Spineli et al.~2015) - after 2009 - 190 systematic reviews - 175
-contained missing data in one study - Randomised controlled trial - 35\%
-reported implications of missing data - 78\% performed intention to
-treat/ including trials imputed outcome data - less than 20\% performed
-sensitivity analysis
+In 2014, Powney et al.~reviewed 100 longitudinal clinical trials
+conducted between 2005 and 2012 and found that only 44 reported an
+adequate method to handle missing data, while 30 used potentially
+inadequate methods.
 
-(Hunt et al 2021) - systematic review 2018 and 2019 - 62 studies; 2726
-articles - 56\% studies reported missing data - 11 reported potntial
-bias - 19 reported missing data handling methid - 13 Complete case - 2
-multiple imputation - 2 used CCA and MI - 1 Mean imputation - 1 imputed
-similar variable info
+Spineli et al.~(2015) examined 190 systematic reviews published after
+2009 to investigate how missing data were reported in randomized
+controlled trials. Although 175 of these reviews mentioned missing data,
+only 61 discussed its implications.
 
-\begin{itemize}
-\tightlist
-\item
-  pharmacoepidemiologic multi-database studies
-\end{itemize}
+Hunt et al.~(2021) reviewed 62 pharmacoepidemiologic multi-database
+studies from 2018 to 2019 to assess missing data reporting and handling.
+Thirty-five studies reported missing data, but only 19 described methods
+for handling it. The most popular approach was complete case analysis
+(CCA) used in 13 studies, followed by multiple imputation (MI) in 2
+studies.
 
-(Baker et al.~2025) - 229 studies observational studies UNOS - 78
-reported how they use missing data - CCA common (41) - multiple imp (22)
-- other methods (15) - 31 removed covariates from analysis
-
-Existing literature reveals inconsistent reporting and handling
-practices.(Power 2014)
+Complete case analysis was also the predominant method in a systematic
+review of 229 observational studies from the United Network for Organ
+Sharing (UNOS) database (Baker et al., 2025). Forty-one studies used
+CCA, 22 reported MI, and notably, 31 studies removed covariates due to
+missing values---an action that could introduce further bias depending
+on the covariates' relationship with other predictors.
 
 \newpage
 
@@ -396,22 +412,22 @@ months and 12 months.
 Figure 2.x is the summary statistics of the acupuncture trial data. Note
 pk2 and pk5 are post randomisation variables and contain missing data.
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-4-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-7-1.pdf}}
 
 Figure 2.x is the distribution of sex in both treatment groups of the
 acupuncture trial data. The participants are predominantly female.
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-5-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-8-1.pdf}}
 
 Figure 2.x is the distribution of age in both treatment groups. Both
 distributions are negatively skewed, predominantly middle aged and
 older.
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-6-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf}}
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-7-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf}}
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-8-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf}}
 
 Figure 2.x,2.x,2.x: These plots show the distribution of the headache
 severity score at the three measured time-points. Over the three
@@ -450,7 +466,7 @@ where
   \(\varepsilon_i\) is the residual error term for individual \(i\)
 \end{itemize}
 
-\textbf{VITAL data} - missing baseline data (vital)
+\textbf{VITAL data}
 
 \emph{Source}
 
@@ -571,32 +587,32 @@ Figure 2.x shows the summary statistics of the VITAL data. It provides
 information on all 4 treatment groups. Note here that the VITAL data
 contains missing baseline data as well as post randomisation data.
 
-\begin{center}\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-11-1} \end{center}
+\begin{center}\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-14-1} \end{center}
 
 Figure 2.x shows the distribution of age in each treatment group, which
 appear to be normal/ positive skewed distributions.
 
-\begin{center}\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-12-1} \end{center}
+\begin{center}\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-15-1} \end{center}
 
 Figure 2.x shows the distribution of body mass index in each treatment
 group, these appear to be positively skewed with a bmi between 20 and
 40. This shows a range between healthy weighted and obese participants.
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-13-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-16-1.pdf}}
 
 Figure 2.x is the distribution of males and females in the VITAL data.
 Similar to the acupuncture trial, the participants are predominantly
 female.
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-14-1.pdf}}
-
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-15-1.pdf}}
-
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-16-1.pdf}}
-
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf}}
 
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf}}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf}}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf}}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf}}
 
 Figure 2.x,2.x,2.x,2.x,2.x shows the distribution of the knee pain from
 baseline until 4 years post randomisation. In all treatment groups it
@@ -650,7 +666,7 @@ as a multivariate monotonic pattern as the percentage of missing data
 increases at each follow up time point, which is common in longitudinal
 studies. We can visualise this in the plot below.
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf}}
 
 Figure 2.x: Proportion of missing data (dark green) in outcome variables
 \(pk2\) and \(pk5\). This follows a monotonic missing data pattern.
@@ -659,7 +675,7 @@ If we separate the acupuncture trial data into the treatment group and
 control group, we can observe that there is a higher percentage of
 missing data in the control group.
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf}}
 
 Figure 2.x: Higher percentage of missing data in control group
 
@@ -670,7 +686,7 @@ see that the pattern in which the three headache severity scores
 pattern in which both post-randomised headache severity scores contain
 missing data (1,0,0).
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-24-1.pdf}}
 
 Figure 2.x: Missing data pattern is similar in both groups (1=observed,
 0=missing)
@@ -684,7 +700,7 @@ pattern appears to show here as there is a great proportion of missing
 data in the knee pain score at the first year post randomisation, which
 drastically decreases in year 2, then steadily increases again.
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-25-1.pdf}}
 
 Figure 2.x: Non-monotonic pattern across out knee pain scores in VITAL
 data.
@@ -695,7 +711,7 @@ percentage of missing data in each knee pain time point variable in each
 group. The proportion appears to be similar in each group with year 2
 post randomisation containing the most missing data.
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-26-1.pdf}}
 
 Figure 2.x: Percentage of missing data across baseline and 4 follow-up
 time points. Non-monotonic pattern appears similar in 4 randomised
@@ -708,10 +724,14 @@ treatmenr groups, there are more possible missing data patterns to
 observe. The most common data pattern still stands as (1,1,1,1,1) in
 which data is observed at all time-points.
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-24-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-27-1.pdf}}
 
 Figure 2.x: Missing data patterns across 4 treatment groups in VITAL
-data. \newpage \# Methods - kent
+data.
+
+\newpage
+
+\section{Methods}\label{methods}
 
 \subsection{Data wrangling}\label{data-wrangling}
 
@@ -1750,6 +1770,7 @@ as our imputation model in each of the imputed data sets.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{\#predictors}
 \NormalTok{inlist }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"fishoilactive"}\NormalTok{, }\StringTok{"vitdactive"}\NormalTok{, }\StringTok{"pain"}\NormalTok{, }\StringTok{"pain\_base"}\NormalTok{, }\StringTok{"time\_contin"}\NormalTok{, }\StringTok{"Subject\_ID"}\NormalTok{) }
 \NormalTok{pred\_cont }\OtherTok{\textless{}{-}} \FunctionTok{quickpred}\NormalTok{(vital\_wide, }\AttributeTok{minpuc =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{include =}\NormalTok{ inlist)}
 \NormalTok{imp.all.undamped\_cont }\OtherTok{\textless{}{-}} \FunctionTok{vector}\NormalTok{(}\StringTok{"list"}\NormalTok{, }\FunctionTok{length}\NormalTok{(delta\_vital))}
@@ -1803,14 +1824,6 @@ values.
 selection model; model the probability of missingness as a function of
 the data
 
-\paragraph{heatmap attempt for acupuncture
-cat\_heatmap\_acu\_plot}\label{heatmap-attempt-for-acupuncture-cat_heatmap_acu_plot}
-
-cont\_heatmap\_acu\_plot
-
-\paragraph{heatmap attempt for vital
-cont\_heatmap\_fishoil\_plot}\label{heatmap-attempt-for-vital-cont_heatmap_fishoil_plot}
-
 \section{Result}\label{result}
 
 \subsection{Comparing different
@@ -1819,8 +1832,8 @@ methods}\label{comparing-different-methods}
 We begin by comparing our anchoring methods with more statistically
 principled approaches.
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-33-1.pdf}}
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-33-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-36-2.pdf}}
 
 Methods from top to bottom
 
@@ -1844,8 +1857,8 @@ Methods from top to bottom
 In this section, we explore how changing the estimand (how time is
 modeled) to see how that affects our conclusions.
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-34-1.pdf}}
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-34-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-37-2.pdf}}
 
 Method on top: LME: linear mix model without imputations
 
@@ -1866,19 +1879,19 @@ variable and using multiple linear regression as substantive model.
 We first compared different imputation methods within the FCS framework,
 using 5 imputations.
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-35-1.pdf}}
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-35-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-2.pdf}}
 
 Next, we assess the impact of changing the number of imputations, using
 predictive mean method.
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf}}
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-36-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-39-2.pdf}}
 
 \subsection{Sensitive analysis}\label{sensitive-analysis}
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf}}
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-37-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-40-2.pdf}}
 
 This forest plot illustrates the robustness of the estimated treatment
 effects under varying missing data assumptions using
@@ -1910,18 +1923,20 @@ robust to departures from the MAR assumption.
 
 \newpage
 
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf}}
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-2.pdf}}
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-3.pdf}}
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-4.pdf}}
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-5.pdf}}
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-6.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-41-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-41-3.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-41-4.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-41-5.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-41-6.pdf}}
 
 We created heatmaps plotting the \(\delta\) values for both the control
 group and treatment group to visualise the change in treatment effect
 when varying the \(\delta\) adjustments under MNAR. The aim here is to
 show the robustness of the initial estimated treatment effect when
-assumed under a different mechanism.
+assumed under a different mechanism. A similar range of colours would be
+interpretable as a strong estimate as there was not much change in the
+estimate after adding the \(\delta\) shifts.
 
 \section{Discussion}\label{discussion}
 

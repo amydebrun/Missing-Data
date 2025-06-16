@@ -39,7 +39,8 @@ library(meta)
 library(gtsummary)
 library(dagitty)
 library(ggplot2)
-load("report_plots.RData")
+load("report_plots1.RData")
+load("report_plots2.RData")
 ```
 
 \newpage
