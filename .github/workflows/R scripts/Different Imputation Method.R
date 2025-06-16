@@ -236,7 +236,7 @@ acu_plot_imp <- ggplot(acu_impt_result, aes(x = estimate, y = Method, xmin = con
   labs(
     x = "Mean differnce in pain score by the end of study",
     y = "Method",
-    title = "Fig5. Acupuncture, change FCS methods") +
+    title = "Fig5.5. Acupuncture, change FCS methods") +
   theme_minimal() + 
   theme(
     strip.background = element_rect(fill = "lawngreen", color = "black"),  
@@ -257,7 +257,7 @@ vital_plot_impt <- ggplot(vital_impt_result_all, aes(x = estimate, y = Method, x
   labs(
     x = "Mean differnce in pain score by the end of study",
     y = "Method",
-    title = "Fig6. VITAL, change FCS methods"
+    title = "Fig5.6. VITAL, change FCS methods"
   ) +
   theme_minimal() + 
   theme(
@@ -376,7 +376,7 @@ acu_plot_imp_k <- ggplot(acu_impt_k_result, aes(x = estimate, y = Method, xmin =
   labs(
     x = "Mean differnce in pain score by the end of study",
     y = "Imputation number K",
-    title = "Fig7. Acupuncture, change imputation number") +
+    title = "Fig5.7. Acupuncture, change imputation number") +
   theme_minimal() + 
   theme(
     strip.background = element_rect(fill = "lawngreen", color = "black"),  
@@ -397,7 +397,7 @@ vital_plot_impt_k <- ggplot(vital_impt_k_result_all, aes(x = estimate, y = Metho
   labs(
     x = "Mean differnce in pain score by the end of study",
     y = "Imputation number K",
-    title = "Fig8. VITAL, change imputation number"
+    title = "Fig5.8. VITAL, change imputation number"
   ) +
   theme_minimal() + 
   theme(

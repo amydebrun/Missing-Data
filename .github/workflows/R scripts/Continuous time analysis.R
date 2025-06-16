@@ -161,7 +161,7 @@ vital_plot_compare <- ggplot(vital_plot_table, aes(x = estimate, y = Method, xmi
   labs(
     x = "Mean differnce in pain score by the end of study",
     y = "Method",
-    title = "Fig4. VITAL, different estimands"
+    title = "Fig5.4. VITAL, different estimands"
   ) +
   theme_minimal() + 
   theme(
@@ -191,7 +191,7 @@ acu_plot_compare <- ggplot(acu_plot_table, aes(x = estimate, y = Method, xmin = 
   labs(
     x = "Mean differnce in pain score by the end of study",
     y = "Method",
-    title = "Fig3. Acupuncture, different estimands") +
+    title = "Fig5.3. Acupuncture, different estimands") +
   theme_minimal() + 
   theme(
     strip.background = element_rect(fill = "lawngreen", color = "black"),  

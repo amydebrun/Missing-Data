@@ -244,7 +244,7 @@ vital_plot_categorical <- ggplot(vital_result_all, aes(x = estimate, y = Method,
   labs(
     x = "Mean differnce in pain score by the end of study",
     y = "Method",
-    title = "Fig2. VITAL, different methods"
+    title = "Fig5.2. VITAL, different methods"
   ) +
   theme_minimal() + 
   theme(
@@ -267,7 +267,7 @@ acu_plot_categorical <- ggplot(acu_result, aes(x = estimate, y = Method, xmin = 
   labs(
     x = "Mean differnce in pain score by the end of study",
     y = "Method",
-    title = "Fig1. Acupuncture, different methods") +
+    title = "Fig5.1. Acupuncture, different methods") +
   theme_minimal() + 
   theme(
     strip.background = element_rect(fill = "lawngreen", color = "black"),  
