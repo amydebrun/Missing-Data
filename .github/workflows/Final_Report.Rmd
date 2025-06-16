@@ -2,18 +2,18 @@
 title: Estimating Treatment Effects in Longitudinal Clinical Trials with Missing Data 
 authors:
   - name: Amy Browne
-    thanks: The authors would like to thank Neil O'Leary from the University of Galway for his valuable guidance, feedback, and support throughout the development of this project
-    department: Department of Mathametics
+    thanks: 
+    department: Department of Mathemetics
     affiliation: University of Galway
     email: a.browne47@universityofgalway.ie
   - name: Tsz Mang Yip
-    department: Department of Mathametics
+    department: Department of Mathemetics
     affiliation: University of Galway
     email: k.yip2@universityofgalway.ie
-abstract:
-  - Motivation. Missing data is a pervasive issue in longitudinal clinical trials, risking bias and reduced power. This study compares several statistical methods for estimating treatment effects in the presence of missing data.
-  - Result. No meaningful differences between methods for both data sets. To understanding there are many ways to handle missing data, and it is crutial to understand the mechanism to make corret choise under circumstances.
-  - Supplement information. Code Available at https://github.com/amydebrun/Missing-Data
+abstract: |
+    \textbf{Motivation} Missing data is a pervasive issue in longitudinal clinical trials, potentially introducing bias and reducing statistical power. This project tested different missing data handling techniques, using two real-world longitudinal randomized clinical trial (RCT) datasets.
+    \textbf{Results} No substantial differences were observed between the methods across both datasets.
+    \textbf{Supplementary Information} Code is available at \url{https://github.com/amydebrun/Missing-Data}.
 keywords:
   - Missing Data
   - Longitudinal Data
@@ -553,7 +553,11 @@ print(vital_miss_pattern)
 ```
 
 Figure 2.x: Missing data patterns across 4 treatment groups in VITAL
-data. \newpage \# Methods - kent
+data. 
+
+\newpage
+
+# Methods
 
 ## Data wrangling
 

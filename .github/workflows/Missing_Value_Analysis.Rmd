@@ -216,6 +216,7 @@ MAR_dag<-plot(MAR_dag)
 
 ```{r, eval=FALSE}
 # Code to save plots and tables, only run when required
+# Spliting the save code to 2 parts
 save(
   # Tables and summaries
   missing_pattern_table,
@@ -223,9 +224,6 @@ save(
   acu_summary,
   vital_var_table,
   vital_summary,
-
-  #DAGs
-  MAR_dag,
   
   # Acupuncture plots
   acu_sex_plot,
@@ -257,21 +255,28 @@ save(
   vital_plot_compare,
   vital_plot_impt,
   vital_plot_impt_k,
-  
-  # sensitivity analysis
-  SA_combined_vital_all_plot,
-  SA_combined_acu_plot,
-cont_heatmap_fishoil_plot,
-cat_heatmap_fishoil_plot,
-cont_heatmap_acu_plot,
-cat_heatmap_acu_plot,
-cat_heatmap_vitd_plot,
-cont_heatmap_vitd_plot,
 
   # File path
-  file = "report_plots.RData"
+  file = "report_plots1.RData"
 )
- 
+
+save(
+ #DAGs
+  MAR_dag,
+  
+ # sensitivity analysis
+  SA_combined_vital_all_plot,
+  SA_combined_acu_plot,
+  cont_heatmap_fishoil_plot,
+  cat_heatmap_fishoil_plot,
+  cont_heatmap_acu_plot,
+  cat_heatmap_acu_plot,
+  cat_heatmap_vitd_plot,
+  cont_heatmap_vitd_plot,
+
+  # File path
+  file = "report_plots2.RData"
+)
 ```
 
 
