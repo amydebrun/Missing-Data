@@ -3,11 +3,11 @@ title: Estimating Treatment Effects in Longitudinal Clinical Trials with Missing
 authors:
   - name: Amy Browne
     thanks: 
-    department: Department of Mathemetics
+    department: School of Mathematical and Statistical Sciences
     affiliation: University of Galway
     email: a.browne47@universityofgalway.ie
   - name: Tsz Mang Yip
-    department: Department of Mathemetics
+    department: School of Mathematical and Statistical Sciences
     affiliation: University of Galway
     email: k.yip2@universityofgalway.ie
 abstract: |
@@ -76,7 +76,7 @@ Removing incomplete cases reduces the sample size, which in turn
 decreases statistical power, limiting the ability to detect valid
 treatment effects.
 
-In statistical software like R, missing values are represented as NA.
+In statistical software like R, missing values are represented as NA among the observed values. In longitudinal data, rows of data belonging to individuals at a certain time-point can be missing. 
 When fitting models like linear regression, R automatically excludes any
 subjects with missing values in either predictor or outcome variables.
 While convenient, this method can lead to selection bias if the
@@ -86,7 +86,7 @@ missingness is systematic.
 
 The objective of this project is to estimate treatment effects using
 real-world data, with a primary focus on addressing issues that come
-with missing data. We will briefly discuss different assumptions about
+with missing data in clinical trials. We will briefly discuss different assumptions about
 missing data mechanisms—such as Missing Completely at Random, Missing at
 Random, and Missing Not at Random and investigate their implications for
 statistical analysis.
@@ -140,7 +140,7 @@ treatment system and data cannot be recorded. The DAG below visualises
 an example of this mechanism based on a randomised trial with
 randomisation variable $L$. Missing indicator $R$, which denotes whether
 the outcome is observed ($R = 1$) or missing ($R = 0$), is independent
-from the observed baseline variables $X1$ and $X2$ and outcome variable
+from the observed baseline variables $X1$ and $X2$, which are pre-randomised variables, and outcome variable
 $Y$ (which contains potentially missing data).
 
 ```{r echo=FALSE}
@@ -166,7 +166,7 @@ plot(MAR_dag)
 **Missing Not At Random**
 
 $$\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)$$ The probability of data
-being observed is not dependent on the observed data. This mechanism is
+being observed is not dependent on the observed data only but on the missing data also. This mechanism is
 the most difficult to deal with as it relates to the unobserved data, so
 producing valid results is a challenge. Certain participants in a
 general health study may avoid answering questions truthfully about

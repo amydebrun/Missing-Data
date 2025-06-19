@@ -44,7 +44,7 @@ random_vital_dag <- dagitty('dag {
 }')
 
 
-MCAR_dag <- dagitty('dag {
+MCAR_dag_old <- dagitty('dag {
     R_Y [pos="0,1"]
     X [pos="1,1"]
     Y [pos="2,1"]
@@ -54,7 +54,7 @@ MCAR_dag <- dagitty('dag {
 }')
 
 
-MAR_dag <- dagitty('dag {
+MAR_dag_old <- dagitty('dag {
     R_Y [pos="0,1"]
     X [pos="1,1"]
     Y [pos="2,1"]
@@ -63,7 +63,7 @@ MAR_dag <- dagitty('dag {
     X -> R_Y
 }')
 
-MNAR_dag <- dagitty('dag {
+MNAR_dag_old <- dagitty('dag {
     R_Y [pos="0,1"]
     X [pos="1,1"]
     Y [pos="1,2"]
