@@ -144,7 +144,7 @@ from the observed baseline variables $X1$ and $X2$, which are pre-randomised var
 $Y$ (which contains potentially missing data).
 
 ```{r echo=FALSE}
-plot(MCAR_dag) 
+MCAR_dag
 ```
 
 **Missing At Random**
@@ -160,7 +160,7 @@ DAG shows that the $R$ is influenced by the $Y$, $X1$, $X2$ and
 treatment $A$.
 
 ```{r echo=FALSE}
-plot(MAR_dag, coordinates(MAR_dag))
+MAR_dag
 ```
 
 **Missing Not At Random**
@@ -177,7 +177,7 @@ data indicator $R$. In this structure, the potentially missing outcome
 variable $Y$ directly influences $R$.
 
 ```{r echo=FALSE}
-plot(MNAR_dag) 
+MNAR_dag
 ```
 
 Although these considerations are important, the mechanism underlying
@@ -1625,8 +1625,8 @@ print(vital_plot_impt_k)
 ## Sensitive analysis
 
 ```{r fig.width=5, fig.height=4}
-SA_combined_vital_all_plot 
-SA_combined_acu_plot
+SA_vital_all_plot
+SA_acu_all
 ```
 
 This forest plot illustrates the robustness of the estimated treatment
