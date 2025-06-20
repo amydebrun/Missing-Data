@@ -160,7 +160,7 @@ DAG shows that the $R$ is influenced by the $Y$, $X1$, $X2$ and
 treatment $A$.
 
 ```{r echo=FALSE}
-plot(MAR_dag)
+plot(MAR_dag, coordinates(MAR_dag))
 ```
 
 **Missing Not At Random**

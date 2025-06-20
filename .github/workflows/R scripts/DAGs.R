@@ -112,7 +112,7 @@ MAR_dag <- dagitty('dag {
     L -> Y
     L -> R 
 }')
-
+MAR_dag<-plot(MAR_dag)
 MCAR_dag <- dagitty('dag {
  L       [pos="0,2"]
  A            [pos="1.5,2.5"]
@@ -126,7 +126,7 @@ MCAR_dag <- dagitty('dag {
      X1 -> Y <- X2
      L -> Y
 }')
-
+MCAR_dag<-plot(MCAR_dag)
 MNAR_dag <- dagitty('dag {
   L         [pos="0,2"]
   A             [pos="1.5,2.5"]
@@ -141,6 +141,7 @@ MNAR_dag <- dagitty('dag {
     L -> Y
     Y -> R 
 }')
+MNAR_dag<-plot(MNAR_dag)
 dag_base_miss <- dagitty('dag {
   randomisation         [pos="0,2"]
   treatment             [pos="1.5,2.5"]
