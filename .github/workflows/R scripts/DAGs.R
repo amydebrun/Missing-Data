@@ -73,11 +73,6 @@ MNAR_dag_old <- dagitty('dag {
 }')
 
 
-plot(MCAR_dag)
-plot(MAR_dag)
-plot(MNAR_dag)
-```
-
 dag_outcome_base_miss <- dagitty('dag {
   randomisation         [pos="0,2"]
   treatment             [pos="1.5,2.5"]

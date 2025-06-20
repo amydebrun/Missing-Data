@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.6.15)  16 JUN 2025 12:45
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.6.15)  20 JUN 2025 15:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -605,7 +605,7 @@ LaTeX Font Warning: Font shape `T1/lmr/bx/sc' undefined
 
 
 {c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 200.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 202.
 (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -617,15 +617,15 @@ Package microtype Info: Character `029' is missing
 <Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf, id=152, 469.755pt x 325.215pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf  used on input line 241.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf  used on input line 244.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 <Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf, id=153, 469.755pt x 325.215pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf  used on input line 255.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf  used on input line 258.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \vbox (badness 4132) has occurred while \output is active []
+Underfull \vbox (badness 1852) has occurred while \output is active []
 
 
 
@@ -633,7 +633,7 @@ Underfull \vbox (badness 4132) has occurred while \output is active []
 <Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf, id=163, 469.755pt x 325.215pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf  used on input line 270.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf  used on input line 274.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -653,17 +653,17 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <Final_Report_files/figure-latex/unnamed-chunk-7-1.pdf, id=193, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-7-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-7-1.pdf  used on input line 415.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-7-1.pdf  used on input line 419.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 <Final_Report_files/figure-latex/unnamed-chunk-8-1.pdf, id=194, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-8-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-8-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-8-1.pdf  used on input line 420.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-8-1.pdf  used on input line 424.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 <Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf, id=195, 361.35pt x 180.675pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf  used on input line 426.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf  used on input line 430.
 (pdftex.def)             Requested size: 361.34912pt x 180.67455pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -674,12 +674,12 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf, id=213, 361.35pt x 180.675pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 428.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 432.
 (pdftex.def)             Requested size: 361.34912pt x 180.67455pt.
 <Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf, id=214, 361.35pt x 180.675pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf  used on input line 430.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf  used on input line 434.
 (pdftex.def)             Requested size: 361.34912pt x 180.67455pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -687,289 +687,289 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 [9 <./Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf>]
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |**Characteristic**                                                             | **Both**  N = 342 | **Fish Oil only**  N = 353 | **Neither**  N = 371 | **Vitamin D only**  N = 332 |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |:------------------------------------------------------------------------------|:-----------------:|:--------------------------:|:--------------------:|:---------------------------:|[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Sex 1-male,2-female                                                            |                   |                            |                      |                             |[] 
  []
 
 
 
 [10]
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |1                                                                              |     111(32%)      |          120(34%)          |       123(33%)       |          124(37%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |2                                                                              |     231(68%)      |          233(66%)          |       248(67%)       |          208(63%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Body mass index at randomization, kg/m2                                        |      32 (7)       |           32 (7)           |        32 (8)        |           31 (7)            |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Missing                                                                        |         8         |             11             |          14          |             12              |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Current smoking 1-yes,0-no                                                     |     26(7.8%)      |          33(9.4%)          |       30(8.2%)       |          22(6.8%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Missing                                                                        |         7         |             2              |          3           |              8              |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Age at randomization to VITAL study,years                                      |      67 (7)       |           67 (7)           |        68 (7)        |           67 (6)            |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Baseline Aspirin use 1-yes,0-no                                                |     156(46%)      |          165(47%)          |       176(48%)       |          155(48%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Missing                                                                        |         6         |             5              |          6           |              7              |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |WOMAC Pain score at baseline                                                   |      37 (19)      |          37 (18)           |       37 (19)        |           36 (18)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Missing                                                                        |        48         |             57             |          45          |             40              |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |WOMAC Pain score at year 1                                                     |      32 (19)      |          31 (20)           |       33 (20)        |           33 (21)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Missing                                                                        |        182        |            162             |         184          |             153             |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |WOMAC Pain score at year 2                                                     |      32 (20)      |          31 (20)           |       30 (20)        |           32 (20)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Missing                                                                        |        47         |             46             |          48          |             47              |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |WOMAC Pain score at year 3                                                     |      32 (21)      |          31 (19)           |       31 (19)        |           28 (19)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Missing                                                                        |        78         |             95             |          90          |             82              |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |WOMAC Pain score at year 4                                                     |      30 (20)      |          30 (19)           |       29 (18)        |           28 (19)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Missing                                                                        |        129        |            149             |         145          |             126             |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Have you had a knee replacement surgery? (1=Yes, 2=No)                         |                   |                            |                      |                             |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |1                                                                              |      43(13%)      |          47(14%)           |       52(14%)        |           53(16%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |2                                                                              |     293(87%)      |          300(86%)          |       316(86%)       |          271(84%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Missing                                                                        |         6         |             6              |          3           |              8              |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Unilateral knee pain 1=Yes 0=No                                                |     200(71%)      |          198(69%)          |       223(72%)       |          200(71%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Missing                                                                        |        61         |             68             |          61          |             49              |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Bilateral knee pain 1=Yes 0=No                                                 |      81(29%)      |          87(31%)           |       87(28%)        |           83(29%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Missing                                                                        |        61         |             68             |          61          |             49              |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Frequency of knee pain 1=Never 2=<1 day/wk 3=1~2 days/wk 4=3~6 days/wk 5=daily |                   |                            |                      |                             |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |1                                                                              |      1(0.3%)      |          1(0.3%)           |       2(0.6%)        |           1(0.3%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |2                                                                              |     16(5.4%)      |          19(6.4%)          |       11(3.3%)       |          16(5.4%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |3                                                                              |      44(15%)      |          27(9.0%)          |       34(10%)        |           31(10%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |4                                                                              |      58(20%)      |          57(19%)           |       68(21%)        |           57(19%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |5                                                                              |     169(57%)      |          185(62%)          |       201(61%)       |          181(61%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |9                                                                              |      7(2.4%)      |          10(3.3%)          |       14(4.2%)       |          10(3.4%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Missing                                                                        |        47         |             54             |          41          |             36              |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Tylenol use at baseline 1=never 2=occational 3=daily 9=missing                 |                   |                            |                      |                             |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |1                                                                              |     108(37%)      |          137(46%)          |       145(44%)       |          135(46%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |2                                                                              |      91(31%)      |          84(28%)           |       110(33%)       |           95(32%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |3                                                                              |      53(18%)      |          41(14%)           |       38(12%)        |           30(10%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |9                                                                              |      43(15%)      |          37(12%)           |       37(11%)        |           36(12%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Missing                                                                        |        47         |             54             |          41          |             36              |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Nsaids use at baseline 1=never 2=occational 3=daily 9=missing                  |                   |                            |                      |                             |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |1                                                                              |      62(21%)      |          65(22%)           |       69(21%)        |           73(25%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |2                                                                              |      98(33%)      |          101(34%)          |       98(30%)        |           94(32%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |3                                                                              |     110(37%)      |          107(36%)          |       134(41%)       |          111(38%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |9                                                                              |     25(8.5%)      |          26(8.7%)          |       29(8.8%)       |          18(6.1%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Missing                                                                        |        47         |             54             |          41          |             36              |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Stronger med use at baseline 1=never 2=occational 3=daily 9=missing            |                   |                            |                      |                             |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |1                                                                              |     178(60%)      |          193(65%)          |       205(62%)       |          186(63%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |2                                                                              |      40(14%)      |          41(14%)           |       43(13%)        |           47(16%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |3                                                                              |      46(16%)      |          36(12%)           |       50(15%)        |           40(14%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |9                                                                              |      31(11%)      |          29(9.7%)          |       32(9.7%)       |          23(7.8%)           |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |Missing                                                                        |        47         |             54             |          41          |             36              |[] 
  []
 
 
-Overfull \hbox (506.74217pt too wide) in paragraph at lines 584--584
+Overfull \hbox (506.74217pt too wide) in paragraph at lines 588--588
 []\T1/lmtt/m/n/10 ## |TKR 1=yes 0=No                                                                 |      64(19%)      |          82(23%)           |       74(20%)        |           76(23%)           |[] 
  []
 
@@ -982,17 +982,17 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <Final_Report_files/figure-latex/unnamed-chunk-14-1.pdf, id=254, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-14-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-14-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-14-1.pdf  used on input line 590.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-14-1.pdf  used on input line 594.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 <Final_Report_files/figure-latex/unnamed-chunk-15-1.pdf, id=255, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-15-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-15-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-15-1.pdf  used on input line 595.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-15-1.pdf  used on input line 599.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 <Final_Report_files/figure-latex/unnamed-chunk-16-1.pdf, id=256, 289.08pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-16-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-16-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-16-1.pdf  used on input line 601.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-16-1.pdf  used on input line 605.
 (pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1003,17 +1003,17 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf, id=277, 289.08pt x 180.675pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf  used on input line 607.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf  used on input line 611.
 (pdftex.def)             Requested size: 289.07928pt x 180.67455pt.
 <Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf, id=278, 289.08pt x 180.675pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf  used on input line 609.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf  used on input line 613.
 (pdftex.def)             Requested size: 289.07928pt x 180.67455pt.
 <Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf, id=279, 289.08pt x 180.675pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf  used on input line 611.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf  used on input line 615.
 (pdftex.def)             Requested size: 289.07928pt x 180.67455pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1024,12 +1024,12 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf, id=306, 289.08pt x 180.675pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf  used on input line 613.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf  used on input line 617.
 (pdftex.def)             Requested size: 289.07928pt x 180.67455pt.
 <Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf, id=307, 289.08pt x 180.675pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf  used on input line 615.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf  used on input line 619.
 (pdftex.def)             Requested size: 289.07928pt x 180.67455pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1042,17 +1042,17 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf, id=341, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf  used on input line 669.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf  used on input line 673.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 <Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf, id=342, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf  used on input line 678.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf  used on input line 682.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 <Final_Report_files/figure-latex/unnamed-chunk-24-1.pdf, id=343, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-24-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-24-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-24-1.pdf  used on input line 689.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-24-1.pdf  used on input line 693.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 
 
@@ -1060,12 +1060,12 @@ Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-24-1.pdf 
 <Final_Report_files/figure-latex/unnamed-chunk-25-1.pdf, id=358, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-25-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-25-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-25-1.pdf  used on input line 703.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-25-1.pdf  used on input line 707.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 <Final_Report_files/figure-latex/unnamed-chunk-26-1.pdf, id=359, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-26-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-26-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-26-1.pdf  used on input line 714.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-26-1.pdf  used on input line 718.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1076,14 +1076,14 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <Final_Report_files/figure-latex/unnamed-chunk-27-1.pdf, id=374, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-27-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-27-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-27-1.pdf  used on input line 727.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-27-1.pdf  used on input line 731.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 
 
 [18 <./Final_Report_files/figure-latex/unnamed-chunk-26-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-27-1.pdf>]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 747.
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 773.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 751.
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 777.
 (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1116,7 +1116,7 @@ Underfull \vbox (badness 1635) has occurred while \output is active []
 [26]
 
 [27]
-Underfull \hbox (badness 1019) in paragraph at lines 1583--1588
+Underfull \hbox (badness 1019) in paragraph at lines 1587--1592
 []\T1/lmr/m/n/10 (+20) To ac-count for un-cer-tainty in the out-come, we adds ran-dom noise to the re-gres-sion pre-dic-tion
  []
 
@@ -1135,15 +1135,15 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf, id=475, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf  used on input line 1825.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf  used on input line 1829.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 <Final_Report_files/figure-latex/unnamed-chunk-36-2.pdf, id=476, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-36-2.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-36-2.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-36-2.pdf  used on input line 1826.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-36-2.pdf  used on input line 1830.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1825--1827
+Underfull \hbox (badness 10000) in paragraph at lines 1829--1831
 [][]
  []
 
@@ -1156,30 +1156,30 @@ Underfull \vbox (badness 2884) has occurred while \output is active []
 <Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf, id=491, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf  used on input line 1850.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf  used on input line 1854.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 <Final_Report_files/figure-latex/unnamed-chunk-37-2.pdf, id=492, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-37-2.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-37-2.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-37-2.pdf  used on input line 1851.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-37-2.pdf  used on input line 1855.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1850--1852
+Underfull \hbox (badness 10000) in paragraph at lines 1854--1856
 [][]
  []
 
 <Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf, id=493, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf  used on input line 1872.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf  used on input line 1876.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 <Final_Report_files/figure-latex/unnamed-chunk-38-2.pdf, id=494, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-38-2.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-38-2.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-38-2.pdf  used on input line 1873.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-38-2.pdf  used on input line 1877.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1872--1874
+Underfull \hbox (badness 10000) in paragraph at lines 1876--1878
 [][]
  []
 
@@ -1192,15 +1192,15 @@ Underfull \vbox (badness 1365) has occurred while \output is active []
 <Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf, id=509, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf  used on input line 1878.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf  used on input line 1882.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 <Final_Report_files/figure-latex/unnamed-chunk-39-2.pdf, id=510, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-39-2.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-39-2.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-39-2.pdf  used on input line 1879.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-39-2.pdf  used on input line 1883.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1878--1880
+Underfull \hbox (badness 10000) in paragraph at lines 1882--1884
 [][]
  []
 
@@ -1213,15 +1213,15 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf, id=525, 361.35pt x 289.08pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf  used on input line 1883.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf  used on input line 1887.
 (pdftex.def)             Requested size: 361.34912pt x 289.07928pt.
 <Final_Report_files/figure-latex/unnamed-chunk-40-2.pdf, id=526, 361.35pt x 289.08pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-40-2.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-40-2.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-40-2.pdf  used on input line 1884.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-40-2.pdf  used on input line 1888.
 (pdftex.def)             Requested size: 361.34912pt x 289.07928pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1883--1885
+Underfull \hbox (badness 10000) in paragraph at lines 1887--1889
 []
  []
 
@@ -1241,45 +1241,45 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf, id=560, 289.08pt x 144.54pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf  used on input line 1916.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf  used on input line 1920.
 (pdftex.def)             Requested size: 289.07928pt x 144.53963pt.
 <Final_Report_files/figure-latex/unnamed-chunk-41-2.pdf, id=561, 289.08pt x 144.54pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-41-2.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-41-2.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-41-2.pdf  used on input line 1917.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-41-2.pdf  used on input line 1921.
 (pdftex.def)             Requested size: 289.07928pt x 144.53963pt.
 <Final_Report_files/figure-latex/unnamed-chunk-41-3.pdf, id=562, 289.08pt x 144.54pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-41-3.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-41-3.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-41-3.pdf  used on input line 1918.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-41-3.pdf  used on input line 1922.
 (pdftex.def)             Requested size: 289.07928pt x 144.53963pt.
 <Final_Report_files/figure-latex/unnamed-chunk-41-4.pdf, id=563, 289.08pt x 144.54pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-41-4.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-41-4.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-41-4.pdf  used on input line 1919.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-41-4.pdf  used on input line 1923.
 (pdftex.def)             Requested size: 289.07928pt x 144.53963pt.
 <Final_Report_files/figure-latex/unnamed-chunk-41-5.pdf, id=564, 289.08pt x 144.54pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-41-5.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-41-5.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-41-5.pdf  used on input line 1920.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-41-5.pdf  used on input line 1924.
 (pdftex.def)             Requested size: 289.07928pt x 144.53963pt.
 <Final_Report_files/figure-latex/unnamed-chunk-41-6.pdf, id=565, 289.08pt x 144.54pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-41-6.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-41-6.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-41-6.pdf  used on input line 1921.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-41-6.pdf  used on input line 1925.
 (pdftex.def)             Requested size: 289.07928pt x 144.53963pt.
 
-Overfull \hbox (110.6258pt too wide) in paragraph at lines 1916--1922
+Overfull \hbox (110.6258pt too wide) in paragraph at lines 1920--1926
 [][] []
  []
 
 
-Overfull \hbox (110.6258pt too wide) in paragraph at lines 1916--1922
+Overfull \hbox (110.6258pt too wide) in paragraph at lines 1920--1926
 [] []
  []
 
 
-Overfull \hbox (110.6258pt too wide) in paragraph at lines 1916--1922
+Overfull \hbox (110.6258pt too wide) in paragraph at lines 1920--1926
 [] [] 
  []
 
@@ -1306,15 +1306,15 @@ Package rerunfilecheck Info: File `Final_Report.out' has not changed.
 (rerunfilecheck)             Checksum: 3E759D4D2367A2DCB04ABA63B65874AF;5478.
  ) 
 Here is how much of TeX's memory you used:
- 13960 strings out of 469805
- 238619 string characters out of 5480594
- 785398 words of memory out of 5000000
+ 13962 strings out of 469805
+ 238641 string characters out of 5480594
+ 785442 words of memory out of 5000000
  41796 multiletter control sequences out of 15000+600000
- 687298 words of font info for 153 fonts, out of 8000000 for 9000
+ 687381 words of font info for 154 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  75i,13n,79p,1009b,683s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Final_Report.pdf (40 pages, 591177 bytes).
+Output written on Final_Report.pdf (40 pages, 591346 bytes).
 PDF statistics:
  720 PDF objects out of 1000 (max. 8388607)
  555 compressed objects within 6 object streams

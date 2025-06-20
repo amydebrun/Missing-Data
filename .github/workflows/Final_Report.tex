@@ -19,14 +19,14 @@ Missing Data}
 \author{
     Amy Browne
    \\
-    Department of Mathemetics \\
+    School of Mathematical and Statistical Sciences \\
     University of Galway \\
    \\
   \texttt{\href{mailto:a.browne47@universityofgalway.ie}{\nolinkurl{a.browne47@universityofgalway.ie}}} \\
    \And
     Tsz Mang Yip
    \\
-    Department of Mathemetics \\
+    School of Mathematical and Statistical Sciences \\
     University of Galway \\
    \\
   \texttt{\href{mailto:k.yip2@universityofgalway.ie}{\nolinkurl{k.yip2@universityofgalway.ie}}} \\
@@ -159,20 +159,22 @@ Removing incomplete cases reduces the sample size, which in turn
 decreases statistical power, limiting the ability to detect valid
 treatment effects.
 
-In statistical software like R, missing values are represented as NA.
-When fitting models like linear regression, R automatically excludes any
-subjects with missing values in either predictor or outcome variables.
-While convenient, this method can lead to selection bias if the
-missingness is systematic.
+In statistical software like R, missing values are represented as NA
+among the observed values. In longitudinal data, rows of data belonging
+to individuals at a certain time-point can be missing. When fitting
+models like linear regression, R automatically excludes any subjects
+with missing values in either predictor or outcome variables. While
+convenient, this method can lead to selection bias if the missingness is
+systematic.
 
 \subsection{Project Objective}\label{project-objective}
 
 The objective of this project is to estimate treatment effects using
 real-world data, with a primary focus on addressing issues that come
-with missing data. We will briefly discuss different assumptions about
-missing data mechanisms---such as Missing Completely at Random, Missing
-at Random, and Missing Not at Random and investigate their implications
-for statistical analysis.
+with missing data in clinical trials. We will briefly discuss different
+assumptions about missing data mechanisms---such as Missing Completely
+at Random, Missing at Random, and Missing Not at Random and investigate
+their implications for statistical analysis.
 
 While a range of methods are available to handle missing data, they all
 vary in levels of complexity and assumptions. This project aims to
@@ -235,8 +237,9 @@ treatment system and data cannot be recorded. The DAG below visualises
 an example of this mechanism based on a randomised trial with
 randomisation variable \(L\). Missing indicator \(R\), which denotes
 whether the outcome is observed (\(R = 1\)) or missing (\(R = 0\)), is
-independent from the observed baseline variables \(X1\) and \(X2\) and
-outcome variable \(Y\) (which contains potentially missing data).
+independent from the observed baseline variables \(X1\) and \(X2\),
+which are pre-randomised variables, and outcome variable \(Y\) (which
+contains potentially missing data).
 
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf}}
 
@@ -257,15 +260,16 @@ treatment \(A\).
 \textbf{Missing Not At Random}
 
 \[\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)\] The probability of data
-being observed is not dependent on the observed data. This mechanism is
-the most difficult to deal with as it relates to the unobserved data, so
-producing valid results is a challenge. Certain participants in a
-general health study may avoid answering questions truthfully about
-smoking habits or their diet in order to make themselves more appealing.
-Sensitivity analysis is an option to determine the treatment effect when
-assuming different mechanisms. The following DAG includes the missing
-data indicator \(R\). In this structure, the potentially missing outcome
-variable \(Y\) directly influences \(R\).
+being observed is not dependent on the observed data only but on the
+missing data also. This mechanism is the most difficult to deal with as
+it relates to the unobserved data, so producing valid results is a
+challenge. Certain participants in a general health study may avoid
+answering questions truthfully about smoking habits or their diet in
+order to make themselves more appealing. Sensitivity analysis is an
+option to determine the treatment effect when assuming different
+mechanisms. The following DAG includes the missing data indicator \(R\).
+In this structure, the potentially missing outcome variable \(Y\)
+directly influences \(R\).
 
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf}}
 
