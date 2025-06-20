@@ -1,152 +1,209 @@
-#COMBINING THE TWO PLOTS TOGETHER - Acupuncture 
-delta_acu <- c(-2.5,-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5)
-delta_vital <- c(-2.5,-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5)
-#cont
-delta_combined_cont_acu <- bind_rows(delta_results_cont_acu, delta_results_cont_acu_placebo)
-delta_combined_cont_acu_plot <- ggplot(delta_combined_cont_acu, aes(x = estimate, y = delta_acu)) +
-  geom_point(aes(x = estimate, y = delta_acu), size = 4, color = "#a80050", position = position_nudge(y = 0.15)) +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, 
+#COMBINING THE TWO PLOTS TOGETHER 
+#delta values categorical and continuous
+#acu_delta_cat<-c(-6.859139,-3.429569,0,3.429569,6.859139)
+#acu_control_delta_cat<-c(-8.505446,-4.252723,0,4.252723,8.505446)
+#fishoil_delta_cat<- c(-9.569774,-4.784887,0,4.784887,9.569774)
+#vitd_delta_cat<-c(-9.624281,-4.812141,0,4.812141,9.624281)
+#vital_control_delta<-c(-9.147397,-4.573698,0,4.573698,9.147397)
+
+#acu_delta_cont<-c(-7.397829,-3.698915,0,3.698915,7.397829)
+#acu_control_delta_cont<-c(-8.660196,-4.330098,0, 4.330098,8.660196)
+#fishoil_delta_cont<-c(-9.783807,-4.891904,0,4.891904,9.783807)
+#vitd_delta <-c(-9.967777,-4.983889,0,4.983889,9.967777)
+#vital_control_delta<-c(-9.646493,-4.823247,0, 4.823247,9.646493)
+
+
+#categorical
+acu_treatment_cat <- delta_results_cat %>%
+  rename(delta = acu_delta) %>%
+  mutate(treatment = "Acupuncture")
+acu_control_cat  <- delta_results_cat_placebo %>%
+  rename(delta = acu_control_delta) %>%
+  mutate(treatment = "Control")
+acu_combined_cat <- bind_rows(acu_treatment_cat, acu_control_cat)
+
+
+ggplot(acu_combined_cat , aes(x = estimate, y = delta)) +
+  geom_point(aes(color = treatment, shape = treatment), size = 3, position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high, color = treatment),
+                 height = 0.3,
                  position = position_nudge(y = 0.15)) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
   facet_wrap(~ treatment) +
   labs(
-    title = "δ-Adjustment Sensitivity Analysis (Continuous)",
-    x = "Estimated Treatment Effect",
+    title = "Sensitivity Analysis: δ-Adjustment (Categorical Estimand)",
+    x = "Estimates",
     y = "Delta"
   ) +
   theme_minimal() +
   theme(
-    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    strip.background = element_rect(fill = "lawngreen", color = "black"),
+    strip.text = element_text(face = "bold"),
     panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
-    panel.background = element_rect(fill = "white", color = NA),
-    plot.background = element_rect(fill = "white", color = NA)
+    legend.position = "none",  
+    panel.background = element_rect(fill = "white")
   )
 
-#cat
-delta_combined_cat_acu <- bind_rows(delta_results_cat, delta_results_cat_placebo)
-delta_combined_cat_acu_plot <- ggplot(delta_combined_cat_acu, aes(x = estimate, y = delta_acu)) +
-  geom_point(size = 4, color = "#a80050", position = position_nudge(y = 0.15)) +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, 
+#continous
+acu_treatment_cont <- delta_results_cont_acu %>%
+  rename(delta = acu_delta) %>%
+  mutate(treatment = "Acupuncture")
+acu_control_cont <- delta_results_cont_acu_placebo %>%
+  rename(delta = acu_control_delta) %>%
+  mutate(treatment = "Control")
+acu_combined_cont <- bind_rows(acu_treatment_cont, acu_control_cont)
+
+ggplot(acu_combined_cont, aes(x = estimate, y = delta)) +
+  geom_point(aes(color = treatment, shape = treatment), size = 3, position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high, color = treatment),
+                 height = 0.3,
                  position = position_nudge(y = 0.15)) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
   facet_wrap(~ treatment) +
   labs(
-    title = "δ-Adjustment Sensitivity Analysis (Categorical)",
-    x = "Estimated Treatment Effect",
+    title = "Sensitivity Analysis: δ-Adjustment (Continous Estimand)",
+    x = "Estimates",
     y = "Delta"
   ) +
   theme_minimal() +
   theme(
-    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    strip.background = element_rect(fill = "lawngreen", color = "black"),
+    strip.text = element_text(face = "bold"),
     panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
-    panel.background = element_rect(fill = "white", color = NA),
-    plot.background = element_rect(fill = "white", color = NA)
+    legend.position = "none",  
+    panel.background = element_rect(fill = "white")
   )
 
-#combining cat and cont 
-delta_combined_cat_acu$estimand<- "Categorical time"
-delta_combined_cont_acu$estimand<- "Continuous time"
-delta_combined_acu_cont_cat<- bind_rows(delta_combined_cat_acu,delta_combined_cont_acu)
-delta_combined_acu_cont_cat$delta_factor <- factor(delta_combined_acu_cont_cat$delta_acu,
-                                                   levels = sort(unique(delta_combined_acu_cont_cat$delta_acu)))
+#combined plot
+acu_treatment_cat <- delta_results_cat %>%
+  rename(delta = acu_delta) %>%
+  mutate(treatment = "Acupuncture", estimand = "Categorical")
 
-SA_combined_acu_plot <- ggplot(
-  delta_combined_acu_cont_cat, 
-  aes(x = estimate, y = delta_factor, shape = estimand, colour = estimand)
-) + geom_point(
-    data = subset(delta_combined_acu_cont_cat, estimand == "Categorical time"),
-    size = 4, position = position_nudge(y = -0.15)
-  ) + geom_errorbarh(
-    data = subset(delta_combined_acu_cont_cat, estimand == "Categorical time"),
-    aes(xmin = conf.low, xmax = conf.high),
-    height = 0.4,
-    position = position_nudge(y = -0.15)
-  ) + geom_point(
-    data = subset(delta_combined_acu_cont_cat, estimand == "Continuous time"),
-    size = 4, position = position_nudge(y = 0.15)
-  ) + geom_errorbarh(
-    data = subset(delta_combined_acu_cont_cat, estimand == "Continuous time"),
-    aes(xmin = conf.low, xmax = conf.high),
-    height = 0.4,
-    position = position_nudge(y = 0.15)
-  ) + geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
+acu_control_cat <- delta_results_cat_placebo %>%
+  rename(delta = acu_control_delta) %>%
+  mutate(treatment = "Control", estimand = "Categorical")
+
+acu_treatment_cont <- delta_results_cont_acu %>%
+  rename(delta = acu_delta) %>%
+  mutate(treatment = "Acupuncture", estimand= "Continuous")
+
+acu_control_cont <- delta_results_cont_acu_placebo %>%
+  rename(delta = acu_control_delta) %>%
+  mutate(treatment = "Control", estimand = "Continuous")
+
+acu_combined <- bind_rows(
+  acu_treatment_cat, acu_control_cat,
+  acu_treatment_cont, acu_control_cont
+)
+
+#combined plot 
+SA_acu_all<-ggplot(acu_combined, aes(x = estimate, y = delta, color = estimand, shape = estimand)) +
+  geom_point(size = 3, position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.3, position = position_nudge(y = 0.15)) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
   facet_wrap(~ treatment) +
-  scale_shape_manual(values = c("Continuous time" = 17, "Categorical time" = 16)) +
-  scale_color_manual(values = c("Continuous time" = "lawngreen", "Categorical time" = "#a80050")) +
+  scale_shape_manual(values = c("Categorical" = 16, "Continuous" = 17)) + 
+  scale_colour_manual(values=c("Categorical"="#a80050", "Continuous"="lawngreen"))+
   labs(
-    title = "δ-Adjustment by Estimand and Treatment",
-    x = "Estimated Treatment Effect",
-    y = "Delta",
-    shape = "Estimand",
-    colour = "Estimand"
+    title = "Sensitivity Analysis: δ-Adjustment (Combined Estimands)",
+    x = "Estimates",
+    y = "Delta"
   ) +
   theme_minimal() +
   theme(
     strip.background = element_rect(fill = "lawngreen", color = "black"),
     panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
-    panel.background = element_rect(fill = "white", color = NA),
-    plot.background = element_rect(fill = "white", color = NA),
-    legend.position = "none"
+    legend.position = "bottom",
+    panel.background = element_rect(fill = "white")
   )
 
-#vital data continous 
 
-SA_combined_vital_cont <- bind_rows(delta_results_cont_fishoil, delta_results_cont_vitd, delta_results_cont_vital_placebo)
-SA_combined_vital_cont_plot <- ggplot(SA_combined_vital_cont, aes(x = estimate, y = delta_vital)) +
-  geom_point(aes(x = estimate, y = delta_vital), size = 4, color = "#a80050", position = position_nudge(y = 0.15)) +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, 
+
+
+
+#vital data set up 
+vitd_cont <- delta_results_cont_vitd %>%
+  rename(delta = vitd_delta) %>%
+  mutate(treatment = "Vitamin D", estimand = "Continuous")
+
+fishoil_cont <- delta_results_cont_fishoil %>%
+  rename(delta = fishoil_delta) %>%
+  mutate(treatment = "Fish Oil", estimand = "Continuous")
+
+vital_control_cont <- delta_results_cont_vital_placebo %>%
+  rename(delta = vital_control_delta) %>%
+  mutate(treatment = "Control", estimand = "Continuous")
+
+vitd_cat <- delta_results_cat_vitd %>%
+  rename(delta = vitd_delta) %>%
+  mutate(treatment = "Vitamin D", estimand= "Categorical")
+
+fishoil_cat <- delta_results_cat_fishoil %>%
+  rename(delta = fishoil_delta) %>%
+  mutate(treatment = "Fish Oil", estimand = "Categorical")
+
+vital_control_cat <- delta_results_cat_vital_placebo %>%
+  rename(delta = vital_control_delta) %>%
+  mutate(treatment = "Control", estimand = "Categorical")
+
+vital_cont_combined <- bind_rows(vitd_cont, fishoil_cont, vital_control_cont)
+vital_cat_combined<- bind_rows(vitd_cat, fishoil_cat, vital_control_cat)
+vital_all_combined<-bind_rows(vital_cont_combined,vital_cat_combined)
+
+#continous plot
+SA_vital_cont_plot <- ggplot(vital_cont_combined, aes(x = estimate, y = delta)) +
+  geom_point(aes(color = treatment, shape = treatment), size = 3, position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high, color = treatment),
+                 height = 0.3,
                  position = position_nudge(y = 0.15)) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
   facet_wrap(~ treatment) +
   labs(
-    title = "δ-Adjustment Sensitivity Analysis (Continuous)",
-    x = "Estimated Treatment Effect",
+    title = "Sensitivity Analysis: δ-Adjustment (Continous Estimand)",
+    x = "Estimates",
     y = "Delta"
   ) +
   theme_minimal() +
   theme(
-    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    strip.background = element_rect(fill = "lawngreen", color = "black"),
+    strip.text = element_text(face = "bold"),
     panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
-    panel.background = element_rect(fill = "white", color = NA),
-    plot.background = element_rect(fill = "white", color = NA)
+    legend.position = "none",  
+    panel.background = element_rect(fill = "white")
   )
 
-#vital data categorical 
-
-SA_combined_vital_cat <- bind_rows(delta_results_cat_fishoil, delta_results_cat_vitd, delta_results_cat_vital_placebo)
-SA_combined_vital_cat_plot <- ggplot(SA_combined_vital_cat, aes(x = estimate, y = delta_vital)) +
-  geom_point(aes(x = estimate, y = delta_vital), size = 4, color = "#a80050", position = position_nudge(y = 0.15)) +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, 
+# categorical plot
+SA_vital_cat_plot <- ggplot(vital_cat_combined, aes(x = estimate, y = delta)) +
+  geom_point(aes(color = treatment, shape = treatment), size = 3, position = position_nudge(y = 0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high, color = treatment),
+                 height = 0.3,
                  position = position_nudge(y = 0.15)) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
   facet_wrap(~ treatment) +
   labs(
-    title = "δ-Adjustment Sensitivity Analysis (Categorical)",
-    x = "Estimated Treatment Effect",
+    title = "Sensitivity Analysis: δ-Adjustment (Categorical Estimand)",
+    x = "Estimates",
     y = "Delta"
   ) +
   theme_minimal() +
   theme(
-    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    strip.background = element_rect(fill = "lawngreen", color = "black"),
+    strip.text = element_text(face = "bold"),
     panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
-    panel.background = element_rect(fill = "white", color = NA),
-    plot.background = element_rect(fill = "white", color = NA)
+    legend.position = "none",  
+    panel.background = element_rect(fill = "white")
   )
 
 #combining cat and cont vital 
 
-SA_combined_vital_cat$estimand<- "Categorical"
-SA_combined_vital_cont$estimand<- "Continuous"
-SA_combined_vital_all<- bind_rows(SA_combined_vital_cat,SA_combined_vital_cont)
-
-SA_combined_vital_all_plot <- ggplot(SA_combined_vital_all, aes(x = estimate, y = delta_vital, shape = estimand, colour = estimand)
-) + geom_point( data = subset(SA_combined_vital_all, estimand == "Categorical"),
+SA_vital_all_plot <- ggplot(vital_all_combined, aes(x = estimate, y = delta_vital, shape = estimand, colour = estimand)
+) + geom_point( data = subset(vital_all_combined, estimand == "Categorical"),
   size = 4, position = position_nudge(y = -0.15)
-) + geom_errorbarh(data = subset(SA_combined_vital_all, estimand == "Categorical"), aes(xmin = conf.low, xmax = conf.high),
+) + geom_errorbarh(data = subset(vital_all_combined, estimand == "Categorical"), aes(xmin = conf.low, xmax = conf.high),
   height = 0.4, position = position_nudge(y = -0.15)
-) + geom_point( data = subset(SA_combined_vital_all, estimand == "Continuous"),
+) + geom_point( data = subset(vital_all_combined, estimand == "Continuous"),
   size = 4, position = position_nudge(y = 0.15)
-) + geom_errorbarh(data = subset(SA_combined_vital_all, estimand == "Continuous"),
+) + geom_errorbarh(data = subset(vital_all_combined, estimand == "Continuous"),
   aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)
 ) + geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
   facet_wrap(~ treatment) +
@@ -154,54 +211,49 @@ SA_combined_vital_all_plot <- ggplot(SA_combined_vital_all, aes(x = estimate, y 
   scale_color_manual(values = c("Continuous" = "lawngreen", "Categorical" = "#a80050")) +
   labs(
     title = "VITAL δ-Adjustment by Estimand and Treatment",
-    x = "Estimated Treatment Effect",
+    x = "Estimates",
     y = "Delta",
-    shape = "Estimand",
-    colour = "Estimand"
+    shape = "Estimand"
   ) +
   theme_minimal() + theme(
     strip.background = element_rect(fill = "lawngreen", color = "black"),
     panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
     panel.background = element_rect(fill = "white", color = NA),
     plot.background = element_rect(fill = "white", color = NA),
-    legend.position = "none"
+    legend.position = "bottom"
   )
-
-
-
-
 
 
 
 ## heatmap for acupuncture
 
-cat_placebo <- delta_combined_acu_cont_cat %>%
-  filter(estimand == "Categorical time", treatment == "Placebo")
-cat_acu <- delta_combined_acu_cont_cat %>%
-  filter(estimand == "Categorical time", treatment == "Acupuncture")
-cont_placebo <- delta_combined_acu_cont_cat %>%
-  filter(estimand == "Continuous time", treatment == "Placebo")
-cont_acu <- delta_combined_acu_cont_cat %>%
-  filter(estimand == "Continuous time", treatment == "Acupuncture")
+cat_control <- acu_combined %>%
+  filter(estimand == "Categorical", treatment == "Control")
+cat_acu <- acu_combined %>%
+  filter(estimand == "Categorical", treatment == "Acupuncture")
+cont_control <- acu_combined %>%
+  filter(estimand == "Continuous", treatment == "Control")
+cont_acu <- acu_combined %>%
+  filter(estimand == "Continuous", treatment == "Acupuncture")
 cat_heatmap_data <- tidyr::expand_grid(
-  delta_1 = cat_placebo$delta_acu,  
-  delta_2 = cat_acu$delta_acu       
+  delta_1 = cat_control$delta,  
+  delta_2 = cat_acu$delta      
 ) %>%
-  left_join(cat_placebo %>% select(delta_1 = delta_acu, placebo_est = estimate), by = "delta_1") %>%
-  left_join(cat_acu %>% select(delta_2 = delta_acu, acu_est = estimate), by = "delta_2") %>%
+  left_join(cat_control %>% select(delta_1 = delta, placebo_est = estimate), by = "delta_1") %>%
+  left_join(cat_acu %>% select(delta_2 = delta, acu_est = estimate), by = "delta_2") %>%
   mutate(
     treatment_effect = acu_est - placebo_est,
-    estimand = "Categorical time"
+    estimand = "Categorical"
   )
 cont_heatmap_data <- tidyr::expand_grid(
-  delta_1 = cont_placebo$delta_acu,
-  delta_2 = cont_acu$delta_acu
+  delta_1 = cont_control$delta,
+  delta_2 = cont_acu$delta
 ) %>%
-  left_join(cont_placebo %>% select(delta_1 = delta_acu, placebo_est = estimate), by = "delta_1") %>%
-  left_join(cont_acu %>% select(delta_2 = delta_acu, acu_est = estimate), by = "delta_2") %>%
+  left_join(cont_control %>% select(delta_1 = delta, placebo_est = estimate), by = "delta_1") %>%
+  left_join(cont_acu %>% select(delta_2 = delta, acu_est = estimate), by = "delta_2") %>%
   mutate(
     treatment_effect = acu_est - placebo_est,
-    estimand = "Continuous time"
+    estimand = "Continuous"
   )
 
 range_est_cat <- range(cat_heatmap_data$treatment_effect, na.rm = TRUE)
@@ -248,30 +300,30 @@ cont_heatmap_acu_plot<-ggplot(cont_heatmap_data, aes(x = delta_1, y = delta_2, f
 
 #vital heatmap fishoil
 
-cat_placebo <- SA_combined_vital_all %>%
+cat_control <- vital_all_combined %>%
   filter(estimand == "Categorical", treatment == "Control")
-cat_fishoil <- SA_combined_vital_all %>%
+cat_fishoil <- vital_all_combined %>%
   filter(estimand == "Categorical", treatment == "Fish Oil")
-cont_placebo <- SA_combined_vital_all %>%
+cont_control <- vital_all_combined %>%
   filter(estimand == "Continuous", treatment == "Control")
-cont_fishoil <- SA_combined_vital_all %>%
+cont_fishoil <- vital_all_combined %>%
   filter(estimand == "Continuous", treatment == "Fish Oil")
 cat_heatmap_data <- tidyr::expand_grid(
-  delta_1 = cat_placebo$delta_vital,  
-  delta_2 = cat_fishoil$delta_vital      
+  delta_1 = cat_placebo$delta,  
+  delta_2 = cat_fishoil$delta      
 ) %>%
-  left_join(cat_placebo %>% select(delta_1 = delta_vital, placebo_est = estimate), by = "delta_1") %>%
-  left_join(cat_fishoil %>% select(delta_2 = delta_vital, fishoil_est = estimate), by = "delta_2") %>%
+  left_join(cat_control %>% select(delta_1 = delta, placebo_est = estimate), by = "delta_1") %>%
+  left_join(cat_fishoil %>% select(delta_2 = delta, fishoil_est = estimate), by = "delta_2") %>%
   mutate(
     treatment_effect = fishoil_est - placebo_est,
     estimand = "Categorical"
   )
 cont_heatmap_data <- tidyr::expand_grid(
-  delta_1 = cont_placebo$delta_vital,
-  delta_2 = cont_fishoil$delta_vital
+  delta_1 = cont_placebo$delta,
+  delta_2 = cont_fishoil$delta
 ) %>%
-  left_join(cont_placebo %>% select(delta_1 = delta_vital, placebo_est = estimate), by = "delta_1") %>%
-  left_join(cont_fishoil %>% select(delta_2 = delta_vital, fishoil_est = estimate), by = "delta_2") %>%
+  left_join(cont_placebo %>% select(delta_1 = delta, placebo_est = estimate), by = "delta_1") %>%
+  left_join(cont_fishoil %>% select(delta_2 = delta, fishoil_est = estimate), by = "delta_2") %>%
   mutate(
     treatment_effect = fishoil_est - placebo_est,
     estimand = "Continuous"

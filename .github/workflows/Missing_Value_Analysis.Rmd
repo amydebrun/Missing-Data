@@ -267,8 +267,8 @@ save(
   MCAR_dag,
   
  # sensitivity analysis
-  SA_combined_vital_all_plot,
-  SA_combined_acu_plot,
+  SA_vital_all_plot,
+  SA_acu_all,
   cont_heatmap_fishoil_plot,
   cat_heatmap_fishoil_plot,
   cont_heatmap_acu_plot,
@@ -280,22 +280,6 @@ save(
   file = "report_plots2.RData"
 )
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
