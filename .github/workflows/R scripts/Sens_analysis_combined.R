@@ -309,7 +309,7 @@ cont_control <- vital_all_combined %>%
 cont_fishoil <- vital_all_combined %>%
   filter(estimand == "Continuous", treatment == "Fish Oil")
 cat_heatmap_data <- tidyr::expand_grid(
-  delta_1 = cat_placebo$delta,  
+  delta_1 = cat_control$delta,  
   delta_2 = cat_fishoil$delta      
 ) %>%
   left_join(cat_control %>% select(delta_1 = delta, placebo_est = estimate), by = "delta_1") %>%
@@ -319,10 +319,10 @@ cat_heatmap_data <- tidyr::expand_grid(
     estimand = "Categorical"
   )
 cont_heatmap_data <- tidyr::expand_grid(
-  delta_1 = cont_placebo$delta,
+  delta_1 = cont_control$delta,
   delta_2 = cont_fishoil$delta
 ) %>%
-  left_join(cont_placebo %>% select(delta_1 = delta, placebo_est = estimate), by = "delta_1") %>%
+  left_join(cont_control %>% select(delta_1 = delta, placebo_est = estimate), by = "delta_1") %>%
   left_join(cont_fishoil %>% select(delta_2 = delta, fishoil_est = estimate), by = "delta_2") %>%
   mutate(
     treatment_effect = fishoil_est - placebo_est,
@@ -372,30 +372,30 @@ cont_heatmap_fishoil_plot<-ggplot(cont_heatmap_data, aes(x = delta_1, y = delta_
 
 #vital heatmap vitamin D
 
-cat_placebo <- SA_combined_vital_all %>%
+cat_control<- vital_all_combined %>%
   filter(estimand == "Categorical", treatment == "Control")
-cat_vitd <- SA_combined_vital_all %>%
+cat_vitd <- vital_all_combined %>%
   filter(estimand == "Categorical", treatment == "Vitamin D")
-cont_placebo <- SA_combined_vital_all %>%
+cont_control <- vital_all_combined %>%
   filter(estimand == "Continuous", treatment == "Control")
-cont_vitd <- SA_combined_vital_all %>%
+cont_vitd <- vital_all_combined %>%
   filter(estimand == "Continuous", treatment == "Vitamin D")
 cat_heatmap_data <- tidyr::expand_grid(
-  delta_1 = cat_placebo$delta_vital,  
-  delta_2 = cat_vitd$delta_vital      
+  delta_1 = cat_control$delta,  
+  delta_2 = cat_vitd$delta      
 ) %>%
-  left_join(cat_placebo %>% select(delta_1 = delta_vital, placebo_est = estimate), by = "delta_1") %>%
-  left_join(cat_vitd %>% select(delta_2 = delta_vital, vitd_est = estimate), by = "delta_2") %>%
+  left_join(cat_control %>% select(delta_1 = delta, placebo_est = estimate), by = "delta_1") %>%
+  left_join(cat_vitd %>% select(delta_2 = delta, vitd_est = estimate), by = "delta_2") %>%
   mutate(
     treatment_effect = vitd_est - placebo_est,
     estimand = "Categorical"
   )
 cont_heatmap_data <- tidyr::expand_grid(
-  delta_1 = cont_placebo$delta_vital,
-  delta_2 = cont_vitd$delta_vital
+  delta_1 = cont_control$delta,
+  delta_2 = cont_vitd$delta
 ) %>%
-  left_join(cont_placebo %>% select(delta_1 = delta_vital, placebo_est = estimate), by = "delta_1") %>%
-  left_join(cont_vitd %>% select(delta_2 = delta_vital, vitd_est = estimate), by = "delta_2") %>%
+  left_join(cont_control %>% select(delta_1 = delta, placebo_est = estimate), by = "delta_1") %>%
+  left_join(cont_vitd %>% select(delta_2 = delta, vitd_est = estimate), by = "delta_2") %>%
   mutate(
     treatment_effect = vitd_est - placebo_est,
     estimand = "Continuous"
