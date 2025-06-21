@@ -1625,31 +1625,28 @@ print(vital_plot_impt_k)
 ## Sensitive analysis
 
 ```{r fig.width=5, fig.height=4}
-SA_vital_all_plot
 SA_acu_all
+SA_vital_all_plot
 ```
 
-This forest plot illustrates the robustness of the estimated treatment
-effects under varying missing data assumptions using
-$\delta$-adjustment. Each point represents the estimated treatment
-effect at a given $\delta$ value, where:
+The forest plot aims to illustrate the robustness of the estimated treatment effects
+under varying missing data assumptions using $\delta$ adjustment sensitivity analysis. 
+In figure x which shows the acupuncture trial results, we can observe the conditional expectation of
+headache severity at the final time point of 12 months given the baseline headache severity and acupuncture 
+treatment under different $\delta$ shifts. Similarly we can also observe the conditional expectation of headache
+severity at the final time point in the control group, given baseline headache severity only and no treatment. 
 
--   Purple represent the reference estimand, in which time is treated as
-    a categorical variable.
--   Green represent the changed estimand, in which time is modeled as a
-    continuous variable.
--   Horizontal lines denote the 95% confidence intervals.
+Figure Y shows the VITAL results after applying the sensitivity analysis. 
+In the fish oil panel, we observe the conditional expectation
+of knee pain score at 4 years given baseline knee pain score and fish oil treatment under the different $\delta$ shifts.
+The vitamin D panel shows
+similar conditional expectation, but the control group shows the conditional expectation of knee pain score given baseline knee pain score and no treatment.  
 
-The vertical red dashed line at 0 marks the threshold of no treatment
-effect. The panels are stratified to compare the acupuncture group and
-the control group in figure x. This goes for the VITAL plot in figure y
-as well where we compare fish oil, vitamin D and control group. The
-$\delta$ parameter shifts the imputed values to simulate scenarios where
-missing outcomes are systematically better or worse than observed ones.
-Positive $\delta$ values imply better unobserved outcomes; negative
-$\delta$ values imply worse. The consistency of effect estimates across
-the $\delta$ range suggests the treatment effect is robust to departures
-from the MAR assumption.
+The error bars represent the 95% confidence intervals. 
+
+The $\delta$ parameter shifts the imputed values to simulate scenarios where the missing data are systematically better or worse than the observed 
+ones. Positive $\delta$ values imply better unobserved outcomes while negative values imply worse. The consistency of estimates across the $\delta$ values 
+suggests the treatment effect is robust to departures from the MAR assumption. 
 
 \newpage
 

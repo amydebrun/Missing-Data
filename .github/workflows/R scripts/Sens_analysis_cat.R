@@ -268,7 +268,7 @@ for (i in 1:length(vital_control_delta)) {
   post_cat["pain_yr4"]  <- paste0(
     "idx <- which(is.na(data[,'pain_yr4'])); ",
     "imp[[j]]$pain_yr4[idx] <- imp[[j]]$pain_yr4[idx] + ", d)
-  imp_cat <- mice(vital_wide_placebo, pred = pred_cat_placebo, post = post_cat, maxit = 10,
+  imp_cat <- mice(vital_wide_placebo, pred = pred_cat_placebo, method = method_cat, post = post_cat, maxit = 10,
                   seed = i * 22, print=FALSE)
   imp.all.undamped_cat[[i]] <- imp_cat
 }
@@ -294,8 +294,8 @@ delta_results_cat_vital_placebo_plot <- ggplot(delta_results_cat_vital_placebo, 
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +   
   facet_wrap(~ treatment) + 
   labs(
-    title = "Control effect of Vital with δ-Adjustment (categorical)",
-    x = "Mean pain at year 4",
+    title = "Conditional expectation of pain_yr4",
+    x = "Outcome",
     y = "Delta"
   ) +
   theme_minimal()+ 

@@ -165,6 +165,10 @@ delta_results_cont_vitd
 delta_combined_vitd_plot
 ```
 
+```{r}
+SA_acu_all
+SA_vital_all_plot
+```
 
 
 
