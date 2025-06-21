@@ -166,11 +166,6 @@ delta_combined_vitd_plot
 ```
 
 
-```{r}
-#vital compare plot delta
-delta_combined_vital_plot
-
-```
 
 
 ```{r}
@@ -261,6 +256,7 @@ save(
   file = "report_plots2.RData"
 )
 ```
+
 
 
 

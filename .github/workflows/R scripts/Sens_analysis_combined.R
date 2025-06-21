@@ -268,7 +268,7 @@ cat_heatmap_acu_plot<- ggplot(cat_heatmap_data, aes(x = delta_1, y = delta_2, fi
     limits = c(midpoint_cat - spread_cat, midpoint_cat + spread_cat)
   ) +
   labs(
-    title = "Map1; original estimand",
+    title = "Map1; original acu estimand",
     x = "Control Delta ",
     y = "Acupuncture Delta",
     fill = "Effect"
@@ -288,9 +288,9 @@ cont_heatmap_acu_plot<-ggplot(cont_heatmap_data, aes(x = delta_1, y = delta_2, f
     limits = c(midpoint_cont - spread_cont, midpoint_cont + spread_cont)
   ) +
   labs(
-    title = "Map2; changed estimand",
-    x = "Control Delta ",
-    y = "Acupuncture Delta",
+    title = "Map2; changed acu estimand",
+    x = "δ control group",
+    y = "δ acupuncture group",
     fill = "Effect"
   ) +
   theme_minimal() +
