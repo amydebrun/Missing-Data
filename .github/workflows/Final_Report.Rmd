@@ -76,26 +76,29 @@ Removing incomplete cases reduces the sample size, which in turn
 decreases statistical power, limiting the ability to detect valid
 treatment effects.
 
-In statistical software like R, missing values are represented as NA among the observed values. In longitudinal data, rows of data belonging to individuals at a certain time-point can be missing. 
-When fitting models like linear regression, R automatically excludes any
-subjects with missing values in either predictor or outcome variables.
-While convenient, this method can lead to selection bias if the
-missingness is systematic.
+In statistical software like R, missing values are represented as NA
+among the observed values. In longitudinal data, rows of data belonging
+to individuals at a certain time-point can be missing. When fitting
+models like linear regression, R automatically excludes any subjects
+with missing values in either predictor or outcome variables. While
+convenient, this method can lead to selection bias if the missingness is
+systematic.
 
 ## Project Objective
 
 The objective of this project is to estimate treatment effects using
 real-world data, with a primary focus on addressing issues that come
-with missing data in clinical trials. We will briefly discuss different assumptions about
-missing data mechanisms—such as Missing Completely at Random, Missing at
-Random, and Missing Not at Random and investigate their implications for
-statistical analysis.
+with missing data in clinical trials. We will briefly discuss different
+assumptions about missing data mechanisms—such as Missing Completely at
+Random, Missing at Random, and Missing Not at Random and investigate
+their implications for statistical analysis.
 
 While a range of methods are available to handle missing data, they all
 vary in levels of complexity and assumptions. This project aims to
 explore these methods, understand the reasons behind their differing
 performance, and implement them on real-world longitudinal clinical data
-to compare their effectiveness in estimating treatment effects.
+to compare their ability to estimate treatment effect under real-world
+conditions.
 
 After initial exploration of the different methods, we also decided to
 adjust the estimands through data wrangling our chosen datasets to
@@ -138,10 +141,11 @@ although data is rarely MCAR. This can occur due to system failure and
 some data is deleted accidentally, or else there is issues with the
 treatment system and data cannot be recorded. The DAG below visualises
 an example of this mechanism based on a randomised trial with
-randomisation variable $L$. Missing indicator $R$, which denotes whether
-the outcome is observed ($R = 1$) or missing ($R = 0$), is independent
-from the observed baseline variables $X1$ and $X2$, which are pre-randomised variables, and outcome variable
-$Y$ (which contains potentially missing data).
+randomisation variable $L$. Missing indicator $R_Y$, which denotes
+whether the outcome is observed ($R_Y = 1$) or missing ($R_Y = 0$), is
+independent from the observed baseline variables $X_1$ and $X_2$, which
+are pre-randomised variables, and outcome variable $Y$ (which
+potentially contains missing data).
 
 ```{r echo=FALSE}
 MCAR_dag
@@ -150,34 +154,48 @@ MCAR_dag
 **Missing At Random**
 
 $$\quad P(R = 1 \mid Y, X) = P(R = 1 \mid X)$$ The probability of data
-being observed given the rest of the data is the same as the probability
-being observed given the observed data. In short, the data's missingness
-is dependent on the observed data. For example, people with a higher
-body mass index may be more prone to having missing blood pressure
-data - this is not relative to the missing data. MAR is a more realistic
-mechanism than MCAR and requires more intensive handling methods. The
-DAG shows that the $R$ is influenced by the $Y$, $X1$, $X2$ and
-treatment $A$.
+being observed given observed and unobserved data is the same as the
+probability being observed given the observed data. In short, the
+missing data dependends on the observed data. We can say that the
+missing data indicator is conditional on another variable.
+
+MAR is a more realistic mechanism than MCAR and requires more intensive
+handling methods. Below shows 2 DAGs that shows a general example of a
+randomised treatment $L$ on response variable $Y$, which potentially
+contains missing data. $X_1$ and $X_2$ are baseline variables, recorded
+pre-randomisation. The first DAG shows the MAR mechanism conditioned on
+both baseline variables; missingness indicator $R_Y$ is influenced by
+baseline variables $X_1$ and $X_2$. The second DAG is similar, but shows
+the data is MAR conditional on randomised treatment $L$ and baseline
+variable $X_1$. $X_2$ no longer influences the missingness indicator
+$R_Y$, but $R_Y$ is still conditioned on $L$ and $X_1$, showing the MAR
+assumption still holds given these variables.
 
 ```{r echo=FALSE}
-MAR_dag
+MAR_dag1
+MAR_dag2
 ```
 
 **Missing Not At Random**
 
-$$\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)$$ The probability of data
-being observed is not dependent on the observed data only but on the missing data also. This mechanism is
-the most difficult to deal with as it relates to the unobserved data, so
-producing valid results is a challenge. Certain participants in a
-general health study may avoid answering questions truthfully about
-smoking habits or their diet in order to make themselves more appealing.
-Sensitivity analysis is an option to determine the treatment effect when
-assuming different mechanisms. The following DAG includes the missing
-data indicator $R$. In this structure, the potentially missing outcome
-variable $Y$ directly influences $R$.
+$$\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)$$ 
+The probability of data being observed depends both on the observed data 
+and the missing data. This mechanism is the most difficult to deal with as
+it relates to the unobserved data, so producing valid results is a
+challenge. Certain participants in a general health study may avoid
+answering questions truthfully about smoking habits or their diet in
+order to make themselves more appealing. Sensitivity analysis is an
+option to determine the treatment effect when assuming different
+mechanisms. The 2 following DAGs show this mechanism using the above scenarios. 
+In the first DAGs structure, the potentially missing outcome variable $Y$ directly
+influences $R_Y$. The outcome $Y$ is directly influenced by the randomised treatment $L$ 
+and baseline variables $X_1$ and $X_2$, but the missingness indicator is influenced by the
+missing outcome data. The second DAG shows MNAR conditional on $X_2$ only as it influences the 
+missingness indicator $R_Y$ along with the missing outcome.
 
 ```{r echo=FALSE}
-MNAR_dag
+MNAR_dag1
+MNAR_dag2
 ```
 
 Although these considerations are important, the mechanism underlying
@@ -1424,7 +1442,7 @@ Next we performed the main imputation, indicating post processing, using
 predictive mean matching method and maxit=10 to indicate maximum of 10
 iterations. After imputation, a regression model like our substantive
 model is fitted, $\beta_0 + \beta_1group+\beta_2pk1_i+\varepsilon_i$,
-and the estimates are pooled together. 
+and the estimates are pooled together.
 
 \newpage
 
@@ -1554,7 +1572,6 @@ for (i in seq_along(delta_vital)) {
 }
 ```
 
-
 # Result
 
 ## Comparing different methods
@@ -1629,24 +1646,32 @@ SA_acu_all
 SA_vital_all_plot
 ```
 
-The forest plot aims to illustrate the robustness of the estimated treatment effects
-under varying missing data assumptions using $\delta$ adjustment sensitivity analysis. 
-In figure x which shows the acupuncture trial results, we can observe the conditional expectation of
-headache severity at the final time point of 12 months given the baseline headache severity and acupuncture 
-treatment under different $\delta$ shifts. Similarly we can also observe the conditional expectation of headache
-severity at the final time point in the control group, given baseline headache severity only and no treatment. 
+The forest plot aims to illustrate the robustness of the estimated
+treatment effects under varying missing data assumptions using $\delta$
+adjustment sensitivity analysis. In figure x which shows the acupuncture
+trial results, we can observe the conditional expectation of headache
+severity at the final time point of 12 months given the baseline
+headache severity and acupuncture treatment under different $\delta$
+shifts. Similarly we can also observe the conditional expectation of
+headache severity at the final time point in the control group, given
+baseline headache severity only and no treatment.
 
-Figure Y shows the VITAL results after applying the sensitivity analysis. 
-In the fish oil panel, we observe the conditional expectation
-of knee pain score at 4 years given baseline knee pain score and fish oil treatment under the different $\delta$ shifts.
-The vitamin D panel shows
-similar conditional expectation, but the control group shows the conditional expectation of knee pain score given baseline knee pain score and no treatment.  
+Figure Y shows the VITAL results after applying the sensitivity
+analysis. In the fish oil panel, we observe the conditional expectation
+of knee pain score at 4 years given baseline knee pain score and fish
+oil treatment under the different $\delta$ shifts. The vitamin D panel
+shows similar conditional expectation, but the control group shows the
+conditional expectation of knee pain score given baseline knee pain
+score and no treatment.
 
-The error bars represent the 95% confidence intervals. 
+The error bars represent the 95% confidence intervals.
 
-The $\delta$ parameter shifts the imputed values to simulate scenarios where the missing data are systematically better or worse than the observed 
-ones. Positive $\delta$ values imply better unobserved outcomes while negative values imply worse. The consistency of estimates across the $\delta$ values 
-suggests the treatment effect is robust to departures from the MAR assumption. 
+The $\delta$ parameter shifts the imputed values to simulate scenarios
+where the missing data are systematically better or worse than the
+observed ones. Positive $\delta$ values imply better unobserved outcomes
+while negative values imply worse. The consistency of estimates across
+the $\delta$ values suggests the treatment effect is robust to
+departures from the MAR assumption.
 
 \newpage
 

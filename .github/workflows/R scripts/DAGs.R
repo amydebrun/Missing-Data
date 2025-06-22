@@ -96,52 +96,94 @@ dag_outcome_base_miss <- dagitty('dag {
 
 
 
-MAR_dag <- dagitty('dag {
+MAR_dag1 <- dagitty('dag {
   L         [pos="0,2"]
-  A             [pos="1.5,2.5"]
   Y       [pos="3,2"]
-  R       [pos="3,3"]
-  X1      [pos="1,3.5"]
-  X2      [pos="1,1.5"]
+  R_Y       [pos="3,3"]
+  X_1      [pos="1,3.5"]
+  X_2      [pos="1,1.5"]
   
-    L -> A
-    A -> Y
-    Y -> R <- A
-    X1 -> Y <- X2
-    X1-> R <- X2
     L -> Y
-    L -> R 
+    X_1 -> Y <- X_2
+    X_1-> R_Y <- X_2
 }')
-MAR_dag<-plot(MAR_dag)
+MAR_dag1<-ggdag(MAR_dag1, layout = "circle") +
+  theme_dag() + 
+  ggtitle("Missing at Random conditional on L, X_1 and X_2")
+MAR_dag1
+MAR_dag2 <- dagitty('dag {
+  L     [pos="0,2"]
+  X_1   [pos="1,3.5"]
+  X_2   [pos="1,1.5"]
+  Y     [pos="3,2"]
+  R_Y   [pos="3,3"]
+
+  L -> Y
+  X_1 -> Y
+  X_2 -> Y
+  X_1 -> R_Y
+  L -> R_Y
+}')
+MAR_dag2<-ggdag(MAR_dag2, layout = "circle") +
+  theme_dag() + 
+  ggtitle("Missing at Random conditional on L and X_1")
+MAR_dag2
+
+
+
 MCAR_dag <- dagitty('dag {
  L       [pos="0,2"]
- A            [pos="1.5,2.5"]
  Y             [pos="3,2"]
- R                    [pos="3,3"]
- X1 [pos="1,3.5"]
- X2 [pos="1,1.5"]
+ R_Y                    [pos="3,3"]
+ X_1 [pos="1,3.5"]
+ X_2 [pos="1,1.5"]
   
-     L -> A
-     A -> Y
-     X1 -> Y <- X2
+     L -> Y
+     X_1 -> Y <- X_2
      L -> Y
 }')
-MCAR_dag<-plot(MCAR_dag)
-MNAR_dag <- dagitty('dag {
+MCAR_dag<-ggdag(MCAR_dag, layout = "circle") +
+  theme_dag() + 
+  ggtitle("Missing Completely at Random")
+MCAR_dag
+MNAR_dag1 <- dagitty('dag {
   L         [pos="0,2"]
-  A             [pos="1.5,2.5"]
   Y       [pos="3,2"]
-  R       [pos="3,3"]
-  X1      [pos="1,3.5"]
-  X2      [pos="1,1.5"]
+  R_Y       [pos="3,3"]
+  X_1      [pos="1,3.5"]
+  X_2      [pos="1,1.5"]
   
-    L -> A
-    A -> Y
-    X1 -> Y <- X2
+    X_1 -> Y <- X_2
     L -> Y
-    Y -> R 
+    Y -> R_Y
 }')
-MNAR_dag<-plot(MNAR_dag)
+MNAR_dag1<-ggdag(MNAR_dag1, layout = "circle") +
+  theme_dag() + 
+  ggtitle("Missing Not at Random conditional on L, X_1, X_2")
+MNAR_dag1
+
+MNAR_dag2<-dagitty('dag {
+  L     [pos="0,2"]
+  X_1   [pos="1,3.5"]
+  X_2   [pos="1,1.5"]
+  Y     [pos="3,2"]
+  R_Y   [pos="3,3"]
+
+  L -> Y
+  X_1 -> Y
+  X_2 -> Y
+
+  Y -> R_Y
+  X_2 -> R_Y
+}')
+MNAR_dag2<-ggdag(MNAR_dag2, layout = "circle") +
+  theme_dag() + 
+  ggtitle("Missing Not at Random conditional on X_2")
+MNAR_dag2
+
+
+
+
 dag_base_miss <- dagitty('dag {
   randomisation         [pos="0,2"]
   treatment             [pos="1.5,2.5"]
