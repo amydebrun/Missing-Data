@@ -40,16 +40,15 @@ vital_var_table <- tibble::tibble(
 ))
 
 
-missing_pattern_table<- tibble::tibble(
-  `Missing Data Pattern` = c("Univariate", "Multivariate", "Monotonic", "General", "File Matching", "Factor Analysis"),
+missing_pattern_table<-tibble(
+  `Missing Data Pattern` = c("Univariate", "Multivariate", "Monotonic", "General", "File Matching"),
   `Description` = c("Missing values in a single variable",
                     "Missing values present in multiple variables",
-                    "variables $Y_j$ can be ordered if missing",
+                    "Variables \(Y_j\) can be ordered such that if \(Y_j\) is missing, all subsequent variables are also missing",
                     "Missing valueshave no structure and scattered throughout data",
-                    "Missing data appears to be statistically matched",
-                    "")
+                    "Missing data appears to be statistically matched")
 )
-
+missing_pattern_table<-gt(missing_pattern_table)
 #distribution of age by treatment group
 acu_age_plot<-ggplot(acu_long, aes(x = age)) +
   geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) + 
