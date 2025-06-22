@@ -228,17 +228,18 @@ A missing data pattern describes the pattern of missing data among the
 observed data. As described by Little & Rubin (2014), it's important to
 remark the missing data patterns of the data set prior to data handling
 as some handling methods are intended for certain classified patterns.
+The following table summarises some missing data patterns.
 
 ```{r fig.width=5, fig.height=3}
 print(missing_pattern_table)
 ```
 
-## Literature and Limitations
+## Literature
 
 While reviewing the literature on missing data, it became evident that
 despite the use of established handling methods, there remains room for
-improvement in how missing data are addressed in reports and in the
-selection of appropriate methods.
+improvement in how missing data are addressed in clinical study reports
+and in the selection of appropriate methods.
 
 In 2014, Powney et al. reviewed 100 longitudinal clinical trials
 conducted between 2005 and 2012 and found that only 44 reported an
@@ -266,7 +267,7 @@ the covariates' relationship with other predictors.
 
 \newpage
 
-# Real World Data
+# Clinical Trial Data
 
 We have sourced two different data sets to perform our missingness
 analysis on. They both have different sample sizes and different levels
@@ -275,20 +276,24 @@ different settings.
 
 **Acupuncture Data**
 
-*Source*
-
-Vickers et al. published a paper in 2004 on a trial they conducted to
-determine the effect of acupuncture therapy on chronic headache in
-primary care. Vickers released the dataset from the study in 2006 and is
-publicly available to download in excel format from
-<https://pmc.ncbi.nlm.nih.gov/articles/PMC1489946/>.
-
-*Study Design*
-
-The study design for the acupuncture trial is a longitudinal randomised
-controlled trial with two follow up time points. 401 participants were
-gathered from general practices in England and Wales who suffered from
-migraines.
+Our first dataset contains results from a clinical trial determining the
+effects of acupuncture therapy on chronic headache in primary care
+(Vickers et al 2004). Vickers released the dataset from the study in
+2006 and is publicly available to download in excel format from
+<https://pmc.ncbi.nlm.nih.gov/articles/PMC1489946/>. The study design
+for the acupuncture trial is a longitudinal randomised controlled trial
+with two follow up time points. 401 participants were gathered from
+general practices in England and Wales who suffered from migraines. The
+main objective was to determine the effects of acupuncture use on
+headache severity, health status, absence days and GP and therapist
+visits in comparison to avoiding acupuncture against a control
+intervention whih offered standard care. Headache and medication use was
+recorded at baseline and additional factors were recorded
+post-randomisation such as such sick days and daily activities. The
+results of the trial showed a 34% decrease in headache severity score at
+the final time point in comparison to the control group with a 16%
+decrease. The acupuncture therapy group also showed a 37% decrease in
+medication use, which compares to 23% in the control group.
 
 *Data Overview*
 
@@ -298,12 +303,11 @@ migraines.
 print(acu_var_table)
 ```
 
-Variables `pk2` and \``pk5` are the follow-up times at 3 months and 12
+Variables `pk2` and `pk5` are the headache severity scores at 3 months and 12
 months.
 
 ```{r fig.width=5, fig.height=3}
 print(gtsummary::as_kable(acu_summary))
-
 ```
 
 Figure 2.x is the summary statistics of the acupuncture trial data. Note

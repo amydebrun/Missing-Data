@@ -3,7 +3,7 @@
 ## Basics of Acupuncture dataset
 #variable table 
 
-acu_var_table <- tibble::tibble(
+acu_var_table <- tibble(
   `Variable` = c(
     "id", "age", "sex", "migraine", "chronicity", "acupuncturist", "practice_id", "group",
     "pk1", "pk2", "pk5", "f1", "f2", "f5"
@@ -25,9 +25,10 @@ acu_var_table <- tibble::tibble(
     "headache frequency 1 year"
   )
 )
+acu_var_table<-acu_var_table%>%
+  kable(format = "html", escape = FALSE, caption = "Acupuncture trial variables")
 
-
-vital_var_table <- tibble::tibble(
+vital_var_table <- tibble(
   `Variable` = c(
     "Subject_ID","age", "bmi", "sex", "vitdactive", "fishoilactive", "pain_base", "pain_yrX", "stiffness_base", "stiffness_yrX", "function_base", 
     "function_yrX", "kneepainfreq"
@@ -38,17 +39,21 @@ vital_var_table <- tibble::tibble(
   "Knee stiffness at baseline", "Knee stiffness X years post randomisation", "Knee function at baseline",
   "Knee function X years post randomisation", "Frequency of knee pain"
 ))
+vital_var_table<-vital_var_table%>%
+  kable(format = "html", escape = FALSE, caption = "VITAL variables")
 
+library(knitr)
 
 missing_pattern_table<-tibble(
-  `Missing Data Pattern` = c("Univariate", "Multivariate", "Monotonic", "General", "File Matching"),
+  `Pattern` = c("Univariate", "Multivariate", "Monotonic", "General"),
   `Description` = c("Missing values in a single variable",
                     "Missing values present in multiple variables",
-                    "Variables \(Y_j\) can be ordered such that if \(Y_j\) is missing, all subsequent variables are also missing",
-                    "Missing valueshave no structure and scattered throughout data",
-                    "Missing data appears to be statistically matched")
+                    "Variables $Y_j$ can be ordered such that if $Y_j$ is missing, all subsequent variables are also missing",
+                    "Missing valueshave no structure and scattered throughout data")
 )
-missing_pattern_table<-gt(missing_pattern_table)
+missing_pattern_table<-missing_pattern_table %>%
+  kable(format = "html", escape = FALSE, caption = "Missing Data Patterns")
+
 #distribution of age by treatment group
 acu_age_plot<-ggplot(acu_long, aes(x = age)) +
   geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) + 
