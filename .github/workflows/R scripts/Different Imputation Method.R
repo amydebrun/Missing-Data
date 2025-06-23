@@ -329,7 +329,7 @@ vital_MI_SLR_50_result_oil <- summary(vital_MI_SLR_pool_50, conf.int = TRUE, con
 Method_3 <- factor(c("K=5","K=20","K=25"),
                    levels = rev(c("K=5","K=20","K=25")))
 
-Method_3 <- factor(c("K=5","K=20","K=50"),
+Method_4 <- factor(c("K=5","K=20","K=50"),
                    levels = rev(c("K=5","K=20","K=50")))
 
 acu_impt_k_result <- rbind(acu_LM_MICE_default_result,
