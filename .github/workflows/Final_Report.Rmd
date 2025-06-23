@@ -30,6 +30,7 @@ header-includes:
   - \newcommand{\pandocbounded}[1]{#1}
   - \usepackage{float}
   - \floatplacement{figure}{H}
+  - \usepackage{makecell}
 editor_options: 
   markdown: 
     wrap: 72
