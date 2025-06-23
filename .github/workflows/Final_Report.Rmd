@@ -631,25 +631,6 @@ unlikely to be stabilized throughout, and the outcomes display trends
 over time, making the LOCF assumption potentially misleading and
 unsuitable for accurate estimation of treatment effects.
 
-Below is the R code used to perform LOCF imputation on the data in wide
-format. Following imputation, we fitted the resulting dataset using the
-lm() function, consistent with the approach used in the complete case
-analysis (CAA):
-
-```{r,eval=FALSE, echo=TRUE}
-# LOCF function
-LOCF <- function(data, columns){
-  for (col in columns) {
-    for (i in 1:nrow(data)) {  
-      if (is.na(data[i, col])) {
-        data[i, col] <- data[i, col - 1]  
-      }
-    }
-  }
-  return(data)  
-}
-```
-
 ### Mean observation method
 
 Mean imputation is another simple method that fills in missing values by
@@ -671,48 +652,13 @@ missing values with the average observed value at each timepoint
 disregards this variation and may lead to underestimated variability and
 biased treatment effect estimates.
 
-Below is the R code used to perform mean imputation on the data in wide
-format. Following imputation, we fitted the resulting dataset using the
-lm() function, as in the complete case analysis (CAA):
-
-```{r, eval=FALSE,, echo=TRUE}
-mean_impute <- function(data) {
-  data <- data.frame(
-    lapply(data, function(x) {
-      if (is.numeric(x)) {
-        return(ifelse(is.na(x), mean(x, na.rm = TRUE), x))
-      } else {
-        return(x)
-      }
-    })
-  )
-  return(data)
-}
-```
-
 ## Changing imputation methods
 
-To address missing data in a statistically principled manner, it is
-helpful to distinguish between two components: the imputation step and
-the modeling step. In our anchoring methods, we either did not perform
-imputation—as in complete case analysis (CCA)—or relied on single
-imputation techniques, such as last observation carried forward (LOCF)
-or mean imputation.
+To address missing data in a statistically principled manner, it is helpful to distinguish between two components: the imputation step and the modeling step. In our anchoring methods, we either did not perform imputation—as in CCA—or relied on single imputation techniques, such as LOCF or mean imputation.
 
-While methods like linear mixed-effects models (LME) can utilize most
-available observed data and yield unbiased estimates under the Missing
-At Random (MAR) assumption without imputation, they cannot incorporate
-other post-randomisation variables that are not part of the model (e.g., pain frequency
-in the Acupuncture dataset). In contrast, multiple imputation (MI)
-allows the inclusion of such auxiliary information during the imputation
-process.
+While methods like LME can utilize most available observed data and yield unbiased estimates under the MAR assumption without imputation, they cannot incorporate other post-randomisation variables that are not part of the model (e.g., pain frequency in the acupuncture dataset). In contrast, MI allows the inclusion of such auxiliary information during the imputation process.
 
-In most realistic scenarios, doing no imputation or applying single
-imputation methods is likely to introduce bias and underestimate
-uncertainty, especially when missingness is related to unobserved
-outcomes. Thus, more flexible approaches—such as MI combined with
-appropriate modeling—are generally preferred for robust inference in the
-presence of missing data.
+In most realistic scenarios, doing no imputation or applying single imputation methods is likely to introduce bias and underestimate uncertainty, especially when missingness is related to unobserved outcomes. Thus, more flexible approaches—such as MI combined with appropriate modeling—are generally preferred for robust inference in the presence of missing data.
 
 ### Multiple imputation
 
@@ -980,25 +926,21 @@ have moderate dimensionality and sufficient sample size. Therefore, we
 opted to use Fully Conditional Specification (FCS) for multiple
 imputation.
 
-FCS is also easier to implement, since it does not require explicit
-specification of a joint model or priors, and it generally requires
-fewer iterations to reach convergence in practical settings. For these
-reasons, we adopted the FCS approach using the mice package in R to
-perform multiple imputation throughout this project.
+We adopted the FCS approach using the mice package in R to perform multiple imputation throughout this project. One advantage of FCS is its ease of implementation, as it does not require explicit specification of a joint model or prior distributions, and it typically converges in fewer iterations in practice. Moreover, the balanced longitudinal design of both datasets—where follow-up measurements occur at consistent time points across individuals—makes FCS especially suitable. This structure allows for sequential imputation of partially observed variables in a consistent order across patients. In contrast, if the data were collected at irregular or patient-specific time points, or under a more complex design such as a cluster randomised trial, the FCS approach would be more difficult to apply reliably.
 
 Finally, within the MICE framework, different imputation methods can be
 specified for different variable types—such as predictive mean matching
 or sampling from observed values. We will explore the impact of these
 options later in the analysis.
 
-#### How to choose m
+#### How to choose imputation number K
 
 Another practical consideration in multiple imputation (MI) is the
 choice of the number of imputations, denoted by K. While early
 applications often used K=5, more recent work emphasizes that the
 optimal number depends on the degree of missing information in the data.
 
-A key parameter in determiningK is $\gamma_{0}$, which represents the
+A key parameter in determining K is $\gamma_{0}$, which represents the
 fraction of missing information for the parameter of interest.
 Unfortunately, $\gamma_{0}$ is typically unknown in advance, including
 in our project.
@@ -1048,7 +990,10 @@ statistical efficiency.
 -   Royston (2004) suggested that to constrain the coefficient of
     variation of $ln(t_{\nu}\sqrt{T})$ to below 0.05—effectively keeping
     the width of confidence intervals within about 10% uncertainty, a
-    minimum of K\>20 is required.
+    minimum of K\>20 is required. Here, $t_{\nu}$ is the quantile from a 
+    t-distribution with ${\nu}$ degrees of freedom, reflecting the uncertainty
+    from finite imputations, and $T$ is the total variance combining within- 
+    and between-imputation components.
 -   Graham (2007) argued that to achieve statistical power within 1% of
     the theoretical maximum, researchers should use at least K=20.
 -   Bodner (2008) examined how the number of imputations relates to the
@@ -1640,44 +1585,20 @@ for (i in seq_along(delta_vital)) {
 We begin by comparing our anchoring methods with more statistically
 principled approaches.
 
-```{r fig.width=5, fig.height=3}
+```{r fig.width=5, fig.height=3, fig.cap="Methods from top to bottom: CCA = complete case analysis; LOCR = last observation carry forward; MO = mean observation; MI = multiple imputation with linear regression; LME = linear mixed-effects model without imputation; MI+LME = multiple imputation followed by linear mixed-effects model."}
 print(acu_plot_categorical) 
 print(vital_plot_categorical)
 ```
-
-Methods from top to bottom
-
--   CAA: complete case analysis
-
--   LOCR: last observation carry forward
-
--   MO: mean observation
-
--   MI: multiple imputation and multiple linear regression
-
--   LME: linear mix model without imputations
-
--   MI+LME: multiple imputation and linear mix model
 
 ## Changing estimand
 
 In this section, we explore how changing the estimand (how time is
 modeled) to see how that affects our conclusions.
 
-```{r fig.width=5, fig.height=3}
+```{r fig.width=5, fig.height=3, fig.cap="LME: linear mix model without imputations; MI+LME: multiple imputation and linear miex model; Purple line (Original Estimand) estimand: The mean difference of pain score at the end of study conditional on baseline pain score, treating time as categorical variable; Green line (Changed Estimand) estimand: The mean difference of pain score at the end of study conditional on baseline pain score, treating time as continuous variable."}
 print(acu_plot_compare)
 print(vital_plot_compare)
 ```
-
-Method on top: LME: linear mix model without imputations
-
-Method on bottom: MI+LME: multiple imputation and linear miex model
-
-Purple line (Reference) estimand: The mean difference of pain score at
-the end of study, treating time as categorical variable
-
-Green line (Changed) estimand: The mean difference of pain score at the
-end of study, treating time as continuous variable
 
 ## Changing imputation methods and imputation numbers
 
@@ -1692,8 +1613,7 @@ print(acu_plot_imp)
 print(vital_plot_impt)
 ```
 
-Next, we assess the impact of changing the number of imputations, using
-predictive mean method.
+Next, we assess the impact of changing the number of imputations, using predictive mean method. As introduced in the previous session, we used $K=5$, $K=20$, and $K=100*\lambda$ (Which is 25 and 50 for Acupuncture and VITAL data sets accordingly).
 
 ```{r fig.width=5, fig.height=3}
 print(acu_plot_imp_k)
@@ -1780,8 +1700,7 @@ practical insights by applying and comparing different methods for
 handling missing data.
 
 The fact that our results are broadly consistent across methods should
-not be taken to imply that simpler approaches like complete case
-analysis (CAA) are equivalent to more principled methods. Even in a
+not be taken to imply that simpler approaches like CCA are equivalent to more principled methods. Even in a
 similar future study, the same results may not hold, especially under
 different missing data patterns or assumptions.
 
@@ -1798,13 +1717,7 @@ For example:
     the small number of timepoints and its inability to incorporate
     other post-randomisation variables like pain frequency.
 
--   In the VITAL dataset, although there are more timepoints, baseline
-    pain scores are sometimes missing. As a result, when fitting LME
-    without imputation, those individuals are excluded. The exclusion
-    number will be much higher when more covariates with missing data
-    are added to the model, as any individuals with any baseline missing
-    will be removed, potentially leading to substantial loss of
-    information.
+-   In the VITAL dataset, although there are more timepoints, baseline pain scores are sometimes missing. As a result, when fitting LME without imputation, individuals with missing baseline values are excluded. This exclusion becomes more severe as more covariates with missing data are included, potentially leading to substantial loss of information. While it is theoretically possible to incorporate post-randomisation variables into an LME model by extending the covariance structure, this approach is complex and less flexible. In contrast, using MI provides a more straightforward way to incorporate auxiliary post-randomisation information during the imputation step, without requiring modifications to the model structure.
 
 ## Limitations of the project
 
@@ -1824,10 +1737,7 @@ available data.
     differences between methods. This also reduces the practical impact
     of using more advanced imputation strategies.
 
--   *No access to the full complete data:* Since we only work with
-    partially observed datasets, we cannot assess the true accuracy of
-    different imputation methods. Having access to fully observed data
-    would allow direct comparison between imputed and actual values.
+-   *No known data-generating mechanism:* Since we are working with one-off samples from an unknown data-generating process and a true, unobserved treatment effect—rather than simulated data—we cannot evaluate the performance of different analytical methods against a known ground truth. This limits our ability to draw general conclusions about their long-run properties.
 
 ## Future work
 
@@ -1838,19 +1748,8 @@ techniques employed. Addressing these areas could enhance the robustness
 and generalizability of findings, especially in more complex or
 data-rich clinical contexts.
 
--   *Model specification:* Both linear regression and LME assume
-    linearity and normally distributed residuals. These assumptions were
-    not formally tested, and violations (e.g., non-linearity or skewness
-    in outcome) could compromise model validity.
+-   *Model specification:* Both linear regression and LME rely on assumptions such as linearity and normally distributed residuals. While these assumptions were not formally tested, the sample size in the VITAL dataset is likely large enough for the central limit theorem to provide valid inference. That said, future work could benefit from visual checks of residuals and distributions of pain scores at each timepoint to give a clearer sense of model fit and outcome behaviour.
 
--   *Single imputation method for main analysis:* While different
-    imputation methods were explored, the main analyses relied on
-    predictive mean matching. Other valid methods (e.g., Bayesian ridge
-    regression, classification models for categorical variables) were
-    not applied or compared in depth.
+-   *Imputation strategy:* In the most of our analysis, we used predictive mean matching for imputing missing variables. While this is a valid and robust approach, many other imputation models as we introduced were not explored in detail. These could be considered in future work to assess sensitivity to imputation method.
 
--   *Limited covariate adjustment:* In all models, we only adjusted for
-    treatment group and baseline pain score. While this was done for
-    comparability across methods, it may limit model performance and
-    bias control, particularly if other relevant covariates are
-    predictive of missingness or outcomes.
+-   *Covariate adjustment in substantive models:* Our analysis models adjusted only for treatment group and baseline pain score in our substantive model to ensure comparability across methods. This low-level of adjustment in the substantive model is the reason we observed larger discrepancies between results using MI and those not using MI, as a fuller set of covariates was used during MI. Future work could explore how more complex substantive model specifications interacts with MI and influences treatment effect estimates.

@@ -326,8 +326,11 @@ vital_MI_SLR_50_result_oil <- summary(vital_MI_SLR_pool_50, conf.int = TRUE, con
 
 # Result table
 
-Method_3 <- factor(c("K=5","K=20","K=100lambda"),
-                   levels = rev(c("K=5","K=20","K=100lambda")))
+Method_3 <- factor(c("K=5","K=20","K=25"),
+                   levels = rev(c("K=5","K=20","K=25")))
+
+Method_3 <- factor(c("K=5","K=20","K=50"),
+                   levels = rev(c("K=5","K=20","K=50")))
 
 acu_impt_k_result <- rbind(acu_LM_MICE_default_result,
                            acu_LM_MICE_default_20_result,
@@ -356,7 +359,7 @@ vital_impt_k_result_vitd <- vital_impt_k_result_vitd %>%
 vital_impt_k_result_oil <- rbind(vital_MI_SLR_result_oil,
                                vital_MI_SLR_20_result_oil,
                                vital_MI_SLR_50_result_oil)
-vital_impt_k_result_oil$Method <- Method_3
+vital_impt_k_result_oil$Method <- Method_4
 vital_impt_k_result_oil <- vital_impt_k_result_oil %>%
   mutate(
     p.value = round(p.value, 5),
