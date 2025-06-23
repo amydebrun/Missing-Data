@@ -203,6 +203,16 @@ cont_heatmap_vitd_plot
 
 ```
 
+```{r}
+acu_miss_perc_plot
+acu_miss_perc_group
+acu_miss_pattern_plot
+vital_miss_perc_plot
+vital_miss_perc_group_plot
+vital_miss_pattern
+```
+
+
 ```{r, eval=FALSE}
 # Code to save plots and tables, only run when required
 # Spliting the save code to 2 parts
