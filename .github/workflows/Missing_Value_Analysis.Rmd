@@ -240,7 +240,7 @@ save(
   MAR_dag1,
   MAR_dag2,
   MNAR_dag1,
-  MNAR_dag1,
+  MNAR_dag2,
   MCAR_dag,
   
  # sensitivity analysis
