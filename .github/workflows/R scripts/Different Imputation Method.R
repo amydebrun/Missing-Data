@@ -378,8 +378,7 @@ acu_plot_imp_k <- ggplot(acu_impt_k_result, aes(x = estimate, y = Method, xmin =
   facet_wrap(~ group)+
   labs(
     x = "Mean differnce in pain score by the end of study",
-    y = "Imputation number K",
-    title = "Fig5.7. Acupuncture, change imputation number") +
+    y = "Imputation number K") +
   theme_minimal() + 
   theme(
     strip.background = element_rect(fill = "lawngreen", color = "black"),  
@@ -399,9 +398,7 @@ vital_plot_impt_k <- ggplot(vital_impt_k_result_all, aes(x = estimate, y = Metho
   facet_wrap(~ treatment, scales = "free_x") +
   labs(
     x = "Mean differnce in pain score by the end of study",
-    y = "Imputation number K",
-    title = "Fig5.8. VITAL, change imputation number"
-  ) +
+    y = "Imputation number K") +
   theme_minimal() + 
   theme(
     legend.position = "none",

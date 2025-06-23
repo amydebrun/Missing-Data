@@ -28,6 +28,8 @@ output: rticles::arxiv_article
 header-includes:
   - \usepackage{amsmath}
   - \newcommand{\pandocbounded}[1]{#1}
+  - \usepackage{float}
+  - \floatplacement{figure}{H}
 editor_options: 
   markdown: 
     wrap: 72
@@ -1584,8 +1586,11 @@ for (i in seq_along(delta_vital)) {
 We begin by comparing our anchoring methods with more statistically
 principled approaches.
 
-```{r fig.width=5, fig.height=3, fig.cap="Methods from top to bottom: CCA = complete case analysis; LOCR = last observation carry forward; MO = mean observation; MI = multiple imputation with linear regression; LME = linear mixed-effects model without imputation; MI+LME = multiple imputation followed by linear mixed-effects model."}
+```{r fig.width=5, fig.height=3, fig.cap="Acupuncture data set analysed with different methods; CCA = complete case analysis; LOCR = last observation carry forward; MO = mean observation; MI = multiple imputation with linear regression; LME = linear mixed-effects model without imputation; MI+LME = multiple imputation followed by linear mixed-effects model."}
 print(acu_plot_categorical) 
+```
+
+```{r fig.width=5, fig.height=3, fig.cap="VITAL data set analysed with different methods; CCA = complete case analysis; LOCR = last observation carry forward; MO = mean observation; MI = multiple imputation with linear regression; LME = linear mixed-effects model without imputation; MI+LME = multiple imputation followed by linear mixed-effects model."}
 print(vital_plot_categorical)
 ```
 
@@ -1594,8 +1599,11 @@ print(vital_plot_categorical)
 In this section, we explore how changing the estimand (how time is
 modeled) to see how that affects our conclusions.
 
-```{r fig.width=5, fig.height=3, fig.cap="LME: linear mix model without imputations; MI+LME: multiple imputation and linear miex model; Purple line (Original Estimand) estimand: The mean difference of pain score at the end of study conditional on baseline pain score, treating time as categorical variable; Green line (Changed Estimand) estimand: The mean difference of pain score at the end of study conditional on baseline pain score, treating time as continuous variable."}
+```{r fig.width=5, fig.height=3, fig.cap="Acupuncture data set analysed with different estimands; LME: linear mix model without imputations; MI+LME: multiple imputation and linear miex model; Purple line (Original Estimand) estimand: The mean difference of pain score at the end of study conditional on baseline pain score, treating time as categorical variable; Green line (Changed Estimand) estimand: The mean difference of pain score at the end of study conditional on baseline pain score, treating time as continuous variable."}
 print(acu_plot_compare)
+```
+
+```{r fig.width=5, fig.height=3, fig.cap="VITAL data set analysed with different estimands; LME: linear mix model without imputations; MI+LME: multiple imputation and linear miex model; Purple line (Original Estimand) estimand: The mean difference of pain score at the end of study conditional on baseline pain score, treating time as categorical variable; Green line (Changed Estimand) estimand: The mean difference of pain score at the end of study conditional on baseline pain score, treating time as continuous variable."}
 print(vital_plot_compare)
 ```
 
@@ -1607,23 +1615,32 @@ variable and using multiple linear regression as substantive model.
 We first compared different imputation methods within the FCS framework,
 using 5 imputations.
 
-```{r fig.width=5, fig.height=3}
-print(acu_plot_imp) 
+```{r fig.width=5, fig.height=3, fig.cap="Acupuncture data set analysed with different FCS methods"}
+print(acu_plot_imp)
+```
+
+```{r fig.width=5, fig.height=3, fig.cap="VITAL data set analysed with different FCS methods"}
 print(vital_plot_impt)
 ```
 
 Next, we assess the impact of changing the number of imputations, using predictive mean method. As introduced in the previous session, we used $K=5$, $K=20$, and $K=100*\lambda$ (Which is 25 and 50 for Acupuncture and VITAL data sets accordingly).
 
-```{r fig.width=5, fig.height=3}
+```{r fig.width=5, fig.height=3, fig.cap="Acupuncture data set analysed with different imputation numbers"}
 print(acu_plot_imp_k)
+```
+
+```{r fig.width=5, fig.height=3, fig.cap="VITAL data set analysed with different imputation numbers"}
 print(vital_plot_impt_k)
 ```
 
 ## Sensitive analysis
 
-```{r fig.width=5, fig.height=4}
-SA_acu_all
-SA_vital_all_plot
+```{r fig.width=5, fig.height=4, fig.cap="Sensitive analysis for Acupuncture data set"}
+print(SA_acu_all)
+```
+
+```{r fig.width=5, fig.height=4,  fig.cap="Sensitive analysis for VITAL data set"}
+print(SA_vital_all_plot)
 ```
 
 The forest plot aims to illustrate the robustness of the estimated
@@ -1655,13 +1672,28 @@ departures from the MAR assumption.
 
 \newpage
 
-```{r fig.width=4, fig.height=2}
-cat_heatmap_acu_plot
-cont_heatmap_acu_plot
-cat_heatmap_fishoil_plot
-cont_heatmap_fishoil_plot
-cat_heatmap_vitd_plot
-cont_heatmap_vitd_plot
+```{r fig.width=4, fig.height=2, fig.cap="original acu estimand"}
+print(cat_heatmap_acu_plot)
+```
+
+```{r fig.width=4, fig.height=2, fig.cap="changed acu estimand"}
+print(cont_heatmap_acu_plot)
+```
+
+```{r fig.width=4, fig.height=2, fig.cap="original fishoil estimand"}
+print(cat_heatmap_fishoil_plot)
+```
+
+```{r fig.width=4, fig.height=2, fig.cap="changed fishoil estimand"}
+print(cont_heatmap_fishoil_plot)
+```
+
+```{r fig.width=4, fig.height=2, fig.cap="original vitd estimand"}
+print(cat_heatmap_vitd_plot)
+```
+
+```{r fig.width=4, fig.height=2, fig.cap="changed vitd estimand"}
+print(cont_heatmap_vitd_plot)
 ```
 
 We created heatmaps plotting the $\delta$ values for both the control

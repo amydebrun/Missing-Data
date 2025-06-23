@@ -243,9 +243,7 @@ vital_plot_categorical <- ggplot(vital_result_all, aes(x = estimate, y = Method,
   facet_wrap(~ treatment, scales = "free_x") +
   labs(
     x = "Mean differnce in pain score by the end of study",
-    y = "Method",
-    title = "Fig5.2. VITAL, different methods"
-  ) +
+    y = "Method") +
   theme_minimal() + 
   theme(
     legend.position = "none",
@@ -266,8 +264,7 @@ acu_plot_categorical <- ggplot(acu_result, aes(x = estimate, y = Method, xmin = 
   facet_wrap(~ group)+
   labs(
     x = "Mean differnce in pain score by the end of study",
-    y = "Method",
-    title = "Fig5.1. Acupuncture, different methods") +
+    y = "Method") +
   theme_minimal() + 
   theme(
     strip.background = element_rect(fill = "lawngreen", color = "black"),  

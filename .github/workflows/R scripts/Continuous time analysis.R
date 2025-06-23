@@ -75,6 +75,13 @@ vital_MI_LME_result_vitd_cont <- tidy(vital_MI_LME_pool_vitd_cont, conf.int = TR
 
 
 
+
+
+
+
+
+
+
 # Result and ordering
 
 # Result table tools
@@ -96,9 +103,15 @@ acu_cont_result <- acu_cont_result %>%
     estimate = round(estimate, 2),
     conf.low = round(conf.low, 2),
     conf.high = round(conf.high, 2),
-    std.error = round(std.error, 2))
+    std.error = round(std.error, 2),
+    group = "Acupuncture Treatment",
+    estimand = "continuous")
+
+acu_result <- acu_result %>% mutate(estimand = "categorical")
+
 # Compare with ACU cat
-acu_compare_result <- cbind(acu_result[5:6,], acu_cont_result)
+acu_compare_result <- rbind(acu_result[5:6,], acu_cont_result)
+
 
 # Fish oil Result Table
 vital_result_oil_cont <- rbind(vital_LME_result_oil_cont,
@@ -111,10 +124,15 @@ vital_result_oil_cont <- vital_result_oil_cont %>%
     estimate = round(estimate, 2),
     conf.low = round(conf.low, 2),
     conf.high = round(conf.high, 2),
-    std.error = round(std.error, 2)
+    std.error = round(std.error, 2),
+    treatment = "Fish Oil",
+    estimand = "continuous"
   )
+
+vital_result_oil <- vital_result_oil %>% mutate(estimand = "categorical")
+
 # Compare with fish oil cat
-oil_compare_result <- cbind(vital_result_oil[5:6,], vital_result_oil_cont)[,c(1,2,5,8,9,12)]
+oil_compare_result <- rbind(vital_result_oil[5:6,], vital_result_oil_cont)
 
 
 # VitD Result table
@@ -128,70 +146,65 @@ vital_result_vitd_cont <- vital_result_vitd_cont %>%
     estimate = round(estimate, 2),
     conf.low = round(conf.low, 2),
     conf.high = round(conf.high, 2),
-    std.error = round(std.error, 2)
-  )
+    std.error = round(std.error, 2),
+    treatment = "Vitamin D",
+    estimand = "continuous"
+    )
+
+vital_result_vitd <- vital_result_vitd %>% mutate(estimand = "categorical")
+
 # Compare with vitamine D cat
-vitd_compare_result <- cbind(vital_result_vitd[5:6,], vital_result_vitd_cont)[,c(1,2,5,8,9,12)]
+vitd_compare_result <- rbind(vital_result_vitd[5:6,], vital_result_vitd_cont)
 
 
 
 
+
+
+
+
+
+
+# ACU Forest plot
+acu_compare_result[,1] <- c("LME", "LME+MI", "LME", "LME+MI")
+acu_compare_result$group<-"Acupuncture"
+acu_plot_compare <- ggplot(acu_compare_result, 
+                           aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high, color = estimand)) +
+  geom_point(size = 4, position = position_dodge(width = 0.6)) + 
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_dodge(width = 0.6)) + 
+  geom_vline(xintercept = 0, linetype="dashed", color="red") +
+  facet_wrap(~ group) +
+  scale_shape_manual(values = c("categorical" = 16, "continuous" = 17)) + 
+  scale_colour_manual(values=c("categorical"="#a80050", "continuous"="lawngreen"))+
+  labs(
+    x = "Mean differnce in pain score by the end of study",
+    y = "Method") +
+  theme_minimal() + 
+  theme(
+    strip.background = element_rect(fill = "lawngreen", color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
 
 
 # FOREST PLOTS OF RESULTS 
 
 # VITAL Forest plot
-vital_result_vitd_cont$treatment <- "Vitamin D"
-vital_result_oil_cont$treatment <- "Fish Oil"
-vital_result_all <- rbind(vital_result_vitd, vital_result_oil)[5:6,]
-vital_result_all_cont <- rbind(vital_result_vitd_cont, vital_result_oil_cont)
-vital_plot_table <- cbind(vital_result_all, vital_result_all_cont)[,-c(7,8)]
-vital_plot_table[,1] <- factor(c("LME", "LME+MI"),
-                             levels = rev(c("LME", "LME+MI")))
+vital_result_all <- rbind(oil_compare_result, vitd_compare_result)
+vital_result_all[,1] <- c("LME", "LME+MI", "LME", "LME+MI", "LME", "LME+MI", "LME", "LME+MI")
 
-vital_plot_compare <- ggplot(vital_plot_table, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
-  geom_point(size = 4, aes(color = treatment), color="#a80050", position = position_nudge(y = 0.15)) +
+vital_plot_compare <- ggplot(vital_result_all, 
+                             aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high, color = estimand)) +
+  geom_point(size = 4, position = position_dodge(width = 0.6)) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color="#a80050", position = position_nudge(y = 0.15)) +
-  geom_point(aes(x = estimate.1), 
-             size = 4, color = "lawngreen", shape = 17, position = position_nudge(y = -0.15)) + 
-  geom_errorbarh(aes(xmin = conf.low.1, xmax = conf.high.1), 
-                 height = 0.4, color = "lawngreen", position = position_nudge(y = -0.15)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_dodge(width = 0.6)) +
   facet_wrap(~ treatment, scales = "free_x") +
+  scale_shape_manual(values = c("categorical" = 16, "continuous" = 17)) + 
+  scale_colour_manual(values=c("categorical"="#a80050", "continuous"="lawngreen"))+
   labs(
     x = "Mean differnce in pain score by the end of study",
-    y = "Method",
-    title = "Fig5.4. VITAL, different estimands"
-  ) +
-  theme_minimal() + 
-  theme(
-    legend.position = "none",
-    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
-    panel.background = element_rect(fill = "white", color = NA),     
-    plot.background = element_rect(fill = "white", color = NA),       
-    strip.background = element_rect(fill = "lawngreen", color = "black"),
-    panel.spacing = unit(1, "lines")                                  
-  ) +
-  scale_color_manual(values = c("Vitamin D" = "#a80050", "Fish Oil" = "#a80050"))
-
-
-# ACU Forest plot
-acu_plot_table <- cbind(acu_result[5:6,], acu_cont_result)[,-c(7,8,14)]
-acu_plot_table[,1] <- factor(c("LME", "LME+MI"),
-                             levels = rev(c("LME", "LME+MI")))
-acu_plot_table$group<-"Acupuncture"
-acu_plot_compare <- ggplot(acu_plot_table, aes(x = estimate, y = Method, xmin = conf.low, xmax = conf.high)) +
-  geom_point(size = 4, color = "#a80050", position = position_nudge(y = 0.15)) + 
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color = "#a80050", position = position_nudge(y = 0.15)) + 
-  geom_point(aes(x = estimate.1), 
-             size = 4, color = "lawngreen", shape = 17, position = position_nudge(y = -0.15)) + 
-  geom_errorbarh(aes(xmin = conf.low.1, xmax = conf.high.1), 
-                 height = 0.4, color = "lawngreen", position = position_nudge(y = -0.15)) + facet_wrap(~group)+
-  geom_vline(xintercept = 0, linetype="dashed", color="red") +
-  labs(
-    x = "Mean differnce in pain score by the end of study",
-    y = "Method",
-    title = "Fig5.3. Acupuncture, different estimands") +
+    y = "Method") +
   theme_minimal() + 
   theme(
     strip.background = element_rect(fill = "lawngreen", color = "black"),  
