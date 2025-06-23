@@ -114,7 +114,7 @@ acu_pk1_plot<-ggplot(acu_wide, aes(x = pk1)) +
              scales = "fixed", 
              labeller = labeller(group = c("0" = "Control", "1" = "Acupuncture"))) +
   labs(
-    title = "Baseline Pain",
+    title = "",
     x = "Headache score at baseline",
     y = "Count"
   ) +
@@ -132,7 +132,7 @@ acu_pk2_plot<-ggplot(acu_wide, aes(x = pk2)) +
              scales = "fixed", 
              labeller = labeller(group = c("0" = "Control", "1" = "Acupuncture"))) +
   labs(
-    title = "3 Month Follow-Up",
+    title = "",
     x = "Headache score at 3 months",
     y = "Count"
   ) +
@@ -150,7 +150,7 @@ acu_pk5_plot<-ggplot(acu_wide, aes(x = pk5)) +
              scales = "fixed", 
              labeller = labeller(group = c("0" = "Control", "1" = "Acupuncture"))) +
   labs(
-    title = "12 Month Follow-Up",
+    title = "",
     x = "Headache score at 1 year",
     y = "Count"
   ) +
@@ -170,7 +170,7 @@ acu_pk5_plot<-ggplot(acu_wide, aes(x = pk5)) +
 ggplot(vital_long, aes(x = ageyr)) + 
   geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
   labs(
-    title = "Distribution of Age in VITAL dataset",
+    title = "",
     x = "Age (years)",
     y = "Count"
   ) +
@@ -180,7 +180,7 @@ ggplot(vital_long, aes(x = ageyr)) +
 ggplot(vital_long, aes(x = bmi)) +
   geom_histogram(binwidth = 1, fill = "lawngreen", color = "black", alpha = 0.8) +
   labs(
-    title = "Distribution of BMI in VITAL dataset",
+    title = "",
     x = "Body Mass Index",
     y = "Count"
   ) +
@@ -190,7 +190,7 @@ ggplot(vital_long, aes(x = bmi)) +
 ggplot(vital_long, aes(x = factor(sex, labels = c("Male", "Female")), fill = factor(sex, labels = c("Male", "Female")))) +
   geom_bar(width=0.5,color="black") +
   labs(
-    title = "Distribution of Sex in Vital dataset",
+    title = "",
     x = "Sex",
     y = "Count",
     fill = "Sex"
@@ -223,7 +223,7 @@ age_vital_plot<-vital_long %>%
   geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
   facet_wrap(~ treatment, scales = "fixed") + 
   labs(
-    title = "Distribution of Age in VITAL data",
+    title = "",
     x = "Age",
     y = "Count"
   ) +
@@ -247,7 +247,7 @@ bmi_vital_plot<-vital_long %>%
   geom_histogram(binwidth = 1, fill = "#a80050", color = "black", alpha = 0.8) +
   facet_wrap(~ treatment, scales = "fixed") + 
   labs(
-    title = "Distribution of BMI for VITAL data",
+    title = "",
     x = "Body Mass Index",
     y = "Count"
   ) +
@@ -270,7 +270,7 @@ sex_vital_plot<-vital_long %>%
   geom_bar(width = 0.5, color = "black") + 
   facet_wrap(~ treatment, scales = "fixed") +
   labs(
-    title = "Sex Distribution in VITAL data",
+    title = "",
     x = "Sex",
     y = "Count",
     fill = "Sex"
@@ -298,8 +298,8 @@ pain_base_vital_plot<-vital_wide %>%
   geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
   facet_wrap(~ treatment, scales = "fixed") + 
   labs(
-    title = "Baseline Knee Pain",
-    x = "Knee pain score",
+    title = "",
+    x = "Knee pain score at baseline",
     y = "Count"
   ) +
   theme_minimal()+ theme(
@@ -320,8 +320,8 @@ pain_yr1_vital_plot<-vital_wide %>%
   geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
   facet_wrap(~ treatment, scales = "fixed") + 
   labs(
-    title = "Knee Pain 1 Year post-randomisation",
-    x = "Knee pain score",
+    title = "",
+    x = "Knee Pain 1 Year post-randomisation",
     y = "Count"
   ) +
   theme_minimal()+ theme(
@@ -342,8 +342,8 @@ pain_yr2_vital_plot<-vital_wide %>%
   geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
   facet_wrap(~ treatment, scales = "fixed") + 
   labs(
-    title = "Knee Pain 2 Years post-randomisation",
-    x = "Knee pain score",
+    title = "",
+    x = "Knee Pain 2 Years post-randomisation",
     y = "Count"
   ) +
   theme_minimal()+ theme(
@@ -364,8 +364,8 @@ pain_yr3_vital_plot<-vital_wide %>%
   geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
   facet_wrap(~ treatment, scales = "fixed") + 
   labs(
-    title = "Knee Pain 3 Years post-randomisation",
-    x = "Knee pain score",
+    title = "",
+    x = "Knee Pain 3 Years post-randomisation",
     y = "Count"
   ) +
   theme_minimal()+ theme(
@@ -386,8 +386,8 @@ pain_yr4_vital_plot<-vital_wide %>%
   geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
   facet_wrap(~ treatment, scales = "fixed") + 
   labs(
-    title = "Knee Pain 4 Years post-randomisation",
-    x = "Knee pain score",
+    title = "",
+    x = "Knee Pain 4 Years post-randomisation",
     y = "Count"
   ) +
   theme_minimal()+ theme(

@@ -130,6 +130,7 @@ Missing Data}
 \newcommand{\pandocbounded}[1]{#1}
 \usepackage{float}
 \floatplacement{figure}{H}
+\usepackage{makecell}
 \begin{document}
 \maketitle
 
@@ -163,7 +164,7 @@ between the methods across both datasets.
 
 \newpage
 
-\section{Introduction - amy}\label{introduction---amy}
+\section{Introduction}\label{introduction}
 
 \subsection{Missing data in longitudinal
 study}\label{missing-data-in-longitudinal-study}
@@ -279,7 +280,11 @@ is independent from the observed baseline variables \(X_1\) and \(X_2\),
 which are pre-randomised variables, and outcome variable \(Y\) (which
 potentially contains missing data).
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf}
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf}}
+\caption{MCAR DAG}
+\end{figure}
 
 \textbf{Missing At Random}
 
@@ -302,12 +307,21 @@ missingness indicator \(R_Y\), but \(R_Y\) is still conditioned on \(L\)
 and \(X_1\), showing the MAR assumption still holds given these
 variables.
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf}
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-2-2.pdf}
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf}}
+\caption{Missing at Random conditional on L, X\_1 and X\_2}
+\end{figure}
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf}}
+\caption{Missing at Random conditional on L, X\_1}
+\end{figure}
 
 \textbf{Missing Not At Random}
 
-\[\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)\] The probability of data
+\(\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)\) The probability of data
 being observed depends both on the observed data and the missing data.
 This mechanism is the most difficult to deal with as it relates to the
 unobserved data, so producing valid results is a challenge. Certain
@@ -324,8 +338,17 @@ outcome data. The second DAG shows MNAR conditional on \(X_2\) only as
 it influences the missingness indicator \(R_Y\) along with the missing
 outcome.
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf}
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-3-2.pdf}
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-4-1.pdf}}
+\caption{Missing not at Random conditional on L, X\_1 and X\_2}
+\end{figure}
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-5-1.pdf}}
+\caption{Missing at Random conditional on L, X\_2}
+\end{figure}
 
 Although these considerations are important, the mechanism underlying
 missing data is fundamentally untestable. Since the true values of
@@ -364,35 +387,22 @@ remark the missing data patterns of the data set prior to data handling
 as some handling methods are intended for certain classified patterns.
 The following table summarises some missing data patterns.
 
-\begin{verbatim}
-## <table>
-## <caption>Missing Data Patterns</caption>
-##  <thead>
-##   <tr>
-##    <th style="text-align:left;"> Pattern </th>
-##    <th style="text-align:left;"> Description </th>
-##   </tr>
-##  </thead>
-## <tbody>
-##   <tr>
-##    <td style="text-align:left;"> Univariate </td>
-##    <td style="text-align:left;"> Missing values in a single variable </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> Multivariate </td>
-##    <td style="text-align:left;"> Missing values present in multiple variables </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> Monotonic </td>
-##    <td style="text-align:left;"> Variables $Y_j$ can be ordered such that if $Y_j$ is missing, all subsequent variables are also missing </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> General </td>
-##    <td style="text-align:left;"> Missing valueshave no structure and scattered throughout data </td>
-##   </tr>
-## </tbody>
-## </table>
-\end{verbatim}
+\begin{table}[H]
+\centering
+\caption{Missing Data Pattern}
+\label{}
+
+\begin{tabular}{ll}
+\toprule
+Pattern & Description\\
+\midrule
+Univariate & Missing values in a single variable\\
+Multivariate & Missing values present in multiple variables\\
+Monotonic & Variables $Y_j$ can be ordered such that if $Y_j$ is missing, all subsequent variables are also missing\\
+General & Missing values have no structure and are scattered throughout data\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Literature}\label{literature}
 
@@ -434,7 +444,7 @@ analysis on. They both have different sample sizes and different levels
 of missing data which is an advantage as we can conduct analysis in
 different settings.
 
-\textbf{Acupuncture Data}
+\subsection{Acupuncture Data}\label{acupuncture-data}
 
 Our first dataset contains results from a clinical trial determining the
 effects of acupuncture therapy on chronic headache in primary care
@@ -455,124 +465,111 @@ at the final time point in comparison to the control group with a 16\%
 decrease. The acupuncture therapy group also showed a 37\% decrease in
 medication use, which compares to 23\% in the control group.
 
-\emph{Data Overview}
+\subsubsection{Data Overview}\label{data-overview}
 
 13 variables were recorded during the acupuncture trial.
 
-\begin{verbatim}
-## <table>
-## <caption>Acupuncture trial variables</caption>
-##  <thead>
-##   <tr>
-##    <th style="text-align:left;"> Variable </th>
-##    <th style="text-align:left;"> Description </th>
-##   </tr>
-##  </thead>
-## <tbody>
-##   <tr>
-##    <td style="text-align:left;"> id </td>
-##    <td style="text-align:left;"> patient ID code </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> age </td>
-##    <td style="text-align:left;"> Age </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> sex </td>
-##    <td style="text-align:left;"> sex; female (1) vs. male (0) </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> migraine </td>
-##    <td style="text-align:left;"> diagnosis ; migraine (1) vs. tension-type (0) </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> chronicity </td>
-##    <td style="text-align:left;"> number of years of headache disorder </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> acupuncturist </td>
-##    <td style="text-align:left;"> acupuncturist id code </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> practice_id </td>
-##    <td style="text-align:left;"> gp practice id </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> group </td>
-##    <td style="text-align:left;"> treatment group; acupuncture (1) vs. control (0) </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> pk1 </td>
-##    <td style="text-align:left;"> headache severity score baseline </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> pk2 </td>
-##    <td style="text-align:left;"> headache severity score 3 month </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> pk5 </td>
-##    <td style="text-align:left;"> headache severity score 1 year </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> f1 </td>
-##    <td style="text-align:left;"> headache frequency baseline </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> f2 </td>
-##    <td style="text-align:left;"> headache frequency 3 month </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> f5 </td>
-##    <td style="text-align:left;"> headache frequency 1 year </td>
-##   </tr>
-## </tbody>
-## </table>
-\end{verbatim}
+\begin{table}[H]
+\centering
+\caption{Acupuncture trial variables}
+\label{}
+
+\begin{tabular}{ll}
+\toprule
+Variable & Description\\
+\midrule
+id & patient ID code\\
+age & Age\\
+sex & sex; female (1) vs. male (0)\\
+migraine & diagnosis ; migraine (1) vs. tension-type (0)\\
+chronicity & number of years of headache disorder\\
+\addlinespace
+acupuncturist & acupuncturist id code\\
+practiceid & gp practice id\\
+group & treatment group; acupuncture (1) vs. control (0)\\
+pk1 & headache severity score baseline\\
+pk2 & headache severity score 3 month\\
+\addlinespace
+pk5 & headache severity score 1 year\\
+f1 & headache frequency baseline\\
+f2 & headache frequency 3 month\\
+f5 & headache frequency 1 year\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 Variables \texttt{pk2} and \texttt{pk5} are the headache severity scores
 at 3 months and 12 months.
 
-\begin{verbatim}
-## 
-## 
-## |**Characteristic** | **0**  N = 196 | **1**  N = 205 |
-## |:------------------|:--------------:|:--------------:|
-## |id                 |   470 (209)    |   472 (206)    |
-## |age                |    45 (11)     |    46 (11)     |
-## |sex                |    165(84%)    |    172(84%)    |
-## |migraine           |    183(93%)    |    194(95%)    |
-## |chronicity         |    22 (13)     |    21 (14)     |
-## |acupuncturist      |  5.97 (2.82)   |  6.00 (2.80)   |
-## |practice_id        |    24 (11)     |    25 (12)     |
-## |pk1                |    27 (17)     |    26 (15)     |
-## |pk2                |    24 (18)     |    19 (16)     |
-## |Missing            |       43       |       32       |
-## |pk5                |    22 (17)     |    16 (14)     |
-## |Missing            |       56       |       44       |
-## |f1                 |     16 (7)     |     16 (7)     |
-## |f2                 |     11 (9)     |     11 (8)     |
-## |f5                 |     10 (9)     |     9 (8)      |
-\end{verbatim}
+\begin{table}
 
-Figure 2.x is the summary statistics of the acupuncture trial data. Note
-pk2 and pk5 are post randomisation variables and contain missing data.
+\caption{Acupuncture data overview}
+\centering
+\begin{tabular}[t]{l|c|c}
+\hline
+\textbf{Characteristic} & \makecell[c]{\textbf{0}\ \ \\N = 196} & \makecell[c]{\textbf{1}\ \ \\N = 205}\\
+\hline
+id & 470 (209) & 472 (206)\\
+\hline
+age & 45 (11) & 46 (11)\\
+\hline
+sex & 165(84\%) & 172(84\%)\\
+\hline
+migraine & 183(93\%) & 194(95\%)\\
+\hline
+chronicity & 22 (13) & 21 (14)\\
+\hline
+acupuncturist & 5.97 (2.82) & 6.00 (2.80)\\
+\hline
+practice\_id & 24 (11) & 25 (12)\\
+\hline
+pk1 & 27 (17) & 26 (15)\\
+\hline
+pk2 & 24 (18) & 19 (16)\\
+\hline
+\hspace{1em}Missing & 43 & 32\\
+\hline
+pk5 & 22 (17) & 16 (14)\\
+\hline
+\hspace{1em}Missing & 56 & 44\\
+\hline
+f1 & 16 (7) & 16 (7)\\
+\hline
+f2 & 11 (9) & 11 (8)\\
+\hline
+f5 & 10 (9) & 9 (8)\\
+\hline
+\multicolumn{3}{l}{\rule{0pt}{1em}\textsuperscript{1} Mean (SD); n(\%)}\\
+\end{tabular}
+\end{table}
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-7-1.pdf}
+Table 2.x are the summary statistics of the acupuncture trial data.
+These consist of 2 columns; column 0 showing control group statistics
+and column 1 showing treatment group statistics. The continous variables
+show the mean value (standard deviation) and the categorical variables
+show the count(percentage). Note pk2 and pk5 are post randomisation
+variables and contain missing data.
 
-Figure 2.x is the distribution of sex in both treatment groups of the
-acupuncture trial data. The participants are predominantly female.
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf}}
+\caption{The distribution of sex in both treatment groups of the
+acupuncture trial data. The participants are predominantly female.}
+\end{figure}
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-8-1.pdf}
-
-Figure 2.x is the distribution of age in both treatment groups. Both
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf}}
+\caption{The distribution of age in both treatment groups. Both
 distributions are negatively skewed, predominantly middle aged and
-older.
+older.}
+\end{figure}
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf}}
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-12-1.pdf}}
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-13-1.pdf}}
 
 Figure 2.x,2.x,2.x: These plots show the distribution of the headache
 severity score at the three measured time-points. Over the three
@@ -583,25 +580,36 @@ group, and the control group appears to have a lower headache severity
 score overall. The 3 month and 12 month time-point distributions are
 incomplete due to the missing values.
 
-\textbf{VITAL data}
+\subsection{VITAL data}\label{vital-data}
 
-\emph{Source}
-
-MacFarlane et al.~conducted a study on the therapeutic effects of
-vitamin D and fish oil on osteoarthritic knee pain. We sourced this data
-at xyz.
-
-\emph{Study Design}
-
-This study was a 2x2 factorial designed longitudinal randomised
-controlled trial. 1,398 participants in the study was randomised to 4
-possible treatment combinations. Participants were randomised to receive
-either omega-3 oils or vitamin D, both treatments, or randomised to the
-placebo group. For this research project, we assumed that that the
-participants were only randomised to either receive the fish oil
-treatment, vitamin D treatment or the placebo. We did not include the
-interaction between vitamin D and fish oil in our substantive model or
-our imputation model.
+The Vitamin D and Omega-3 trial (VITAL) was a nationwide clinical trial
+to determine the effects of daily doses of 2000 IU vitamin D and 1 gram
+of omega-3 fatty acids (fishoil) on preventing cancer and cardiovascular
+disease (CVD). This was a 2x2 factorial designed longitudinal randomised
+controlled trial in which 25,871 adults were randomised to 4 possible
+combinations of treatment; fish oil, vitamin D, both treatments, an a
+control group with no treatment. The results of the vitamin D group said
+that it did not lower cancer development significantly neither did it
+cause any meaningful reuction in cardiovascular disease. As for the
+fish-oil intervention lowered risk of heart attack by 28\% and risk of
+heart attack fatality by 50\%, but no reduction in stroke or non-heart
+disease cardiovascular fatalities. Fish oil did not reduce occurence in
+breast or prostate cancer or cancer-deaths. For our research, we are
+analysing the results of an ancillary study which uses data from VITAL.
+MacFarlane et al (2020) conducted a study using VITAL on the therapeutic
+effects of vitamin D and fishoil on osteoarthritic knee pain. 1,398
+participants in the study was randomised to 4 possible treatment
+combinations. Participants were randomised to receive either omega-3
+oils or vitamin D, both treatments, or randomised to the placebo group.
+A knee pain scale grading index Western Ontario and McMaster
+Osteoarthritis Index (WOMAC) is used to record knee pain score at
+baseline and annually for 4 time-points post randomisation. Results
+showed that there was no significant change in knee pain score between
+both treatment groups and the control group. For this research project,
+we assumed that that the participants were only randomised to either
+receive the fish oil treatment, vitamin D treatment or the placebo. We
+did not include the interaction between vitamin D and fish oil in our
+models. The below table shows the sample size per treatment group.
 
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
@@ -614,169 +622,833 @@ our imputation model.
 \textbf{Placebo} & N = 332 & N = 371 \\
 \end{longtable}
 
-\emph{Data Overview}
+\subsubsection{Data Overview}\label{data-overview-1}
 
 There are x variables recorded in the VITAL data, the following table
 refers to a subset of the variables that we frequently use.
 
 \begin{verbatim}
-## <table>
-## <caption>VITAL variables</caption>
-##  <thead>
-##   <tr>
-##    <th style="text-align:left;"> Variable </th>
-##    <th style="text-align:left;"> Description </th>
-##   </tr>
-##  </thead>
-## <tbody>
-##   <tr>
-##    <td style="text-align:left;"> Subject_ID </td>
-##    <td style="text-align:left;"> Patient ID code </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> age </td>
-##    <td style="text-align:left;"> Age of patient </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> bmi </td>
-##    <td style="text-align:left;"> Body mass index of patient </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> sex </td>
-##    <td style="text-align:left;"> Sex of patient </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> vitdactive </td>
-##    <td style="text-align:left;"> 1=vitamin D, 0=no vitamin D </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> fishoilactive </td>
-##    <td style="text-align:left;"> 1= fish oil, 0= no fish oil </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> pain_base </td>
-##    <td style="text-align:left;"> Knee pain at baseline </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> pain_yrX </td>
-##    <td style="text-align:left;"> Knee pain X years post randomisation </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> stiffness_base </td>
-##    <td style="text-align:left;"> Knee stiffness at baseline </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> stiffness_yrX </td>
-##    <td style="text-align:left;"> Knee stiffness X years post randomisation </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> function_base </td>
-##    <td style="text-align:left;"> Knee function at baseline </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> function_yrX </td>
-##    <td style="text-align:left;"> Knee function X years post randomisation </td>
-##   </tr>
-##   <tr>
-##    <td style="text-align:left;"> kneepainfreq </td>
-##    <td style="text-align:left;"> Frequency of knee pain </td>
-##   </tr>
-## </tbody>
-## </table>
+## \begin{table}[H]
+## \centering
+## \caption{VITAL study variables}
+## \label{}
 \end{verbatim}
 
 \begin{verbatim}
 ## 
+## \begin{tabular}{ll}
+## \toprule
+## Variable & Description\\
+## \midrule
+## Subject_ID & Patient ID code\\
+## age & Age of patient\\
+## bmi & Body mass index of patient\\
+## sex & Sex of patient\\
+## vitdactive & 1=vitamin D, 0=no vitamin D\\
+## \addlinespace
+## fishoilactive & 1= fish oil, 0= no fish oil\\
+## pain_base & Knee pain at baseline\\
+## pain_yrX & Knee pain X years post randomisation\\
+## stiffness_base & Knee stiffness at baseline\\
+## stiffness_yrX & Knee stiffness X years post randomisation\\
+## \addlinespace
+## function_base & Knee function at baseline\\
+## function_yrX & Knee function X years post randomisation\\
+## kneepainfreq & Frequency of knee pain\\
+## \bottomrule
+## \end{tabular}
+\end{verbatim}
+
+\begin{verbatim}
+## \end{table}
+\end{verbatim}
+
+\begin{verbatim}
+## <div id="xsugwierys" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+##   <style>#xsugwierys table {
+##   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+##   -webkit-font-smoothing: antialiased;
+##   -moz-osx-font-smoothing: grayscale;
+## }
 ## 
-## |**Characteristic**                                                             | **Both**  N = 342 | **Fish Oil only**  N = 353 | **Neither**  N = 371 | **Vitamin D only**  N = 332 |
-## |:------------------------------------------------------------------------------|:-----------------:|:--------------------------:|:--------------------:|:---------------------------:|
-## |Sex 1-male,2-female                                                            |                   |                            |                      |                             |
-## |1                                                                              |     111(32%)      |          120(34%)          |       123(33%)       |          124(37%)           |
-## |2                                                                              |     231(68%)      |          233(66%)          |       248(67%)       |          208(63%)           |
-## |Body mass index at randomization, kg/m2                                        |      32 (7)       |           32 (7)           |        32 (8)        |           31 (7)            |
-## |Missing                                                                        |         8         |             11             |          14          |             12              |
-## |Current smoking 1-yes,0-no                                                     |     26(7.8%)      |          33(9.4%)          |       30(8.2%)       |          22(6.8%)           |
-## |Missing                                                                        |         7         |             2              |          3           |              8              |
-## |Age at randomization to VITAL study,years                                      |      67 (7)       |           67 (7)           |        68 (7)        |           67 (6)            |
-## |Baseline Aspirin use 1-yes,0-no                                                |     156(46%)      |          165(47%)          |       176(48%)       |          155(48%)           |
-## |Missing                                                                        |         6         |             5              |          6           |              7              |
-## |WOMAC Pain score at baseline                                                   |      37 (19)      |          37 (18)           |       37 (19)        |           36 (18)           |
-## |Missing                                                                        |        48         |             57             |          45          |             40              |
-## |WOMAC Pain score at year 1                                                     |      32 (19)      |          31 (20)           |       33 (20)        |           33 (21)           |
-## |Missing                                                                        |        182        |            162             |         184          |             153             |
-## |WOMAC Pain score at year 2                                                     |      32 (20)      |          31 (20)           |       30 (20)        |           32 (20)           |
-## |Missing                                                                        |        47         |             46             |          48          |             47              |
-## |WOMAC Pain score at year 3                                                     |      32 (21)      |          31 (19)           |       31 (19)        |           28 (19)           |
-## |Missing                                                                        |        78         |             95             |          90          |             82              |
-## |WOMAC Pain score at year 4                                                     |      30 (20)      |          30 (19)           |       29 (18)        |           28 (19)           |
-## |Missing                                                                        |        129        |            149             |         145          |             126             |
-## |Have you had a knee replacement surgery? (1=Yes, 2=No)                         |                   |                            |                      |                             |
-## |1                                                                              |      43(13%)      |          47(14%)           |       52(14%)        |           53(16%)           |
-## |2                                                                              |     293(87%)      |          300(86%)          |       316(86%)       |          271(84%)           |
-## |Missing                                                                        |         6         |             6              |          3           |              8              |
-## |Unilateral knee pain 1=Yes 0=No                                                |     200(71%)      |          198(69%)          |       223(72%)       |          200(71%)           |
-## |Missing                                                                        |        61         |             68             |          61          |             49              |
-## |Bilateral knee pain 1=Yes 0=No                                                 |      81(29%)      |          87(31%)           |       87(28%)        |           83(29%)           |
-## |Missing                                                                        |        61         |             68             |          61          |             49              |
-## |Frequency of knee pain 1=Never 2=<1 day/wk 3=1~2 days/wk 4=3~6 days/wk 5=daily |                   |                            |                      |                             |
-## |1                                                                              |      1(0.3%)      |          1(0.3%)           |       2(0.6%)        |           1(0.3%)           |
-## |2                                                                              |     16(5.4%)      |          19(6.4%)          |       11(3.3%)       |          16(5.4%)           |
-## |3                                                                              |      44(15%)      |          27(9.0%)          |       34(10%)        |           31(10%)           |
-## |4                                                                              |      58(20%)      |          57(19%)           |       68(21%)        |           57(19%)           |
-## |5                                                                              |     169(57%)      |          185(62%)          |       201(61%)       |          181(61%)           |
-## |9                                                                              |      7(2.4%)      |          10(3.3%)          |       14(4.2%)       |          10(3.4%)           |
-## |Missing                                                                        |        47         |             54             |          41          |             36              |
-## |Tylenol use at baseline 1=never 2=occational 3=daily 9=missing                 |                   |                            |                      |                             |
-## |1                                                                              |     108(37%)      |          137(46%)          |       145(44%)       |          135(46%)           |
-## |2                                                                              |      91(31%)      |          84(28%)           |       110(33%)       |           95(32%)           |
-## |3                                                                              |      53(18%)      |          41(14%)           |       38(12%)        |           30(10%)           |
-## |9                                                                              |      43(15%)      |          37(12%)           |       37(11%)        |           36(12%)           |
-## |Missing                                                                        |        47         |             54             |          41          |             36              |
-## |Nsaids use at baseline 1=never 2=occational 3=daily 9=missing                  |                   |                            |                      |                             |
-## |1                                                                              |      62(21%)      |          65(22%)           |       69(21%)        |           73(25%)           |
-## |2                                                                              |      98(33%)      |          101(34%)          |       98(30%)        |           94(32%)           |
-## |3                                                                              |     110(37%)      |          107(36%)          |       134(41%)       |          111(38%)           |
-## |9                                                                              |     25(8.5%)      |          26(8.7%)          |       29(8.8%)       |          18(6.1%)           |
-## |Missing                                                                        |        47         |             54             |          41          |             36              |
-## |Stronger med use at baseline 1=never 2=occational 3=daily 9=missing            |                   |                            |                      |                             |
-## |1                                                                              |     178(60%)      |          193(65%)          |       205(62%)       |          186(63%)           |
-## |2                                                                              |      40(14%)      |          41(14%)           |       43(13%)        |           47(16%)           |
-## |3                                                                              |      46(16%)      |          36(12%)           |       50(15%)        |           40(14%)           |
-## |9                                                                              |      31(11%)      |          29(9.7%)          |       32(9.7%)       |          23(7.8%)           |
-## |Missing                                                                        |        47         |             54             |          41          |             36              |
-## |TKR 1=yes 0=No                                                                 |      64(19%)      |          82(23%)           |       74(20%)        |           76(23%)           |
+## #xsugwierys thead, #xsugwierys tbody, #xsugwierys tfoot, #xsugwierys tr, #xsugwierys td, #xsugwierys th {
+##   border-style: none;
+## }
+## 
+## #xsugwierys p {
+##   margin: 0;
+##   padding: 0;
+## }
+## 
+## #xsugwierys .gt_table {
+##   display: table;
+##   border-collapse: collapse;
+##   line-height: normal;
+##   margin-left: auto;
+##   margin-right: auto;
+##   color: #333333;
+##   font-size: 16px;
+##   font-weight: normal;
+##   font-style: normal;
+##   background-color: #FFFFFF;
+##   width: auto;
+##   border-top-style: solid;
+##   border-top-width: 2px;
+##   border-top-color: #A8A8A8;
+##   border-right-style: none;
+##   border-right-width: 2px;
+##   border-right-color: #D3D3D3;
+##   border-bottom-style: solid;
+##   border-bottom-width: 2px;
+##   border-bottom-color: #A8A8A8;
+##   border-left-style: none;
+##   border-left-width: 2px;
+##   border-left-color: #D3D3D3;
+## }
+## 
+## #xsugwierys .gt_caption {
+##   padding-top: 4px;
+##   padding-bottom: 4px;
+## }
+## 
+## #xsugwierys .gt_title {
+##   color: #333333;
+##   font-size: 125%;
+##   font-weight: initial;
+##   padding-top: 4px;
+##   padding-bottom: 4px;
+##   padding-left: 5px;
+##   padding-right: 5px;
+##   border-bottom-color: #FFFFFF;
+##   border-bottom-width: 0;
+## }
+## 
+## #xsugwierys .gt_subtitle {
+##   color: #333333;
+##   font-size: 85%;
+##   font-weight: initial;
+##   padding-top: 3px;
+##   padding-bottom: 5px;
+##   padding-left: 5px;
+##   padding-right: 5px;
+##   border-top-color: #FFFFFF;
+##   border-top-width: 0;
+## }
+## 
+## #xsugwierys .gt_heading {
+##   background-color: #FFFFFF;
+##   text-align: center;
+##   border-bottom-color: #FFFFFF;
+##   border-left-style: none;
+##   border-left-width: 1px;
+##   border-left-color: #D3D3D3;
+##   border-right-style: none;
+##   border-right-width: 1px;
+##   border-right-color: #D3D3D3;
+## }
+## 
+## #xsugwierys .gt_bottom_border {
+##   border-bottom-style: solid;
+##   border-bottom-width: 2px;
+##   border-bottom-color: #D3D3D3;
+## }
+## 
+## #xsugwierys .gt_col_headings {
+##   border-top-style: solid;
+##   border-top-width: 2px;
+##   border-top-color: #D3D3D3;
+##   border-bottom-style: solid;
+##   border-bottom-width: 2px;
+##   border-bottom-color: #D3D3D3;
+##   border-left-style: none;
+##   border-left-width: 1px;
+##   border-left-color: #D3D3D3;
+##   border-right-style: none;
+##   border-right-width: 1px;
+##   border-right-color: #D3D3D3;
+## }
+## 
+## #xsugwierys .gt_col_heading {
+##   color: #333333;
+##   background-color: #FFFFFF;
+##   font-size: 100%;
+##   font-weight: normal;
+##   text-transform: inherit;
+##   border-left-style: none;
+##   border-left-width: 1px;
+##   border-left-color: #D3D3D3;
+##   border-right-style: none;
+##   border-right-width: 1px;
+##   border-right-color: #D3D3D3;
+##   vertical-align: bottom;
+##   padding-top: 5px;
+##   padding-bottom: 6px;
+##   padding-left: 5px;
+##   padding-right: 5px;
+##   overflow-x: hidden;
+## }
+## 
+## #xsugwierys .gt_column_spanner_outer {
+##   color: #333333;
+##   background-color: #FFFFFF;
+##   font-size: 100%;
+##   font-weight: normal;
+##   text-transform: inherit;
+##   padding-top: 0;
+##   padding-bottom: 0;
+##   padding-left: 4px;
+##   padding-right: 4px;
+## }
+## 
+## #xsugwierys .gt_column_spanner_outer:first-child {
+##   padding-left: 0;
+## }
+## 
+## #xsugwierys .gt_column_spanner_outer:last-child {
+##   padding-right: 0;
+## }
+## 
+## #xsugwierys .gt_column_spanner {
+##   border-bottom-style: solid;
+##   border-bottom-width: 2px;
+##   border-bottom-color: #D3D3D3;
+##   vertical-align: bottom;
+##   padding-top: 5px;
+##   padding-bottom: 5px;
+##   overflow-x: hidden;
+##   display: inline-block;
+##   width: 100%;
+## }
+## 
+## #xsugwierys .gt_spanner_row {
+##   border-bottom-style: hidden;
+## }
+## 
+## #xsugwierys .gt_group_heading {
+##   padding-top: 8px;
+##   padding-bottom: 8px;
+##   padding-left: 5px;
+##   padding-right: 5px;
+##   color: #333333;
+##   background-color: #FFFFFF;
+##   font-size: 100%;
+##   font-weight: initial;
+##   text-transform: inherit;
+##   border-top-style: solid;
+##   border-top-width: 2px;
+##   border-top-color: #D3D3D3;
+##   border-bottom-style: solid;
+##   border-bottom-width: 2px;
+##   border-bottom-color: #D3D3D3;
+##   border-left-style: none;
+##   border-left-width: 1px;
+##   border-left-color: #D3D3D3;
+##   border-right-style: none;
+##   border-right-width: 1px;
+##   border-right-color: #D3D3D3;
+##   vertical-align: middle;
+##   text-align: left;
+## }
+## 
+## #xsugwierys .gt_empty_group_heading {
+##   padding: 0.5px;
+##   color: #333333;
+##   background-color: #FFFFFF;
+##   font-size: 100%;
+##   font-weight: initial;
+##   border-top-style: solid;
+##   border-top-width: 2px;
+##   border-top-color: #D3D3D3;
+##   border-bottom-style: solid;
+##   border-bottom-width: 2px;
+##   border-bottom-color: #D3D3D3;
+##   vertical-align: middle;
+## }
+## 
+## #xsugwierys .gt_from_md > :first-child {
+##   margin-top: 0;
+## }
+## 
+## #xsugwierys .gt_from_md > :last-child {
+##   margin-bottom: 0;
+## }
+## 
+## #xsugwierys .gt_row {
+##   padding-top: 8px;
+##   padding-bottom: 8px;
+##   padding-left: 5px;
+##   padding-right: 5px;
+##   margin: 10px;
+##   border-top-style: solid;
+##   border-top-width: 1px;
+##   border-top-color: #D3D3D3;
+##   border-left-style: none;
+##   border-left-width: 1px;
+##   border-left-color: #D3D3D3;
+##   border-right-style: none;
+##   border-right-width: 1px;
+##   border-right-color: #D3D3D3;
+##   vertical-align: middle;
+##   overflow-x: hidden;
+## }
+## 
+## #xsugwierys .gt_stub {
+##   color: #333333;
+##   background-color: #FFFFFF;
+##   font-size: 100%;
+##   font-weight: initial;
+##   text-transform: inherit;
+##   border-right-style: solid;
+##   border-right-width: 2px;
+##   border-right-color: #D3D3D3;
+##   padding-left: 5px;
+##   padding-right: 5px;
+## }
+## 
+## #xsugwierys .gt_stub_row_group {
+##   color: #333333;
+##   background-color: #FFFFFF;
+##   font-size: 100%;
+##   font-weight: initial;
+##   text-transform: inherit;
+##   border-right-style: solid;
+##   border-right-width: 2px;
+##   border-right-color: #D3D3D3;
+##   padding-left: 5px;
+##   padding-right: 5px;
+##   vertical-align: top;
+## }
+## 
+## #xsugwierys .gt_row_group_first td {
+##   border-top-width: 2px;
+## }
+## 
+## #xsugwierys .gt_row_group_first th {
+##   border-top-width: 2px;
+## }
+## 
+## #xsugwierys .gt_summary_row {
+##   color: #333333;
+##   background-color: #FFFFFF;
+##   text-transform: inherit;
+##   padding-top: 8px;
+##   padding-bottom: 8px;
+##   padding-left: 5px;
+##   padding-right: 5px;
+## }
+## 
+## #xsugwierys .gt_first_summary_row {
+##   border-top-style: solid;
+##   border-top-color: #D3D3D3;
+## }
+## 
+## #xsugwierys .gt_first_summary_row.thick {
+##   border-top-width: 2px;
+## }
+## 
+## #xsugwierys .gt_last_summary_row {
+##   padding-top: 8px;
+##   padding-bottom: 8px;
+##   padding-left: 5px;
+##   padding-right: 5px;
+##   border-bottom-style: solid;
+##   border-bottom-width: 2px;
+##   border-bottom-color: #D3D3D3;
+## }
+## 
+## #xsugwierys .gt_grand_summary_row {
+##   color: #333333;
+##   background-color: #FFFFFF;
+##   text-transform: inherit;
+##   padding-top: 8px;
+##   padding-bottom: 8px;
+##   padding-left: 5px;
+##   padding-right: 5px;
+## }
+## 
+## #xsugwierys .gt_first_grand_summary_row {
+##   padding-top: 8px;
+##   padding-bottom: 8px;
+##   padding-left: 5px;
+##   padding-right: 5px;
+##   border-top-style: double;
+##   border-top-width: 6px;
+##   border-top-color: #D3D3D3;
+## }
+## 
+## #xsugwierys .gt_last_grand_summary_row_top {
+##   padding-top: 8px;
+##   padding-bottom: 8px;
+##   padding-left: 5px;
+##   padding-right: 5px;
+##   border-bottom-style: double;
+##   border-bottom-width: 6px;
+##   border-bottom-color: #D3D3D3;
+## }
+## 
+## #xsugwierys .gt_striped {
+##   background-color: rgba(128, 128, 128, 0.05);
+## }
+## 
+## #xsugwierys .gt_table_body {
+##   border-top-style: solid;
+##   border-top-width: 2px;
+##   border-top-color: #D3D3D3;
+##   border-bottom-style: solid;
+##   border-bottom-width: 2px;
+##   border-bottom-color: #D3D3D3;
+## }
+## 
+## #xsugwierys .gt_footnotes {
+##   color: #333333;
+##   background-color: #FFFFFF;
+##   border-bottom-style: none;
+##   border-bottom-width: 2px;
+##   border-bottom-color: #D3D3D3;
+##   border-left-style: none;
+##   border-left-width: 2px;
+##   border-left-color: #D3D3D3;
+##   border-right-style: none;
+##   border-right-width: 2px;
+##   border-right-color: #D3D3D3;
+## }
+## 
+## #xsugwierys .gt_footnote {
+##   margin: 0px;
+##   font-size: 90%;
+##   padding-top: 4px;
+##   padding-bottom: 4px;
+##   padding-left: 5px;
+##   padding-right: 5px;
+## }
+## 
+## #xsugwierys .gt_sourcenotes {
+##   color: #333333;
+##   background-color: #FFFFFF;
+##   border-bottom-style: none;
+##   border-bottom-width: 2px;
+##   border-bottom-color: #D3D3D3;
+##   border-left-style: none;
+##   border-left-width: 2px;
+##   border-left-color: #D3D3D3;
+##   border-right-style: none;
+##   border-right-width: 2px;
+##   border-right-color: #D3D3D3;
+## }
+## 
+## #xsugwierys .gt_sourcenote {
+##   font-size: 90%;
+##   padding-top: 4px;
+##   padding-bottom: 4px;
+##   padding-left: 5px;
+##   padding-right: 5px;
+## }
+## 
+## #xsugwierys .gt_left {
+##   text-align: left;
+## }
+## 
+## #xsugwierys .gt_center {
+##   text-align: center;
+## }
+## 
+## #xsugwierys .gt_right {
+##   text-align: right;
+##   font-variant-numeric: tabular-nums;
+## }
+## 
+## #xsugwierys .gt_font_normal {
+##   font-weight: normal;
+## }
+## 
+## #xsugwierys .gt_font_bold {
+##   font-weight: bold;
+## }
+## 
+## #xsugwierys .gt_font_italic {
+##   font-style: italic;
+## }
+## 
+## #xsugwierys .gt_super {
+##   font-size: 65%;
+## }
+## 
+## #xsugwierys .gt_footnote_marks {
+##   font-size: 75%;
+##   vertical-align: 0.4em;
+##   position: initial;
+## }
+## 
+## #xsugwierys .gt_asterisk {
+##   font-size: 100%;
+##   vertical-align: 0;
+## }
+## 
+## #xsugwierys .gt_indent_1 {
+##   text-indent: 5px;
+## }
+## 
+## #xsugwierys .gt_indent_2 {
+##   text-indent: 10px;
+## }
+## 
+## #xsugwierys .gt_indent_3 {
+##   text-indent: 15px;
+## }
+## 
+## #xsugwierys .gt_indent_4 {
+##   text-indent: 20px;
+## }
+## 
+## #xsugwierys .gt_indent_5 {
+##   text-indent: 25px;
+## }
+## 
+## #xsugwierys .katex-display {
+##   display: inline-flex !important;
+##   margin-bottom: 0.75em !important;
+## }
+## 
+## #xsugwierys div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+##   height: 0px !important;
+## }
+## </style>
+##   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+##   <thead>
+##     <tr class="gt_col_headings">
+##       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="label"><span class='gt_from_md'><strong>Characteristic</strong></span></th>
+##       <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="stat_1"><span class='gt_from_md'><strong>Both</strong>  N = 342</span><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+##       <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="stat_2"><span class='gt_from_md'><strong>Fish Oil only</strong>  N = 353</span><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+##       <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="stat_3"><span class='gt_from_md'><strong>Neither</strong>  N = 371</span><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+##       <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="stat_4"><span class='gt_from_md'><strong>Vitamin D only</strong>  N = 332</span><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+##     </tr>
+##   </thead>
+##   <tbody class="gt_table_body">
+##     <tr><td headers="label" class="gt_row gt_left">Sex 1-male,2-female</td>
+## <td headers="stat_1" class="gt_row gt_center"><br /></td>
+## <td headers="stat_2" class="gt_row gt_center"><br /></td>
+## <td headers="stat_3" class="gt_row gt_center"><br /></td>
+## <td headers="stat_4" class="gt_row gt_center"><br /></td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    1</td>
+## <td headers="stat_1" class="gt_row gt_center">111(32%)</td>
+## <td headers="stat_2" class="gt_row gt_center">120(34%)</td>
+## <td headers="stat_3" class="gt_row gt_center">123(33%)</td>
+## <td headers="stat_4" class="gt_row gt_center">124(37%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    2</td>
+## <td headers="stat_1" class="gt_row gt_center">231(68%)</td>
+## <td headers="stat_2" class="gt_row gt_center">233(66%)</td>
+## <td headers="stat_3" class="gt_row gt_center">248(67%)</td>
+## <td headers="stat_4" class="gt_row gt_center">208(63%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">Body mass index at randomization, kg/m2</td>
+## <td headers="stat_1" class="gt_row gt_center">32 (7)</td>
+## <td headers="stat_2" class="gt_row gt_center">32 (7)</td>
+## <td headers="stat_3" class="gt_row gt_center">32 (8)</td>
+## <td headers="stat_4" class="gt_row gt_center">31 (7)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    Missing</td>
+## <td headers="stat_1" class="gt_row gt_center">8</td>
+## <td headers="stat_2" class="gt_row gt_center">11</td>
+## <td headers="stat_3" class="gt_row gt_center">14</td>
+## <td headers="stat_4" class="gt_row gt_center">12</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">Current smoking 1-yes,0-no</td>
+## <td headers="stat_1" class="gt_row gt_center">26(7.8%)</td>
+## <td headers="stat_2" class="gt_row gt_center">33(9.4%)</td>
+## <td headers="stat_3" class="gt_row gt_center">30(8.2%)</td>
+## <td headers="stat_4" class="gt_row gt_center">22(6.8%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    Missing</td>
+## <td headers="stat_1" class="gt_row gt_center">7</td>
+## <td headers="stat_2" class="gt_row gt_center">2</td>
+## <td headers="stat_3" class="gt_row gt_center">3</td>
+## <td headers="stat_4" class="gt_row gt_center">8</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">Age at randomization to VITAL study,years</td>
+## <td headers="stat_1" class="gt_row gt_center">67 (7)</td>
+## <td headers="stat_2" class="gt_row gt_center">67 (7)</td>
+## <td headers="stat_3" class="gt_row gt_center">68 (7)</td>
+## <td headers="stat_4" class="gt_row gt_center">67 (6)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">Baseline Aspirin use 1-yes,0-no</td>
+## <td headers="stat_1" class="gt_row gt_center">156(46%)</td>
+## <td headers="stat_2" class="gt_row gt_center">165(47%)</td>
+## <td headers="stat_3" class="gt_row gt_center">176(48%)</td>
+## <td headers="stat_4" class="gt_row gt_center">155(48%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    Missing</td>
+## <td headers="stat_1" class="gt_row gt_center">6</td>
+## <td headers="stat_2" class="gt_row gt_center">5</td>
+## <td headers="stat_3" class="gt_row gt_center">6</td>
+## <td headers="stat_4" class="gt_row gt_center">7</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">WOMAC Pain score at baseline</td>
+## <td headers="stat_1" class="gt_row gt_center">37 (19)</td>
+## <td headers="stat_2" class="gt_row gt_center">37 (18)</td>
+## <td headers="stat_3" class="gt_row gt_center">37 (19)</td>
+## <td headers="stat_4" class="gt_row gt_center">36 (18)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    Missing</td>
+## <td headers="stat_1" class="gt_row gt_center">48</td>
+## <td headers="stat_2" class="gt_row gt_center">57</td>
+## <td headers="stat_3" class="gt_row gt_center">45</td>
+## <td headers="stat_4" class="gt_row gt_center">40</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">WOMAC Pain score at year 1</td>
+## <td headers="stat_1" class="gt_row gt_center">32 (19)</td>
+## <td headers="stat_2" class="gt_row gt_center">31 (20)</td>
+## <td headers="stat_3" class="gt_row gt_center">33 (20)</td>
+## <td headers="stat_4" class="gt_row gt_center">33 (21)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    Missing</td>
+## <td headers="stat_1" class="gt_row gt_center">182</td>
+## <td headers="stat_2" class="gt_row gt_center">162</td>
+## <td headers="stat_3" class="gt_row gt_center">184</td>
+## <td headers="stat_4" class="gt_row gt_center">153</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">WOMAC Pain score at year 2</td>
+## <td headers="stat_1" class="gt_row gt_center">32 (20)</td>
+## <td headers="stat_2" class="gt_row gt_center">31 (20)</td>
+## <td headers="stat_3" class="gt_row gt_center">30 (20)</td>
+## <td headers="stat_4" class="gt_row gt_center">32 (20)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    Missing</td>
+## <td headers="stat_1" class="gt_row gt_center">47</td>
+## <td headers="stat_2" class="gt_row gt_center">46</td>
+## <td headers="stat_3" class="gt_row gt_center">48</td>
+## <td headers="stat_4" class="gt_row gt_center">47</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">WOMAC Pain score at year 3</td>
+## <td headers="stat_1" class="gt_row gt_center">32 (21)</td>
+## <td headers="stat_2" class="gt_row gt_center">31 (19)</td>
+## <td headers="stat_3" class="gt_row gt_center">31 (19)</td>
+## <td headers="stat_4" class="gt_row gt_center">28 (19)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    Missing</td>
+## <td headers="stat_1" class="gt_row gt_center">78</td>
+## <td headers="stat_2" class="gt_row gt_center">95</td>
+## <td headers="stat_3" class="gt_row gt_center">90</td>
+## <td headers="stat_4" class="gt_row gt_center">82</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">WOMAC Pain score at year 4</td>
+## <td headers="stat_1" class="gt_row gt_center">30 (20)</td>
+## <td headers="stat_2" class="gt_row gt_center">30 (19)</td>
+## <td headers="stat_3" class="gt_row gt_center">29 (18)</td>
+## <td headers="stat_4" class="gt_row gt_center">28 (19)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    Missing</td>
+## <td headers="stat_1" class="gt_row gt_center">129</td>
+## <td headers="stat_2" class="gt_row gt_center">149</td>
+## <td headers="stat_3" class="gt_row gt_center">145</td>
+## <td headers="stat_4" class="gt_row gt_center">126</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">Have you had a knee replacement surgery? (1=Yes, 2=No)</td>
+## <td headers="stat_1" class="gt_row gt_center"><br /></td>
+## <td headers="stat_2" class="gt_row gt_center"><br /></td>
+## <td headers="stat_3" class="gt_row gt_center"><br /></td>
+## <td headers="stat_4" class="gt_row gt_center"><br /></td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    1</td>
+## <td headers="stat_1" class="gt_row gt_center">43(13%)</td>
+## <td headers="stat_2" class="gt_row gt_center">47(14%)</td>
+## <td headers="stat_3" class="gt_row gt_center">52(14%)</td>
+## <td headers="stat_4" class="gt_row gt_center">53(16%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    2</td>
+## <td headers="stat_1" class="gt_row gt_center">293(87%)</td>
+## <td headers="stat_2" class="gt_row gt_center">300(86%)</td>
+## <td headers="stat_3" class="gt_row gt_center">316(86%)</td>
+## <td headers="stat_4" class="gt_row gt_center">271(84%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    Missing</td>
+## <td headers="stat_1" class="gt_row gt_center">6</td>
+## <td headers="stat_2" class="gt_row gt_center">6</td>
+## <td headers="stat_3" class="gt_row gt_center">3</td>
+## <td headers="stat_4" class="gt_row gt_center">8</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">Unilateral knee pain 1=Yes 0=No</td>
+## <td headers="stat_1" class="gt_row gt_center">200(71%)</td>
+## <td headers="stat_2" class="gt_row gt_center">198(69%)</td>
+## <td headers="stat_3" class="gt_row gt_center">223(72%)</td>
+## <td headers="stat_4" class="gt_row gt_center">200(71%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    Missing</td>
+## <td headers="stat_1" class="gt_row gt_center">61</td>
+## <td headers="stat_2" class="gt_row gt_center">68</td>
+## <td headers="stat_3" class="gt_row gt_center">61</td>
+## <td headers="stat_4" class="gt_row gt_center">49</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">Bilateral knee pain 1=Yes 0=No</td>
+## <td headers="stat_1" class="gt_row gt_center">81(29%)</td>
+## <td headers="stat_2" class="gt_row gt_center">87(31%)</td>
+## <td headers="stat_3" class="gt_row gt_center">87(28%)</td>
+## <td headers="stat_4" class="gt_row gt_center">83(29%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    Missing</td>
+## <td headers="stat_1" class="gt_row gt_center">61</td>
+## <td headers="stat_2" class="gt_row gt_center">68</td>
+## <td headers="stat_3" class="gt_row gt_center">61</td>
+## <td headers="stat_4" class="gt_row gt_center">49</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">Frequency of knee pain 1=Never 2=&lt;1 day/wk 3=1~2 days/wk 4=3~6 days/wk 5=daily</td>
+## <td headers="stat_1" class="gt_row gt_center"><br /></td>
+## <td headers="stat_2" class="gt_row gt_center"><br /></td>
+## <td headers="stat_3" class="gt_row gt_center"><br /></td>
+## <td headers="stat_4" class="gt_row gt_center"><br /></td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    1</td>
+## <td headers="stat_1" class="gt_row gt_center">1(0.3%)</td>
+## <td headers="stat_2" class="gt_row gt_center">1(0.3%)</td>
+## <td headers="stat_3" class="gt_row gt_center">2(0.6%)</td>
+## <td headers="stat_4" class="gt_row gt_center">1(0.3%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    2</td>
+## <td headers="stat_1" class="gt_row gt_center">16(5.4%)</td>
+## <td headers="stat_2" class="gt_row gt_center">19(6.4%)</td>
+## <td headers="stat_3" class="gt_row gt_center">11(3.3%)</td>
+## <td headers="stat_4" class="gt_row gt_center">16(5.4%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    3</td>
+## <td headers="stat_1" class="gt_row gt_center">44(15%)</td>
+## <td headers="stat_2" class="gt_row gt_center">27(9.0%)</td>
+## <td headers="stat_3" class="gt_row gt_center">34(10%)</td>
+## <td headers="stat_4" class="gt_row gt_center">31(10%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    4</td>
+## <td headers="stat_1" class="gt_row gt_center">58(20%)</td>
+## <td headers="stat_2" class="gt_row gt_center">57(19%)</td>
+## <td headers="stat_3" class="gt_row gt_center">68(21%)</td>
+## <td headers="stat_4" class="gt_row gt_center">57(19%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    5</td>
+## <td headers="stat_1" class="gt_row gt_center">169(57%)</td>
+## <td headers="stat_2" class="gt_row gt_center">185(62%)</td>
+## <td headers="stat_3" class="gt_row gt_center">201(61%)</td>
+## <td headers="stat_4" class="gt_row gt_center">181(61%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    9</td>
+## <td headers="stat_1" class="gt_row gt_center">7(2.4%)</td>
+## <td headers="stat_2" class="gt_row gt_center">10(3.3%)</td>
+## <td headers="stat_3" class="gt_row gt_center">14(4.2%)</td>
+## <td headers="stat_4" class="gt_row gt_center">10(3.4%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    Missing</td>
+## <td headers="stat_1" class="gt_row gt_center">47</td>
+## <td headers="stat_2" class="gt_row gt_center">54</td>
+## <td headers="stat_3" class="gt_row gt_center">41</td>
+## <td headers="stat_4" class="gt_row gt_center">36</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">Tylenol use at baseline 1=never 2=occational 3=daily 9=missing</td>
+## <td headers="stat_1" class="gt_row gt_center"><br /></td>
+## <td headers="stat_2" class="gt_row gt_center"><br /></td>
+## <td headers="stat_3" class="gt_row gt_center"><br /></td>
+## <td headers="stat_4" class="gt_row gt_center"><br /></td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    1</td>
+## <td headers="stat_1" class="gt_row gt_center">108(37%)</td>
+## <td headers="stat_2" class="gt_row gt_center">137(46%)</td>
+## <td headers="stat_3" class="gt_row gt_center">145(44%)</td>
+## <td headers="stat_4" class="gt_row gt_center">135(46%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    2</td>
+## <td headers="stat_1" class="gt_row gt_center">91(31%)</td>
+## <td headers="stat_2" class="gt_row gt_center">84(28%)</td>
+## <td headers="stat_3" class="gt_row gt_center">110(33%)</td>
+## <td headers="stat_4" class="gt_row gt_center">95(32%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    3</td>
+## <td headers="stat_1" class="gt_row gt_center">53(18%)</td>
+## <td headers="stat_2" class="gt_row gt_center">41(14%)</td>
+## <td headers="stat_3" class="gt_row gt_center">38(12%)</td>
+## <td headers="stat_4" class="gt_row gt_center">30(10%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    9</td>
+## <td headers="stat_1" class="gt_row gt_center">43(15%)</td>
+## <td headers="stat_2" class="gt_row gt_center">37(12%)</td>
+## <td headers="stat_3" class="gt_row gt_center">37(11%)</td>
+## <td headers="stat_4" class="gt_row gt_center">36(12%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    Missing</td>
+## <td headers="stat_1" class="gt_row gt_center">47</td>
+## <td headers="stat_2" class="gt_row gt_center">54</td>
+## <td headers="stat_3" class="gt_row gt_center">41</td>
+## <td headers="stat_4" class="gt_row gt_center">36</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">Nsaids use at baseline 1=never 2=occational 3=daily 9=missing</td>
+## <td headers="stat_1" class="gt_row gt_center"><br /></td>
+## <td headers="stat_2" class="gt_row gt_center"><br /></td>
+## <td headers="stat_3" class="gt_row gt_center"><br /></td>
+## <td headers="stat_4" class="gt_row gt_center"><br /></td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    1</td>
+## <td headers="stat_1" class="gt_row gt_center">62(21%)</td>
+## <td headers="stat_2" class="gt_row gt_center">65(22%)</td>
+## <td headers="stat_3" class="gt_row gt_center">69(21%)</td>
+## <td headers="stat_4" class="gt_row gt_center">73(25%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    2</td>
+## <td headers="stat_1" class="gt_row gt_center">98(33%)</td>
+## <td headers="stat_2" class="gt_row gt_center">101(34%)</td>
+## <td headers="stat_3" class="gt_row gt_center">98(30%)</td>
+## <td headers="stat_4" class="gt_row gt_center">94(32%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    3</td>
+## <td headers="stat_1" class="gt_row gt_center">110(37%)</td>
+## <td headers="stat_2" class="gt_row gt_center">107(36%)</td>
+## <td headers="stat_3" class="gt_row gt_center">134(41%)</td>
+## <td headers="stat_4" class="gt_row gt_center">111(38%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    9</td>
+## <td headers="stat_1" class="gt_row gt_center">25(8.5%)</td>
+## <td headers="stat_2" class="gt_row gt_center">26(8.7%)</td>
+## <td headers="stat_3" class="gt_row gt_center">29(8.8%)</td>
+## <td headers="stat_4" class="gt_row gt_center">18(6.1%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    Missing</td>
+## <td headers="stat_1" class="gt_row gt_center">47</td>
+## <td headers="stat_2" class="gt_row gt_center">54</td>
+## <td headers="stat_3" class="gt_row gt_center">41</td>
+## <td headers="stat_4" class="gt_row gt_center">36</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">Stronger med use at baseline 1=never 2=occational 3=daily 9=missing</td>
+## <td headers="stat_1" class="gt_row gt_center"><br /></td>
+## <td headers="stat_2" class="gt_row gt_center"><br /></td>
+## <td headers="stat_3" class="gt_row gt_center"><br /></td>
+## <td headers="stat_4" class="gt_row gt_center"><br /></td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    1</td>
+## <td headers="stat_1" class="gt_row gt_center">178(60%)</td>
+## <td headers="stat_2" class="gt_row gt_center">193(65%)</td>
+## <td headers="stat_3" class="gt_row gt_center">205(62%)</td>
+## <td headers="stat_4" class="gt_row gt_center">186(63%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    2</td>
+## <td headers="stat_1" class="gt_row gt_center">40(14%)</td>
+## <td headers="stat_2" class="gt_row gt_center">41(14%)</td>
+## <td headers="stat_3" class="gt_row gt_center">43(13%)</td>
+## <td headers="stat_4" class="gt_row gt_center">47(16%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    3</td>
+## <td headers="stat_1" class="gt_row gt_center">46(16%)</td>
+## <td headers="stat_2" class="gt_row gt_center">36(12%)</td>
+## <td headers="stat_3" class="gt_row gt_center">50(15%)</td>
+## <td headers="stat_4" class="gt_row gt_center">40(14%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    9</td>
+## <td headers="stat_1" class="gt_row gt_center">31(11%)</td>
+## <td headers="stat_2" class="gt_row gt_center">29(9.7%)</td>
+## <td headers="stat_3" class="gt_row gt_center">32(9.7%)</td>
+## <td headers="stat_4" class="gt_row gt_center">23(7.8%)</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">    Missing</td>
+## <td headers="stat_1" class="gt_row gt_center">47</td>
+## <td headers="stat_2" class="gt_row gt_center">54</td>
+## <td headers="stat_3" class="gt_row gt_center">41</td>
+## <td headers="stat_4" class="gt_row gt_center">36</td></tr>
+##     <tr><td headers="label" class="gt_row gt_left">TKR 1=yes 0=No</td>
+## <td headers="stat_1" class="gt_row gt_center">64(19%)</td>
+## <td headers="stat_2" class="gt_row gt_center">82(23%)</td>
+## <td headers="stat_3" class="gt_row gt_center">74(20%)</td>
+## <td headers="stat_4" class="gt_row gt_center">76(23%)</td></tr>
+##   </tbody>
+##   
+##   <tfoot class="gt_footnotes">
+##     <tr>
+##       <td class="gt_footnote" colspan="5"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span> <span class='gt_from_md'>n(%); Mean (SD)</span></td>
+##     </tr>
+##   </tfoot>
+## </table>
+## </div>
 \end{verbatim}
 
 Figure 2.x shows the summary statistics of the VITAL data. It provides
 information on all 4 treatment groups. Note here that the VITAL data
 contains missing baseline data as well as post randomisation data.
 
-\begin{center}\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-14-1} \end{center}
+\begin{figure}
 
-Figure 2.x shows the distribution of age in each treatment group, which
-appear to be normal/ positive skewed distributions.
+{\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-16-1} 
 
-\begin{center}\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-15-1} \end{center}
+}
 
-Figure 2.x shows the distribution of body mass index in each treatment
-group, these appear to be positively skewed with a bmi between 20 and
-40. This shows a range between healthy weighted and obese participants.
+\caption{The distribution of age in each treatment group, which appear to be normal/ positive skewed distributions.}\label{fig:unnamed-chunk-16}
+\end{figure}
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-16-1.pdf}
+\begin{figure}
 
-Figure 2.x is the distribution of males and females in the VITAL data.
+{\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-17-1} 
+
+}
+
+\caption{The distribution of body mass index in each treatment group, these appear to be positively skewed with a BMI between 20 and 40. This shows a range between healthy weighted and obese participants.}\label{fig:unnamed-chunk-17}
+\end{figure}
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf}}
+\caption{The distribution of males and females in the VITAL data.
 Similar to the acupuncture trial, the participants are predominantly
-female.
+female.}
+\end{figure}
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf}}
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf}}
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf}}
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf}}
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf}}
 
 Figure 2.x,2.x,2.x,2.x,2.x shows the distribution of the knee pain from
 baseline until 4 years post randomisation. In all treatment groups it
@@ -798,18 +1470,22 @@ as a multivariate monotonic pattern as the percentage of missing data
 increases at each follow up time point, which is common in longitudinal
 studies. We can visualise this in the plot below.
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf}
-
-Figure 2.x: Proportion of missing data (dark green) in outcome variables
-\(pk2\) and \(pk5\). This follows a monotonic missing data pattern.
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-24-1.pdf}}
+\caption{Proportion of missing data (dark green) in outcome variables
+\(pk2\) and \(pk5\). This follows a monotonic missing data pattern.}
+\end{figure}
 
 If we separate the acupuncture trial data into the treatment group and
 control group, we can observe that there is a higher percentage of
 missing data in the control group.
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf}
-
-Figure 2.x: Higher percentage of missing data in control group
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-25-1.pdf}}
+\caption{Higher percentage of missing data in control group}
+\end{figure}
 
 If we investigate the missing data pattern in more detail, we can see
 that the pattern is similar in both groups. In the plot below, we can
@@ -818,10 +1494,12 @@ see that the pattern in which the three headache severity scores
 pattern in which both post-randomised headache severity scores contain
 missing data (1,0,0).
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-24-1.pdf}
-
-Figure 2.x: Missing data pattern is similar in both groups (1=observed,
-0=missing)
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-26-1.pdf}}
+\caption{Missing data pattern is similar in both groups (1=observed,
+0=missing)}
+\end{figure}
 
 \textbf{VITAL data}
 
@@ -832,10 +1510,12 @@ pattern appears to show here as there is a great proportion of missing
 data in the knee pain score at the first year post randomisation, which
 drastically decreases in year 2, then steadily increases again.
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-25-1.pdf}
-
-Figure 2.x: Non-monotonic pattern across out knee pain scores in VITAL
-data.
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-27-1.pdf}}
+\caption{Non-monotonic pattern across out knee pain scores in VITAL
+data.}
+\end{figure}
 
 Recall that the VITAL data set contains 4 different combinations of
 treatment. Separating this out in the plot below we can see the
@@ -843,11 +1523,12 @@ percentage of missing data in each knee pain time point variable in each
 group. The proportion appears to be similar in each group with year 2
 post randomisation containing the most missing data.
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-26-1.pdf}
-
-Figure 2.x: Percentage of missing data across baseline and 4 follow-up
-time points. Non-monotonic pattern appears similar in 4 randomised
-groups.
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-28-1.pdf}}
+\caption{Percentage of missing data across baseline and 4 follow-up time
+points. Non-monotonic pattern appears similar in 4 randomised groups.}
+\end{figure}
 
 Looking at the possible missing data patterns in the 4 combinatory
 groups, they are mostly similar with little anomalies. As this dataset
@@ -856,10 +1537,11 @@ treatmenr groups, there are more possible missing data patterns to
 observe. The most common data pattern still stands as (1,1,1,1,1) in
 which data is observed at all time-points.
 
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-27-1.pdf}
-
-Figure 2.x: Missing data patterns across 4 treatment groups in VITAL
-data.
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-29-1.pdf}}
+\caption{Missing data patterns across 4 treatment groups in VITAL data.}
+\end{figure}
 
 \newpage
 
@@ -1692,8 +2374,8 @@ the study period, thereby leveraging all available interim outcome data.
 As a result, we improve the precision of the estimated treatment effect
 at the final timepoint---even in the presence of missing data.
 
-\paragraph{Original Estimand - Categoricl
-Time}\label{original-estimand---categoricl-time}
+\paragraph{Original Estimand (Categoricl
+Time)}\label{original-estimand-categoricl-time}
 
 \emph{Acupuncture data set}
 
@@ -1769,8 +2451,8 @@ where
   \(\varepsilon\): residual error term for individual \(i\)
 \end{itemize}
 
-\paragraph{Revised Estimand -- Continuous
-Time}\label{revised-estimand-continuous-time}
+\paragraph{Changed Estimand (Continuous
+Time)}\label{changed-estimand-continuous-time}
 
 To better utilise repeated measures in both datasets, we revise the
 estimand using a Linear Mixed-Effects (LME) model with time treated as a
@@ -1925,7 +2607,7 @@ missing data, we increased K from the default 5 to 20 and 25. For the
 VITAL dataset, which has around 50\% missingness, we increased K from 5
 to 20 and then to 50.
 
-\subsubsection{Sensitive analysis - Amy}\label{sensitive-analysis---amy}
+\subsubsection{Sensitive analysis}\label{sensitive-analysis}
 
 As mentioned in our introduction, missing data mechanisms are
 unverifiable. While it is most common to assume that data are MAR, in
@@ -1965,18 +2647,46 @@ Essentially, \(\delta\) is the mean difference between the imputed
 values and the true values that we did not observe.
 
 Deciding which \(\delta\) values are suitable is subjective. We need to
-include \(\delta=0\) as that assumes the data is MAR which acts as our
+include \(\delta\) = 0 as that assumes the data is MAR which acts as our
 baseline, and we add the non-zero \(\delta\) values to test the
 sensitivity to the MNAR assumption. We decided to base our \(\delta\)
-values on the standard errors of the treatment effect estimates, for
-which ranges between 1.08 and 1.27 in the acupuncture trial data and
-between 0.76 and 1.21 in the VITAL data.
+values on the standard deviations of the outcome variables of interest.
+The standard deviation of the headache severity score at the final time
+point in the treatment group is \emph{13.71828} and \emph{17.01089} in
+the control group. The standard deviation of the knee pain score at the
+final time point in the fishoil group is \emph{19.13955},
+\emph{19.24856} in the vitamin D group, and \emph{18.29479} in the
+control group. These statistics are based on the data in the original
+wide format. We also extracted the standard deviation of the outcome
+variables in the long format in which the estimand is continous. We
+decided an increasing and decreasing multiples of these values should
+suffice;
 
-We decided an increasing and decreasing range that do not deter much
-from these values should suffice. Our chosen \(\delta\) values are;
+\(\delta\) = -0.5\emph{SD, -0.25}SD, 0 , 0.25\emph{SD, 0.5}SD\$
 
-\(\delta_\mathrm{Acupuncture} = -2.5,-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5\)
-\(\delta_\mathrm{VITAL} -2.5,-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5\)
+Applying these to both datasets, our chosen \(\delta\) values are;
+
+\emph{Original Estimand} -
+\(\delta_\mathrm{Acupuncture-original} = -6.859139,-3.429569,0,3.429569,6.859139\)
+-
+\(\delta_\mathrm{Acu-control-original} = -8.505446,-4.252723,0,4.252723,8.505446\)
+-
+\(\delta_\mathrm{VITAL-fishoil-original} = -9.569774,-4.784887,0,4.784887,9.569774\)
+-
+\(\delta_\mathrm{VITAL-vitd-original} = -9.624281,-4.812141,0,4.812141,9.624281\)
+-
+\(\delta_\mathrm{VITAL-control-original} = -9.147397,-4.573698,0,4.573698,9.147397\)
+
+\emph{Changed Estimand} -
+\(\delta_\mathrm{Acupuncture-changed} = -7.397829,-3.698915,0,3.698915,7.397829\)
+-
+\(\delta_\mathrm{Acu-control-changed} = -8.660196,-4.330098,0, 4.330098,8.660196\)
+-
+\(\delta_\mathrm{VITAL-fishoil-changed} = -9.783807,-4.891904,0,4.891904,9.783807\)
+-
+\(\delta_\mathrm{VITAL-vitd-changed} = -9.967777,-4.983889,0,4.983889,9.967777\)
+-
+\(\delta_\mathrm{VITAL-control-changed} = -9.646493,-4.823247,0, 4.823247,9.646493\)
 
 \textbf{Sensitivity Analysis; the process}
 
@@ -2137,7 +2847,7 @@ principled approaches.
 
 \begin{figure}
 \centering
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-32-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-34-1.pdf}}
 \caption{Acupuncture data set analysed with different methods; CCA =
 complete case analysis; LOCR = last observation carry forward; MO = mean
 observation; MI = multiple imputation with linear regression; LME =
@@ -2147,7 +2857,7 @@ imputation followed by linear mixed-effects model.}
 
 \begin{figure}
 \centering
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-33-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-35-1.pdf}}
 \caption{VITAL data set analysed with different methods; CCA = complete
 case analysis; LOCR = last observation carry forward; MO = mean
 observation; MI = multiple imputation with linear regression; LME =
@@ -2162,7 +2872,7 @@ modeled) to see how that affects our conclusions.
 
 \begin{figure}
 \centering
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-34-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf}}
 \caption{Acupuncture data set analysed with different estimands; LME:
 linear mix model without imputations; MI+LME: multiple imputation and
 linear miex model; Purple line (Original Estimand) estimand: The mean
@@ -2175,7 +2885,7 @@ variable.}
 
 \begin{figure}
 \centering
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-35-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf}}
 \caption{VITAL data set analysed with different estimands; LME: linear
 mix model without imputations; MI+LME: multiple imputation and linear
 miex model; Purple line (Original Estimand) estimand: The mean
@@ -2197,13 +2907,13 @@ using 5 imputations.
 
 \begin{figure}
 \centering
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf}}
 \caption{Acupuncture data set analysed with different FCS methods}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf}}
 \caption{VITAL data set analysed with different FCS methods}
 \end{figure}
 
@@ -2214,28 +2924,28 @@ Acupuncture and VITAL data sets accordingly).
 
 \begin{figure}
 \centering
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf}}
 \caption{Acupuncture data set analysed with different imputation
 numbers}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf}}
 \caption{VITAL data set analysed with different imputation numbers}
 \end{figure}
 
-\subsection{Sensitive analysis}\label{sensitive-analysis}
+\subsection{Sensitive analysis}\label{sensitive-analysis-1}
 
 \begin{figure}
 \centering
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-42-1.pdf}}
 \caption{Sensitive analysis for Acupuncture data set}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-43-1.pdf}}
 \caption{Sensitive analysis for VITAL data set}
 \end{figure}
 
@@ -2270,37 +2980,37 @@ departures from the MAR assumption.
 
 \begin{figure}
 \centering
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-42-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-44-1.pdf}}
 \caption{original acu estimand}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-43-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-45-1.pdf}}
 \caption{changed acu estimand}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-44-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-46-1.pdf}}
 \caption{original fishoil estimand}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-45-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-47-1.pdf}}
 \caption{changed fishoil estimand}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-46-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-48-1.pdf}}
 \caption{original vitd estimand}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{Final_Report_files/figure-latex/unnamed-chunk-47-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-49-1.pdf}}
 \caption{changed vitd estimand}
 \end{figure}
 

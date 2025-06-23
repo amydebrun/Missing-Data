@@ -450,7 +450,7 @@ both treatment groups and the control group. For this research project,
 we assumed that that the participants were only randomised to either
 receive the fish oil treatment, vitamin D treatment or the placebo. We
 did not include the interaction between vitamin D and fish oil in our
-models.
+models. The below table shows the sample size per treatment group.
 
 |              | **Vitamin D**            | **Placebo** |
 |--------------|--------------------------|-------------|
@@ -463,11 +463,38 @@ There are x variables recorded in the VITAL data, the following table
 refers to a subset of the variables that we frequently use.
 
 ```{r fig.align='center'}
-print(vital_var_table)
+vital_var_table <- tibble(
+  `Variable` = c(
+    "Subject_ID","age", "bmi", "sex", "vitdactive", "fishoilactive", "pain_base", "pain_yrX", "stiffness_base", "stiffness_yrX", "function_base", 
+    "function_yrX", "kneepainfreq"
+  ),
+  `Description` = c("Patient ID code", "Age of patient", "Body mass index of patient", "Sex of patient", 
+  "1=vitamin D, 0=no vitamin D", "1= fish oil, 0= no fish oil",
+  "Knee pain at baseline", "Knee pain X years post randomisation", 
+  "Knee stiffness at baseline", "Knee stiffness X years post randomisation", "Knee function at baseline",
+  "Knee function X years post randomisation", "Frequency of knee pain"
+))
+
+cat("\\begin{table}[H]
+\\centering
+\\caption{VITAL study variables}
+\\label{}
+")
+
+print(
+  knitr::kable(
+    vital_var_table,
+    format = "latex",
+    booktabs = TRUE,
+    escape = FALSE
+  )
+)
+
+cat("\\end{table}")
 ```
 
 ```{r warning = FALSE}
-print(gtsummary::as_kable(vital_summary))
+print(vital_summary)
 ```
 
 Figure 2.x shows the summary statistics of the VITAL data. It provides
@@ -1547,37 +1574,37 @@ additional non-ignorable part of the imputation model
 Essentially, $\delta$ is the mean difference between the imputed values
 and the true values that we did not observe.
 
-Deciding which δ values are suitable is subjective. We need to include δ
-= 0 as that assumes the data is MAR which acts as our baseline, and we
-add the non-zero δ values to test the sensitivity to the MNAR
-assumption. We decided to base our δ values on the standard deviations
-of the outcome variables of interest. The standard deviation of the
-headache severity score at the final time point in the treatment group
-is *13.71828* and *17.01089* in the control group. The standard
-deviation of the knee pain score at the final time point in the fishoil
-group is *19.13955*, *19.24856* in the vitamin D group, and *18.29479*
-in the control group. These statistics are based on the data in the
-original wide format. We also extracted the standard deviation of the
-outcome variables in the long format in which the estimand is continous.
-We decided an increasing and decreasing multiples of these values should
-suffice;
+Deciding which $\delta$ values are suitable is subjective. We need to
+include $\delta$ = 0 as that assumes the data is MAR which acts as our
+baseline, and we add the non-zero $\delta$ values to test the
+sensitivity to the MNAR assumption. We decided to base our $\delta$
+values on the standard deviations of the outcome variables of interest.
+The standard deviation of the headache severity score at the final time
+point in the treatment group is *13.71828* and *17.01089* in the control
+group. The standard deviation of the knee pain score at the final time
+point in the fishoil group is *19.13955*, *19.24856* in the vitamin D
+group, and *18.29479* in the control group. These statistics are based
+on the data in the original wide format. We also extracted the standard
+deviation of the outcome variables in the long format in which the
+estimand is continous. We decided an increasing and decreasing multiples
+of these values should suffice;
 
 $\delta$ = -0.5*SD, -0.25*SD, 0 , 0.25*SD, 0.5*SD\$
 
-Applying these to both datasets, our chosen δ values are;
+Applying these to both datasets, our chosen $\delta$ values are;
 
-*Original Estimand*
-$\delta_\mathrm{Acupuncture-original} = -6.859139,-3.429569,0,3.429569,6.859139$
-$\delta_\mathrm{Acu-control-original} = -8.505446,-4.252723,0,4.252723,8.505446$
-$\delta_\mathrm{VITAL-fishoil-original} = -9.569774,-4.784887,0,4.784887,9.569774$
-$\delta_\mathrm{VITAL-vitd-original} = -9.624281,-4.812141,0,4.812141,9.624281$
+*Original Estimand* -
+$\delta_\mathrm{Acupuncture-original} = -6.859139,-3.429569,0,3.429569,6.859139$ -
+$\delta_\mathrm{Acu-control-original} = -8.505446,-4.252723,0,4.252723,8.505446$ -
+$\delta_\mathrm{VITAL-fishoil-original} = -9.569774,-4.784887,0,4.784887,9.569774$ -
+$\delta_\mathrm{VITAL-vitd-original} = -9.624281,-4.812141,0,4.812141,9.624281$ -
 $\delta_\mathrm{VITAL-control-original} = -9.147397,-4.573698,0,4.573698,9.147397$
 
-*Changed Estimand*
-$\delta_\mathrm{Acupuncture-changed} = -7.397829,-3.698915,0,3.698915,7.397829$
-$\delta_\mathrm{Acu-control-changed} = -8.660196,-4.330098,0, 4.330098,8.660196$
-$\delta_\mathrm{VITAL-fishoil-changed} = -9.783807,-4.891904,0,4.891904,9.783807$
-$\delta_\mathrm{VITAL-vitd-changed} = -9.967777,-4.983889,0,4.983889,9.967777$
+*Changed Estimand* -
+$\delta_\mathrm{Acupuncture-changed} = -7.397829,-3.698915,0,3.698915,7.397829$ -
+$\delta_\mathrm{Acu-control-changed} = -8.660196,-4.330098,0, 4.330098,8.660196$ -
+$\delta_\mathrm{VITAL-fishoil-changed} = -9.783807,-4.891904,0,4.891904,9.783807$ -
+$\delta_\mathrm{VITAL-vitd-changed} = -9.967777,-4.983889,0,4.983889,9.967777$ -
 $\delta_\mathrm{VITAL-control-changed} = -9.646493,-4.823247,0, 4.823247,9.646493$
 
 **Sensitivity Analysis; the process**
