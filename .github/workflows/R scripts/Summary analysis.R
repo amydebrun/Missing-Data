@@ -1,4 +1,4 @@
-
+library(flextable)
 #Summary
 acu_summary <- acu_wide %>% tbl_summary(
   by = group,
@@ -29,6 +29,7 @@ vital_summary <- vital_wide %>%
     missing = "ifany",
     missing_text = "Missing"
   ) 
+vital_summary<-as_flex_table(vital_summary)
 
 # Missing plot
 acu_miss_plot <- gg_miss_var(acu_wide) 

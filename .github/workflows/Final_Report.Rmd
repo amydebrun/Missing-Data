@@ -44,6 +44,7 @@ library(dagitty)
 library(ggplot2)
 library(knitr)
 library(tibble)
+library(flextable)
 load("report_plots1.RData")
 load("report_plots2.RData")
 ```
@@ -493,7 +494,7 @@ print(
 cat("\\end{table}")
 ```
 
-```{r warning = FALSE}
+```{r results= 'asis', warning = FALSE}
 print(vital_summary)
 ```
 
@@ -509,7 +510,7 @@ print(age_vital_plot)
 print(bmi_vital_plot)
 ```
 
-```{r fig.width=4, fig.height=3, warning=FALSE, fig.cap="The distribution of males and females in the VITAL data. Similar to the acupuncture trial, the participants are predominantly female."}
+```{r fig.width=4, fig.height=3, fig.align='center', warning=FALSE, fig.cap="The distribution of males and females in the VITAL data. Similar to the acupuncture trial, the participants are predominantly female."}
 print(sex_vital_plot)
 ```
 

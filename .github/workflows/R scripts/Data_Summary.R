@@ -322,7 +322,7 @@ pain_yr1_vital_plot<-vital_wide %>%
   labs(
     title = "",
     x = "Knee Pain 1 Year post-randomisation",
-    y = "Count"
+    y = ""
   ) +
   theme_minimal()+ theme(
     strip.background = element_rect(fill = "lawngreen", color = "black"),  
@@ -366,7 +366,7 @@ pain_yr3_vital_plot<-vital_wide %>%
   labs(
     title = "",
     x = "Knee Pain 3 Years post-randomisation",
-    y = "Count"
+    y = ""
   ) +
   theme_minimal()+ theme(
     strip.background = element_rect(fill = "lawngreen", color = "black"),  
