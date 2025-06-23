@@ -41,6 +41,7 @@ library(meta)
 library(gtsummary)
 library(dagitty)
 library(ggplot2)
+library(knitr)
 load("report_plots1.RData")
 load("report_plots2.RData")
 ```
@@ -149,7 +150,7 @@ independent from the observed baseline variables $X_1$ and $X_2$, which
 are pre-randomised variables, and outcome variable $Y$ (which
 potentially contains missing data).
 
-```{r echo=FALSE}
+```{r fig.width=5, fig.height=3, echo=FALSE, fig.cap="MCAR DAG"}
 MCAR_dag
 ```
 
@@ -173,7 +174,7 @@ variable $X_1$. $X_2$ no longer influences the missingness indicator
 $R_Y$, but $R_Y$ is still conditioned on $L$ and $X_1$, showing the MAR
 assumption still holds given these variables.
 
-```{r echo=FALSE}
+```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="MAR DAG"}
 MAR_dag1
 MAR_dag2
 ```
@@ -196,7 +197,7 @@ missingness indicator is influenced by the missing outcome data. The
 second DAG shows MNAR conditional on $X_2$ only as it influences the
 missingness indicator $R_Y$ along with the missing outcome.
 
-```{r echo=FALSE}
+```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="MNAR DAG"}
 MNAR_dag1
 MNAR_dag2
 ```
@@ -232,8 +233,8 @@ remark the missing data patterns of the data set prior to data handling
 as some handling methods are intended for certain classified patterns.
 The following table summarises some missing data patterns.
 
-```{r fig.width=5, fig.height=3}
-print(missing_pattern_table)
+```{r results='asis', echo=FALSE}
+kable(missing_pattern_table, format = "latex", booktabs = TRUE, escape = FALSE)
 ```
 
 ## Literature
@@ -315,21 +316,14 @@ acu_summary
 Figure 2.x is the summary statistics of the acupuncture trial data. Note
 pk2 and pk5 are post randomisation variables and contain missing data.
 
-```{r fig.width=5, fig.height=3}
+```{r fig.width=5, fig.height=3, fig.cap="The distribution of sex in both treatment groups of the acupuncture trial data. The participants are predominantly female."}
 print(acu_sex_plot)
 
 ```
 
-Figure 2.x is the distribution of sex in both treatment groups of the
-acupuncture trial data. The participants are predominantly female.
-
-```{r fig.width=5, fig.height=3}
+```{r fig.width=5, fig.height=3, fig.cap="The distribution of age in both treatment groups. Both distributions are negatively skewed, predominantly middle aged and older."}
 print(acu_age_plot)
 ```
-
-Figure 2.x is the distribution of age in both treatment groups. Both
-distributions are negatively skewed, predominantly middle aged and
-older.
 
 ```{r fig.width=5, fig.height=2.5, warning=FALSE}
 print(acu_pk1_plot)
@@ -382,36 +376,29 @@ our imputation model.
 There are x variables recorded in the VITAL data, the following table
 refers to a subset of the variables that we frequently use.
 
-```{r results='asis', echo=FALSE}
-vital_summary
+```{r fig.align='center'}
+print(vital_var_table)
+```
+
+```{r warning = FALSE}
+print(gtsummary::as_kable(vital_summary))
 ```
 
 Figure 2.x shows the summary statistics of the VITAL data. It provides
 information on all 4 treatment groups. Note here that the VITAL data
 contains missing baseline data as well as post randomisation data.
 
-```{r fig.width=5, fig.height=3, fig.align='center', warning=FALSE}
+```{r fig.width=5, fig.height=3, fig.align='center', warning=FALSE, fig.cap="The distribution of age in each treatment group, which appear to be normal/ positive skewed distributions."}
 print(age_vital_plot)
 ```
 
-Figure 2.x shows the distribution of age in each treatment group, which
-appear to be normal/ positive skewed distributions.
-
-```{r fig.width=5, fig.height=3, fig.align='center', warning=FALSE}
+```{r fig.width=5, fig.height=3, fig.align='center', warning=FALSE, fig.cap="The distribution of body mass index in each treatment group, these appear to be positively skewed with a BMI between 20 and 40. This shows a range between healthy weighted and obese participants."}
 print(bmi_vital_plot)
 ```
 
-Figure 2.x shows the distribution of body mass index in each treatment
-group, these appear to be positively skewed with a bmi between 20 and
-40. This shows a range between healthy weighted and obese participants.
-
-```{r fig.width=4, fig.height=3, warning=FALSE}
+```{r fig.width=4, fig.height=3, warning=FALSE, fig.cap="The distribution of males and females in the VITAL data. Similar to the acupuncture trial, the participants are predominantly female."}
 print(sex_vital_plot)
 ```
-
-Figure 2.x is the distribution of males and females in the VITAL data.
-Similar to the acupuncture trial, the participants are predominantly
-female.
 
 ```{r fig.width=4, fig.height=2.5, warning=FALSE}
 print(pain_base_vital_plot)
@@ -453,22 +440,17 @@ as a multivariate monotonic pattern as the percentage of missing data
 increases at each follow up time point, which is common in longitudinal
 studies. We can visualise this in the plot below.
 
-```{r fig.width=5, fig.height=3}
+```{r fig.width=5, fig.height=3, fig.cap="Proportion of missing data (dark green) in outcome variables $pk2$ and $pk5$. This follows a monotonic missing data pattern."}
 print(acu_miss_perc_plot)
 ```
-
-Figure 2.x: Proportion of missing data (dark green) in outcome variables
-$pk2$ and $pk5$. This follows a monotonic missing data pattern.
 
 If we separate the acupuncture trial data into the treatment group and
 control group, we can observe that there is a higher percentage of
 missing data in the control group.
 
-```{r fig.width=5, fig.height=3}
+```{r fig.width=5, fig.height=3, fig.cap="Higher percentage of missing data in control group"}
 print(acu_miss_perc_group)
 ```
-
-Figure 2.x: Higher percentage of missing data in control group
 
 If we investigate the missing data pattern in more detail, we can see
 that the pattern is similar in both groups. In the plot below, we can
@@ -477,12 +459,9 @@ $pk2$ and $pk5$ are observed (1,1,1) followed by the pattern in which
 both post-randomised headache severity scores contain missing data
 (1,0,0).
 
-```{r fig.width=5, fig.height=3}
+```{r fig.width=5, fig.height=3, fig.cap="Missing data pattern is similar in both groups (1=observed, 0=missing)"}
 print(acu_miss_pattern_plot)
 ```
-
-Figure 2.x: Missing data pattern is similar in both groups (1=observed,
-0=missing)
 
 **VITAL data**
 
@@ -493,12 +472,9 @@ pattern appears to show here as there is a great proportion of missing
 data in the knee pain score at the first year post randomisation, which
 drastically decreases in year 2, then steadily increases again.
 
-```{r fig.width=5, fig.height=3}
+```{r fig.width=5, fig.height=3, fig.cap="Non-monotonic pattern across out knee pain scores in VITAL data."}
 print(vital_miss_perc_plot)
 ```
-
-Figure 2.x: Non-monotonic pattern across out knee pain scores in VITAL
-data.
 
 Recall that the VITAL data set contains 4 different combinations of
 treatment. Separating this out in the plot below we can see the
@@ -506,13 +482,9 @@ percentage of missing data in each knee pain time point variable in each
 group. The proportion appears to be similar in each group with year 2
 post randomisation containing the most missing data.
 
-```{r fig.width=5, fig.height=3}
+```{r fig.width=5, fig.height=3, fig.cap="Percentage of missing data across baseline and 4 follow-up time points. Non-monotonic pattern appears similar in 4 randomised groups."}
 print(vital_miss_perc_group_plot)
 ```
-
-Figure 2.x: Percentage of missing data across baseline and 4 follow-up
-time points. Non-monotonic pattern appears similar in 4 randomised
-groups.
 
 Looking at the possible missing data patterns in the 4 combinatory
 groups, they are mostly similar with little anomalies. As this dataset
@@ -521,12 +493,9 @@ treatmenr groups, there are more possible missing data patterns to
 observe. The most common data pattern still stands as (1,1,1,1,1) in
 which data is observed at all time-points.
 
-```{r fig.width=5, fig.height=3}
+```{r fig.width=5, fig.height=3, fig.cap="Missing data patterns across 4 treatment groups in VITAL data."}
 print(vital_miss_pattern)
 ```
-
-Figure 2.x: Missing data patterns across 4 treatment groups in VITAL
-data.
 
 \newpage
 
@@ -1185,7 +1154,7 @@ In the previous section, we applied six different methods, two of which used Lin
 
 To address this, we revise the estimand by treating time as a continuous variable. This allows us to model individual pain trajectories across the study period, thereby leveraging all available interim outcome data. As a result, we improve the precision of the estimated treatment effect at the final timepoint—even in the presence of missing data.
 
-#### Original Estimand - Categoricl Time
+#### Original Estimand (Categoricl Time)
 
 *Acupuncture data set*
 
@@ -1220,7 +1189,7 @@ where
 -   $\beta_3$: effect of baseline pain on the 4-year outcome
 -   $\varepsilon$: residual error term for individual $i$
 
-#### Revised Estimand – Continuous Time
+#### Changed Estimand (Continuous Time)
 
 To better utilise repeated measures in both datasets, we revise the estimand using a Linear Mixed-Effects (LME) model with time treated as a continuous variable.
 
@@ -1320,7 +1289,7 @@ missing data, we increased K from the default 5 to 20 and 25. For the
 VITAL dataset, which has around 50% missingness, we increased K from 5
 to 20 and then to 50.
 
-### Sensitive analysis - Amy
+### Sensitive analysis
 
 As mentioned in our introduction, missing data mechanisms are
 unverifiable. While it is most common to assume that data are MAR, in
