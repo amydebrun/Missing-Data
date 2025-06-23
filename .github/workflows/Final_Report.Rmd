@@ -26,7 +26,6 @@ bibliography: Missing_data_references.bib
 biblio-style: unsrt
 output: rticles::arxiv_article
 keep_tex: true
-    latex_engine: xelatex
 header-includes:
   - \usepackage{amsmath}
   - \newcommand{\pandocbounded}[1]{#1}

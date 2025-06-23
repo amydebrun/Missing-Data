@@ -12,7 +12,7 @@ acu_summary <- acu_wide %>% tbl_summary(
     caption = "Acupuncture data overview"
   )
 
-vital_summary <- vital_wide %>% 
+vital_summary<-vital_wide %>% 
   mutate(
     group = case_when(
       vitdactive == 0 & fishoilactive == 0 ~ "Neither",
@@ -28,8 +28,9 @@ vital_summary <- vital_wide %>%
                      all_categorical() ~ "{n}({p}%)"),
     missing = "ifany",
     missing_text = "Missing"
-  ) 
-vital_summary <-as_gt(vital_summary)
+  ) %>%
+  as_kable_extra(format = "latex", booktabs = TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"))
 
 # Missing plot
 acu_miss_plot <- gg_miss_var(acu_wide) 

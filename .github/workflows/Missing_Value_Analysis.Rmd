@@ -35,7 +35,6 @@ source("R scripts/Sens_analysis_combined.R")
 source("R scripts/DAGs.R")
 ```
 
-
 # Data summary
 
 ```{r}
@@ -60,6 +59,25 @@ acu_sex_plot
 
 ```{r}
 # VITAL
+vital_summary<-vital_wide %>% 
+  mutate(
+    group = case_when(
+      vitdactive == 0 & fishoilactive == 0 ~ "Neither",
+      vitdactive == 1 & fishoilactive == 0 ~ "Vitamin D only",
+      vitdactive == 0 & fishoilactive == 1 ~ "Fish Oil only",
+      vitdactive == 1 & fishoilactive == 1 ~ "Both")) %>%
+  select(-c(Subject_ID, vitdactive, fishoilactive,
+            matches("stiffness_"),
+            matches("function_"))) %>%
+  tbl_summary(
+    by = group,
+    statistic = list(all_continuous() ~ "{mean} ({sd})",
+                     all_categorical() ~ "{n}({p}%)"),
+    missing = "ifany",
+    missing_text = "Missing"
+  ) %>%
+  as_gt() %>%             
+  gt::as_latex() 
 vital_summary
 vital_miss_plot
 vital_wide_miss_plot
@@ -123,7 +141,6 @@ vitd_compare_result
 vital_plot_compare
 ```
 
-
 # Different Imputation Method
 
 ```{r}
@@ -179,20 +196,20 @@ SA_acu_all
 SA_vital_all_plot
 ```
 
-
-
 ```{r}
 vital_miss <- sum(is.na(vital_long))
 vital_observed <- sum(!is.na(vital_long))
 percent_miss <- vital_miss / (vital_miss + vital_observed)
 percent_miss
 ```
+
 ```{r}
 acu_miss <- sum(is.na(acu_long))
 acu_observed <- sum(!is.na(acu_long))
 percent_miss <- acu_miss / (acu_miss + acu_observed)
 percent_miss
 ```
+
 ```{r}
 cont_heatmap_fishoil_plot
 cat_heatmap_fishoil_plot
@@ -211,7 +228,6 @@ vital_miss_perc_plot
 vital_miss_perc_group_plot
 vital_miss_pattern
 ```
-
 
 ```{r, eval=FALSE}
 # Code to save plots and tables, only run when required
@@ -281,10 +297,3 @@ save(
   file = "report_plots2.RData"
 )
 ```
-
-
-
-
-
-
-
