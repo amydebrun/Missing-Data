@@ -43,6 +43,19 @@ source("R scripts/DAGs.R")
 acu_summary
 acu_miss_plot
 acu_wide_miss_plot
+acu_pk1_plot
+acu_pk2_plot
+acu_pk5_plot
+pain_base_vital_plot
+pain_yr1_vital_plot
+pain_yr2_vital_plot
+pain_yr3_vital_plot
+pain_yr4_vital_plot
+age_vital_plot
+bmi_vital_plot
+sex_vital_plot
+acu_age_plot
+acu_sex_plot
 ```
 
 ```{r}
