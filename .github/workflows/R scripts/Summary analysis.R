@@ -6,7 +6,11 @@ acu_summary <- acu_wide %>% tbl_summary(
                    all_categorical() ~ "{n}({p}%)"),
   missing = "ifany",
   missing_text = "Missing"
-)
+) %>%
+  as_kable_extra(
+    format = "latex",
+    caption = "Acupuncture data overview"
+  )
 
 vital_summary <- vital_wide %>% 
   mutate(
@@ -24,6 +28,10 @@ vital_summary <- vital_wide %>%
                      all_categorical() ~ "{n}({p}%)"),
     missing = "ifany",
     missing_text = "Missing"
+  ) %>%
+  as_kable_extra(
+    format = "latex",
+    caption = "VITAL data overview"
   )
 
 # Missing plot
