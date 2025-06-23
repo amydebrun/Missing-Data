@@ -237,8 +237,10 @@ save(
 
 save(
  #DAGs
-  MAR_dag,
-  MNAR_dag,
+  MAR_dag1,
+  MAR_dag2,
+  MNAR_dag1,
+  MNAR_dag1,
   MCAR_dag,
   
  # sensitivity analysis
