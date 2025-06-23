@@ -235,8 +235,7 @@ acu_plot_imp <- ggplot(acu_impt_result, aes(x = estimate, y = Method, xmin = con
   facet_wrap(~ group)+
   labs(
     x = "Mean differnce in pain score by the end of study",
-    y = "Method",
-    title = "Fig5.5. Acupuncture, change FCS methods") +
+    y = "Method") +
   theme_minimal() + 
   theme(
     strip.background = element_rect(fill = "lawngreen", color = "black"),  
@@ -256,9 +255,7 @@ vital_plot_impt <- ggplot(vital_impt_result_all, aes(x = estimate, y = Method, x
   facet_wrap(~ treatment, scales = "free_x") +
   labs(
     x = "Mean differnce in pain score by the end of study",
-    y = "Method",
-    title = "Fig5.6. VITAL, change FCS methods"
-  ) +
+    y = "Method") +
   theme_minimal() + 
   theme(
     legend.position = "none",
