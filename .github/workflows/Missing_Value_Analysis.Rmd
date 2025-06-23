@@ -17,6 +17,7 @@ library(dplyr)
 library(naniar)
 library(tidymodels)
 library(gtsummary)
+library(knitr)
 load("imputations.RData")
 source("R scripts/Functions.R")
 source("R scripts/VITAL data formats.R")
@@ -30,7 +31,6 @@ source("R scripts/Sens_analysis_cont.R")
 source("R scripts/Sens_analysis_cat.R")
 source("R scripts/Sens_analysis_combined.R")
 source("R scripts/DAGs.R")
-
 ```
 
 

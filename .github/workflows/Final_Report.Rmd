@@ -1294,10 +1294,10 @@ With this centering, the model intercept represents the mean pain score at the e
 
 *Acupuncture data set*
 
-The revised LME model for the acupuncture dataset is specified as:
+The revised LME model for the acupuncture dataset is specified as below. Note we did not allowing random slop as there are only 2 data collecting time points here:
 
 $$
-pk5_{ij} = \beta_0 + \beta_1 group_i + \beta_2 time_{c,ij} + \beta_3 (group_i \times time_{c,ij}) + \beta_4 pk1_i + b_{0i} + b_{1i} time_{c,ij} + \varepsilon_{ij}
+pk5_{ij} = \beta_0 + \beta_1 group_i + \beta_2 time_{c,ij} + \beta_3 (group_i \times time_{c,ij}) + \beta_4 pk1_i + b_{0i} + \varepsilon_{ij}
 $$
 
 where
@@ -1312,7 +1312,6 @@ where
 - $\beta_3$: treatment-time interaction effect
 - $\beta_4$: effect of baseline headache pain
 - $b_{0i}$: random intercept for individual $i$
-- $b_{1i}$: random slope for time for individual $i$
 - $\varepsilon_{ij}$: residual error term for individual $i$ at time $j$
 
 *VITAL data set*
