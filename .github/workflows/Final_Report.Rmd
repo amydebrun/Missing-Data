@@ -47,7 +47,7 @@ load("report_plots2.RData")
 
 \newpage
 
-# Introduction - amy
+# Introduction
 
 ## Missing data in longitudinal study
 
@@ -180,7 +180,7 @@ MAR_dag2
 
 **Missing Not At Random**
 
-$$\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)$$ The probability of data
+$\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)$ The probability of data
 being observed depends both on the observed data and the missing data.
 This mechanism is the most difficult to deal with as it relates to the
 unobserved data, so producing valid results is a challenge. Certain
@@ -308,8 +308,8 @@ print(acu_var_table)
 Variables `pk2` and `pk5` are the headache severity scores at 3 months and 12
 months.
 
-```{r fig.width=5, fig.height=3}
-print(gtsummary::as_kable(acu_summary))
+```{r results='asis', echo=FALSE}
+acu_summary
 ```
 
 Figure 2.x is the summary statistics of the acupuncture trial data. Note
@@ -382,12 +382,8 @@ our imputation model.
 There are x variables recorded in the VITAL data, the following table
 refers to a subset of the variables that we frequently use.
 
-```{r fig.align='center'}
-print(vital_var_table)
-```
-
-```{r warning = FALSE}
-print(gtsummary::as_kable(vital_summary))
+```{r results='asis', echo=FALSE}
+vital_summary
 ```
 
 Figure 2.x shows the summary statistics of the VITAL data. It provides
