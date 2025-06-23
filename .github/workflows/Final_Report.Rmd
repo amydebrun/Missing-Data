@@ -253,8 +253,8 @@ missing_pattern_table <- tibble(
 
 cat("\\begin{table}[H]
 \\centering
-\\caption{Table 1. Missing Data Pattern}
-\\label{tab:missing-pattern}
+\\caption{Missing Data Pattern}
+\\label{}
 ")
 
 print(
@@ -309,7 +309,7 @@ analysis on. They both have different sample sizes and different levels
 of missing data which is an advantage as we can conduct analysis in
 different settings.
 
-**Acupuncture Data**
+## Acupuncture Data
 
 Our first dataset contains results from a clinical trial determining the
 effects of acupuncture therapy on chronic headache in primary care
@@ -330,12 +330,50 @@ the final time point in comparison to the control group with a 16%
 decrease. The acupuncture therapy group also showed a 37% decrease in
 medication use, which compares to 23% in the control group.
 
-*Data Overview*
+### Data Overview
 
 13 variables were recorded during the acupuncture trial.
 
-```{r fig.width=5, fig.height=3}
-print(acu_var_table)
+```{r results='asis', echo=FALSE}
+acu_var_table <- tibble(
+  `Variable` = c(
+    "id", "age", "sex", "migraine", "chronicity", "acupuncturist", "practiceid", "group",
+    "pk1", "pk2", "pk5", "f1", "f2", "f5"
+  ),
+  `Description` = c(
+    "patient ID code",
+    "Age",
+    "sex; female (1) vs. male (0)",
+    "diagnosis ; migraine (1) vs. tension-type (0)",
+    "number of years of headache disorder",
+    "acupuncturist id code",
+    "gp practice id",
+    "treatment group; acupuncture (1) vs. control (0)",
+    "headache severity score baseline",
+    "headache severity score 3 month",
+    "headache severity score 1 year",
+    "headache frequency baseline",
+    "headache frequency 3 month",
+    "headache frequency 1 year"
+  )
+)
+
+cat("\\begin{table}[H]
+\\centering
+\\caption{Acupuncture trial variables}
+\\label{}
+")
+
+print(
+  knitr::kable(
+    acu_var_table,
+    format = "latex",
+    booktabs = TRUE,
+    escape = FALSE
+  )
+)
+
+cat("\\end{table}")
 ```
 
 Variables `pk2` and `pk5` are the headache severity scores at 3 months and 12
@@ -378,7 +416,7 @@ group, and the control group appears to have a lower headache severity
 score overall. The 3 month and 12 month time-point distributions are
 incomplete due to the missing values.
 
-**VITAL data**
+## VITAL data
 
 *Source*
 
@@ -403,7 +441,7 @@ our imputation model.
 | **Fish Oil** | N = 342 *(not analysed)* | N = 353     |
 | **Placebo**  | N = 332                  | N = 371     |
 
-*Data Overview*
+### Data Overview
 
 There are x variables recorded in the VITAL data, the following table
 refers to a subset of the variables that we frequently use.
