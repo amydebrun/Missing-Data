@@ -28,11 +28,7 @@ vital_summary <- vital_wide %>%
                      all_categorical() ~ "{n}({p}%)"),
     missing = "ifany",
     missing_text = "Missing"
-  ) %>%
-  as_kable_extra(
-    format = "latex",
-    caption = "VITAL data overview"
-  )
+  ) 
 
 # Missing plot
 acu_miss_plot <- gg_miss_var(acu_wide) 

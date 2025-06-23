@@ -606,7 +606,7 @@ treatmenr groups, there are more possible missing data patterns to
 observe. The most common data pattern still stands as (1,1,1,1,1) in
 which data is observed at all time-points.
 
-```{r fig.width=7, fig.height=10, fig.cap="Missing data patterns across 4 treatment groups in VITAL data."}
+```{r fig.width=6, fig.height=9.5, fig.cap="Missing data patterns across 4 treatment groups in VITAL data."}
 print(vital_miss_pattern)
 ```
 

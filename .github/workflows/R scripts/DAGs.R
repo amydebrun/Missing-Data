@@ -109,7 +109,7 @@ MAR_dag1 <- dagitty('dag {
 }')
 MAR_dag1<-ggdag(MAR_dag1, layout = "circle") +
   theme_dag() + 
-  ggtitle("Missing at Random conditional on L, X_1 and X_2")
+  ggtitle("")
 MAR_dag1
 MAR_dag2 <- dagitty('dag {
   L     [pos="0,2"]
@@ -126,7 +126,7 @@ MAR_dag2 <- dagitty('dag {
 }')
 MAR_dag2<-ggdag(MAR_dag2, layout = "circle") +
   theme_dag() + 
-  ggtitle("Missing at Random conditional on L and X_1")
+  ggtitle("")
 MAR_dag2
 
 
@@ -144,7 +144,7 @@ MCAR_dag <- dagitty('dag {
 }')
 MCAR_dag<-ggdag(MCAR_dag, layout = "circle") +
   theme_dag() + 
-  ggtitle("Missing Completely at Random")
+  ggtitle("")
 MCAR_dag
 MNAR_dag1 <- dagitty('dag {
   L         [pos="0,2"]
@@ -159,7 +159,7 @@ MNAR_dag1 <- dagitty('dag {
 }')
 MNAR_dag1<-ggdag(MNAR_dag1, layout = "circle") +
   theme_dag() + 
-  ggtitle("Missing Not at Random conditional on L, X_1, X_2")
+  ggtitle("")
 MNAR_dag1
 
 MNAR_dag2<-dagitty('dag {
@@ -178,7 +178,7 @@ MNAR_dag2<-dagitty('dag {
 }')
 MNAR_dag2<-ggdag(MNAR_dag2, layout = "circle") +
   theme_dag() + 
-  ggtitle("Missing Not at Random conditional on X_2")
+  ggtitle("")
 MNAR_dag2
 
 
