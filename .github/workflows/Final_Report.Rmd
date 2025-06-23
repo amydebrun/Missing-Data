@@ -42,6 +42,7 @@ library(gtsummary)
 library(dagitty)
 library(ggplot2)
 library(knitr)
+library(tibble)
 load("report_plots1.RData")
 load("report_plots2.RData")
 ```
@@ -150,7 +151,7 @@ independent from the observed baseline variables $X_1$ and $X_2$, which
 are pre-randomised variables, and outcome variable $Y$ (which
 potentially contains missing data).
 
-```{r fig.width=5, fig.height=3, echo=FALSE, fig.cap="MCAR DAG"}
+```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="MCAR DAG"}
 MCAR_dag
 ```
 
@@ -174,8 +175,11 @@ variable $X_1$. $X_2$ no longer influences the missingness indicator
 $R_Y$, but $R_Y$ is still conditioned on $L$ and $X_1$, showing the MAR
 assumption still holds given these variables.
 
-```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="MAR DAG"}
+```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="Missing at Random conditional on L, X_1 and X_2"}
 MAR_dag1
+```
+
+```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="Missing at Random conditional on L, X_1"}
 MAR_dag2
 ```
 
@@ -197,8 +201,11 @@ missingness indicator is influenced by the missing outcome data. The
 second DAG shows MNAR conditional on $X_2$ only as it influences the
 missingness indicator $R_Y$ along with the missing outcome.
 
-```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="MNAR DAG"}
+```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="Missing not at Random conditional on L, X_1 and X_2"}
 MNAR_dag1
+```
+
+```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="Missing at Random conditional on L, X_2"}
 MNAR_dag2
 ```
 
@@ -234,7 +241,32 @@ as some handling methods are intended for certain classified patterns.
 The following table summarises some missing data patterns.
 
 ```{r results='asis', echo=FALSE}
-kable(missing_pattern_table, format = "latex", booktabs = TRUE, escape = FALSE)
+missing_pattern_table <- tibble(
+  Pattern = c("Univariate", "Multivariate", "Monotonic", "General"),
+  Description = c(
+    "Missing values in a single variable",
+    "Missing values present in multiple variables",
+    "Variables $Y_j$ can be ordered such that if $Y_j$ is missing, all subsequent variables are also missing",
+    "Missing values have no structure and are scattered throughout data"
+  )
+)
+
+cat("\\begin{table}[H]
+\\centering
+\\caption{Table 1. Missing Data Pattern}
+\\label{tab:missing-pattern}
+")
+
+print(
+  knitr::kable(
+    missing_pattern_table,
+    format = "latex",
+    booktabs = TRUE,
+    escape = FALSE
+  )
+)
+
+cat("\\end{table}")
 ```
 
 ## Literature
