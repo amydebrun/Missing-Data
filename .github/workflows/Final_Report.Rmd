@@ -534,87 +534,6 @@ data.
 
 # Methods
 
-## Data wrangling
-
-The VITAL dataset was originally in wide format, which is not suitable
-for methods like linear mixed-effects models (LME) that require
-long-format data. To address this, the data was reshaped to long format
-using pivot_longer(), as illustrated in the example code provided for
-VITAL.
-
-```{r, eval=FALSE, echo=TRUE}
-# Function for transform
-to_long_format_vital <- function(data_wide) {
-  data_wide %>%
-    pivot_longer(cols = matches("_yr[[:digit:]]$"),
-                 names_to = c(".value", "time"), 
-                 names_sep = "_") %>%
-    mutate(time_contin = as.integer(gsub("yr", "", time)),
-           time_contin_cent = time_contin - 4)
-}
-# Apply function
-vital_long <- to_long_format_vital(vital_wide)
-```
-
-In the case of multiple imputation (MI), imputation was first performed
-on the wide-format data using the mice() function. The resulting imputed
-datasets were then combined and transformed to long format, allowing for
-the inclusion of time as a continuous variable. This approach enables
-the application of LME as the substantive model, which effectively
-accounts for repeated measurements over time. Moreover, it accommodates
-more flexible timing of follow-up assessments. An example code snippet
-demonstrates how the acupunture imputed dataset was processed and
-analyzed using this method.
-
-```{r, eval=FALSE, echo=TRUE}
-# Multi-imputation in wide format data
-acu_mice <- mice(acu_wide, m = 5, method = 'pmm', seed = 123, print=FALSE)
-# Stack 5 imputations together
-acu_mice_data_wide <- complete(data = acu_mice, action = "long", include = TRUE)
-# Function to transform wide imputed data to long
-to_long_format_acu_cat_MICE <- function(data_wide) {
-  data_wide %>%
-    pivot_longer(
-      cols = c('pk2', 'pk5'), 
-      names_to = 'pk_time',
-      values_to = 'pk_score'
-    ) %>%
-    pivot_longer(
-      cols = c('f2', 'f5'), 
-      names_to = 'freq_time',
-      values_to = 'freq_score',
-      names_repair = 'unique'
-    ) %>%
-    filter((pk_time == 'pk2' & freq_time == 'f2') | (pk_time == 'pk5' & freq_time == 'f5')) %>%
-    mutate(
-      time = case_when(
-        pk_time == 'pk2' ~ "3m",
-        pk_time == 'pk5' ~ "12m"
-      )
-    ) %>%
-    select(-pk_time, -freq_time) %>%
-    group_by(.imp) %>%
-    mutate(.id = row_number())
-}
-# Apply function
-acu_mice_data_long <- to_long_format_acu_cat_MICE(acu_mice_data_wide)
-# Transform object to mid
-acu_mice_data_obj_long <- as.mids(acu_mice_data_long)
-# Apply LME as substantive model
-acu_LME_MI_default <- with(acu_mice_data_obj_long, 
-                           lmer(pk_score ~ group*time + pk1 + (1|id)))
-# Pool for parameter estimation
-acu_LME_MI_default_pool <- pool(acu_LME_MI_default)
-```
-
-Comments
-
-Why just refer to the VITAL dataset and how the original format here? 
-
-You should raise the general point that the data can be represented in both wide and long format for both studies, and you will need to interchange between the two depending on the substantive model and the missing data method i.e. imputation method to be used.
-
-It's also crucial to highlight the longitudinal design of both studies is balanced, i.e. there was a planned, equal number of follow-up measurements at roughly fixed time points. This will make these studies amenable to a more straightforward imputation of partially observed follow-up variables as part of a multivariate distribution.
-
 ## Anchoring methods
 
 We began our analysis with basic methods to serve as a comparison
@@ -626,14 +545,7 @@ the performance of more robust models.
 
 ### Complete case analysis
 
-For both data sets, given that our estimand is the mean difference in
-pain scores at the end of the study, we fit a model regressing the final
-pain score on treatment group and baseline pain score. If the data are
-Missing Completely At Random (MCAR), complete case analysis (CCA) can
-yield valid inference. For simplicity and to conserve computational
-resources, we did not adjust for additional baseline covariates. To
-maintain comparability across methods, we omit these covariates in the
-other analyses as well.
+For both datasets, given that our estimand is the mean difference in pain scores at the end of the study, we fit a model regressing the final pain score on treatment group and baseline pain score. CCA can yield valid inferences when the data are MCAR, or when the outcome is MAR conditional on the variables included in the model. In our analysis, we adjust for treatment group and baseline pain score. To ensure comparability across methods and to reduce computational burden, we did not include additional covariates in any of the analyses.
 
 We applied the following models for each dataset:
 
@@ -644,35 +556,11 @@ acu_CAA <- lm(pk5 ~ group + pk1 , data = acu_wide)
 vital_complete <- lm(pain_yr4 ~ fishoilactive + vitdactive + pain_base, data = vital_wide)
 ```
 
-One of the main drawbacks of using complete case analysis (CCA) is the
-loss of power due to reduced sample size, along with the risk of
-introducing bias. In our implementation, the lm() function in R
-automatically excludes any individual with missing values in the model
-variables. As a result, we are left with only 301 out of 401
-observations in the acupuncture dataset and 698 out of 1390 in the VITAL
-dataset—corresponding to a loss of approximately 25% and 50% of the
-sample size, respectively.
+One of the main drawbacks of using CCA is the loss of power due to reduced sample size, along with the risk of introducing bias. In our implementation, the lm() function in R automatically excludes any individual with missing values in the model variables. As a result, we are left with only 301 out of 401 observations in the acupuncture dataset and 698 out of 1390 in the VITAL dataset—corresponding to a loss of approximately 25% and 50% of the sample size, respectively.
 
-Although both datasets are relatively large, the reduction in
-statistical power from complete case analysis may be less of a concern.
-However, the potential for bias remains a more serious issue. We have
-not included many covariates in our models, so bias could exist even
-with complete data due to omitted variables. Now, suppose we attempted
-to adjust for all relevant baseline covariates—missing data would still
-pose a problem. For instance, in the VITAL dataset, several baseline
-covariates have missing values. Excluding observations with missing data
-in these variables could still induce bias, considering the missingness
-could be related to the outcome.
+We have not included many covariates in our models, so bias could exist even with complete data due to omitted variables. Now, suppose we attempted to adjust for all relevant baseline covariates—missing data would still pose a problem. For instance, in the VITAL dataset, several baseline covariates have missing values. Excluding observations with missing data in these variables could still induce bias, particularly if the missingness is related to the outcome.
 
-In the acupuncture dataset, although there is no missingness in baseline
-variables, complete case analysis still has two major limitations.
-First, it does not allow for adjustment of interim outcomes, such as the
-3-month pain score. This limitation can be addressed by using a linear
-mixed-effects model, which accounts for repeated measurements over time.
-Second, auxiliary variables—such as pain frequency—cannot be included in
-this model, even though they may help improve estimation. This issue can
-be resolved through multiple imputation, which allows the use of
-additional information to handle missing data more effectively.
+In the acupuncture dataset, although there is no missingness in baseline variables, CCA has further limitations. While intermediate outcomes such as the 3-month pain score or post-randomisation variables like pain frequency may contain valuable information, they are not included in our models. This is not due to a limitation of CCA or LME itself, but because including post-randomisation variables would violate the goal of estimating the total effect of randomisation. However, these variables can still contribute indirectly through MI. Rather than adjusting for them in the model, MI treats repeated and related measures as part of a multivariate distribution within each individual, allowing partially observed variables to help impute missing values without compromising the target estimand.
 
 In rare cases—such as when the sole interest is in estimating the mean
 difference between groups at the end of the study, and there are no
@@ -699,7 +587,7 @@ This can be expressed in the mathematics form, assuming outcome of
 interest Y MAR depends on baseline covaraites X
 
 \begin{align*}
-  Pr(Ri=r \mid Yi, Xi) = Pr(Ri=r \mid Xi)
+  Pr(R_i=1 \mid Y_i, X_i) = Pr(R_i=1 \mid X_i)
   \end{align*}
 
 Thus, we can infer under MAR, the distribution of outcome within
@@ -707,13 +595,13 @@ covaraites is the same in the observed data, the unobserved data, and
 the population.
 
 \begin{align*}
-  & Pr(Yi \mid Ri=r, Xi) \\ 
-  & = \displaystyle \frac{Pr(Ri=r,Yi,Xi)}{Pr(Ri=r,Xi)} \\
-  & = \displaystyle \frac{Pr(Ri=r \mid Yi,Xi)Pr(Yi,Xi)}{Pr(Ri=r \mid Xi)Pr(Xi)} 
+  & Pr(Y_i \mid R_i=1, X_i) \\ 
+  & = \displaystyle \frac{Pr(R_i=r,Y_i,X_i)}{Pr(R_i=1,X_i)} \\
+  & = \displaystyle \frac{Pr(R_i=1 \mid Y_i,X_i)Pr(Y_i,X_i)}{Pr(R_i=1 \mid X_i)Pr(X_i)} 
   \\
-  & Assuming \ \ \Pr(Ri=r \mid Yi, Xi) = Pr(Ri=r \mid Xi) \\
-  & = \displaystyle \frac{Pr(Yi,Xi)}{Pr(Xi)} \\
-  & = Pr(Yi \mid Xi)
+  & Assuming \ \ \Pr(R_i=1 \mid Y_i, X_i) = Pr(R_i=1 \mid X_i) \\
+  & = \displaystyle \frac{Pr(Y_i,X_i)}{Pr(X_i)} \\
+  & = Pr(Y_i \mid X_i)
   \end{align*}
 
 The key issue is that we aim to include as much relevant information as
@@ -814,7 +702,7 @@ or mean imputation.
 While methods like linear mixed-effects models (LME) can utilize most
 available observed data and yield unbiased estimates under the Missing
 At Random (MAR) assumption without imputation, they cannot incorporate
-auxiliary variables that are not part of the model (e.g., pain frequency
+other post-randomisation variables that are not part of the model (e.g., pain frequency
 in the Acupuncture dataset). In contrast, multiple imputation (MI)
 allows the inclusion of such auxiliary information during the imputation
 process.
@@ -1257,6 +1145,111 @@ modeling of time. Specifically, it enables us to treat time as a
 continuous variable, rather than as a categorical factor, which can
 improve interpretability and statistical power. This modeling choice
 will be explored further in a later section.
+
+## Data wrangling
+
+The VITAL dataset was originally in wide format, which is not suitable
+for methods like linear mixed-effects models (LME) that require
+long-format data. To address this, the data was reshaped to long format
+
+In the case of multiple imputation (MI), imputation was first performed
+on the wide-format data using the mice() function. The resulting imputed
+datasets were then combined and transformed to long format, allowing for
+the inclusion of time as a continuous variable. This approach enables
+the application of LME as the substantive model, which effectively
+accounts for repeated measurements over time. Moreover, it accommodates
+more flexible timing of follow-up assessments.
+
+One of the challenge when we want to do MI and then fit into LME as substantiv model is that. We can only fit long format into LME, but doing imputation with long format will treat each observation as individual which is incorrect. So we use the wide format to do MI first, then change to LME. Below is a simple schema to illustrate the process (Outcome1/2/3 indicates outcome at differnt time point, and x indicates missing data).
+
+Data in wide format:
+
+|ID|Outcome1|Outcome2|Outcome3|
+|---|---|---|---|
+|1001|2.5|3.5|x|
+|1002|4.5|x|6.3|
+|1003|3.3|6.2|8.1|
+
+Completed data after MI in wide format:
+
+|ID|Outcome1|Outcome2|Outcome3|
+|---|---|---|---|
+|1001|2.5|3.5|4.5|
+|1002|4.5|5.2|6.3|
+|1003|3.3|6.2|8.1|
+
+Transfored completed data in long format:
+
+|DI|Time|Outcome|
+|---|---|---|
+|1001|1|2.5|
+|1001|2|3.5|
+|1001|3|4.5|
+|1002|1|4.5|
+|1002|2|5.2|
+|1002|3|6.3|
+|1003|1|3.3|
+|1003|2|6.2|
+|1003|3|8.1|
+
+Comments
+
+Why just refer to the VITAL dataset and how the original format here? 
+
+You should raise the general point that the data can be represented in both wide and long format for both studies, and you will need to interchange between the two depending on the substantive model and the missing data method i.e. imputation method to be used.
+
+It's also crucial to highlight the longitudinal design of both studies is balanced, i.e. there was a planned, equal number of follow-up measurements at roughly fixed time points. This will make these studies amenable to a more straightforward imputation of partially observed follow-up variables as part of a multivariate distribution.
+
+In our project, both dataset have balanced longitudianal design. Which is not always the case and could complex the analysis. This make our analysis 
+a more straightforward imputation of partially observed follow-up variables as part of a multivariate distribution.
+
+## Data Wrangling
+
+Both the Acupuncture and VITAL datasets originate in wide format, where each subject's repeated measurements are stored in separate columns. While this format is convenient for some operations, it is not directly compatible with LME, which require the data to be transformed into long format—with one row per observation per time point.
+
+In our project, both datasets have a balanced longitudinal design, with follow-up measurements taken at regular, pre-specified intervals. This is not always the case in real-world studies, where irregular or missing time points can complicate analysis. The balanced structure in our data allows for a more straightforward imputation of partially observed follow-up outcomes using a multivariate distribution, making the MI process more reliable and easier to implement.
+
+To address these differing requirements, the following general approach was used for both data sets:
+
+1. Perform MI in wide format using the `mice()` function, treating the repeated measures as separate but related variables.
+2. Convert the imputed wide data sets to long format, which allows time to be included as a continuous variable in the LME model.
+3. Fit LME models on the long-format data to model outcome trajectories over time while appropriately accounting for missing values and repeated measures.
+
+This strategy allows us to use multiple imputation methods compatible with the multivariate normal assumption across time points, while still leveraging the advantages of LME models in the analysis stage.
+
+The balanced longitudinal design of both studies further supports this approach: each subject was planned to have the same number of repeated measurements at roughly equal intervals (monthly in the Acupuncture study and yearly in the VITAL study). This regular measurement structure allows partially observed follow-up outcomes to be imputed more reliably using a multivariate framework.
+
+Below is a simple schematic to illustrate the reshaping process. Here, `Outcome1/2/3` represent repeated outcomes across three timepoints, and `x` indicates a missing value:
+
+**Original data (wide format):**
+
+| ID   | Outcome1 | Outcome2 | Outcome3 |
+|------|----------|----------|----------|
+| 1001 | 2.5      | 3.5      | x        |
+| 1002 | 4.5      | x        | 6.3      |
+| 1003 | 3.3      | 6.2      | 8.1      |
+
+**Completed data after multiple imputation (still wide format):**
+
+| ID   | Outcome1 | Outcome2 | Outcome3 |
+|------|----------|----------|----------|
+| 1001 | 2.5      | 3.5      | 4.5      |
+| 1002 | 4.5      | 5.2      | 6.3      |
+| 1003 | 3.3      | 6.2      | 8.1      |
+
+**Transformed data (long format):**
+
+| ID   | Time | Outcome |
+|------|------|---------|
+| 1001 | 1    | 2.5     |
+| 1001 | 2    | 3.5     |
+| 1001 | 3    | 4.5     |
+| 1002 | 1    | 4.5     |
+| 1002 | 2    | 5.2     |
+| 1002 | 3    | 6.3     |
+| 1003 | 1    | 3.3     |
+| 1003 | 2    | 6.2     |
+| 1003 | 3    | 8.1     |
 
 ## Examing using forest plot
 
@@ -1803,7 +1796,7 @@ For example:
     unbiased results even without imputation—if the assumptions are met.
     However, in the Acupuncture dataset, its utility is limited due to
     the small number of timepoints and its inability to incorporate
-    auxiliary variables like pain frequency.
+    other post-randomisation variables like pain frequency.
 
 -   In the VITAL dataset, although there are more timepoints, baseline
     pain scores are sometimes missing. As a result, when fitting LME
