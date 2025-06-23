@@ -553,7 +553,7 @@ as a multivariate monotonic pattern as the percentage of missing data
 increases at each follow up time point, which is common in longitudinal
 studies. We can visualise this in the plot below.
 
-```{r fig.width=5, fig.height=3, fig.cap="Proportion of missing data (dark green) in outcome variables $pk2$ and $pk5$. This follows a monotonic missing data pattern."}
+```{r fig.width=5, fig.height=3, fig.cap="Proportion of missing data in outcome variables $pk2$ and $pk5$. This follows a monotonic missing data pattern."}
 print(acu_miss_perc_plot)
 ```
 
@@ -561,7 +561,7 @@ If we separate the acupuncture trial data into the treatment group and
 control group, we can observe that there is a higher percentage of
 missing data in the control group.
 
-```{r fig.width=5, fig.height=3, fig.cap="Higher percentage of missing data in control group"}
+```{r fig.width=5, fig.height=3, fig.cap="Higher percentage of missing data (dark green) in control group"}
 print(acu_miss_perc_group)
 ```
 
@@ -606,7 +606,7 @@ treatmenr groups, there are more possible missing data patterns to
 observe. The most common data pattern still stands as (1,1,1,1,1) in
 which data is observed at all time-points.
 
-```{r fig.width=5, fig.height=3, fig.cap="Missing data patterns across 4 treatment groups in VITAL data."}
+```{r fig.width=7, fig.height=10, fig.cap="Missing data patterns across 4 treatment groups in VITAL data."}
 print(vital_miss_pattern)
 ```
 

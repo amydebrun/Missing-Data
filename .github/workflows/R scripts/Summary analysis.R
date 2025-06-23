@@ -209,15 +209,14 @@ vital_miss_perc_plot<-suppressMessages(
     ungroup %>%
     ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
     geom_col() +  
-    stat_identity(geom = "text", colour = "white", size = 8,
+    stat_identity(geom = "text", colour = "white",
                   aes(label =perc_pat), 
                   position = position_stack(vjust=0.5)) +
     scale_fill_manual(name="",values=c("olivedrab", "lawngreen"), labels=c("Missing Data", "Measured Data")) +
     scale_x_discrete(name = "", labels = c("base" = "Baseline", "yr1" = "Year 1", "yr2" = "Year 2", "yr3" = "Year 3", "yr4"="Year 4")) + 
     scale_y_continuous(name = "Number of Patients") +
-    theme(text = element_text(size = 24),
-          axis.text.x = element_text(angle = 0, vjust = 0.5),
-          legend.position = "none", legend.text=element_text(size=20))
+    theme(axis.text.x = element_text(angle = 0, vjust = 0.5),
+          legend.position = "top")
 )
 
 vital_miss_perc_group_plot<-suppressMessages(
@@ -230,14 +229,13 @@ vital_miss_perc_group_plot<-suppressMessages(
     ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
     geom_col() +
     facet_grid(group_vitd~group_oil) + 
-    stat_identity(geom = "text", colour = "white", size = 5,
+    stat_identity(geom = "text", colour = "white", size=2,
                   aes(label =perc_pat), 
                   position = position_stack(vjust=0.5)) +
     scale_fill_manual(name="",values=c("olivedrab", "lawngreen"))+
     scale_x_discrete(name = "", labels = c("base" = "Baseline", "yr1" = "Year 1", "yr2" = "Year 2", "yr3" = "Year 3", "yr4"="Year 4")) + 
     scale_y_continuous(name = "Number of Patients") +
-    theme(text = element_text(size = 24),
-          axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "none")
+    theme(axis.text.x = element_text(angle = 45, vjust = 0.5), legend.position = "none")
 )
 
 data_miss_count <- data_miss %>%
@@ -297,14 +295,13 @@ acu_miss_perc_plot<- acupuncture_miss %>%
   ungroup %>%
   ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
   geom_col() +
-  stat_identity(geom = "text", colour = "white", size = 10,
+  stat_identity(geom = "text", colour = "white",
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
   scale_fill_manual(name="",values=c("olivedrab", "lawngreen"), labels=c("Missing Data", "Observed Data")) + 
   scale_x_discrete(name = "", labels = c("1" = "Baseline", "2" = "3 Months", "5" = "12 Months")) +
   scale_y_continuous(name = "Number of Patients") +
-  theme(text = element_text(size = 18),
-        axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "none", legend.text=element_text(size=20))
+  theme(axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "top")
 
 acu_miss_perc_group<-acupuncture_miss %>%
   group_by(time, miss_obs, group) %>%
@@ -315,14 +312,16 @@ acu_miss_perc_group<-acupuncture_miss %>%
   ggplot(aes(x = time, fill = miss_obs, y = count_pat)) +
   geom_col() + 
   facet_grid(.~group, labeller=labeller(group=c("0" = "Control", "1" = "Acupuncture"))) + 
-  stat_identity(geom = "text", colour = "white", size = 10,
+  stat_identity(geom = "text", colour = "white",
                 aes(label =perc_pat), 
                 position = position_stack(vjust=0.5)) +
   scale_fill_manual(name="Data",values=c("olivedrab", "lawngreen"), labels=c("Missing", "Observed")) + 
   scale_x_discrete(name = "", labels = c("1" = "Baseline", "2" = "3 Months", "5" = "12 Months")) +
   scale_y_continuous(name = "Number of Patients") +
-  theme(text = element_text(size = 18),
-        axis.text.x = element_text(angle = 0, vjust = 0.5),legend.position = "none",strip.text.x=element_text(size=20))
+  theme(axis.text.x = element_text(angle = 0, vjust = 0.5),
+        legend.position = "none")
+
+
 
 acupuncture_miss_count <- acupuncture_miss %>%
   select(id, miss_pattern, pk, time_cont, group, miss_obs) %>%
@@ -335,13 +334,12 @@ acupuncture_miss_count <- acupuncture_miss %>%
 acu_miss_pattern_plot<-ggplot(acupuncture_miss_count, aes(x = time_cont, y = miss_pattern, fill = miss_obs)) +
   geom_tile(color = "white") + 
   geom_text(data = filter(acupuncture_miss_count, time_cont == 2), 
-            aes(x = time_cont+1, label = paste0(pattern_count," (", pattern_perc, "%)")), size = 5.5) +
+            aes(x = time_cont+1, label = paste0(pattern_count," (", pattern_perc, "%)")), size = 2.5) +
   facet_grid(~group, scales = "free", switch = "y",labeller=labeller(group=c("0" = "Control", "1" = "Acupuncture"))) +
   theme_bw() +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.spacing.x = unit(1, "lines"),
-        text = element_text(size = 18),
-        axis.text.x = element_text(angle = 0, vjust = 0.5), legend.position = "none",strip.text.x=element_text(size=20)) +
+        axis.text.x = element_text(angle = 45, vjust = 0.50), legend.position = "none") +
   coord_cartesian(xlim = c(-0.5, 3.2), clip = 'off') +
   scale_y_discrete(name = "Missing Data Pattern") +
   scale_fill_manual(name = "", labels=c("Missing","Measured"), values=c("olivedrab","lawngreen")) +
