@@ -22,7 +22,7 @@ keywords:
   - Sensitivity Analysis
   - Multiple Imputation
   - Missingness Mechanisms
-bibliography: references.bib
+bibliography: Missing_data_references.bib
 biblio-style: unsrt
 output: rticles::arxiv_article
 header-includes:
@@ -540,8 +540,7 @@ data.
 
 We began our analysis with basic methods to serve as a comparison
 benchmark for more advanced techniques. As previously mentioned, these
-included complete case analysis, last observation carried forward
-(LOCF), and the mean observation method. Each of these approaches was
+included complete case analysis, LOCF, and the mean observation method. Each of these approaches was
 used to anchor the results and provide a reference point for evaluating
 the performance of more robust models.
 
@@ -568,7 +567,7 @@ In rare cases—such as when the sole interest is in estimating the mean
 difference between groups at the end of the study, and there are no
 important non-baseline covariates complete case analysis can still yield
 valid results. Thus when apply complete case analysis, we are assuming:
-the outcome is Missing At Random (MAR), conditional on the observed
+the outcome is MAR, conditional on the observed
 baseline predictors included in the model.
 
 This condition sometimes referred to as "conditionally MCAR". While it
@@ -618,7 +617,7 @@ in later sections.
 
 ### Last observation carry forward
 
-Last Observation Carried Forward (LOCF) is a simple imputation method
+LOCF is a simple imputation method
 that fills in missing values based on the last observed outcome for each
 subject. It relies on assumptions unrelated to the missing data
 mechanism, meaning it does not model the reason for missingness.
@@ -643,14 +642,14 @@ mechanism and does not attempt to model why the data are missing.
 This method implicitly assumes that the mean of the observed values
 accurately represents the population mean, which can be problematic. In
 fact, this can be viewed as an even more radical assumption than
-assuming data are Missing Completely At Random (MCAR), since it ignores
+assuming data are MCAR, since it ignores
 potential bias introduced by the missingness and oversimplifies
 individual variation.
 
 As with LOCF, this assumption is not convincing in either of the
-datasets analyzed here. In both the Acupuncture and VITAL trials, pain
+data sets analyzed here. In both the Acupuncture and VITAL trials, pain
 scores vary over time, and individual trajectories differ. Replacing
-missing values with the average observed value at each timepoint
+missing values with the average observed value at each time point
 disregards this variation and may lead to underestimated variability and
 biased treatment effect estimates.
 
@@ -658,7 +657,7 @@ biased treatment effect estimates.
 
 To address missing data in a statistically principled manner, it is helpful to distinguish between two components: the imputation step and the modeling step. In our anchoring methods, we either did not perform imputation—as in CCA—or relied on single imputation techniques, such as LOCF or mean imputation.
 
-While methods like LME can utilize most available observed data and yield unbiased estimates under the MAR assumption without imputation, they cannot incorporate other post-randomisation variables that are not part of the model (e.g., pain frequency in the acupuncture dataset). In contrast, MI allows the inclusion of such auxiliary information during the imputation process.
+While methods like LME can utilize most available observed data and yield unbiased estimates under the MAR assumption without imputation, they cannot incorporate other post-randomization variables that are not part of the model (e.g., pain frequency in the acupuncture data set). In contrast, MI allows the inclusion of such auxiliary information during the imputation process.
 
 In most realistic scenarios, doing no imputation or applying single imputation methods is likely to introduce bias and underestimate uncertainty, especially when missingness is related to unobserved outcomes. Thus, more flexible approaches—such as MI combined with appropriate modeling—are generally preferred for robust inference in the presence of missing data.
 
@@ -690,7 +689,7 @@ provide a general framework for combining these estimates to obtain
 point estimates, variances, confidence intervals, and statistical tests.
 
 We also briefly introduce the different methods available for performing
-multiple imputation. In cases with a monotonic missing data pattern,
+multiple imputation [@carpenter_multiple_2023]. In cases with a monotonic missing data pattern,
 sequential regression offers a straightforward solution. For arbitrary
 or multivariate missingness, more flexible approaches like joint
 modeling or Fully Conditional Specification (FCS)—also known as multiple
@@ -710,7 +709,7 @@ errors and confidence intervals.
 
 #### Rubin's rules
 
-Once multiple imputed datasets are generated, Rubin’s rules are used to
+Once multiple imputed datasets are generated, Rubin’s rules [@noauthor_rubin1987_1987] are used to
 combine the parameter estimates and associated uncertainty across the K
 imputed datasets. The steps are as follows:
 
@@ -746,8 +745,7 @@ In many longitudinal studies, the missing data pattern is approximately
 monotonic, particularly when dropout is due to participant withdrawal, a
 common situation in clinical research. In such cases, later measurements
 are often missing while earlier ones are observed, which permits the use
-of sequential regression for imputation under the assumption of Missing
-At Random (MAR).
+of sequential regression for imputation under the assumption of MAR.
 
 To justify this, consider the joint distribution of the outcome vector
 for individual $i$ can be factorized as:
@@ -760,7 +758,7 @@ for individual $i$ can be factorized as:
 
 Under a monotonic missingness pattern, for each missing value $Y_{i,j}$
 all preceding values $Y_{i,1},...,Y_{i,j-1}$ are observed. If we also
-assume Missing At Random (MAR), then each of these conditional
+assume MAR, then each of these conditional
 distributions can be estimated directly from the observed data. This
 provides a principled basis for sequential regression imputation, where
 each variable is regressed on the variables preceding it in order, and
@@ -805,8 +803,7 @@ individuals tend to drop out in a consistent, time-ordered manner.
 However, it is not suitable for datasets with non-monotonic missingness,
 such as VITAL, where some individuals may have missing values at
 intermediate time points but return for later follow-ups. In such cases,
-more flexible approaches like Joint Modeling or Fully Conditional
-Specification (FCS) are required to properly handle the complex,
+more flexible approaches like Joint Modeling or FCS are required to properly handle the complex,
 arbitrary missing data structure.
 
 #### Joint modelling
@@ -947,7 +944,7 @@ fraction of missing information for the parameter of interest.
 Unfortunately, $\gamma_{0}$ is typically unknown in advance, including
 in our project.
 
-To address this, Bodner (2008) proposed a simple and conservative
+To address this, [@white_multiple_2011-1] proposed a simple and conservative
 strategy: using the proportion of complete cases in the dataset as a
 proxy for $1-\gamma_{0}$, thereby estimating $\gamma_{0}$
 conservatively. This approach allows for an informed yet practical
@@ -964,7 +961,7 @@ following sessions.
 
 The classic advice for multiple imputation is to use a low number of
 imputations, typically between 3 and 5, when the proportion of missing
-information is moderate. As discussed in Rubin (1987), the argument for
+information is moderate. As discussed in [@noauthor_rubin1987_1987], the argument for
 choosing a small K is based on the total variance
 estimate:$T_{K} = (1 + \frac{\gamma0}{K}) T_{\infty}$
 
@@ -989,16 +986,16 @@ While early guidelines recommended using a low number of imputations
 that increasing K beyond this range can yield important gains in
 statistical efficiency.
 
--   Royston (2004) suggested that to constrain the coefficient of
+-   [@royston_royston2004multiple_2004] suggested that to constrain the coefficient of
     variation of $ln(t_{\nu}\sqrt{T})$ to below 0.05—effectively keeping
     the width of confidence intervals within about 10% uncertainty, a
     minimum of K\>20 is required. Here, $t_{\nu}$ is the quantile from a 
     t-distribution with ${\nu}$ degrees of freedom, reflecting the uncertainty
     from finite imputations, and $T$ is the total variance combining within- 
     and between-imputation components.
--   Graham (2007) argued that to achieve statistical power within 1% of
+-   [@graham_how_2007] argued that to achieve statistical power within 1% of
     the theoretical maximum, researchers should use at least K=20.
--   Bodner (2008) examined how the number of imputations relates to the
+-   [@bodner_bodner2008what_2008] examined how the number of imputations relates to the
     fraction of missing information $\gamma_{0}$, and its effect on
     p-values and confidence intervals. He recommended increasing
     $K=(3,6,12,24,59,114,258)$ for $\gamma0=(0.1, 0.3, 0.5, 0.7, 0.9)$
@@ -1025,7 +1022,7 @@ processing time.
 
 $K \approx 100\lambda$
 
-A widely cited rule of thumb proposed by White, Royston, and Wood (2011)
+A widely cited rule of thumb proposed by [@white_multiple_2011-1]
 recommends choosing the number of imputations based on the fraction of
 incomplete cases in the dataset, denoted as $\lambda$. Specifically,
 they suggest setting:$K \approx 100\lambda$
@@ -1092,63 +1089,6 @@ modeling of time. Specifically, it enables us to treat time as a
 continuous variable, rather than as a categorical factor, which can
 improve interpretability and statistical power. This modeling choice
 will be explored further in a later section.
-
-## Data wrangling
-
-The VITAL dataset was originally in wide format, which is not suitable
-for methods like linear mixed-effects models (LME) that require
-long-format data. To address this, the data was reshaped to long format
-
-In the case of multiple imputation (MI), imputation was first performed
-on the wide-format data using the mice() function. The resulting imputed
-datasets were then combined and transformed to long format, allowing for
-the inclusion of time as a continuous variable. This approach enables
-the application of LME as the substantive model, which effectively
-accounts for repeated measurements over time. Moreover, it accommodates
-more flexible timing of follow-up assessments.
-
-One of the challenge when we want to do MI and then fit into LME as substantiv model is that. We can only fit long format into LME, but doing imputation with long format will treat each observation as individual which is incorrect. So we use the wide format to do MI first, then change to LME. Below is a simple schema to illustrate the process (Outcome1/2/3 indicates outcome at differnt time point, and x indicates missing data).
-
-Data in wide format:
-
-|ID|Outcome1|Outcome2|Outcome3|
-|---|---|---|---|
-|1001|2.5|3.5|x|
-|1002|4.5|x|6.3|
-|1003|3.3|6.2|8.1|
-
-Completed data after MI in wide format:
-
-|ID|Outcome1|Outcome2|Outcome3|
-|---|---|---|---|
-|1001|2.5|3.5|4.5|
-|1002|4.5|5.2|6.3|
-|1003|3.3|6.2|8.1|
-
-Transfored completed data in long format:
-
-|DI|Time|Outcome|
-|---|---|---|
-|1001|1|2.5|
-|1001|2|3.5|
-|1001|3|4.5|
-|1002|1|4.5|
-|1002|2|5.2|
-|1002|3|6.3|
-|1003|1|3.3|
-|1003|2|6.2|
-|1003|3|8.1|
-
-Comments
-
-Why just refer to the VITAL dataset and how the original format here? 
-
-You should raise the general point that the data can be represented in both wide and long format for both studies, and you will need to interchange between the two depending on the substantive model and the missing data method i.e. imputation method to be used.
-
-It's also crucial to highlight the longitudinal design of both studies is balanced, i.e. there was a planned, equal number of follow-up measurements at roughly fixed time points. This will make these studies amenable to a more straightforward imputation of partially observed follow-up variables as part of a multivariate distribution.
-
-In our project, both dataset have balanced longitudianal design. Which is not always the case and could complex the analysis. This make our analysis 
-a more straightforward imputation of partially observed follow-up variables as part of a multivariate distribution.
 
 ## Data Wrangling
 
