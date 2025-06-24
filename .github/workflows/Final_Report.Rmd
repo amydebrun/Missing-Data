@@ -464,18 +464,24 @@ models. The below table shows the sample size per treatment group.
 There are x variables recorded in the VITAL data, the following table
 refers to a subset of the variables that we frequently use.
 
-```{r fig.align='center'}
+```{r fig.align='center', results='asis', echo=FALSE}
+
 vital_var_table <- tibble(
   `Variable` = c(
-    "Subject_ID","age", "bmi", "sex", "vitdactive", "fishoilactive", "pain_base", "pain_yrX", "stiffness_base", "stiffness_yrX", "function_base", 
-    "function_yrX", "kneepainfreq"
+    "\\texttt{Subject\\_ID}", "age", "bmi", "sex", "vitdactive", "fishoilactive",
+    "\\texttt{pain\\_base}", "\\texttt{pain\\_yrX}", "\\texttt{stiffness\\_base}", 
+    "\\texttt{stiffness\\_yrX}", "\\texttt{function\\_base}", "\\texttt{function\\_yrX}", 
+    "kneepainfreq"
   ),
-  `Description` = c("Patient ID code", "Age of patient", "Body mass index of patient", "Sex of patient", 
-  "1=vitamin D, 0=no vitamin D", "1= fish oil, 0= no fish oil",
-  "Knee pain at baseline", "Knee pain X years post randomisation", 
-  "Knee stiffness at baseline", "Knee stiffness X years post randomisation", "Knee function at baseline",
-  "Knee function X years post randomisation", "Frequency of knee pain"
-))
+  `Description` = c(
+    "Patient ID code", "Age of patient", "Body mass index of patient", "Sex of patient", 
+    "1=vitamin D, 0=no vitamin D", "1= fish oil, 0= no fish oil",
+    "Knee pain at baseline", "Knee pain X years post randomisation", 
+    "Knee stiffness at baseline", "Knee stiffness X years post randomisation", 
+    "Knee function at baseline", "Knee function X years post randomisation", 
+    "Frequency of knee pain"
+  )
+)
 
 cat("\\begin{table}[H]
 \\centering
@@ -495,7 +501,7 @@ print(
 cat("\\end{table}")
 ```
 
-```{r results= 'asis', warning = FALSE}
+```{r results= 'asis', warning = FALSE, eval=FALSE}
 print(vital_summary)
 ```
 
