@@ -162,6 +162,36 @@ acu_pk5_plot<-ggplot(acu_wide, aes(x = pk5)) +
     plot.background = element_rect(fill = "white", color = NA)  
   )
 
+# Combining
+acu_longer <- acu_wide %>%
+  select(group, pk1, pk2, pk5) %>%
+  pivot_longer(
+    cols = c(pk1, pk2, pk5),
+    names_to = "timepoint",
+    values_to = "score"
+  )
+acu_pk125_plot <- ggplot(acu_longer, aes(x = score)) +
+  geom_histogram(binwidth = 2, fill = "#a80050", color = "black", alpha = 0.8) +
+  facet_grid(timepoint ~ group,
+             labeller = labeller(
+               timepoint = c(
+                 "pk1" = "Baseline",
+                 "pk2" = "3 months",
+                 "pk5" = "1 year"
+               ),
+               group = c("0" = "Control", "1" = "Acupuncture")
+             )) +
+  labs(x = "Headache score", y = "Count") +
+  theme_minimal() +
+  theme(
+    strip.background = element_rect(fill = "lawngreen", color = "black"),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA),
+    legend.position = "none"
+  )
+
+
 
 ## Basics of VITAL dataset
 
@@ -397,6 +427,51 @@ pain_yr4_vital_plot<-vital_wide %>%
     plot.background = element_rect(fill = "white", color = NA)
   )
 
+# Combine
 
+vital_pain_longer <- vital_wide %>%
+  mutate(
+    treatment = case_when(
+      vitdactive == 1 & fishoilactive == 0 ~ "Vitamin D",
+      fishoilactive == 1 & vitdactive == 0 ~ "Fish Oil",
+      vitdactive == 0 & fishoilactive == 0 ~ "Control",
+      vitdactive == 1 & fishoilactive == 1 ~ "Both Treatment"
+    )
+  ) %>%
+  pivot_longer(
+    cols = starts_with("pain_"),
+    names_to = "timepoint",
+    values_to = "pain_score"
+  ) %>%
+  mutate(
+    timepoint = recode(
+      timepoint,
+      "pain_base" = "Baseline",
+      "pain_yr1" = "Year 1",
+      "pain_yr2" = "Year 2",
+      "pain_yr3" = "Year 3",
+      "pain_yr4" = "Year 4"
+    ),
+    timepoint = factor(timepoint, levels = c("Baseline", "Year 1", "Year 2", "Year 3", "Year 4"))
+  )
+
+vital_pain_plot <- ggplot(vital_pain_longer, aes(x = pain_score)) +
+  geom_histogram(binwidth = 3, fill = "#a80050", color = "black", alpha = 0.8) +
+  facet_grid(rows = vars(timepoint), cols = vars(treatment)) +
+  labs(
+    title = "",
+    x = "Knee Pain Score",
+    y = "Count"
+  ) +
+  theme_minimal() +
+  theme(
+    strip.background = element_rect(fill = "lawngreen", color = "black"),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+# Display the plot
+vital_pain_plot
 
 

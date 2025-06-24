@@ -253,6 +253,7 @@ save(
   acu_plot_compare,
   acu_plot_imp,
   acu_plot_imp_k,
+  acu_pk125_plot,
 
   # VITAL plots
   sex_vital_plot,
@@ -270,6 +271,7 @@ save(
   vital_plot_compare,
   vital_plot_impt,
   vital_plot_impt_k,
+  vital_pain_plot,
 
   # File path
   file = "report_plots1.RData"
