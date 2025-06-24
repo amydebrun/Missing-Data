@@ -204,11 +204,11 @@ missingness indicator is influenced by the missing outcome data. The
 second DAG shows MNAR conditional on $X_2$ only as it influences the
 missingness indicator $R_Y$ along with the missing outcome.
 
-```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="Missing not at Random conditional on L, X_1 and X_2"}
+```{r fig.width=5, fig.height=3, echo=FALSE, fig.cap="Missing not at Random conditional on L, X_1 and X_2"}
 MNAR_dag1
 ```
 
-```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="Missing at Random conditional on L, X_2"}
+```{r fig.width=5, fig.height=3, echo=FALSE, fig.cap="Missing at Random conditional on L, X_2"}
 MNAR_dag2
 ```
 
@@ -402,26 +402,9 @@ print(acu_sex_plot)
 print(acu_age_plot)
 ```
 
-```{r fig.width=5, fig.height=2.5, warning=FALSE}
-print(acu_pk1_plot)
+```{r fig.width=5, fig.height=2.5, warning=FALSE, fig.cap="These plots show the distribution of the headache severity score at the three measured time-points. Over the three time-points we can see a generally positively skewed distribution with most headache severity scores ranging between 0 and 35. There appears to be minimal difference in headache severity score over the treatment group, and the control group appears to have a lower headache severity score overall. The 3 month and 12 month time-point distributions are incomplete due to the missing values."}
+print(acu_pk125_plot)
 ```
-
-```{r fig.width=5, fig.height=2.5, warning=FALSE}
-print(acu_pk2_plot)
-```
-
-```{r fig.width=5, fig.height=2.5, warning=FALSE}
-print(acu_pk5_plot)
-```
-
-Figure 2.x,2.x,2.x: These plots show the distribution of the headache
-severity score at the three measured time-points. Over the three
-time-points we can see a generally positively skewed distribution with
-most headache severity scores ranging between 0 and 35. There appears to
-be minimal difference in headache severity score over the treatment
-group, and the control group appears to have a lower headache severity
-score overall. The 3 month and 12 month time-point distributions are
-incomplete due to the missing values.
 
 ## VITAL data
 
@@ -521,32 +504,9 @@ print(bmi_vital_plot)
 print(sex_vital_plot)
 ```
 
-```{r fig.width=4, fig.height=2.5, warning=FALSE}
-print(pain_base_vital_plot)
+```{r fig.width=4, fig.height=2.5, warning=FALSE, fig.cap="The distribution of the knee pain from baseline until 4 years post randomisation. In all treatment groups it appears that the distributions follow a positive/ near normal distribution and skews more positive as time goes on. This occurs in all groups. Each time-point has an incomplete distribution due to missing data."}
+print(vital_pain_plot)
 ```
-
-```{r fig.width=4, fig.height=2.5, warning=FALSE}
-print(pain_yr1_vital_plot)
-```
-
-```{r fig.width=4, fig.height=2.5, warning=FALSE}
-print(pain_yr2_vital_plot)
-```
-
-```{r fig.width=4, fig.height=2.5, warning=FALSE}
-print(pain_yr3_vital_plot)
-```
-
-```{r fig.width=4, fig.height=2.5, warning=FALSE}
-print(pain_yr4_vital_plot)
-```
-
-Figure 2.x,2.x,2.x,2.x,2.x shows the distribution of the knee pain from
-baseline until 4 years post randomisation. In all treatment groups it
-appears that the distributions follow a positive/ near normal
-distribution and skews more positive as time goes on. This occurs in all
-groups. Each time-point has an incomplete distribution due to missing
-data.
 
 \newpage
 
