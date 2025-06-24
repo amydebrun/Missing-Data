@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.6.15)  24 JUN 2025 12:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.6.15)  24 JUN 2025 13:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -421,13 +421,47 @@ Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
 \rotheadsize=\dimen196
 \c@nlinenum=\count328
 \TeXr@lab=\toks34
+) (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2023/08/05 v3.6o Customizing captions (AR)
+(c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
+\caption@tempdima=\dimen197
+\captionmargin=\dimen198
+\caption@leftmargin=\dimen199
+\caption@rightmargin=\dimen256
+\caption@width=\dimen257
+\caption@indent=\dimen258
+\caption@parindent=\dimen259
+\caption@hangindent=\dimen260
+Package caption Info: Standard document class detected.
 )
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 134.
+\c@caption@flags=\count329
+\c@continuedfloat=\count330
+Package caption Info: float package is loaded.
+Package caption Info: hyperref package is loaded.
+Package caption Info: longtable package is loaded.
+(c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
+)) (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/colortbl/colortbl.sty
+Package: colortbl 2024/10/29 v1.0k Color table columns (DPC)
+\everycr=\toks35
+\minrowclearance=\skip87
+\rownum=\count331
+) (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/anyfontsize/anyfontsize.sty
+Package: anyfontsize 2007/11/22 anyfontsize.sty by pts
+) (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/multirow/multirow.sty
+Package: multirow 2024/11/12 v2.9 Span multiple rows of a table
+\multirow@colwidth=\skip88
+\multirow@cntb=\count332
+\multirow@dima=\skip89
+\bigstrutjot=\dimen261
+)
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 141.
 (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-04-14 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count329
+\l__color_backend_stack_int=\count333
 ) (./Final_Report.aux
 
 LaTeX Warning: Label `' multiply defined.
@@ -438,24 +472,24 @@ LaTeX Warning: Label `' multiply defined.
 )
 \openout1 = `Final_Report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -522,18 +556,18 @@ LaTeX Font Info:    ... okay on input line 134.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 134.
+Package hyperref Info: Link coloring OFF on input line 141.
 (./Final_Report.out) (./Final_Report.out)
 \@outlinefile=\write4
 \openout4 = `Final_Report.out'.
 
-LaTeX Info: Redefining \microtypecontext on input line 134.
-Package microtype Info: Applying patch `item' on input line 134.
-Package microtype Info: Applying patch `toc' on input line 134.
-Package microtype Info: Applying patch `eqnum' on input line 134.
-Package microtype Info: Applying patch `footnote' on input line 134.
-Package microtype Info: Applying patch `verbatim' on input line 134.
-LaTeX Info: Redefining \microtypesetup on input line 134.
+LaTeX Info: Redefining \microtypecontext on input line 141.
+Package microtype Info: Applying patch `item' on input line 141.
+Package microtype Info: Applying patch `toc' on input line 141.
+Package microtype Info: Applying patch `eqnum' on input line 141.
+Package microtype Info: Applying patch `footnote' on input line 141.
+Package microtype Info: Applying patch `verbatim' on input line 141.
+LaTeX Info: Redefining \microtypesetup on input line 141.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -544,7 +578,7 @@ Package microtype Info: Using default expansion set `alltext-nott'.
 LaTeX Warning: Command \showhyphens   has changed.
                Check if current package is valid.
 
-LaTeX Info: Redefining \showhyphens on input line 134.
+LaTeX Info: Redefining \showhyphens on input line 141.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -556,47 +590,49 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
 (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
 Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/lmr/m/sc/17.28'.
 (microtype)             Ignoring protrusion settings for this character.
 Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/lmr/m/sc/10'.
 (microtype)             Ignoring protrusion settings for this character.
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 136.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 143.
 (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 136.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 143.
 (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 136.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 143.
 (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 136.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 143.
 (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 136.
+(Font)              <10> on input line 143.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 136.
+(Font)              <7> on input line 143.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 136.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 136.
+(Font)              <5> on input line 143.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 143.
 (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 136.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 143.
 (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 136.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 143.
 (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -606,7 +642,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             See the microtype manual for details.
 
 LaTeX Font Warning: Font shape `T1/lmr/bx/sc' undefined
-(Font)              using `T1/lmr/bx/n' instead on input line 138.
+(Font)              using `T1/lmr/bx/n' instead on input line 145.
 
 
 
@@ -614,7 +650,7 @@ LaTeX Font Warning: Font shape `T1/lmr/bx/sc' undefined
 
 
 {c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 241.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 248.
 (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -622,307 +658,192 @@ File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/lmr/m/sc/9'.
 (microtype)             Ignoring protrusion settings for this character.
-[2{c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}]
-<Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf, id=168, 361.35pt x 289.08pt>
+[2{c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
+<Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf, id=166, 361.35pt x 289.08pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf  used on input line 285.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf  used on input line 295.
 (pdftex.def)             Requested size: 361.34912pt x 289.07928pt.
-<Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf, id=169, 361.35pt x 289.08pt>
+
+
+[3{c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc} <./Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf>]
+<Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf, id=181, 361.35pt x 289.08pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf  used on input line 312.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf  used on input line 328.
 (pdftex.def)             Requested size: 361.34912pt x 289.07928pt.
-
-
-[3
-pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.314 \end{figure}
-                   <./Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf>]
 <Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf, id=182, 361.35pt x 289.08pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf  used on input line 318.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf  used on input line 337.
 (pdftex.def)             Requested size: 361.34912pt x 289.07928pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[4
-pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.321 
-       <./Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf>]
-<Final_Report_files/figure-latex/unnamed-chunk-4-1.pdf, id=194, 361.35pt x 216.81pt>
+[4 <./Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf>]
+
+[5 <./Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf>]
+<Final_Report_files/figure-latex/unnamed-chunk-4-1.pdf, id=204, 361.35pt x 289.08pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-4-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-4-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-4-1.pdf  used on input line 343.
-(pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-[5
-pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.346 
-       <./Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf>]
-<Final_Report_files/figure-latex/unnamed-chunk-5-1.pdf, id=205, 361.35pt x 216.81pt>
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-4-1.pdf  used on input line 368.
+(pdftex.def)             Requested size: 361.34912pt x 289.07928pt.
+<Final_Report_files/figure-latex/unnamed-chunk-5-1.pdf, id=205, 361.35pt x 289.08pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-5-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-5-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-5-1.pdf  used on input line 349.
-(pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-5-1.pdf  used on input line 377.
+(pdftex.def)             Requested size: 361.34912pt x 289.07928pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
-[6
-pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.380 
-      
-pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.380 
-       <./Final_Report_files/figure-latex/unnamed-chunk-4-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-5-1.pdf>]
-Overfull \hbox (23.95049pt too wide) in paragraph at lines 395--405
+
+[6 <./Final_Report_files/figure-latex/unnamed-chunk-4-1.pdf>]
+
+[7 <./Final_Report_files/figure-latex/unnamed-chunk-5-1.pdf>]
+Overfull \hbox (23.95045pt too wide) in paragraph at lines 427--437
  [][] 
  []
 
 
 
-[7
-pdfTeX warning (ext4): destination with the same identifier (name{table.1}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.438 \newpage
-              ]
+[8]
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf, id=229, 361.35pt x 216.81pt>
+[9]
+<Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf, id=239, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf  used on input line 555.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf  used on input line 588.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-[8
-pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.559 
-      ]
-<Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf, id=236, 361.35pt x 216.81pt>
+<Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf, id=240, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 562.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 596.
+(pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
+<Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf, id=241, 361.35pt x 216.81pt>
+File: Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf Graphic file (type pdf)
+<use Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf>
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf  used on input line 604.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[9
-pdfTeX warning (ext4): destination with the same identifier (name{table.3}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.567 
-      
-pdfTeX warning (ext4): destination with the same identifier (name{figure.6}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.567 
-       <./Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf>]
-<Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf, id=249, 361.35pt x 180.675pt>
-File: Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf Graphic file (type pdf)
-<use Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf  used on input line 570.
-(pdftex.def)             Requested size: 361.34912pt x 180.67455pt.
+[10 <./Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf>]
 
+[11 <./Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf>]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <12> on input line 691.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 691.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 691.
 
-[10
-pdfTeX warning (ext4): destination with the same identifier (name{figure.7}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.611 
-      
-pdfTeX warning (ext4): destination with the same identifier (name{figure.8}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.611 
-       <./Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf>]
-Overfull \hbox (19.68182pt too wide) in paragraph at lines 660--706
- [][] 
+Overfull \hbox (279.76387pt too wide) in alignment at lines 691--755
+[] [] [] [] [] 
  []
 
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+Underfull \hbox (badness 10000) in paragraph at lines 757--758
 
-<Final_Report_files/figure-latex/unnamed-chunk-14-1.pdf, id=272, 361.35pt x 216.81pt>
+ []
+
+
+LaTeX Warning: Float too large for page by 249.49411pt on input line 759.
+
+<Final_Report_files/figure-latex/unnamed-chunk-14-1.pdf, id=276, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-14-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-14-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-14-1.pdf  used on input line 714.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-14-1.pdf  used on input line 770.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-[11
-pdfTeX warning (ext4): destination with the same identifier (name{table.5}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.720 
-      ]
-<Final_Report_files/figure-latex/unnamed-chunk-15-1.pdf, id=279, 361.35pt x 216.81pt>
+<Final_Report_files/figure-latex/unnamed-chunk-15-1.pdf, id=277, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-15-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-15-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-15-1.pdf  used on input line 723.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-15-1.pdf  used on input line 778.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 2126) has occurred while \output is active []
 
 
 
-[12
-pdfTeX warning (ext4): destination with the same identifier (name{table.6}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.729 
-      
-pdfTeX warning (ext4): destination with the same identifier (name{figure.9}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.729 
-       <./Final_Report_files/figure-latex/unnamed-chunk-14-1.pdf>]
-<Final_Report_files/figure-latex/unnamed-chunk-16-1.pdf, id=294, 289.08pt x 216.81pt>
+[12]
+<Final_Report_files/figure-latex/unnamed-chunk-16-1.pdf, id=284, 289.08pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-16-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-16-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-16-1.pdf  used on input line 732.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-16-1.pdf  used on input line 786.
 (pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
-<Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf, id=295, 289.08pt x 180.675pt>
-File: Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf Graphic file (type pdf)
-<use Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf  used on input line 741.
-(pdftex.def)             Requested size: 289.07928pt x 180.67455pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[13
-pdfTeX warning (ext4): destination with the same identifier (name{figure.10}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.748 
-      
-pdfTeX warning (ext4): destination with the same identifier (name{figure.11}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.748 
-       <./Final_Report_files/figure-latex/unnamed-chunk-15-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-16-1.pdf>]
+[13 <./Final_Report_files/figure-latex/unnamed-chunk-14-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-15-1.pdf>]
+<Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf, id=308, 289.08pt x 289.08pt>
+File: Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf Graphic file (type pdf)
+<use Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf>
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf  used on input line 795.
+(pdftex.def)             Requested size: 289.07928pt x 289.07928pt.
 
-[14
-pdfTeX warning (ext4): destination with the same identifier (name{figure.12}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.749 \newpage
-               <./Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf>]
-<Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf, id=330, 361.35pt x 216.81pt>
+
+[14 <./Final_Report_files/figure-latex/unnamed-chunk-16-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf>]
+<Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf, id=329, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf  used on input line 764.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf  used on input line 818.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
-<Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf, id=331, 361.35pt x 216.81pt>
+<Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf, id=330, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf  used on input line 775.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf  used on input line 829.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 
-Underfull \vbox (badness 1527) has occurred while \output is active []
+Underfull \vbox (badness 3058) has occurred while \output is active []
 
 
 
-[15
-pdfTeX warning (ext4): destination with the same identifier (name{figure.13}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.786 
-      
-pdfTeX warning (ext4): destination with the same identifier (name{figure.14}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.786 
-       <./Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf>]
-<Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf, id=348, 361.35pt x 216.81pt>
+[15 <./Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf>]
+<Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf, id=347, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf  used on input line 789.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf  used on input line 843.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
-<Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf, id=349, 361.35pt x 216.81pt>
+<Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf, id=348, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf  used on input line 805.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf  used on input line 859.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 
-Underfull \vbox (badness 7595) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[16
-pdfTeX warning (ext4): destination with the same identifier (name{figure.15}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.815 
-      
-pdfTeX warning (ext4): destination with the same identifier (name{figure.16}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.815 
-       <./Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf>]
-<Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf, id=366, 361.35pt x 216.81pt>
+[16 <./Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf>]
+<Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf, id=365, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf  used on input line 818.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf  used on input line 874.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
-<Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf, id=367, 433.62pt x 686.565pt>
+<Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf, id=366, 433.62pt x 686.565pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf  used on input line 832.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf  used on input line 890.
 (pdftex.def)             Requested size: 433.61894pt x 686.56332pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[17
-pdfTeX warning (ext4): destination with the same identifier (name{figure.17}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.835 
-       <./Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf>]
-Overfull \vbox (56.02776pt too high) has occurred while \output is active []
+[17 <./Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf>]
+Overfull \vbox (54.08331pt too high) has occurred while \output is active []
 
 
 
-[18
-pdfTeX warning (ext4): destination with the same identifier (name{figure.18}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.835 
-       <./Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf>]
+[18 <./Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf>]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 864.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 925.
 
 
 [19]
@@ -950,12 +871,12 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [27]
 
 [28]
-Overfull \hbox (249.1612pt too wide) detected at line 1812
+Overfull \hbox (249.1612pt too wide) detected at line 1873
 \OML/lmm/m/it/10 pain[] \OT1/lmr/m/n/10 = \OML/lmm/m/it/10 ^^L[] \OT1/lmr/m/n/10 + \OML/lmm/m/it/10 ^^L[]fishoilactive[] \OT1/lmr/m/n/10 + \OML/lmm/m/it/10 ^^L[]vitdactive[] \OT1/lmr/m/n/10 + \OML/lmm/m/it/10 ^^L[]time[] \OT1/lmr/m/n/10 + \OML/lmm/m/it/10 ^^L[]\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 fishoilactive[] \OMS/lmsy/m/n/10 ^^B \OML/lmm/m/it/10 time[]\OT1/lmr/m/n/10 ) + \OML/lmm/m/it/10 ^^L[]\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 vitdactive[] \OMS/lmsy/m/n/10 ^^B \OML/lmm/m/it/10 time[]\OT1/lmr/m/n/10 ) + \OML/lmm/m/it/10 ^^L[]painbase[] \OT1/lmr/m/n/10 + \OML/lmm/m/it/10 b[] \OT1/lmr/m/n/10 + \OML/lmm/m/it/10 b[]time[] \OT1/lmr/m/n/10 + \OML/lmm/m/it/10 "[]
  []
 
 
-Underfull \hbox (badness 1019) in paragraph at lines 1868--1873
+Underfull \hbox (badness 1019) in paragraph at lines 1929--1934
 []\T1/lmr/m/n/10 (+20) To ac-count for un-cer-tainty in the out-come, we adds ran-dom noise to the re-gres-sion pre-dic-tion
  []
 
@@ -964,39 +885,39 @@ Underfull \hbox (badness 1019) in paragraph at lines 1868--1873
 [29]
 
 [30]
-Underfull \hbox (badness 10000) in paragraph at lines 1959--1969
+Underfull \hbox (badness 10000) in paragraph at lines 2020--2030
 []\T1/lmr/m/it/10 (+20) Original Es-ti-mand \T1/lmr/m/n/10 (+20) - $\OML/lmm/m/it/10 ^^N[] \OT1/lmr/m/n/10 (+20) = \OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 (+20) 6\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (+20) 859139\OML/lmm/m/it/10 ; \OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 (+20) 3\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (+20) 429569\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (+20) 0\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (+20) 3\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (+20) 429569\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (+20) 6\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (+20) 859139$ \T1/lmr/m/n/10 (+20) -
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1959--1969
+Underfull \hbox (badness 10000) in paragraph at lines 2020--2030
 \OML/lmm/m/it/10 ^^N[] \OT1/lmr/m/n/10 (+20) = \OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 (+20) 8\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (+20) 505446\OML/lmm/m/it/10 ; \OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 (+20) 4\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (+20) 252723\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (+20) 0\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (+20) 4\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (+20) 252723\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (+20) 8\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (+20) 505446$ \T1/lmr/m/n/10 (+20) - $\OML/lmm/m/it/10 ^^N[] \OT1/lmr/m/n/10 (+20) =
  []
 
 
-Overfull \hbox (5.66774pt too wide) in paragraph at lines 1959--1969
+Overfull \hbox (5.66774pt too wide) in paragraph at lines 2020--2030
 \OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 (-20) 9\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (-20) 569774\OML/lmm/m/it/10 ; \OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 (-20) 4\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (-20) 784887\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (-20) 0\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (-20) 4\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (-20) 784887\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (-20) 9\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (-20) 569774$ \T1/lmr/m/n/10 (-20) - $\OML/lmm/m/it/10 ^^N[] \OT1/lmr/m/n/10 (-20) = \OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 (-20) 9\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (-20) 624281\OML/lmm/m/it/10 ; \OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 (-20) 4\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (-20) 812141\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (-20) 0\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (-20) 4\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (-20) 812141\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (-20) 9\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (-20) 624281$
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1970--1980
+Underfull \hbox (badness 10000) in paragraph at lines 2031--2041
 []\T1/lmr/m/it/10 (+20) Changed Es-ti-mand \T1/lmr/m/n/10 (+20) - $\OML/lmm/m/it/10 ^^N[] \OT1/lmr/m/n/10 (+20) = \OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 (+20) 7\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (+20) 397829\OML/lmm/m/it/10 ; \OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 (+20) 3\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (+20) 698915\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (+20) 0\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (+20) 3\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (+20) 698915\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (+20) 7\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (+20) 397829$ \T1/lmr/m/n/10 (+20) -
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1970--1980
+Underfull \hbox (badness 10000) in paragraph at lines 2031--2041
 \OML/lmm/m/it/10 ^^N[] \OT1/lmr/m/n/10 (+20) = \OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 (+20) 8\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (+20) 660196\OML/lmm/m/it/10 ; \OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 (+20) 4\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (+20) 330098\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (+20) 0\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (+20) 4\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (+20) 330098\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (+20) 8\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (+20) 660196$ \T1/lmr/m/n/10 (+20) - $\OML/lmm/m/it/10 ^^N[] \OT1/lmr/m/n/10 (+20) =
  []
 
 
-Overfull \hbox (7.99373pt too wide) in paragraph at lines 1970--1980
+Overfull \hbox (7.99373pt too wide) in paragraph at lines 2031--2041
 \OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 (-20) 9\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (-20) 783807\OML/lmm/m/it/10 ; \OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 (-20) 4\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (-20) 891904\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (-20) 0\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (-20) 4\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (-20) 891904\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (-20) 9\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (-20) 783807$ \T1/lmr/m/n/10 (-20) - $\OML/lmm/m/it/10 ^^N[] \OT1/lmr/m/n/10 (-20) = \OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 (-20) 9\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (-20) 967777\OML/lmm/m/it/10 ; \OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 (-20) 4\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (-20) 983889\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (-20) 0\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (-20) 4\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (-20) 983889\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (-20) 9\OML/lmm/m/it/10 :\OT1/lmr/m/n/10 (-20) 967777$
  []
 
 
 
 [31]
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 2012.
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 2073.
 (c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1010,10 +931,10 @@ Package microtype Info: Character `texttrademark ' is missing
 
 
 [32]
-<Final_Report_files/figure-latex/unnamed-chunk-28-1.pdf, id=486, 361.35pt x 216.81pt>
+<Final_Report_files/figure-latex/unnamed-chunk-28-1.pdf, id=485, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-28-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-28-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-28-1.pdf  used on input line 2140.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-28-1.pdf  used on input line 2201.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1021,208 +942,130 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 [33]
-<Final_Report_files/figure-latex/unnamed-chunk-29-1.pdf, id=491, 361.35pt x 216.81pt>
+<Final_Report_files/figure-latex/unnamed-chunk-29-1.pdf, id=490, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-29-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-29-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-29-1.pdf  used on input line 2150.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-29-1.pdf  used on input line 2211.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
-<Final_Report_files/figure-latex/unnamed-chunk-30-1.pdf, id=492, 361.35pt x 216.81pt>
+<Final_Report_files/figure-latex/unnamed-chunk-30-1.pdf, id=491, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-30-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-30-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-30-1.pdf  used on input line 2165.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-30-1.pdf  used on input line 2226.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 
 Underfull \vbox (badness 2088) has occurred while \output is active []
 
 
 
-[34
-pdfTeX warning (ext4): destination with the same identifier (name{figure.19}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2174 \end{figure}
-                   
-pdfTeX warning (ext4): destination with the same identifier (name{figure.20}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2174 \end{figure}
-                    <./Final_Report_files/figure-latex/unnamed-chunk-28-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-29-1.pdf>]
-<Final_Report_files/figure-latex/unnamed-chunk-31-1.pdf, id=509, 361.35pt x 216.81pt>
+[34 <./Final_Report_files/figure-latex/unnamed-chunk-28-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-29-1.pdf>]
+<Final_Report_files/figure-latex/unnamed-chunk-31-1.pdf, id=508, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-31-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-31-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-31-1.pdf  used on input line 2178.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-31-1.pdf  used on input line 2239.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 
 
-[35
-pdfTeX warning (ext4): destination with the same identifier (name{figure.21}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2195 W
-        e first compared different imputation methods within the FCS framework,
-pdfTeX warning (ext4): destination with the same identifier (name{figure.22}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2195 W
-        e first compared different imputation methods within the FCS framework, <./Final_Report_files/figure-latex/unnamed-chunk-30-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-31-1.pdf>]
-<Final_Report_files/figure-latex/unnamed-chunk-32-1.pdf, id=526, 361.35pt x 216.81pt>
+[35 <./Final_Report_files/figure-latex/unnamed-chunk-30-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-31-1.pdf>]
+<Final_Report_files/figure-latex/unnamed-chunk-32-1.pdf, id=525, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-32-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-32-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-32-1.pdf  used on input line 2200.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-32-1.pdf  used on input line 2261.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
-<Final_Report_files/figure-latex/unnamed-chunk-33-1.pdf, id=527, 361.35pt x 216.81pt>
+<Final_Report_files/figure-latex/unnamed-chunk-33-1.pdf, id=526, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-33-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-33-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-33-1.pdf  used on input line 2206.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-33-1.pdf  used on input line 2267.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
-<Final_Report_files/figure-latex/unnamed-chunk-34-1.pdf, id=528, 361.35pt x 216.81pt>
+<Final_Report_files/figure-latex/unnamed-chunk-34-1.pdf, id=527, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-34-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-34-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-34-1.pdf  used on input line 2217.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-34-1.pdf  used on input line 2278.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
 
-Underfull \vbox (badness 3657) has occurred while \output is active []
+Underfull \vbox (badness 5302) has occurred while \output is active []
 
 
 
-[36
-pdfTeX warning (ext4): destination with the same identifier (name{figure.23}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2221 
-       
-pdfTeX warning (ext4): destination with the same identifier (name{figure.24}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2221 
-        <./Final_Report_files/figure-latex/unnamed-chunk-32-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-33-1.pdf>]
-<Final_Report_files/figure-latex/unnamed-chunk-35-1.pdf, id=545, 361.35pt x 216.81pt>
+[36 <./Final_Report_files/figure-latex/unnamed-chunk-32-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-33-1.pdf>]
+<Final_Report_files/figure-latex/unnamed-chunk-35-1.pdf, id=544, 361.35pt x 216.81pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-35-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-35-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-35-1.pdf  used on input line 2224.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-35-1.pdf  used on input line 2285.
 (pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
-<Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf, id=546, 361.35pt x 289.08pt>
+<Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf, id=545, 361.35pt x 289.08pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf  used on input line 2232.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf  used on input line 2293.
 (pdftex.def)             Requested size: 361.34912pt x 289.07928pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[37
-pdfTeX warning (ext4): destination with the same identifier (name{figure.25}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2235 
-       
-pdfTeX warning (ext4): destination with the same identifier (name{figure.26}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2235 
-        <./Final_Report_files/figure-latex/unnamed-chunk-34-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-35-1.pdf>]
-<Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf, id=565, 361.35pt x 289.08pt>
+[37 <./Final_Report_files/figure-latex/unnamed-chunk-34-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-35-1.pdf>]
+<Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf, id=564, 361.35pt x 289.08pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf  used on input line 2238.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf  used on input line 2299.
 (pdftex.def)             Requested size: 361.34912pt x 289.07928pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[38
-pdfTeX warning (ext4): destination with the same identifier (name{figure.27}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2241 
-        <./Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf>]
+[38 <./Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf>]
 
-[39
-pdfTeX warning (ext4): destination with the same identifier (name{figure.28}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2269 \newpage
-                <./Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf>]
-<Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf, id=586, 289.08pt x 144.54pt>
+[39 <./Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf>]
+<Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf, id=585, 289.08pt x 144.54pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf  used on input line 2273.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf  used on input line 2334.
 (pdftex.def)             Requested size: 289.07928pt x 144.53963pt.
-<Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf, id=587, 289.08pt x 144.54pt>
+<Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf, id=586, 289.08pt x 144.54pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf  used on input line 2279.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf  used on input line 2340.
 (pdftex.def)             Requested size: 289.07928pt x 144.53963pt.
-<Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf, id=588, 289.08pt x 144.54pt>
+<Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf, id=587, 289.08pt x 144.54pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf  used on input line 2285.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf  used on input line 2346.
 (pdftex.def)             Requested size: 289.07928pt x 144.53963pt.
-<Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf, id=589, 289.08pt x 144.54pt>
+<Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf, id=588, 289.08pt x 144.54pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf  used on input line 2291.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf  used on input line 2352.
 (pdftex.def)             Requested size: 289.07928pt x 144.53963pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[40
-pdfTeX warning (ext4): destination with the same identifier (name{figure.29}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2294 
-       
-pdfTeX warning (ext4): destination with the same identifier (name{figure.30}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2294 
-       
-pdfTeX warning (ext4): destination with the same identifier (name{figure.31}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2294 
-        <./Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf>]
-<Final_Report_files/figure-latex/unnamed-chunk-42-1.pdf, id=615, 289.08pt x 144.54pt>
+[40 <./Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf>]
+<Final_Report_files/figure-latex/unnamed-chunk-42-1.pdf, id=614, 289.08pt x 144.54pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-42-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-42-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-42-1.pdf  used on input line 2297.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-42-1.pdf  used on input line 2358.
 (pdftex.def)             Requested size: 289.07928pt x 144.53963pt.
-<Final_Report_files/figure-latex/unnamed-chunk-43-1.pdf, id=616, 289.08pt x 144.54pt>
+<Final_Report_files/figure-latex/unnamed-chunk-43-1.pdf, id=615, 289.08pt x 144.54pt>
 File: Final_Report_files/figure-latex/unnamed-chunk-43-1.pdf Graphic file (type pdf)
 <use Final_Report_files/figure-latex/unnamed-chunk-43-1.pdf>
-Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-43-1.pdf  used on input line 2303.
+Package pdftex.def Info: Final_Report_files/figure-latex/unnamed-chunk-43-1.pdf  used on input line 2364.
 (pdftex.def)             Requested size: 289.07928pt x 144.53963pt.
 
-Underfull \vbox (badness 4229) has occurred while \output is active []
+Underfull \vbox (badness 6741) has occurred while \output is active []
 
 
 
-[41
-pdfTeX warning (ext4): destination with the same identifier (name{figure.32}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2321 H
-        owever, several points are worth noting:
-pdfTeX warning (ext4): destination with the same identifier (name{figure.33}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2321 H
-        owever, several points are worth noting:
-pdfTeX warning (ext4): destination with the same identifier (name{figure.34}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2321 H
-        owever, several points are worth noting: <./Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-42-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-43-1.pdf>]
+[41 <./Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-42-1.pdf> <./Final_Report_files/figure-latex/unnamed-chunk-43-1.pdf>]
 
 [42]
 No file Final_Report.bbl.
 
 
-[43] (./Final_Report.aux)
+[43]
+
+[44] (./Final_Report.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-05-26>
@@ -1237,18 +1080,18 @@ Package rerunfilecheck Info: File `Final_Report.out' has not changed.
 (rerunfilecheck)             Checksum: A4B9AE7BC3361C05D775BBE25D6A95D4;5782.
  ) 
 Here is how much of TeX's memory you used:
- 14188 strings out of 469805
- 239022 string characters out of 5480594
- 670005 words of memory out of 5000000
- 41953 multiletter control sequences out of 15000+600000
- 687984 words of font info for 159 fonts, out of 8000000 for 9000
+ 15832 strings out of 469805
+ 271852 string characters out of 5480594
+ 718377 words of memory out of 5000000
+ 43542 multiletter control sequences out of 15000+600000
+ 708448 words of font info for 188 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 75i,15n,79p,1009b,574s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Final_Report.pdf (43 pages, 596735 bytes).
+ 75i,16n,79p,1009b,578s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri8.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/abrow/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
+Output written on Final_Report.pdf (44 pages, 639676 bytes).
 PDF statistics:
- 788 PDF objects out of 1000 (max. 8388607)
- 626 compressed objects within 7 object streams
- 158 named destinations out of 1000 (max. 500000)
- 35267 words of extra memory for PDF output out of 35830 (max. 10000000)
+ 802 PDF objects out of 1000 (max. 8388607)
+ 635 compressed objects within 7 object streams
+ 159 named destinations out of 1000 (max. 500000)
+ 45507 words of extra memory for PDF output out of 51595 (max. 10000000)
 

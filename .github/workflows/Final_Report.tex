@@ -131,6 +131,13 @@ Missing Data}
 \usepackage{float}
 \floatplacement{figure}{H}
 \usepackage{makecell}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{longtable}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{anyfontsize}
+\usepackage{multirow}
 \begin{document}
 \maketitle
 
@@ -251,6 +258,8 @@ biased estimates and inaccurate conclusions. Missing data mechanisms
 appear to be mentioned first by Donald Rubin in 1976. We can formally
 define these mechanisms using the following notation;
 
+\newpage
+
 \begin{itemize}
 \tightlist
 \item
@@ -266,33 +275,40 @@ define these mechanisms using the following notation;
 
 The formal definition of MCAR data is:
 
-\[\quad P(R = 1 \mid Y, X) = P(R = 1)\] The probability of the data is
-observed given observed data and missing data is the same as the
-probability of being observed without the given data. This mechanism is
-considered the easiest to deal with as it does not bias the result
-although data is rarely MCAR. This can occur due to system failure and
-some data is deleted accidentally, or else there is issues with the
-treatment system and data cannot be recorded. The DAG below visualises
-an example of this mechanism based on a randomised trial with
-randomisation variable \(L\). Missing indicator \(R_Y\), which denotes
-whether the outcome is observed (\(R_Y = 1\)) or missing (\(R_Y = 0\)),
-is independent from the observed baseline variables \(X_1\) and \(X_2\),
-which are pre-randomised variables, and outcome variable \(Y\) (which
-potentially contains missing data).
+\(\quad P(R = 1 \mid Y, X) = P(R = 1)\)
+
+The probability of the data is observed given observed data and missing
+data is the same as the probability of being observed without the given
+data. This mechanism is considered the easiest to deal with as it does
+not bias the result although data is rarely MCAR. This can occur due to
+system failure and some data is deleted accidentally, or else there is
+issues with the treatment system and data cannot be recorded. The DAG
+below visualises an example of this mechanism based on a randomised
+trial with randomisation variable \(L\). Missing indicator \(R_Y\),
+which denotes whether the outcome is observed (\(R_Y = 1\)) or missing
+(\(R_Y = 0\)), is independent from the observed baseline variables
+\(X_1\) and \(X_2\), which are pre-randomised variables, and outcome
+variable \(Y\) (which potentially contains missing data).
 
 \begin{figure}
-\centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-1-1.pdf}}
-\caption{MCAR DAG}
+
+{\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-1-1} 
+
+}
+
+\caption{Missing Completely At Random}\label{fig:unnamed-chunk-1}
 \end{figure}
+
+\newpage
 
 \textbf{Missing At Random}
 
-\[\quad P(R = 1 \mid Y, X) = P(R = 1 \mid X)\] The probability of data
-being observed given observed and unobserved data is the same as the
-probability being observed given the observed data. In short, the
-missing data dependends on the observed data. We can say that the
-missing data indicator is conditional on another variable.
+\(\quad P(R = 1 \mid Y, X) = P(R = 1 \mid X)\)
+
+The probability of data being observed given observed and unobserved
+data is the same as the probability being observed given the observed
+data. In short, the missing data dependends on the observed data. We can
+say that the missing data indicator is conditional on another variable.
 
 MAR is a more realistic mechanism than MCAR and requires more intensive
 handling methods. Below shows 2 DAGs that shows a general example of a
@@ -308,47 +324,63 @@ and \(X_1\), showing the MAR assumption still holds given these
 variables.
 
 \begin{figure}
-\centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-2-1.pdf}}
-\caption{Missing at Random conditional on L, X\_1 and X\_2}
+
+{\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-2-1} 
+
+}
+
+\caption{Missing at Random conditional on L, \ensuremath{X_1}, and \ensuremath{X_2}}\label{fig:unnamed-chunk-2}
 \end{figure}
 
 \begin{figure}
-\centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-3-1.pdf}}
-\caption{Missing at Random conditional on L, X\_1}
+
+{\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-3-1} 
+
+}
+
+\caption{Missing at Random conditional on L and \ensuremath{X_1}}\label{fig:unnamed-chunk-3}
 \end{figure}
+
+\newpage
 
 \textbf{Missing Not At Random}
 
-\(\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)\) The probability of data
-being observed depends both on the observed data and the missing data.
-This mechanism is the most difficult to deal with as it relates to the
-unobserved data, so producing valid results is a challenge. Certain
-participants in a general health study may avoid answering questions
-truthfully about smoking habits or their diet in order to make
-themselves more appealing. Sensitivity analysis is an option to
-determine the treatment effect when assuming different mechanisms. The 2
-following DAGs show this mechanism using the above scenarios. In the
-first DAGs structure, the potentially missing outcome variable \(Y\)
-directly influences \(R_Y\). The outcome \(Y\) is directly influenced by
-the randomised treatment \(L\) and baseline variables \(X_1\) and
-\(X_2\), but the missingness indicator is influenced by the missing
-outcome data. The second DAG shows MNAR conditional on \(X_2\) only as
-it influences the missingness indicator \(R_Y\) along with the missing
-outcome.
+\(\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)\)
+
+The probability of data being observed depends both on the observed data
+and the missing data. This mechanism is the most difficult to deal with
+as it relates to the unobserved data, so producing valid results is a
+challenge. Certain participants in a general health study may avoid
+answering questions truthfully about smoking habits or their diet in
+order to make themselves more appealing. Sensitivity analysis is an
+option to determine the treatment effect when assuming different
+mechanisms. The 2 following DAGs show this mechanism using the above
+scenarios. In the first DAGs structure, the potentially missing outcome
+variable \(Y\) directly influences \(R_Y\). The outcome \(Y\) is
+directly influenced by the randomised treatment \(L\) and baseline
+variables \(X_1\) and \(X_2\), but the missingness indicator is
+influenced by the missing outcome data. The second DAG shows MNAR
+conditional on \(X_2\) only as it influences the missingness indicator
+\(R_Y\) along with the missing outcome.
 
 \begin{figure}
-\centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-4-1.pdf}}
-\caption{Missing not at Random conditional on L, X\_1 and X\_2}
+
+{\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-4-1} 
+
+}
+
+\caption{Missing Not at Random conditional on L, \ensuremath{X_1} and \ensuremath{X_2}}\label{fig:unnamed-chunk-4}
 \end{figure}
 
 \begin{figure}
-\centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-5-1.pdf}}
-\caption{Missing at Random conditional on L, X\_2}
+
+{\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-5-1} 
+
+}
+
+\caption{Missing not at Random conditional on L, \ensuremath{X_2}}\label{fig:unnamed-chunk-5}
 \end{figure}
+\newpage
 
 Although these considerations are important, the mechanism underlying
 missing data is fundamentally untestable. Since the true values of
@@ -411,29 +443,29 @@ despite the use of established handling methods, there remains room for
 improvement in how missing data are addressed in clinical study reports
 and in the selection of appropriate methods.
 
-In 2014, Powney et al.~reviewed 100 longitudinal clinical trials
+In \emph{2014, Powney et al.} reviewed 100 longitudinal clinical trials
 conducted between 2005 and 2012 and found that only 44 reported an
 adequate method to handle missing data, while 30 used potentially
 inadequate methods.
 
-Spineli et al.~(2015) examined 190 systematic reviews published after
-2009 to investigate how missing data were reported in randomized
+\emph{Spineli et al.~(2015)} examined 190 systematic reviews published
+after 2009 to investigate how missing data were reported in randomized
 controlled trials. Although 175 of these reviews mentioned missing data,
 only 61 discussed its implications.
 
-Hunt et al.~(2021) reviewed 62 pharmacoepidemiologic multi-database
-studies from 2018 to 2019 to assess missing data reporting and handling.
-Thirty-five studies reported missing data, but only 19 described methods
-for handling it. The most popular approach was complete case analysis
-(CCA) used in 13 studies, followed by multiple imputation (MI) in 2
-studies.
+\emph{Hunt et al.~(2021)} reviewed 62 pharmacoepidemiologic
+multi-database studies from 2018 to 2019 to assess missing data
+reporting and handling. Thirty-five studies reported missing data, but
+only 19 described methods for handling it. The most popular approach was
+complete case analysis (CCA) used in 13 studies, followed by multiple
+imputation (MI) in 2 studies.
 
 Complete case analysis was also the predominant method in a systematic
 review of 229 observational studies from the United Network for Organ
-Sharing (UNOS) database (Baker et al., 2025). Forty-one studies used
-CCA, 22 reported MI, and notably, 31 studies removed covariates due to
-missing values---an action that could introduce further bias depending
-on the covariates' relationship with other predictors.
+Sharing (UNOS) database \emph{(Baker et al., 2025)}. Forty-one studies
+used CCA, 22 reported MI, and notably, 31 studies removed covariates due
+to missing values---an action that could introduce further bias
+depending on the covariates' relationship with other predictors.
 
 \newpage
 
@@ -448,8 +480,8 @@ different settings.
 
 Our first dataset contains results from a clinical trial determining the
 effects of acupuncture therapy on chronic headache in primary care
-(Vickers et al 2004). Vickers released the dataset from the study in
-2006 and is publicly available to download in excel format from
+\emph{(Vickers et al 2004)}. Vickers released the dataset from the study
+in 2006 and is publicly available to download in excel format from
 \url{https://pmc.ncbi.nlm.nih.gov/articles/PMC1489946/}. The study
 design for the acupuncture trial is a longitudinal randomised controlled
 trial with two follow up time points. 401 participants were gathered
@@ -501,8 +533,8 @@ f5 & headache frequency 1 year\\
 Variables \texttt{pk2} and \texttt{pk5} are the headache severity scores
 at 3 months and 12 months.
 
-\begin{table}[!h]
-\centering
+\begin{table}
+
 \caption{Acupuncture data overview}
 \centering
 \begin{tabular}[t]{l|c|c}
@@ -543,71 +575,72 @@ f5 & 10 (9) & 9 (8)\\
 \end{tabular}
 \end{table}
 
-Table 2.x are the summary statistics of the acupuncture trial data.
+\emph{Table 3} are the summary statistics of the acupuncture trial data.
 These consist of 2 columns; column 0 showing control group statistics
 and column 1 showing treatment group statistics. The continous variables
 show the mean value (standard deviation) and the categorical variables
 show the count(percentage). Note pk2 and pk5 are post randomisation
 variables and contain missing data.
 
+\newpage
 \begin{figure}
-\centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-9-1.pdf}}
-\caption{The distribution of sex in both treatment groups of the
-acupuncture trial data. The participants are predominantly female.}
+
+{\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-9-1} 
+
+}
+
+\caption{The distribution of sex in both treatment groups of the acupuncture trial data. The participants are predominantly female.}\label{fig:unnamed-chunk-9}
+\end{figure}
+\begin{figure}
+
+{\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-10-1} 
+
+}
+
+\caption{The distribution of age in both treatment groups. Both distributions are negatively skewed, predominantly middle aged and older.}\label{fig:unnamed-chunk-10}
+\end{figure}
+\begin{figure}
+
+{\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-11-1} 
+
+}
+
+\caption{These plots show the distribution of the headache severity score at the three measured time-points. Over the three time-points we can see a generally positively skewed distribution with most headache severity scores ranging between 0 and 35. There appears to be minimal difference in headache severity score over the treatment group, and the control group appears to have a lower headache severity score overall. The 3 month and 12 month time-point distributions are incomplete due to the missing values.}\label{fig:unnamed-chunk-11}
 \end{figure}
 
-\begin{figure}
-\centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-10-1.pdf}}
-\caption{The distribution of age in both treatment groups. Both
-distributions are negatively skewed, predominantly middle aged and
-older.}
-\end{figure}
-
-\begin{figure}
-\centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf}}
-\caption{These plots show the distribution of the headache severity
-score at the three measured time-points. Over the three time-points we
-can see a generally positively skewed distribution with most headache
-severity scores ranging between 0 and 35. There appears to be minimal
-difference in headache severity score over the treatment group, and the
-control group appears to have a lower headache severity score overall.
-The 3 month and 12 month time-point distributions are incomplete due to
-the missing values.}
-\end{figure}
+\newpage
 
 \subsection{VITAL data}\label{vital-data}
 
 The Vitamin D and Omega-3 trial (VITAL) was a nationwide clinical trial
-to determine the effects of daily doses of 2000 IU vitamin D and 1 gram
-of omega-3 fatty acids (fishoil) on preventing cancer and cardiovascular
-disease (CVD). This was a 2x2 factorial designed longitudinal randomised
-controlled trial in which 25,871 adults were randomised to 4 possible
-combinations of treatment; fish oil, vitamin D, both treatments, an a
-control group with no treatment. The results of the vitamin D group said
-that it did not lower cancer development significantly neither did it
-cause any meaningful reuction in cardiovascular disease. As for the
-fish-oil intervention lowered risk of heart attack by 28\% and risk of
-heart attack fatality by 50\%, but no reduction in stroke or non-heart
-disease cardiovascular fatalities. Fish oil did not reduce occurence in
-breast or prostate cancer or cancer-deaths. For our research, we are
-analysing the results of an ancillary study which uses data from VITAL.
-MacFarlane et al (2020) conducted a study using VITAL on the therapeutic
-effects of vitamin D and fishoil on osteoarthritic knee pain. 1,398
-participants in the study was randomised to 4 possible treatment
-combinations. Participants were randomised to receive either omega-3
-oils or vitamin D, both treatments, or randomised to the placebo group.
-A knee pain scale grading index Western Ontario and McMaster
-Osteoarthritis Index (WOMAC) is used to record knee pain score at
-baseline and annually for 4 time-points post randomisation. Results
-showed that there was no significant change in knee pain score between
-both treatment groups and the control group. For this research project,
-we assumed that that the participants were only randomised to either
-receive the fish oil treatment, vitamin D treatment or the placebo. We
-did not include the interaction between vitamin D and fish oil in our
-models. The below table shows the sample size per treatment group.
+sponsored by Brigham and Women's Hospital in Boston to determine the
+effects of daily doses of 2000 IU vitamin D and 1 gram of omega-3 fatty
+acids (fishoil) on preventing cancer and cardiovascular disease (CVD).
+This was a 2x2 factorial designed longitudinal randomised controlled
+trial in which 25,871 adults were randomised to 4 possible combinations
+of treatment; fish oil, vitamin D, both treatments, an a control group
+with no treatment. The results of the vitamin D group said that it did
+not lower cancer development significantly neither did it cause any
+meaningful reuction in cardiovascular disease. As for the fish-oil
+intervention lowered risk of heart attack by 28\% and risk of heart
+attack fatality by 50\%, but no reduction in stroke or non-heart disease
+cardiovascular fatalities. Fish oil did not reduce occurence in breast
+or prostate cancer or cancer-deaths. For our research, we are analysing
+the results of an ancillary study which uses data from VITAL. MacFarlane
+et al (2020) conducted a study using VITAL on the therapeutic effects of
+vitamin D and fishoil on osteoarthritic knee pain. 1,398 participants in
+the study was randomised to 4 possible treatment combinations.
+Participants were randomised to receive either omega-3 oils or vitamin
+D, both treatments, or randomised to the placebo group. A knee pain
+scale grading index Western Ontario and McMaster Osteoarthritis Index
+(WOMAC) is used to record knee pain score at baseline and annually for 4
+time-points post randomisation. Results showed that there was no
+significant change in knee pain score between both treatment groups and
+the control group. For this research project, we assumed that that the
+participants were only randomised to either receive the fish oil
+treatment, vitamin D treatment or the placebo. We did not include the
+interaction between vitamin D and fish oil in our models. The below
+table shows the sample size per treatment group.
 
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
@@ -653,61 +686,84 @@ kneepainfreq & Frequency of knee pain\\
 \end{tabular}
 \end{table}
 
-\begin{table}[!h]
-\centering
-\caption{VITAL missing data overview (part)}
-\centering
-\begin{tabular}[t]{l|c|c|c|c}
-\hline
-\textbf{Characteristic} & \makecell[c]{\textbf{Both}\ \ \\N = 342} & \makecell[c]{\textbf{Fish Oil only}\ \ \\N = 353} & \makecell[c]{\textbf{Neither}\ \ \\N = 371} & \makecell[c]{\textbf{Vitamin D only}\ \ \\N = 332}\\
-\hline
-Sex 1-male,2-female &  &  &  & \\
-\hline
-\hspace{1em}1 & 111(32\%) & 120(34\%) & 123(33\%) & 124(37\%)\\
-\hline
-\hspace{1em}2 & 231(68\%) & 233(66\%) & 248(67\%) & 208(63\%)\\
-\hline
-Body mass index at randomization, kg/m2 & 32 (7) & 32 (7) & 32 (8) & 31 (7)\\
-\hline
-\hspace{1em}Missing & 8 & 11 & 14 & 12\\
-\hline
-Current smoking 1-yes,0-no & 26(7.8\%) & 33(9.4\%) & 30(8.2\%) & 22(6.8\%)\\
-\hline
-\hspace{1em}Missing & 7 & 2 & 3 & 8\\
-\hline
-Age at randomization to VITAL study,years & 67 (7) & 67 (7) & 68 (7) & 67 (6)\\
-\hline
-Baseline Aspirin use 1-yes,0-no & 156(46\%) & 165(47\%) & 176(48\%) & 155(48\%)\\
-\hline
-\hspace{1em}Missing & 6 & 5 & 6 & 7\\
-\hline
-WOMAC Pain score at baseline & 37 (19) & 37 (18) & 37 (19) & 36 (18)\\
-\hline
-\hspace{1em}Missing & 48 & 57 & 45 & 40\\
-\hline
-WOMAC Pain score at year 1 & 32 (19) & 31 (20) & 33 (20) & 33 (21)\\
-\hline
-\hspace{1em}Missing & 182 & 162 & 184 & 153\\
-\hline
-WOMAC Pain score at year 2 & 32 (20) & 31 (20) & 30 (20) & 32 (20)\\
-\hline
-\hspace{1em}Missing & 47 & 46 & 48 & 47\\
-\hline
-WOMAC Pain score at year 3 & 32 (21) & 31 (19) & 31 (19) & 28 (19)\\
-\hline
-\hspace{1em}Missing & 78 & 95 & 90 & 82\\
-\hline
-WOMAC Pain score at year 4 & 30 (20) & 30 (19) & 29 (18) & 28 (19)\\
-\hline
-\hspace{1em}Missing & 129 & 149 & 145 & 126\\
-\hline
-\multicolumn{5}{l}{\rule{0pt}{1em}\textsuperscript{1} n(\%); Mean (SD)}\\
-\end{tabular}
+\begin{table}[!t]
+\fontsize{12.0pt}{14.4pt}\selectfont
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcccc}
+\toprule
+\textbf{Characteristic} & \textbf{Both}\\
+N = 342\textsuperscript{\textit{1}} & \textbf{Fish Oil only}\\
+N = 353\textsuperscript{\textit{1}} & \textbf{Neither}\\
+N = 371\textsuperscript{\textit{1}} & \textbf{Vitamin D only}\\
+N = 332\textsuperscript{\textit{1}} \\ 
+\midrule\addlinespace[2.5pt]
+Sex 1-male,2-female &  &  &  &  \\ 
+    1 & 111(32\%) & 120(34\%) & 123(33\%) & 124(37\%) \\ 
+    2 & 231(68\%) & 233(66\%) & 248(67\%) & 208(63\%) \\ 
+Body mass index at randomization, kg/m2 & 32 (7) & 32 (7) & 32 (8) & 31 (7) \\ 
+    Missing & 8 & 11 & 14 & 12 \\ 
+Current smoking 1-yes,0-no & 26(7.8\%) & 33(9.4\%) & 30(8.2\%) & 22(6.8\%) \\ 
+    Missing & 7 & 2 & 3 & 8 \\ 
+Age at randomization to VITAL study,years & 67 (7) & 67 (7) & 68 (7) & 67 (6) \\ 
+Baseline Aspirin use 1-yes,0-no & 156(46\%) & 165(47\%) & 176(48\%) & 155(48\%) \\ 
+    Missing & 6 & 5 & 6 & 7 \\ 
+WOMAC Pain score at baseline & 37 (19) & 37 (18) & 37 (19) & 36 (18) \\ 
+    Missing & 48 & 57 & 45 & 40 \\ 
+WOMAC Pain score at year 1 & 32 (19) & 31 (20) & 33 (20) & 33 (21) \\ 
+    Missing & 182 & 162 & 184 & 153 \\ 
+WOMAC Pain score at year 2 & 32 (20) & 31 (20) & 30 (20) & 32 (20) \\ 
+    Missing & 47 & 46 & 48 & 47 \\ 
+WOMAC Pain score at year 3 & 32 (21) & 31 (19) & 31 (19) & 28 (19) \\ 
+    Missing & 78 & 95 & 90 & 82 \\ 
+WOMAC Pain score at year 4 & 30 (20) & 30 (19) & 29 (18) & 28 (19) \\ 
+    Missing & 129 & 149 & 145 & 126 \\ 
+Have you had a knee replacement surgery? (1=Yes, 2=No) &  &  &  &  \\ 
+    1 & 43(13\%) & 47(14\%) & 52(14\%) & 53(16\%) \\ 
+    2 & 293(87\%) & 300(86\%) & 316(86\%) & 271(84\%) \\ 
+    Missing & 6 & 6 & 3 & 8 \\ 
+Unilateral knee pain 1=Yes 0=No & 200(71\%) & 198(69\%) & 223(72\%) & 200(71\%) \\ 
+    Missing & 61 & 68 & 61 & 49 \\ 
+Bilateral knee pain 1=Yes 0=No & 81(29\%) & 87(31\%) & 87(28\%) & 83(29\%) \\ 
+    Missing & 61 & 68 & 61 & 49 \\ 
+Frequency of knee pain 1=Never 2=<1 day/wk 3=1\textasciitilde{}2 days/wk 4=3\textasciitilde{}6 days/wk 5=daily &  &  &  &  \\ 
+    1 & 1(0.3\%) & 1(0.3\%) & 2(0.6\%) & 1(0.3\%) \\ 
+    2 & 16(5.4\%) & 19(6.4\%) & 11(3.3\%) & 16(5.4\%) \\ 
+    3 & 44(15\%) & 27(9.0\%) & 34(10\%) & 31(10\%) \\ 
+    4 & 58(20\%) & 57(19\%) & 68(21\%) & 57(19\%) \\ 
+    5 & 169(57\%) & 185(62\%) & 201(61\%) & 181(61\%) \\ 
+    9 & 7(2.4\%) & 10(3.3\%) & 14(4.2\%) & 10(3.4\%) \\ 
+    Missing & 47 & 54 & 41 & 36 \\ 
+Tylenol use at baseline 1=never 2=occational 3=daily 9=missing &  &  &  &  \\ 
+    1 & 108(37\%) & 137(46\%) & 145(44\%) & 135(46\%) \\ 
+    2 & 91(31\%) & 84(28\%) & 110(33\%) & 95(32\%) \\ 
+    3 & 53(18\%) & 41(14\%) & 38(12\%) & 30(10\%) \\ 
+    9 & 43(15\%) & 37(12\%) & 37(11\%) & 36(12\%) \\ 
+    Missing & 47 & 54 & 41 & 36 \\ 
+Nsaids use at baseline 1=never 2=occational 3=daily 9=missing &  &  &  &  \\ 
+    1 & 62(21\%) & 65(22\%) & 69(21\%) & 73(25\%) \\ 
+    2 & 98(33\%) & 101(34\%) & 98(30\%) & 94(32\%) \\ 
+    3 & 110(37\%) & 107(36\%) & 134(41\%) & 111(38\%) \\ 
+    9 & 25(8.5\%) & 26(8.7\%) & 29(8.8\%) & 18(6.1\%) \\ 
+    Missing & 47 & 54 & 41 & 36 \\ 
+Stronger med use at baseline 1=never 2=occational 3=daily 9=missing &  &  &  &  \\ 
+    1 & 178(60\%) & 193(65\%) & 205(62\%) & 186(63\%) \\ 
+    2 & 40(14\%) & 41(14\%) & 43(13\%) & 47(16\%) \\ 
+    3 & 46(16\%) & 36(12\%) & 50(15\%) & 40(14\%) \\ 
+    9 & 31(11\%) & 29(9.7\%) & 32(9.7\%) & 23(7.8\%) \\ 
+    Missing & 47 & 54 & 41 & 36 \\ 
+TKR 1=yes 0=No & 64(19\%) & 82(23\%) & 74(20\%) & 76(23\%) \\ 
+\bottomrule
+\end{tabular*}
+\begin{minipage}{\linewidth}
+\textsuperscript{\textit{1}}n(\%); Mean (SD)\\
+\end{minipage}
 \end{table}
 
-Figure 2.x shows the summary statistics of the VITAL data. It provides
-information on all 4 treatment groups. Note here that the VITAL data
-contains missing baseline data as well as post randomisation data.
+\emph{Table 6} shows the summary statistics of partial VITAL data. It
+provides the mean value (standard deviation) of the continuous variables
+and the count(\%) for the categorical variables. This is divided per
+treatment combination group. Note here that the VITAL data contains
+missing baseline (i.e.~\texttt{pain\_base}) data as well as
+post-randomisation data.
 
 \begin{figure}
 
@@ -717,7 +773,6 @@ contains missing baseline data as well as post randomisation data.
 
 \caption{The distribution of age in each treatment group, which appear to be normal/ positive skewed distributions.}\label{fig:unnamed-chunk-14}
 \end{figure}
-
 \begin{figure}
 
 {\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-15-1} 
@@ -726,7 +781,6 @@ contains missing baseline data as well as post randomisation data.
 
 \caption{The distribution of body mass index in each treatment group, these appear to be positively skewed with a BMI between 20 and 40. This shows a range between healthy weighted and obese participants.}\label{fig:unnamed-chunk-15}
 \end{figure}
-
 \begin{figure}
 
 {\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-16-1} 
@@ -801,10 +855,12 @@ data in the knee pain score at the first year post randomisation, which
 drastically decreases in year 2, then steadily increases again.
 
 \begin{figure}
-\centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf}}
-\caption{Non-monotonic pattern across out knee pain scores in VITAL
-data.}
+
+{\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-21-1} 
+
+}
+
+\caption{Non-monotonic pattern across out knee pain scores in VITAL data.}\label{fig:unnamed-chunk-21}
 \end{figure}
 
 Recall that the VITAL data set contains 4 different combinations of
@@ -814,10 +870,12 @@ group. The proportion appears to be similar in each group with year 2
 post randomisation containing the most missing data.
 
 \begin{figure}
-\centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf}}
-\caption{Percentage of missing data across baseline and 4 follow-up time
-points. Non-monotonic pattern appears similar in 4 randomised groups.}
+
+{\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-22-1} 
+
+}
+
+\caption{Percentage of missing data across baseline and 4 follow-up time points. Non-monotonic pattern appears similar in 4 randomised groups.}\label{fig:unnamed-chunk-22}
 \end{figure}
 
 Looking at the possible missing data patterns in the 4 combinatory
@@ -828,9 +886,12 @@ observe. The most common data pattern still stands as (1,1,1,1,1) in
 which data is observed at all time-points.
 
 \begin{figure}
-\centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf}}
-\caption{Missing data patterns across 4 treatment groups in VITAL data.}
+
+{\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-23-1} 
+
+}
+
+\caption{Missing data patterns across 4 treatment groups in VITAL data.}\label{fig:unnamed-chunk-23}
 \end{figure}
 
 \newpage

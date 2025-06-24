@@ -131,7 +131,7 @@ biased estimates and inaccurate conclusions. Missing data mechanisms
 appear to be mentioned first by Donald Rubin in 1976. We can formally
 define these mechanisms using the following notation;
 
-\newpage 
+\newpage
 
 -   $R$ represents a missing data indicator which when $R=1$ indicates
     observed data and $R=0$ indicates unobserved
@@ -142,23 +142,22 @@ define these mechanisms using the following notation;
 
 The formal definition of MCAR data is:
 
-$$\quad P(R = 1 \mid Y, X) = P(R = 1)$$ 
+$\quad P(R = 1 \mid Y, X) = P(R = 1)$
 
-The probability of the data is
-observed given observed data and missing data is the same as the
-probability of being observed without the given data. This mechanism is
-considered the easiest to deal with as it does not bias the result
-although data is rarely MCAR. This can occur due to system failure and
-some data is deleted accidentally, or else there is issues with the
-treatment system and data cannot be recorded. The DAG below visualises
-an example of this mechanism based on a randomised trial with
-randomisation variable $L$. Missing indicator $R_Y$, which denotes
-whether the outcome is observed ($R_Y = 1$) or missing ($R_Y = 0$), is
-independent from the observed baseline variables $X_1$ and $X_2$, which
-are pre-randomised variables, and outcome variable $Y$ (which
-potentially contains missing data).
+The probability of the data is observed given observed data and missing
+data is the same as the probability of being observed without the given
+data. This mechanism is considered the easiest to deal with as it does
+not bias the result although data is rarely MCAR. This can occur due to
+system failure and some data is deleted accidentally, or else there is
+issues with the treatment system and data cannot be recorded. The DAG
+below visualises an example of this mechanism based on a randomised
+trial with randomisation variable $L$. Missing indicator $R_Y$, which
+denotes whether the outcome is observed ($R_Y = 1$) or missing
+($R_Y = 0$), is independent from the observed baseline variables $X_1$
+and $X_2$, which are pre-randomised variables, and outcome variable $Y$
+(which potentially contains missing data).
 
-```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="MCAR DAG"}
+```{r fig.width=5, fig.height=4, echo=FALSE, fig.align='center', fig.cap="Missing Completely At Random"}
 MCAR_dag
 ```
 
@@ -166,13 +165,12 @@ MCAR_dag
 
 **Missing At Random**
 
-$$\quad P(R = 1 \mid Y, X) = P(R = 1 \mid X)$$ 
+$\quad P(R = 1 \mid Y, X) = P(R = 1 \mid X)$
 
-The probability of data
-being observed given observed and unobserved data is the same as the
-probability being observed given the observed data. In short, the
-missing data dependends on the observed data. We can say that the
-missing data indicator is conditional on another variable.
+The probability of data being observed given observed and unobserved
+data is the same as the probability being observed given the observed
+data. In short, the missing data dependends on the observed data. We can
+say that the missing data indicator is conditional on another variable.
 
 MAR is a more realistic mechanism than MCAR and requires more intensive
 handling methods. Below shows 2 DAGs that shows a general example of a
@@ -186,11 +184,11 @@ variable $X_1$. $X_2$ no longer influences the missingness indicator
 $R_Y$, but $R_Y$ is still conditioned on $L$ and $X_1$, showing the MAR
 assumption still holds given these variables.
 
-```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="Missing at Random conditional on L, X_1 and X_2"}
+```{r fig.width=5, fig.height=4, echo=FALSE, fig.align='center', fig.cap="Missing at Random conditional on L, \\ensuremath{X_1}, and \\ensuremath{X_2}"}
 MAR_dag1
 ```
 
-```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="Missing at Random conditional on L, X_1"}
+```{r fig.width=5, fig.height=4, echo=FALSE, fig.align='center', fig.cap="Missing at Random conditional on L and \\ensuremath{X_1}"}
 MAR_dag2
 ```
 
@@ -200,30 +198,32 @@ MAR_dag2
 
 $\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)$
 
-The probability of data
-being observed depends both on the observed data and the missing data.
-This mechanism is the most difficult to deal with as it relates to the
-unobserved data, so producing valid results is a challenge. Certain
-participants in a general health study may avoid answering questions
-truthfully about smoking habits or their diet in order to make
-themselves more appealing. Sensitivity analysis is an option to
-determine the treatment effect when assuming different mechanisms. The 2
-following DAGs show this mechanism using the above scenarios. In the
-first DAGs structure, the potentially missing outcome variable $Y$
-directly influences $R_Y$. The outcome $Y$ is directly influenced by the
-randomised treatment $L$ and baseline variables $X_1$ and $X_2$, but the
-missingness indicator is influenced by the missing outcome data. The
-second DAG shows MNAR conditional on $X_2$ only as it influences the
-missingness indicator $R_Y$ along with the missing outcome.
+The probability of data being observed depends both on the observed data
+and the missing data. This mechanism is the most difficult to deal with
+as it relates to the unobserved data, so producing valid results is a
+challenge. Certain participants in a general health study may avoid
+answering questions truthfully about smoking habits or their diet in
+order to make themselves more appealing. Sensitivity analysis is an
+option to determine the treatment effect when assuming different
+mechanisms. The 2 following DAGs show this mechanism using the above
+scenarios. In the first DAGs structure, the potentially missing outcome
+variable $Y$ directly influences $R_Y$. The outcome $Y$ is directly
+influenced by the randomised treatment $L$ and baseline variables $X_1$
+and $X_2$, but the missingness indicator is influenced by the missing
+outcome data. The second DAG shows MNAR conditional on $X_2$ only as it
+influences the missingness indicator $R_Y$ along with the missing
+outcome.
 
-```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="Missing not at Random conditional on L, X_1 and X_2"}
+```{r fig.width=5, fig.height=4, echo=FALSE, fig.align='center', fig.cap="Missing Not at Random conditional on L, \\ensuremath{X_1} and \\ensuremath{X_2}"}
 MNAR_dag1
 ```
 
-```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="Missing at Random conditional on L, X_2"}
+```{r fig.width=5, fig.height=4, echo=FALSE, fig.align='center', fig.cap="Missing not at Random conditional on L, \\ensuremath{X_2}"}
 MNAR_dag2
 ```
+
 \newpage
+
 Although these considerations are important, the mechanism underlying
 missing data is fundamentally untestable. Since the true values of
 missing observations are never observed, we cannot definitively
@@ -291,17 +291,17 @@ despite the use of established handling methods, there remains room for
 improvement in how missing data are addressed in clinical study reports
 and in the selection of appropriate methods.
 
-In 2014, Powney et al. reviewed 100 longitudinal clinical trials
+In *2014, Powney et al.* reviewed 100 longitudinal clinical trials
 conducted between 2005 and 2012 and found that only 44 reported an
 adequate method to handle missing data, while 30 used potentially
 inadequate methods.
 
-Spineli et al. (2015) examined 190 systematic reviews published after
+*Spineli et al. (2015)* examined 190 systematic reviews published after
 2009 to investigate how missing data were reported in randomized
 controlled trials. Although 175 of these reviews mentioned missing data,
 only 61 discussed its implications.
 
-Hunt et al. (2021) reviewed 62 pharmacoepidemiologic multi-database
+*Hunt et al. (2021)* reviewed 62 pharmacoepidemiologic multi-database
 studies from 2018 to 2019 to assess missing data reporting and handling.
 Thirty-five studies reported missing data, but only 19 described methods
 for handling it. The most popular approach was complete case analysis
@@ -310,7 +310,7 @@ studies.
 
 Complete case analysis was also the predominant method in a systematic
 review of 229 observational studies from the United Network for Organ
-Sharing (UNOS) database (Baker et al., 2025). Forty-one studies used
+Sharing (UNOS) database *(Baker et al., 2025)*. Forty-one studies used
 CCA, 22 reported MI, and notably, 31 studies removed covariates due to
 missing values—an action that could introduce further bias depending on
 the covariates' relationship with other predictors.
@@ -328,7 +328,7 @@ different settings.
 
 Our first dataset contains results from a clinical trial determining the
 effects of acupuncture therapy on chronic headache in primary care
-(Vickers et al 2004). Vickers released the dataset from the study in
+*(Vickers et al 2004)*. Vickers released the dataset from the study in
 2006 and is publicly available to download in excel format from
 <https://pmc.ncbi.nlm.nih.gov/articles/PMC1489946/>. The study design
 for the acupuncture trial is a longitudinal randomised controlled trial
@@ -407,50 +407,51 @@ variables and contain missing data.
 
 \newpage
 
-```{r fig.width=5, fig.height=3, fig.cap="The distribution of sex in both treatment groups of the acupuncture trial data. The participants are predominantly female."}
+```{r fig.width=5, fig.height=3, fig.align='center', fig.cap="The distribution of sex in both treatment groups of the acupuncture trial data. The participants are predominantly female."}
 print(acu_sex_plot)
-
 ```
 
-```{r fig.width=5, fig.height=3, fig.cap="The distribution of age in both treatment groups. Both distributions are negatively skewed, predominantly middle aged and older."}
+```{r fig.width=5, fig.height=3, fig.align='center',fig.cap="The distribution of age in both treatment groups. Both distributions are negatively skewed, predominantly middle aged and older."}
 print(acu_age_plot)
 ```
 
-```{r fig.width=5, fig.height=3, warning=FALSE, fig.cap="These plots show the distribution of the headache severity score at the three measured time-points. Over the three time-points we can see a generally positively skewed distribution with most headache severity scores ranging between 0 and 35. There appears to be minimal difference in headache severity score over the treatment group, and the control group appears to have a lower headache severity score overall. The 3 month and 12 month time-point distributions are incomplete due to the missing values."}
+```{r fig.width=5, fig.height=3, fig.align='center', warning=FALSE, fig.cap="These plots show the distribution of the headache severity score at the three measured time-points. Over the three time-points we can see a generally positively skewed distribution with most headache severity scores ranging between 0 and 35. There appears to be minimal difference in headache severity score over the treatment group, and the control group appears to have a lower headache severity score overall. The 3 month and 12 month time-point distributions are incomplete due to the missing values."}
 print(acu_pk125_plot)
 ```
 
 \newpage
+
 ## VITAL data
 
 The Vitamin D and Omega-3 trial (VITAL) was a nationwide clinical trial
-to determine the effects of daily doses of 2000 IU vitamin D and 1 gram
-of omega-3 fatty acids (fishoil) on preventing cancer and cardiovascular
-disease (CVD). This was a 2x2 factorial designed longitudinal randomised
-controlled trial in which 25,871 adults were randomised to 4 possible
-combinations of treatment; fish oil, vitamin D, both treatments, an a
-control group with no treatment. The results of the vitamin D group said
-that it did not lower cancer development significantly neither did it
-cause any meaningful reuction in cardiovascular disease. As for the
-fish-oil intervention lowered risk of heart attack by 28% and risk of
-heart attack fatality by 50%, but no reduction in stroke or non-heart
-disease cardiovascular fatalities. Fish oil did not reduce occurence in
-breast or prostate cancer or cancer-deaths. For our research, we are
-analysing the results of an ancillary study which uses data from VITAL.
-MacFarlane et al (2020) conducted a study using VITAL on the therapeutic
-effects of vitamin D and fishoil on osteoarthritic knee pain. 1,398
-participants in the study was randomised to 4 possible treatment
-combinations. Participants were randomised to receive either omega-3
-oils or vitamin D, both treatments, or randomised to the placebo group.
-A knee pain scale grading index Western Ontario and McMaster
-Osteoarthritis Index (WOMAC) is used to record knee pain score at
-baseline and annually for 4 time-points post randomisation. Results
-showed that there was no significant change in knee pain score between
-both treatment groups and the control group. For this research project,
-we assumed that that the participants were only randomised to either
-receive the fish oil treatment, vitamin D treatment or the placebo. We
-did not include the interaction between vitamin D and fish oil in our
-models. The below table shows the sample size per treatment group.
+sponsored by Brigham and Women's Hospital in Boston to determine the
+effects of daily doses of 2000 IU vitamin D and 1 gram of omega-3 fatty
+acids (fishoil) on preventing cancer and cardiovascular disease (CVD).
+This was a 2x2 factorial designed longitudinal randomised controlled
+trial in which 25,871 adults were randomised to 4 possible combinations
+of treatment; fish oil, vitamin D, both treatments, an a control group
+with no treatment. The results of the vitamin D group said that it did
+not lower cancer development significantly neither did it cause any
+meaningful reuction in cardiovascular disease. As for the fish-oil
+intervention lowered risk of heart attack by 28% and risk of heart
+attack fatality by 50%, but no reduction in stroke or non-heart disease
+cardiovascular fatalities. Fish oil did not reduce occurence in breast
+or prostate cancer or cancer-deaths. For our research, we are analysing
+the results of an ancillary study which uses data from VITAL. MacFarlane
+et al (2020) conducted a study using VITAL on the therapeutic effects of
+vitamin D and fishoil on osteoarthritic knee pain. 1,398 participants in
+the study was randomised to 4 possible treatment combinations.
+Participants were randomised to receive either omega-3 oils or vitamin
+D, both treatments, or randomised to the placebo group. A knee pain
+scale grading index Western Ontario and McMaster Osteoarthritis Index
+(WOMAC) is used to record knee pain score at baseline and annually for 4
+time-points post randomisation. Results showed that there was no
+significant change in knee pain score between both treatment groups and
+the control group. For this research project, we assumed that that the
+participants were only randomised to either receive the fish oil
+treatment, vitamin D treatment or the placebo. We did not include the
+interaction between vitamin D and fish oil in our models. The below
+table shows the sample size per treatment group.
 
 |              | **Vitamin D**            | **Placebo** |
 |--------------|--------------------------|-------------|
@@ -503,8 +504,12 @@ cat("\\end{table}")
 vital_summary
 ```
 
-*Table 6* shows the summary statistics of partial VITAL data. It provides the mean value (standard deviation) of the continuous variables and the count(%) for the categorical variables. This is divided per treatment combination group. Note here that the VITAL data
-contains missing baseline (i.e. `pain_base`) data as well as post-randomisation data.
+*Table 6* shows the summary statistics of partial VITAL data. It
+provides the mean value (standard deviation) of the continuous variables
+and the count(%) for the categorical variables. This is divided per
+treatment combination group. Note here that the VITAL data contains
+missing baseline (i.e. `pain_base`) data as well as post-randomisation
+data.
 
 ```{r fig.width=5, fig.height=3, fig.align='center', warning=FALSE, fig.cap="The distribution of age in each treatment group, which appear to be normal/ positive skewed distributions."}
 print(age_vital_plot)
@@ -567,7 +572,7 @@ pattern appears to show here as there is a great proportion of missing
 data in the knee pain score at the first year post randomisation, which
 drastically decreases in year 2, then steadily increases again.
 
-```{r fig.width=5, fig.height=3, fig.cap="Non-monotonic pattern across out knee pain scores in VITAL data."}
+```{r fig.width=5, fig.height=3, fig.align='center',fig.cap="Non-monotonic pattern across out knee pain scores in VITAL data."}
 print(vital_miss_perc_plot)
 ```
 
@@ -577,7 +582,7 @@ percentage of missing data in each knee pain time point variable in each
 group. The proportion appears to be similar in each group with year 2
 post randomisation containing the most missing data.
 
-```{r fig.width=5, fig.height=3, fig.cap="Percentage of missing data across baseline and 4 follow-up time points. Non-monotonic pattern appears similar in 4 randomised groups."}
+```{r fig.width=5, fig.height=3, fig.align='center',fig.cap="Percentage of missing data across baseline and 4 follow-up time points. Non-monotonic pattern appears similar in 4 randomised groups."}
 print(vital_miss_perc_group_plot)
 ```
 
@@ -588,7 +593,7 @@ treatmenr groups, there are more possible missing data patterns to
 observe. The most common data pattern still stands as (1,1,1,1,1) in
 which data is observed at all time-points.
 
-```{r fig.width=6, fig.height=9.5, fig.cap="Missing data patterns across 4 treatment groups in VITAL data."}
+```{r fig.width=6, fig.height=9.5,fig.align='center', fig.cap="Missing data patterns across 4 treatment groups in VITAL data."}
 print(vital_miss_pattern)
 ```
 
@@ -1418,13 +1423,11 @@ The revised LME model for the acupuncture dataset is specified as below.
 Note we did not allowing random slop as there are only 2 data collecting
 time points here:
 
-$$
-pk5_{ij} = \beta_0 + \beta_1 group_i + \beta_2 time_{c,ij} + \beta_3 (group_i \times time_{c,ij}) + \beta_4 pk1_i + b_{0i} + \varepsilon_{ij}
-$$
+$$pkscore_{ij} = \beta_0 + \beta_1 group_i + \beta_2 time_{c,ij} + \beta_3 (group_i \times time_{c,ij}) + \beta_4 pk1_i + b_{0i} + \varepsilon_{ij}$$
 
 where
 
--   $pk5_{ij}$: headache pain score for individual $i$ at time $j$
+-   $pkscore_{ij}$: headache pain score for individual $i$ at time $j$
 -   $group_i$: binary indicator of treatment assignment (1 =
     acupuncture, 0 = control)
 -   $time_{c,ij}$: time in months since baseline, centered at 12 months
@@ -1591,145 +1594,51 @@ $\delta_\mathrm{VITAL-control-changed} = -9.646493,-4.823247,0, 4.823247,9.64649
 
 **Sensitivity Analysis; the process**
 
-The mice() function was used on the wide format of the acupuncture trial
-data with predictors `group`, `pk1`. An initial iteration was conducted
-with m=1 in order to extract the post processing command. This allows us
-to add the $\delta$ to the missing values after they have been imputed.
-This is looped over the range of $\delta$ values.
+This section outlines the application of the $\delta$-adjustment
+sensitivity analysis. We begin with the acupuncture trial and its
+original categorical estimand, specifying the predictor variables for
+multiple imputation as the treatment group and baseline headache
+severity score (pk1). These are used to generate a predictor matrix for
+imputation. An initial imputation run extracts the post object, which
+allows manual modification of the imputation process. For each value in
+the vector $\delta_\mathrm{Acupuncture-original}$, we adjust the imputed
+values of the final headache severity score (pk5) by adding the
+corresponding $\delta$. A linear regression model,
+$pk5_i = \beta_0 + \beta_1 \text{group}_i + \beta_2 pk1_i + \varepsilon_i$,
+is fitted to each imputed dataset, and the estimates are pooled. We
+extract the coefficient for the treatment group, our estimand of
+interest, along with its standard error, confidence interval, and
+p-value.
 
-Next we performed the main imputation, indicating post processing, using
-predictive mean matching method and maxit=10 to indicate maximum of 10
-iterations. After imputation, a regression model like our substantive
-model is fitted, $\beta_0 + \beta_1group+\beta_2pk1_i+\varepsilon_i$,
-and the estimates are pooled together.
+We then repeat this process using only the placebo group (group == 0) to
+isolate control group effects, generating the acu_wide_placebo dataset.
+Here, $\delta_\mathrm{Acu-control-original}$ values are added to the
+imputed pk5 values, and the pooled regression estimates are filtered for
+the intercept term, representing the average outcome in the control
+group.
 
-\newpage
+A similar approach is applied to the VITAL trial data in wide format,
+using pain_base, vitdactive, and fishoilactive as predictors, and
+pain_yr4 as the outcome. Following imputation and $\delta$-adjustment,
+we fit the model
+$painyr4_i = \beta_0 + \beta_1 \text{fishoilactive}i + \beta_2 \text{vitdactive}i + \beta_3 \text{painbase}i + \varepsilon_i$,
+pool the estimates, and extract coefficients for the treatment groups
+(fishoilactive, vitdactive). For the control group, we filter the
+dataset to include only individuals with fishoilactive == 0 and
+vitdactive == 0, forming vital_wide_placebo. Here,
+$\delta\mathrm{VITAL-fishoil-original}$,
+$\delta\mathrm{VITAL-vitd-original}$, and
+$\delta\mathrm{VITAL-control-original}$ are added to the respective
+imputed values, and pooled results are similarly obtained.
 
-```{r eval=FALSE, echo=TRUE}
-#predictors
-inlist <- c("group", "pk5", "pk1")
-#predictor matrix
-pred_cat <- quickpred(acu_wide, minpuc = 0.5, include = inlist)
-#initial imputation to extract post processing 
-imp.default_cat <- mice(acu_wide, m = 1, maxit = 1, predictorMatrix = pred_cat, seed = 123, print= FALSE)
-post_cat <- imp.default_cat$post
-imp.all.undamped_cat <- vector("list", length(delta_acu))
+We performed sensitivity analyses in a similar fashion to assess the robustness of the treatment effect under our alternative estimand. This process was more computationally intensive, as it required performing multiple imputation on the wide-format data and subsequently transforming it into long format.
 
-#loop over delta values
-for (i in 1:length(delta)) {
-  d <- delta[i]
-  cmd <- paste0(
-    "idx <- which(data[,'group'] == 1 & is.na(data[,'pk5'])); ",
-    "imp[[j]]$pk5[idx] <- imp[[j]]$pk5[idx] + ",d, ";") #treatment group and imputing pk5, adding delta d
-  post_cat["pk5"] <- cmd
-  imp_cat <- mice(acu_wide, pred = pred_cat, post = post_cat, maxit = 10,
-                  seed = i * 22, print=FALSE)
-  imp.all.undamped_cat[[i]] <- imp_cat
-}
-delta_results_cat <- data.frame()
+For the acupuncture trial, we added $\delta_\mathrm{Acupuncture\text{-}changed}$ values to the imputed data and then used a custom function to convert the data into long format. Due to the repeated measures structure, we employed a linear mixed-effects model to estimate the treatment effect prior to pooling. The substantive model was: $pkscore_{ij} = \beta_0 + \beta_1 group_i + \beta_2 time_{c,ij} + \beta_3 (group_i \times time_{c,ij}) + \beta_4 pk1_i + b_{0i} + \varepsilon_{ij}$
 
-for (i in seq_along(imp.all.undamped_cat)) {
-  imp_cat <- imp.all.undamped_cat[[i]]
-  d <- delta[i]
-  fit_cat <- with(imp_cat, lm(pk5 ~ group + pk1)) #imputation model
-  pooled_cat <- pool(fit_cat) #pooling estimates
-  est_cat <- tidy(pooled_cat, conf.int = TRUE) %>%
-    filter(term == "group") %>% 
-    select(estimate, std.error, conf.low, conf.high, p.value) %>%
-    mutate(delta_acu = d)
-    
-  delta_results_cat <- bind_rows(delta_results_cat, est_cat)
-}
-```
-
-We repeated this process exactly on the `acu_wide` data in which we
-added a filter(group==0) in order to extract the results in the control
-group for comparison, creating `acu_wide_placebo`.
-
-A similar process was implemented on to the VITAL trial data in wide
-format. We chose our inlist predictors `pain_base`,
-`vitdactive`,`fishoilactive`, and our outcome as `pain_yr4`. After
-pooling our estimates, we filtered out the treatment groups by setting
-'term == fishoilactive' and 'term == vitdactive' so we can observe the
-results by treatment. For the control group we filtered the `vital_wide`
-data as fishoilactive==0 and vitdactive==0.
-
-We performed sensitivity analysis in a similar fashion to test the
-robustness of the treatment effect on our alternative estimand. This was
-more intensive as we had to implement the multiple imputation on the
-wide format then transform the data in to long format.
-
-For the acupuncture trial; we used our to_long_format_acu_cont_MICE()
-function post imputation to transform to long format. Due to the nature
-of the long format, we used the linear mixed effects model to estimate
-our treatment effect before pooling the estimates. Our imputation model
-here is;
-
-$\text{pk\_score}_{ij} = \beta_0 + \beta_1 \text{group} + \beta_2  \text{time\_c} + \beta_3  (\text{group}  \text{time\_c}) + \beta_4  \text{pk1} + b_0 + \varepsilon_{ij}$
-
-\newpage
-
-For the VITAL data; we created a similar function to our
-to_long_format_vital_MICE() function with a minor adjustment;
-
-```{r eval=FALSE, echo=TRUE}
-to_long_format_vital_mice_SA <- function(data_wide) {
-  data_wide %>%
-    pivot_longer(cols = matches("_yr[[:digit:]]$"),
-                 names_to = c(".value", "time"), 
-                 names_sep = "_") %>%
-    group_by(.imp) %>%
-    mutate(.id = 1:n()) %>%
-    mutate(time_contin = as.integer(gsub("yr", "", time)),
-           time_contin_cent = time_contin - 4)
-}
-```
-
-We used
-$pain_{ij}=\beta_0+\beta_1fishoil_i+\beta_2time_{ij}+\beta_3(fishoil_itime_{ij})+\beta_4vitd_i+\beta_5vitd_itime_{ij}+\beta_6(pain_base)_i+b_{0i}+\varepsilon_{ij}$
-as our imputation model in each of the imputed data sets.
-
-```{r eval=FALSE, echo=TRUE}
-#predictors
-inlist <- c("fishoilactive", "vitdactive", "pain", "pain_base", "time_contin", "Subject_ID") 
-pred_cont <- quickpred(vital_wide, minpuc = 0.5, include = inlist) #prediction matrix
-imp.all.undamped_cont <- vector("list", length(delta_vital))
-delta_results_cont_fishoil <- data.frame()
-
-for (i in seq_along(delta_vital)) {
-  d <- delta_vital[i]
-  imp_init <- mice(vital_wide, m = 5, maxit = 1, predictorMatrix = pred_cont, seed = 100 + i, print = FALSE)
-  post_cont <- imp_init$post
-  method_cont <- imp_init$method
-  years <- paste0("pain_yr", 1:4) #imputing over 4 years
-  method_cont[years] <- "pmm" # predictive mean matching
-  method_cont["pain_base"] <- "pmm" #imputing base pain
-  for (yr in years) {
-    post_cont[yr] <- paste0(
-      "idx <- which(data[,'fishoilactive'] == 1 & data[,'vitdactive'] == 0 & is.na(data[,'", yr, "'])); ",
-      "imp[[j]]$", yr, "[idx] <- imp[[j]]$", yr, "[idx] + ", d, ";" #fishoil only 
-    )
-  }
-  imp_wide <- mice(vital_wide, m = 5, maxit = 10, predictorMatrix = pred_cont,
-                   post = post_cont, method=method_cont, seed = 200 + i, print = FALSE)
-  imp.all.undamped_cont[[i]] <- imp_wide 
-  imp_data_long <- complete(imp_wide, action = "long", include = TRUE) %>%
-    to_long_format_vital_mice_SA() #transform to long data
-  imp_data_list <- split(imp_data_long, imp_data_long$.imp)
-  
-  fit_list <- lapply(imp_data_list, function(df) {
-    lmer(pain ~ fishoilactive*time_contin + vitdactive*time_contin + pain_base + 
-           (1 | Subject_ID), data = df)
-  })
-  pooled_cont <- pool(fit_list)
-  est_cont <- tidy(pooled_cont, conf.int = TRUE) %>%
-    filter(term == "fishoilactive") %>%
-    select(estimate, std.error, conf.low, conf.high) %>%
-    mutate(delta_vital = d)
-  
-  delta_results_cont_fishoil <- bind_rows(delta_results_cont_fishoil, est_cont)
-}
-```
+For the VITAL study, the imputed wide-format data was reshaped into long format using a separate function. The treatment effect was estimated using the following mixed-effects model:
+$pain_{ij} = \beta_0 + \beta_1 fishoilactive_i + \beta_2 vitdactive_i + \beta_3 time_{contin,ij} + \beta_4 (fishoilactive_i \times time_{contin,ij}) + \beta_5 (vitdactive_i \times time_{contin,ij}) + \beta_6 painbase_i + b_{0i} + b_{1i} time_{contin,ij} + \varepsilon_{ij}$. 
+As for the control group, we only includes the baseline knee pain score and time as predictors, so our model here was 
+$\text{pain}_{ij} = \beta_0 + \beta_1 \text{time_contin}_{ij} + \beta_2 \text{pain_base}_i + b_{0i} + \varepsilon_{ij}}$
 
 # Result
 
@@ -1788,7 +1697,7 @@ print(acu_plot_imp_k)
 print(vital_plot_impt_k)
 ```
 
-## Sensitive analysis
+## Sensitivity analysis
 
 ```{r fig.width=5, fig.height=4, fig.cap="Sensitive analysis for Acupuncture data set"}
 print(SA_acu_all)

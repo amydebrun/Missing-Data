@@ -267,7 +267,7 @@ cat_heatmap_acu_plot<- ggplot(cat_heatmap_data, aes(x = delta_1, y = delta_2, fi
     limits = c(midpoint_cat - spread_cat, midpoint_cat + spread_cat)
   ) +
   labs(
-    title = "Map1; original acu estimand",
+    title = "",
     x = "Control Delta ",
     y = "Acupuncture Delta",
     fill = "Effect"
@@ -287,9 +287,9 @@ cont_heatmap_acu_plot<-ggplot(cont_heatmap_data, aes(x = delta_1, y = delta_2, f
     limits = c(midpoint_cont - spread_cont, midpoint_cont + spread_cont)
   ) +
   labs(
-    title = "Map2; changed acu estimand",
-    x = "δ control group",
-    y = "δ acupuncture group",
+    title = "",
+    x = "Control Delta",
+    y = "Acupuncture Delta",
     fill = "Effect"
   ) +
   theme_minimal() +
@@ -340,7 +340,7 @@ cat_heatmap_fishoil_plot<- ggplot(cat_heatmap_data, aes(x = delta_1, y = delta_2
     limits = c(midpoint_cat - spread_cat, midpoint_cat + spread_cat)
   ) +
   labs(
-    title = "Map3; original fishoil estimand",
+    title = "",
     x = "Control Delta ",
     y = "Fish Oil Delta",
     fill = "Effect"
@@ -360,7 +360,7 @@ cont_heatmap_fishoil_plot<-ggplot(cont_heatmap_data, aes(x = delta_1, y = delta_
     limits = c(midpoint_cont - spread_cont, midpoint_cont + spread_cont)
   ) +
   labs(
-    title ="Map4; changed fishoil estimand",
+    title ="",
     x = "Control Delta ",
     y = "Fish Oil Delta",
     fill = "Effect"
@@ -412,7 +412,7 @@ cat_heatmap_vitd_plot<- ggplot(cat_heatmap_data, aes(x = delta_1, y = delta_2, f
     limits = c(midpoint_cat - spread_cat, midpoint_cat + spread_cat)
   ) +
   labs(
-    title = "Map5; original vitd estimand",
+    title = "",
     x = "Control Delta ",
     y = "VitD Delta",
     fill = "Effect"
@@ -432,7 +432,7 @@ cont_heatmap_vitd_plot<-ggplot(cont_heatmap_data, aes(x = delta_1, y = delta_2, 
     limits = c(midpoint_cont - spread_cont, midpoint_cont + spread_cont)
   ) +
   labs(
-    title ="Map6; changed vitd estimand",
+    title ="",
     x = "Control Delta ",
     y = "VitD Delta",
     fill = "Effect"
