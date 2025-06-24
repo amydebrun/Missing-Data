@@ -228,6 +228,10 @@ vital_miss_perc_plot
 vital_miss_perc_group_plot
 vital_miss_pattern
 ```
+```{r}
+acu_pk125_plot 
+vital_pain_plot
+```
 
 ```{r, eval=FALSE}
 # Code to save plots and tables, only run when required

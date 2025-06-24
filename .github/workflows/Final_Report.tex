@@ -501,8 +501,8 @@ f5 & headache frequency 1 year\\
 Variables \texttt{pk2} and \texttt{pk5} are the headache severity scores
 at 3 months and 12 months.
 
-\begin{table}
-
+\begin{table}[!h]
+\centering
 \caption{Acupuncture data overview}
 \centering
 \begin{tabular}[t]{l|c|c}
@@ -565,20 +565,18 @@ distributions are negatively skewed, predominantly middle aged and
 older.}
 \end{figure}
 
+\begin{figure}
+\centering
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-11-1.pdf}}
-
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-12-1.pdf}}
-
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-13-1.pdf}}
-
-Figure 2.x,2.x,2.x: These plots show the distribution of the headache
-severity score at the three measured time-points. Over the three
-time-points we can see a generally positively skewed distribution with
-most headache severity scores ranging between 0 and 35. There appears to
-be minimal difference in headache severity score over the treatment
-group, and the control group appears to have a lower headache severity
-score overall. The 3 month and 12 month time-point distributions are
-incomplete due to the missing values.
+\caption{These plots show the distribution of the headache severity
+score at the three measured time-points. Over the three time-points we
+can see a generally positively skewed distribution with most headache
+severity scores ranging between 0 and 35. There appears to be minimal
+difference in headache severity score over the treatment group, and the
+control group appears to have a lower headache severity score overall.
+The 3 month and 12 month time-point distributions are incomplete due to
+the missing values.}
+\end{figure}
 
 \subsection{VITAL data}\label{vital-data}
 
@@ -627,225 +625,85 @@ models. The below table shows the sample size per treatment group.
 There are x variables recorded in the VITAL data, the following table
 refers to a subset of the variables that we frequently use.
 
-\begin{verbatim}
-## \begin{table}[H]
-## \centering
-## \caption{VITAL study variables}
-## \label{}
-\end{verbatim}
+\begin{table}[H]
+\centering
+\caption{VITAL study variables}
+\label{}
 
-\begin{verbatim}
-## 
-## \begin{tabular}{ll}
-## \toprule
-## Variable & Description\\
-## \midrule
-## Subject_ID & Patient ID code\\
-## age & Age of patient\\
-## bmi & Body mass index of patient\\
-## sex & Sex of patient\\
-## vitdactive & 1=vitamin D, 0=no vitamin D\\
-## \addlinespace
-## fishoilactive & 1= fish oil, 0= no fish oil\\
-## pain_base & Knee pain at baseline\\
-## pain_yrX & Knee pain X years post randomisation\\
-## stiffness_base & Knee stiffness at baseline\\
-## stiffness_yrX & Knee stiffness X years post randomisation\\
-## \addlinespace
-## function_base & Knee function at baseline\\
-## function_yrX & Knee function X years post randomisation\\
-## kneepainfreq & Frequency of knee pain\\
-## \bottomrule
-## \end{tabular}
-\end{verbatim}
+\begin{tabular}{ll}
+\toprule
+Variable & Description\\
+\midrule
+\texttt{Subject\_ID} & Patient ID code\\
+age & Age of patient\\
+bmi & Body mass index of patient\\
+sex & Sex of patient\\
+vitdactive & 1=vitamin D, 0=no vitamin D\\
+\addlinespace
+fishoilactive & 1= fish oil, 0= no fish oil\\
+\texttt{pain\_base} & Knee pain at baseline\\
+\texttt{pain\_yrX} & Knee pain X years post randomisation\\
+\texttt{stiffness\_base} & Knee stiffness at baseline\\
+\texttt{stiffness\_yrX} & Knee stiffness X years post randomisation\\
+\addlinespace
+\texttt{function\_base} & Knee function at baseline\\
+\texttt{function\_yrX} & Knee function X years post randomisation\\
+kneepainfreq & Frequency of knee pain\\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\begin{verbatim}
-## \end{table}
-\end{verbatim}
-
-{[}1{]}
-``\textbackslash begin\{table\}{[}!t{]}\n\textbackslash fontsize\{12.0pt\}\{14.4pt\}\textbackslash selectfont\n\textbackslash begin\{tabular\emph{\}\{\textbackslash linewidth\}\{(\textbf{\textbackslash\textbackslash extracolsep\{\textbackslash\textbackslash fill\}?})lcccc\}\n\textbackslash toprule\n\textbackslash textbf\{Characteristic\}
-\& \textbackslash textbf\{Both\}\textbackslash\textbackslash{}\nN =
-342\textbackslash textsuperscript\{\textbackslash textit\{1\}\} \&
-\textbackslash textbf\{Fish Oil
-only\}\textbackslash\textbackslash{}\nN =
-353\textbackslash textsuperscript\{\textbackslash textit\{1\}\} \&
-\textbackslash textbf\{Neither\}\textbackslash\textbackslash{}\nN =
-371\textbackslash textsuperscript\{\textbackslash textit\{1\}\} \&
-\textbackslash textbf\{Vitamin D
-only\}\textbackslash\textbackslash{}\nN =
-332\textbackslash textsuperscript\{\textbackslash textit\{1\}\}
-\textbackslash\textbackslash{}
-\n\textbackslash midrule\textbackslash addlinespace{[}2.5pt{]}\nSex 1-male,2-female
-\& \& \& \& \textbackslash\textbackslash{} \n~~~~1 \&
-111(32\textbackslash\%) \& 120(34\textbackslash\%) \&
-123(33\textbackslash\%) \& 124(37\textbackslash\%)
-\textbackslash\textbackslash{} \n~~~~2 \& 231(68\textbackslash\%) \&
-233(66\textbackslash\%) \& 248(67\textbackslash\%) \&
-208(63\textbackslash\%) \textbackslash\textbackslash{} \nBody mass index
-at randomization, kg/m2 \& 32 (7) \& 32 (7) \& 32 (8) \& 31 (7)
-\textbackslash\textbackslash{} \n~~~~Missing \& 8 \& 11 \& 14 \& 12
-\textbackslash\textbackslash{} \nCurrent smoking 1-yes,0-no \&
-26(7.8\textbackslash\%) \& 33(9.4\textbackslash\%) \&
-30(8.2\textbackslash\%) \& 22(6.8\textbackslash\%)
-\textbackslash\textbackslash{} \n~~~~Missing \& 7 \& 2 \& 3 \& 8
-\textbackslash\textbackslash{} \nAge at randomization to VITAL
-study,years \& 67 (7) \& 67 (7) \& 68 (7) \& 67 (6)
-\textbackslash\textbackslash{} \nBaseline Aspirin use 1-yes,0-no \&
-156(46\textbackslash\%) \& 165(47\textbackslash\%) \&
-176(48\textbackslash\%) \& 155(48\textbackslash\%)
-\textbackslash\textbackslash{} \n~~~~Missing \& 6 \& 5 \& 6 \& 7
-\textbackslash\textbackslash{} \nWOMAC Pain score at baseline \& 37 (19)
-\& 37 (18) \& 37 (19) \& 36 (18) \textbackslash\textbackslash{}
-\n~~~~Missing \& 48 \& 57 \& 45 \& 40 \textbackslash\textbackslash{}
-\nWOMAC Pain score at year 1 \& 32 (19) \& 31 (20) \& 33 (20) \& 33 (21)
-\textbackslash\textbackslash{} \n~~~~Missing \& 182 \& 162 \& 184 \& 153
-\textbackslash\textbackslash{} \nWOMAC Pain score at year 2 \& 32 (20)
-\& 31 (20) \& 30 (20) \& 32 (20) \textbackslash\textbackslash{}
-\n~~~~Missing \& 47 \& 46 \& 48 \& 47 \textbackslash\textbackslash{}
-\nWOMAC Pain score at year 3 \& 32 (21) \& 31 (19) \& 31 (19) \& 28 (19)
-\textbackslash\textbackslash{} \n~~~~Missing \& 78 \& 95 \& 90 \& 82
-\textbackslash\textbackslash{} \nWOMAC Pain score at year 4 \& 30 (20)
-\& 30 (19) \& 29 (18) \& 28 (19) \textbackslash\textbackslash{}
-\n~~~~Missing \& 129 \& 149 \& 145 \& 126 \textbackslash\textbackslash{}
-\nHave you had a knee replacement surgery? (1=Yes, 2=No) \& \& \& \&
-\textbackslash\textbackslash{} \n~~~~1 \& 43(13\textbackslash\%) \&
-47(14\textbackslash\%) \& 52(14\textbackslash\%) \&
-53(16\textbackslash\%) \textbackslash\textbackslash{} \n~~~~2 \&
-293(87\textbackslash\%) \& 300(86\textbackslash\%) \&
-316(86\textbackslash\%) \& 271(84\textbackslash\%)
-\textbackslash\textbackslash{} \n~~~~Missing \& 6 \& 6 \& 3 \& 8
-\textbackslash\textbackslash{} \nUnilateral knee pain 1=Yes 0=No \&
-200(71\textbackslash\%) \& 198(69\textbackslash\%) \&
-223(72\textbackslash\%) \& 200(71\textbackslash\%)
-\textbackslash\textbackslash{} \n~~~~Missing \& 61 \& 68 \& 61 \& 49
-\textbackslash\textbackslash{} \nBilateral knee pain 1=Yes 0=No \&
-81(29\textbackslash\%) \& 87(31\textbackslash\%) \&
-87(28\textbackslash\%) \& 83(29\textbackslash\%)
-\textbackslash\textbackslash{} \n~~~~Missing \& 61 \& 68 \& 61 \& 49
-\textbackslash\textbackslash{} \nFrequency of knee pain 1=Never
-2=\textless1 day/wk 3=1\textbackslash textasciitilde\{\}2 days/wk
-4=3\textbackslash textasciitilde\{\}6 days/wk 5=daily \& \& \& \&
-\textbackslash\textbackslash{} \n~~~~1 \& 1(0.3\textbackslash\%) \&
-1(0.3\textbackslash\%) \& 2(0.6\textbackslash\%) \&
-1(0.3\textbackslash\%) \textbackslash\textbackslash{} \n~~~~2 \&
-16(5.4\textbackslash\%) \& 19(6.4\textbackslash\%) \&
-11(3.3\textbackslash\%) \& 16(5.4\textbackslash\%)
-\textbackslash\textbackslash{} \n~~~~3 \& 44(15\textbackslash\%) \&
-27(9.0\textbackslash\%) \& 34(10\textbackslash\%) \&
-31(10\textbackslash\%) \textbackslash\textbackslash{} \n~~~~4 \&
-58(20\textbackslash\%) \& 57(19\textbackslash\%) \&
-68(21\textbackslash\%) \& 57(19\textbackslash\%)
-\textbackslash\textbackslash{} \n~~~~5 \& 169(57\textbackslash\%) \&
-185(62\textbackslash\%) \& 201(61\textbackslash\%) \&
-181(61\textbackslash\%) \textbackslash\textbackslash{} \n~~~~9 \&
-7(2.4\textbackslash\%) \& 10(3.3\textbackslash\%) \&
-14(4.2\textbackslash\%) \& 10(3.4\textbackslash\%)
-\textbackslash\textbackslash{} \n~~~~Missing \& 47 \& 54 \& 41 \& 36
-\textbackslash\textbackslash{} \nTylenol use at baseline 1=never
-2=occational 3=daily 9=missing \& \& \& \&
-\textbackslash\textbackslash{} \n~~~~1 \& 108(37\textbackslash\%) \&
-137(46\textbackslash\%) \& 145(44\textbackslash\%) \&
-135(46\textbackslash\%) \textbackslash\textbackslash{} \n~~~~2 \&
-91(31\textbackslash\%) \& 84(28\textbackslash\%) \&
-110(33\textbackslash\%) \& 95(32\textbackslash\%)
-\textbackslash\textbackslash{} \n~~~~3 \& 53(18\textbackslash\%) \&
-41(14\textbackslash\%) \& 38(12\textbackslash\%) \&
-30(10\textbackslash\%) \textbackslash\textbackslash{} \n~~~~9 \&
-43(15\textbackslash\%) \& 37(12\textbackslash\%) \&
-37(11\textbackslash\%) \& 36(12\textbackslash\%)
-\textbackslash\textbackslash{} \n~~~~Missing \& 47 \& 54 \& 41 \& 36
-\textbackslash\textbackslash{} \nNsaids use at baseline 1=never
-2=occational 3=daily 9=missing \& \& \& \&
-\textbackslash\textbackslash{} \n~~~~1 \& 62(21\textbackslash\%) \&
-65(22\textbackslash\%) \& 69(21\textbackslash\%) \&
-73(25\textbackslash\%) \textbackslash\textbackslash{} \n~~~~2 \&
-98(33\textbackslash\%) \& 101(34\textbackslash\%) \&
-98(30\textbackslash\%) \& 94(32\textbackslash\%)
-\textbackslash\textbackslash{} \n~~~~3 \& 110(37\textbackslash\%) \&
-107(36\textbackslash\%) \& 134(41\textbackslash\%) \&
-111(38\textbackslash\%) \textbackslash\textbackslash{} \n~~~~9 \&
-25(8.5\textbackslash\%) \& 26(8.7\textbackslash\%) \&
-29(8.8\textbackslash\%) \& 18(6.1\textbackslash\%)
-\textbackslash\textbackslash{} \n~~~~Missing \& 47 \& 54 \& 41 \& 36
-\textbackslash\textbackslash{} \nStronger med use at baseline 1=never
-2=occational 3=daily 9=missing \& \& \& \&
-\textbackslash\textbackslash{} \n~~~~1 \& 178(60\textbackslash\%) \&
-193(65\textbackslash\%) \& 205(62\textbackslash\%) \&
-186(63\textbackslash\%) \textbackslash\textbackslash{} \n~~~~2 \&
-40(14\textbackslash\%) \& 41(14\textbackslash\%) \&
-43(13\textbackslash\%) \& 47(16\textbackslash\%)
-\textbackslash\textbackslash{} \n~~~~3 \& 46(16\textbackslash\%) \&
-36(12\textbackslash\%) \& 50(15\textbackslash\%) \&
-40(14\textbackslash\%) \textbackslash\textbackslash{} \n~~~~9 \&
-31(11\textbackslash\%) \& 29(9.7\textbackslash\%) \&
-32(9.7\textbackslash\%) \& 23(7.8\textbackslash\%)
-\textbackslash\textbackslash{} \n~~~~Missing \& 47 \& 54 \& 41 \& 36
-\textbackslash\textbackslash{} \nTKR 1=yes 0=No \&
-64(19\textbackslash\%) \& 82(23\textbackslash\%) \&
-74(20\textbackslash\%) \& 76(23\textbackslash\%)
-\textbackslash\textbackslash{}
-\n\textbackslash bottomrule\n\textbackslash end\{tabular}\}\n\textbackslash begin\{minipage\}\{\textbackslash linewidth\}\n\textbackslash textsuperscript\{\textbackslash textit\{1\}\}n(\textbackslash\%);
-Mean
-(SD)\textbackslash\textbackslash{}\n\textbackslash end\{minipage\}\n\textbackslash end\{table\}\n''
-attr(,``class'') {[}1{]} ``knit\_asis'' attr(,``knit\_meta'')
-attr(,``knit\_meta''){[}{[}1{]}{]} \$name {[}1{]} ``booktabs''
-
-\$options NULL
-
-\$extra\_lines NULL
-
-attr(,``class'') {[}1{]} ``latex\_dependency''
-
-attr(,``knit\_meta''){[}{[}2{]}{]} \$name {[}1{]} ``caption''
-
-\$options NULL
-
-\$extra\_lines NULL
-
-attr(,``class'') {[}1{]} ``latex\_dependency''
-
-attr(,``knit\_meta''){[}{[}3{]}{]} \$name {[}1{]} ``longtable''
-
-\$options NULL
-
-\$extra\_lines NULL
-
-attr(,``class'') {[}1{]} ``latex\_dependency''
-
-attr(,``knit\_meta''){[}{[}4{]}{]} \$name {[}1{]} ``colortbl''
-
-\$options NULL
-
-\$extra\_lines NULL
-
-attr(,``class'') {[}1{]} ``latex\_dependency''
-
-attr(,``knit\_meta''){[}{[}5{]}{]} \$name {[}1{]} ``array''
-
-\$options NULL
-
-\$extra\_lines NULL
-
-attr(,``class'') {[}1{]} ``latex\_dependency''
-
-attr(,``knit\_meta''){[}{[}6{]}{]} \$name {[}1{]} ``anyfontsize''
-
-\$options NULL
-
-\$extra\_lines NULL
-
-attr(,``class'') {[}1{]} ``latex\_dependency''
-
-attr(,``knit\_meta''){[}{[}7{]}{]} \$name {[}1{]} ``multirow''
-
-\$options NULL
-
-\$extra\_lines NULL
-
-attr(,``class'') {[}1{]} ``latex\_dependency''
-
-attr(,``knit\_cacheable'') {[}1{]} NA
+\begin{table}[!h]
+\centering
+\caption{VITAL missing data overview (part)}
+\centering
+\begin{tabular}[t]{l|c|c|c|c}
+\hline
+\textbf{Characteristic} & \makecell[c]{\textbf{Both}\ \ \\N = 342} & \makecell[c]{\textbf{Fish Oil only}\ \ \\N = 353} & \makecell[c]{\textbf{Neither}\ \ \\N = 371} & \makecell[c]{\textbf{Vitamin D only}\ \ \\N = 332}\\
+\hline
+Sex 1-male,2-female &  &  &  & \\
+\hline
+\hspace{1em}1 & 111(32\%) & 120(34\%) & 123(33\%) & 124(37\%)\\
+\hline
+\hspace{1em}2 & 231(68\%) & 233(66\%) & 248(67\%) & 208(63\%)\\
+\hline
+Body mass index at randomization, kg/m2 & 32 (7) & 32 (7) & 32 (8) & 31 (7)\\
+\hline
+\hspace{1em}Missing & 8 & 11 & 14 & 12\\
+\hline
+Current smoking 1-yes,0-no & 26(7.8\%) & 33(9.4\%) & 30(8.2\%) & 22(6.8\%)\\
+\hline
+\hspace{1em}Missing & 7 & 2 & 3 & 8\\
+\hline
+Age at randomization to VITAL study,years & 67 (7) & 67 (7) & 68 (7) & 67 (6)\\
+\hline
+Baseline Aspirin use 1-yes,0-no & 156(46\%) & 165(47\%) & 176(48\%) & 155(48\%)\\
+\hline
+\hspace{1em}Missing & 6 & 5 & 6 & 7\\
+\hline
+WOMAC Pain score at baseline & 37 (19) & 37 (18) & 37 (19) & 36 (18)\\
+\hline
+\hspace{1em}Missing & 48 & 57 & 45 & 40\\
+\hline
+WOMAC Pain score at year 1 & 32 (19) & 31 (20) & 33 (20) & 33 (21)\\
+\hline
+\hspace{1em}Missing & 182 & 162 & 184 & 153\\
+\hline
+WOMAC Pain score at year 2 & 32 (20) & 31 (20) & 30 (20) & 32 (20)\\
+\hline
+\hspace{1em}Missing & 47 & 46 & 48 & 47\\
+\hline
+WOMAC Pain score at year 3 & 32 (21) & 31 (19) & 31 (19) & 28 (19)\\
+\hline
+\hspace{1em}Missing & 78 & 95 & 90 & 82\\
+\hline
+WOMAC Pain score at year 4 & 30 (20) & 30 (19) & 29 (18) & 28 (19)\\
+\hline
+\hspace{1em}Missing & 129 & 149 & 145 & 126\\
+\hline
+\multicolumn{5}{l}{\rule{0pt}{1em}\textsuperscript{1} n(\%); Mean (SD)}\\
+\end{tabular}
+\end{table}
 
 Figure 2.x shows the summary statistics of the VITAL data. It provides
 information on all 4 treatment groups. Note here that the VITAL data
@@ -853,47 +711,40 @@ contains missing baseline data as well as post randomisation data.
 
 \begin{figure}
 
+{\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-14-1} 
+
+}
+
+\caption{The distribution of age in each treatment group, which appear to be normal/ positive skewed distributions.}\label{fig:unnamed-chunk-14}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-15-1} 
+
+}
+
+\caption{The distribution of body mass index in each treatment group, these appear to be positively skewed with a BMI between 20 and 40. This shows a range between healthy weighted and obese participants.}\label{fig:unnamed-chunk-15}
+\end{figure}
+
+\begin{figure}
+
 {\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-16-1} 
 
 }
 
-\caption{The distribution of age in each treatment group, which appear to be normal/ positive skewed distributions.}\label{fig:unnamed-chunk-16}
+\caption{The distribution of males and females in the VITAL data. Similar to the acupuncture trial, the participants are predominantly female.}\label{fig:unnamed-chunk-16}
 \end{figure}
 
 \begin{figure}
-
-{\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-17-1} 
-
-}
-
-\caption{The distribution of body mass index in each treatment group, these appear to be positively skewed with a BMI between 20 and 40. This shows a range between healthy weighted and obese participants.}\label{fig:unnamed-chunk-17}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-17-1.pdf}}
+\caption{The distribution of the knee pain from baseline until 4 years
+post randomisation. In all treatment groups it appears that the
+distributions follow a positive/ near normal distribution and skews more
+positive as time goes on. This occurs in all groups. Each time-point has
+an incomplete distribution due to missing data.}
 \end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-18-1} 
-
-}
-
-\caption{The distribution of males and females in the VITAL data. Similar to the acupuncture trial, the participants are predominantly female.}\label{fig:unnamed-chunk-18}
-\end{figure}
-
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf}}
-
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf}}
-
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf}}
-
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf}}
-
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf}}
-
-Figure 2.x,2.x,2.x,2.x,2.x shows the distribution of the knee pain from
-baseline until 4 years post randomisation. In all treatment groups it
-appears that the distributions follow a positive/ near normal
-distribution and skews more positive as time goes on. This occurs in all
-groups. Each time-point has an incomplete distribution due to missing
-data.
 
 \newpage
 
@@ -910,7 +761,7 @@ studies. We can visualise this in the plot below.
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-24-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-18-1.pdf}}
 \caption{Proportion of missing data in outcome variables \(pk2\) and
 \(pk5\). This follows a monotonic missing data pattern.}
 \end{figure}
@@ -921,7 +772,7 @@ missing data in the control group.
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-25-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-19-1.pdf}}
 \caption{Higher percentage of missing data (dark green) in control
 group}
 \end{figure}
@@ -935,7 +786,7 @@ missing data (1,0,0).
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-26-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf}}
 \caption{Missing data pattern is similar in both groups (1=observed,
 0=missing)}
 \end{figure}
@@ -951,7 +802,7 @@ drastically decreases in year 2, then steadily increases again.
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-27-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-21-1.pdf}}
 \caption{Non-monotonic pattern across out knee pain scores in VITAL
 data.}
 \end{figure}
@@ -964,7 +815,7 @@ post randomisation containing the most missing data.
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-28-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-22-1.pdf}}
 \caption{Percentage of missing data across baseline and 4 follow-up time
 points. Non-monotonic pattern appears similar in 4 randomised groups.}
 \end{figure}
@@ -978,7 +829,7 @@ which data is observed at all time-points.
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-29-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-23-1.pdf}}
 \caption{Missing data patterns across 4 treatment groups in VITAL data.}
 \end{figure}
 
@@ -2286,7 +2137,7 @@ principled approaches.
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-34-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-28-1.pdf}}
 \caption{Acupuncture data set analysed with different methods; CCA =
 complete case analysis; LOCR = last observation carry forward; MO = mean
 observation; MI = multiple imputation with linear regression; LME =
@@ -2296,7 +2147,7 @@ imputation followed by linear mixed-effects model.}
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-35-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-29-1.pdf}}
 \caption{VITAL data set analysed with different methods; CCA = complete
 case analysis; LOCR = last observation carry forward; MO = mean
 observation; MI = multiple imputation with linear regression; LME =
@@ -2311,7 +2162,7 @@ modeled) to see how that affects our conclusions.
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-30-1.pdf}}
 \caption{Acupuncture data set analysed with different estimands; LME:
 linear mix model without imputations; MI+LME: multiple imputation and
 linear miex model; Purple line (Original Estimand) estimand: The mean
@@ -2324,7 +2175,7 @@ variable.}
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-31-1.pdf}}
 \caption{VITAL data set analysed with different estimands; LME: linear
 mix model without imputations; MI+LME: multiple imputation and linear
 miex model; Purple line (Original Estimand) estimand: The mean
@@ -2346,13 +2197,13 @@ using 5 imputations.
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-32-1.pdf}}
 \caption{Acupuncture data set analysed with different FCS methods}
 \end{figure}
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-33-1.pdf}}
 \caption{VITAL data set analysed with different FCS methods}
 \end{figure}
 
@@ -2363,14 +2214,14 @@ Acupuncture and VITAL data sets accordingly).
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-34-1.pdf}}
 \caption{Acupuncture data set analysed with different imputation
 numbers}
 \end{figure}
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-35-1.pdf}}
 \caption{VITAL data set analysed with different imputation numbers}
 \end{figure}
 
@@ -2378,13 +2229,13 @@ numbers}
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-42-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf}}
 \caption{Sensitive analysis for Acupuncture data set}
 \end{figure}
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-43-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf}}
 \caption{Sensitive analysis for VITAL data set}
 \end{figure}
 
@@ -2419,37 +2270,37 @@ departures from the MAR assumption.
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-44-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf}}
 \caption{original acu estimand}
 \end{figure}
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-45-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf}}
 \caption{changed acu estimand}
 \end{figure}
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-46-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf}}
 \caption{original fishoil estimand}
 \end{figure}
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-47-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-41-1.pdf}}
 \caption{changed fishoil estimand}
 \end{figure}
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-48-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-42-1.pdf}}
 \caption{original vitd estimand}
 \end{figure}
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-49-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-43-1.pdf}}
 \caption{changed vitd estimand}
 \end{figure}
 

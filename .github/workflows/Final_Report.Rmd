@@ -131,6 +131,8 @@ biased estimates and inaccurate conclusions. Missing data mechanisms
 appear to be mentioned first by Donald Rubin in 1976. We can formally
 define these mechanisms using the following notation;
 
+\newpage 
+
 -   $R$ represents a missing data indicator which when $R=1$ indicates
     observed data and $R=0$ indicates unobserved
 -   $X$ represents data that is always observed
@@ -140,7 +142,9 @@ define these mechanisms using the following notation;
 
 The formal definition of MCAR data is:
 
-$$\quad P(R = 1 \mid Y, X) = P(R = 1)$$ The probability of the data is
+$$\quad P(R = 1 \mid Y, X) = P(R = 1)$$ 
+
+The probability of the data is
 observed given observed data and missing data is the same as the
 probability of being observed without the given data. This mechanism is
 considered the easiest to deal with as it does not bias the result
@@ -158,9 +162,13 @@ potentially contains missing data).
 MCAR_dag
 ```
 
+\newpage
+
 **Missing At Random**
 
-$$\quad P(R = 1 \mid Y, X) = P(R = 1 \mid X)$$ The probability of data
+$$\quad P(R = 1 \mid Y, X) = P(R = 1 \mid X)$$ 
+
+The probability of data
 being observed given observed and unobserved data is the same as the
 probability being observed given the observed data. In short, the
 missing data dependends on the observed data. We can say that the
@@ -186,9 +194,13 @@ MAR_dag1
 MAR_dag2
 ```
 
+\newpage
+
 **Missing Not At Random**
 
-$\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)$ The probability of data
+$\quad P(R = 1 \mid Y, X) \ne P(R = 1 \mid X)$
+
+The probability of data
 being observed depends both on the observed data and the missing data.
 This mechanism is the most difficult to deal with as it relates to the
 unobserved data, so producing valid results is a challenge. Certain
@@ -204,14 +216,14 @@ missingness indicator is influenced by the missing outcome data. The
 second DAG shows MNAR conditional on $X_2$ only as it influences the
 missingness indicator $R_Y$ along with the missing outcome.
 
-```{r fig.width=5, fig.height=3, echo=FALSE, fig.cap="Missing not at Random conditional on L, X_1 and X_2"}
+```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="Missing not at Random conditional on L, X_1 and X_2"}
 MNAR_dag1
 ```
 
-```{r fig.width=5, fig.height=3, echo=FALSE, fig.cap="Missing at Random conditional on L, X_2"}
+```{r fig.width=5, fig.height=4, echo=FALSE, fig.cap="Missing at Random conditional on L, X_2"}
 MNAR_dag2
 ```
-
+\newpage
 Although these considerations are important, the mechanism underlying
 missing data is fundamentally untestable. Since the true values of
 missing observations are never observed, we cannot definitively
@@ -386,12 +398,14 @@ and 12 months.
 knitr::asis_output(acu_summary)
 ```
 
-Table 2.x are the summary statistics of the acupuncture trial data.
+*Table 3* are the summary statistics of the acupuncture trial data.
 These consist of 2 columns; column 0 showing control group statistics
 and column 1 showing treatment group statistics. The continous variables
 show the mean value (standard deviation) and the categorical variables
 show the count(percentage). Note pk2 and pk5 are post randomisation
 variables and contain missing data.
+
+\newpage
 
 ```{r fig.width=5, fig.height=3, fig.cap="The distribution of sex in both treatment groups of the acupuncture trial data. The participants are predominantly female."}
 print(acu_sex_plot)
@@ -402,10 +416,11 @@ print(acu_sex_plot)
 print(acu_age_plot)
 ```
 
-```{r fig.width=5, fig.height=2.5, warning=FALSE, fig.cap="These plots show the distribution of the headache severity score at the three measured time-points. Over the three time-points we can see a generally positively skewed distribution with most headache severity scores ranging between 0 and 35. There appears to be minimal difference in headache severity score over the treatment group, and the control group appears to have a lower headache severity score overall. The 3 month and 12 month time-point distributions are incomplete due to the missing values."}
+```{r fig.width=5, fig.height=3, warning=FALSE, fig.cap="These plots show the distribution of the headache severity score at the three measured time-points. Over the three time-points we can see a generally positively skewed distribution with most headache severity scores ranging between 0 and 35. There appears to be minimal difference in headache severity score over the treatment group, and the control group appears to have a lower headache severity score overall. The 3 month and 12 month time-point distributions are incomplete due to the missing values."}
 print(acu_pk125_plot)
 ```
 
+\newpage
 ## VITAL data
 
 The Vitamin D and Omega-3 trial (VITAL) was a nationwide clinical trial
@@ -488,9 +503,8 @@ cat("\\end{table}")
 vital_summary
 ```
 
-Figure 2.x shows the summary statistics of the VITAL data. It provides
-information on all 4 treatment groups. Note here that the VITAL data
-contains missing baseline data as well as post randomisation data.
+*Table 6* shows the summary statistics of partial VITAL data. It provides the mean value (standard deviation) of the continuous variables and the count(%) for the categorical variables. This is divided per treatment combination group. Note here that the VITAL data
+contains missing baseline (i.e. `pain_base`) data as well as post-randomisation data.
 
 ```{r fig.width=5, fig.height=3, fig.align='center', warning=FALSE, fig.cap="The distribution of age in each treatment group, which appear to be normal/ positive skewed distributions."}
 print(age_vital_plot)
@@ -504,7 +518,7 @@ print(bmi_vital_plot)
 print(sex_vital_plot)
 ```
 
-```{r fig.width=4, fig.height=2.5, warning=FALSE, fig.cap="The distribution of the knee pain from baseline until 4 years post randomisation. In all treatment groups it appears that the distributions follow a positive/ near normal distribution and skews more positive as time goes on. This occurs in all groups. Each time-point has an incomplete distribution due to missing data."}
+```{r fig.width=4, fig.height=4, warning=FALSE, fig.cap="The distribution of the knee pain from baseline until 4 years post randomisation. In all treatment groups it appears that the distributions follow a positive/ near normal distribution and skews more positive as time goes on. This occurs in all groups. Each time-point has an incomplete distribution due to missing data."}
 print(vital_pain_plot)
 ```
 
