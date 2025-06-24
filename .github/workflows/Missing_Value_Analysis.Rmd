@@ -192,8 +192,8 @@ delta_results_cont_vitd
 ```
 
 ```{r}
-SA_acu_all
-SA_vital_all_plot
+SA_vital_plot
+SA_acu_plot
 ```
 
 ```{r}
@@ -290,8 +290,8 @@ save(
   MCAR_dag,
   
  # sensitivity analysis
-  SA_vital_all_plot,
-  SA_acu_all,
+  SA_vital_plot,
+  SA_acu_plot,
   cont_heatmap_fishoil_plot,
   cat_heatmap_fishoil_plot,
   cont_heatmap_acu_plot,
