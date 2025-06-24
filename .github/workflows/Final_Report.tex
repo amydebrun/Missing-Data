@@ -809,7 +809,7 @@ an incomplete distribution due to missing data.}
 
 \newpage
 
-\subsection{Missing analysis}\label{missing-analysis}
+\subsection{Missing Data Summary}\label{missing-data-summary}
 
 \textbf{Acupuncture Data}
 
@@ -870,6 +870,8 @@ drastically decreases in year 2, then steadily increases again.
 \caption{Non-monotonic pattern across out knee pain scores in VITAL data.}\label{fig:unnamed-chunk-21}
 \end{figure}
 
+\newpage
+
 Recall that the VITAL data set contains 4 different combinations of
 treatment. Separating this out in the plot below we can see the
 percentage of missing data in each knee pain time point variable in each
@@ -885,12 +887,15 @@ post randomisation containing the most missing data.
 \caption{Percentage of missing data across baseline and 4 follow-up time points. Non-monotonic pattern appears similar in 4 randomised groups.}\label{fig:unnamed-chunk-22}
 \end{figure}
 
-Looking at the possible missing data patterns in the 4 combinatory
-groups, they are mostly similar with little anomalies. As this dataset
-has more time-points recorded than the acupuncture trial data, and more
-treatmenr groups, there are more possible missing data patterns to
-observe. The most common data pattern still stands as (1,1,1,1,1) in
-which data is observed at all time-points.
+\emph{Figure 18} shows the possible missing data patterns in the 4
+combinatory groups, they are mostly similar with little anomalies. As
+this dataset has more time-points recorded than the acupuncture trial
+data, and more treatment groups, there are more possible missing data
+patterns to observe. The most common data pattern still stands as
+(1,1,1,1,1) in which data is observed at all time-points (shown in light
+green blocks in the first row of each group).
+
+\newpage
 
 \begin{figure}
 
@@ -1964,7 +1969,7 @@ missing data, we increased K from the default 5 to 20 and 25. For the
 VITAL dataset, which has around 50\% missingness, we increased K from 5
 to 20 and then to 50.
 
-\subsubsection{Sensitive analysis}\label{sensitive-analysis}
+\subsubsection{Sensitivity analysis}\label{sensitivity-analysis}
 
 As mentioned in our introduction, missing data mechanisms are
 unverifiable. While it is most common to assume that data are MAR, in
@@ -1991,33 +1996,34 @@ assumptions about the missing data mechanism. By applying these shift
 parameters, we can model situations in which participants with missing
 data are assumed to have systematically better or worse outcomes than
 those observed, thereby testing the stability of our conclusions when
-relaxing the MAR assumption.
+relaxing the MAR assumption conditional on other variables.
 
 The shift can be broken down in to:
 
 \[\delta = \delta_\mathrm{MAR} + \delta_\mathrm{MNAR}\] where; -
 \(\delta_\mathrm{MAR}\): mean difference caused by the predictors in the
 imputation models - \(\delta_\mathrm{MNAR}\): mean difference caused by
-an additional non-ignorable part of the imputation model
+an additional non-ignorable part of the imputation model.
 
 Essentially, \(\delta\) is the mean difference between the imputed
 values and the true values that we did not observe.
 
-Deciding which \(\delta\) values are suitable is subjective. We need to
-include \(\delta\) = 0 as that assumes the data is MAR which acts as our
-baseline, and we add the non-zero \(\delta\) values to test the
-sensitivity to the MNAR assumption. We decided to base our \(\delta\)
-values on the standard deviations of the outcome variables of interest.
-The standard deviation of the headache severity score at the final time
-point in the treatment group is \emph{13.71828} and \emph{17.01089} in
-the control group. The standard deviation of the knee pain score at the
-final time point in the fishoil group is \emph{19.13955},
-\emph{19.24856} in the vitamin D group, and \emph{18.29479} in the
-control group. These statistics are based on the data in the original
-wide format. We also extracted the standard deviation of the outcome
-variables in the long format in which the estimand is continous. We
-decided an increasing and decreasing multiples of these values should
-suffice;
+Deciding which \(\delta\) values are suitable is subjective. There are
+two \(\delta\) paramters we are considering for the treatment arm and
+cotrol arm. We need to include \(\delta\) = 0 as that assumes the data
+is MAR which acts as our baseline, and we add the non-zero \(\delta\)
+values to test the sensitivity to the MNAR assumption. We decided to
+base our \(\delta\) values on the standard deviations of the outcome
+variables of interest. The standard deviation of the headache severity
+score at the final time point in the treatment group is \emph{13.71828}
+and \emph{17.01089} in the control group. The standard deviation of the
+knee pain score at the final time point in the fishoil group is
+\emph{19.13955}, \emph{19.24856} in the vitamin D group, and
+\emph{18.29479} in the control group. These statistics are based on the
+data in the original wide format. We also extracted the standard
+deviation of the outcome variables in the long format in which the
+estimand is continous. We decided an increasing and decreasing multiples
+of these values should suffice;
 
 \(\delta\) = -0.5\emph{SD, -0.25}SD, 0 , 0.25\emph{SD, 0.5}SD\$
 
@@ -2221,7 +2227,9 @@ numbers}
 \caption{VITAL data set analysed with different imputation numbers}
 \end{figure}
 
-\subsection{Sensitivity analysis}\label{sensitivity-analysis}
+\newpage
+
+\subsection{Sensitivity analysis}\label{sensitivity-analysis-1}
 
 \begin{figure}
 \centering
@@ -2237,7 +2245,7 @@ numbers}
 
 The forest plot aims to illustrate the robustness of the estimated
 treatment effects under varying missing data assumptions using
-\(\delta\) adjustment sensitivity analysis. In figure 23 which shows the
+\(\delta\) adjustment sensitivity analysis. In figure 27 which shows the
 acupuncture trial results, we can observe the conditional expectation of
 headache severity at the final time point of 12 months given the
 baseline headache severity and acupuncture treatment under different
@@ -2245,7 +2253,7 @@ baseline headache severity and acupuncture treatment under different
 expectation of headache severity at the final time point in the control
 group, given baseline headache severity only and no treatment.
 
-Figure 24 shows the VITAL results after applying the sensitivity
+Figure 28 shows the VITAL results after applying the sensitivity
 analysis. In the fish oil panel, we observe the conditional expectation
 of knee pain score at 4 years given baseline knee pain score and fish
 oil treatment under the different \(\delta\) shifts. The vitamin D panel
@@ -2260,53 +2268,32 @@ where the missing data are systematically better or worse than the
 observed ones. Positive \(\delta\) values imply better unobserved
 outcomes while negative values imply worse. The consistency of estimates
 across the \(\delta\) values suggests the treatment effect is robust to
-departures from the MAR assumption.
-
-\newpage
+departures from the MAR assumption. \newpage
 
 \begin{figure}
 \centering
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-35-1.pdf}}
-\caption{original acu estimand}
+\caption{Original \& changed estimand in acupuncture trial}
 \end{figure}
 
-\begin{figure}
-\centering
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf}}
-\caption{changed acu estimand}
-\end{figure}
+\newpage
 
 \begin{figure}
 \centering
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-37-1.pdf}}
-\caption{original fishoil estimand}
-\end{figure}
-
-\begin{figure}
-\centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-38-1.pdf}}
-\caption{changed fishoil estimand}
-\end{figure}
-
-\begin{figure}
-\centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-39-1.pdf}}
-\caption{original vitd estimand}
-\end{figure}
-
-\begin{figure}
-\centering
-\pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-40-1.pdf}}
-\caption{changed vitd estimand}
+\caption{Original \& changed estimand in vitamin D group}
 \end{figure}
 
 We created heatmaps plotting the \(\delta\) values for both the control
 group and treatment group to visualise the change in treatment effect
-when varying the \(\delta\) adjustments under MNAR. The aim here is to
+when varying the \(\delta\) adjustments under MNAR. We are comparing
+both the original estimand (heatmap on the left handside) and the
+changed estimand (heatmaps on the right handside) The aim here is to
 show the robustness of the initial estimated treatment effect when
 assumed under a different mechanism. A similar range of colours would be
 interpretable as a strong estimate as there was not much change in the
-estimate after adding the \(\delta\) shifts.
+estimate after adding the \(\delta\) shifts. \newpage 
 
 \section{Discussion}\label{discussion}
 

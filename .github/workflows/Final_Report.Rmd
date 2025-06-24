@@ -530,7 +530,7 @@ print(vital_pain_plot)
 
 \newpage
 
-## Missing analysis
+## Missing Data Summary
 
 **Acupuncture Data**
 
@@ -577,6 +577,8 @@ drastically decreases in year 2, then steadily increases again.
 print(vital_miss_perc_plot)
 ```
 
+\newpage 
+
 Recall that the VITAL data set contains 4 different combinations of
 treatment. Separating this out in the plot below we can see the
 percentage of missing data in each knee pain time point variable in each
@@ -587,14 +589,17 @@ post randomisation containing the most missing data.
 print(vital_miss_perc_group_plot)
 ```
 
-Looking at the possible missing data patterns in the 4 combinatory
+*Figure 18* shows the possible missing data patterns in the 4 combinatory
 groups, they are mostly similar with little anomalies. As this dataset
 has more time-points recorded than the acupuncture trial data, and more
-treatmenr groups, there are more possible missing data patterns to
+treatment groups, there are more possible missing data patterns to
 observe. The most common data pattern still stands as (1,1,1,1,1) in
-which data is observed at all time-points.
+which data is observed at all time-points (shown in light green blocks in the first
+row of each group).
 
-```{r fig.width=6, fig.height=9.5,fig.align='center', fig.cap="Missing data patterns across 4 treatment groups in VITAL data."}
+\newpage
+
+```{r fig.width=7, fig.height=9,fig.align='center', fig.cap="Missing data patterns across 4 treatment groups in VITAL data."}
 print(vital_miss_pattern)
 ```
 
@@ -1521,7 +1526,7 @@ missing data, we increased K from the default 5 to 20 and 25. For the
 VITAL dataset, which has around 50% missingness, we increased K from 5
 to 20 and then to 50.
 
-### Sensitive analysis
+### Sensitivity analysis
 
 As mentioned in our introduction, missing data mechanisms are
 unverifiable. While it is most common to assume that data are MAR, in
@@ -1548,19 +1553,20 @@ assumptions about the missing data mechanism. By applying these shift
 parameters, we can model situations in which participants with missing
 data are assumed to have systematically better or worse outcomes than
 those observed, thereby testing the stability of our conclusions when
-relaxing the MAR assumption.
+relaxing the MAR assumption conditional on other variables.
 
 The shift can be broken down in to:
 
-$$\delta = \delta_\mathrm{MAR} + \delta_\mathrm{MNAR}$$ where; -
-$\delta_\mathrm{MAR}$: mean difference caused by the predictors in the
-imputation models - $\delta_\mathrm{MNAR}$: mean difference caused by an
-additional non-ignorable part of the imputation model
+$$\delta = \delta_\mathrm{MAR} + \delta_\mathrm{MNAR}$$ where; 
+- $\delta_\mathrm{MAR}$: mean difference caused by the predictors in the
+imputation models 
+- $\delta_\mathrm{MNAR}$: mean difference caused by an
+additional non-ignorable part of the imputation model.
 
 Essentially, $\delta$ is the mean difference between the imputed values
 and the true values that we did not observe.
 
-Deciding which $\delta$ values are suitable is subjective. We need to
+Deciding which $\delta$ values are suitable is subjective. There are two $\delta$ paramters we are considering for the treatment arm and cotrol arm. We need to
 include $\delta$ = 0 as that assumes the data is MAR which acts as our
 baseline, and we add the non-zero $\delta$ values to test the
 sensitivity to the MNAR assumption. We decided to base our $\delta$
@@ -1708,6 +1714,8 @@ print(acu_plot_imp_k)
 print(vital_plot_impt_k)
 ```
 
+\newpage 
+
 ## Sensitivity analysis
 
 ```{r fig.width=5, fig.height=4, fig.cap="Sensitive analysis for Acupuncture data set"}
@@ -1718,9 +1726,10 @@ print(SA_acu_all)
 print(SA_vital_all_plot)
 ```
 
+
 The forest plot aims to illustrate the robustness of the estimated
 treatment effects under varying missing data assumptions using $\delta$
-adjustment sensitivity analysis. In figure 23 which shows the acupuncture
+adjustment sensitivity analysis. In figure 27 which shows the acupuncture
 trial results, we can observe the conditional expectation of headache
 severity at the final time point of 12 months given the baseline
 headache severity and acupuncture treatment under different $\delta$
@@ -1728,7 +1737,7 @@ shifts. Similarly we can also observe the conditional expectation of
 headache severity at the final time point in the control group, given
 baseline headache severity only and no treatment.
 
-Figure 24 shows the VITAL results after applying the sensitivity
+Figure 28 shows the VITAL results after applying the sensitivity
 analysis. In the fish oil panel, we observe the conditional expectation
 of knee pain score at 4 years given baseline knee pain score and fish
 oil treatment under the different $\delta$ shifts. The vitamin D panel
@@ -1744,40 +1753,31 @@ observed ones. Positive $\delta$ values imply better unobserved outcomes
 while negative values imply worse. The consistency of estimates across
 the $\delta$ values suggests the treatment effect is robust to
 departures from the MAR assumption.
-
 \newpage
 
-```{r fig.width=4, fig.height=2,  fig.cap="original acu estimand"}
-print(cat_heatmap_acu_plot)
+```{r fig.width=7, fig.height=4, fig.cap="Original & changed estimand in acupuncture trial "}
+library(patchwork)
+print(cat_heatmap_acu_plot + cont_heatmap_acu_plot)
 ```
 
-```{r fig.width=4, fig.height=2,  fig.cap="changed acu estimand"}
-print(cont_heatmap_acu_plot)
+```{r fig.width=7, fig.height=4, fig.cap="Original & changed estimand in fishoil group"}
+print(cat_heatmap_fishoil_plot + cont_heatmap_fishoil_plot)
 ```
+\newpage
 
-```{r fig.width=4, fig.height=2,   fig.cap="original fishoil estimand"}
-print(cat_heatmap_fishoil_plot)
-```
-
-```{r fig.width=4, fig.height=2,  fig.cap="changed fishoil estimand"}
-print(cont_heatmap_fishoil_plot)
-```
-
-```{r fig.width=4, fig.height=2,fig.cap="original vitd estimand"}
-print(cat_heatmap_vitd_plot)
-```
-
-```{r fig.width=4, fig.height=2, fig.cap="changed vitd estimand"}
-print(cont_heatmap_vitd_plot)
+```{r fig.width=7, fig.height=4, fig.cap="Original & changed estimand in vitamin D group"}
+print(cat_heatmap_vitd_plot + cont_heatmap_vitd_plot)
 ```
 
 We created heatmaps plotting the $\delta$ values for both the control
 group and treatment group to visualise the change in treatment effect
-when varying the $\delta$ adjustments under MNAR. The aim here is to
+when varying the $\delta$ adjustments under MNAR. We are comparing both the original estimand (heatmap on the left handside) and
+the changed estimand (heatmaps on the right handside) The aim here is to
 show the robustness of the initial estimated treatment effect when
 assumed under a different mechanism. A similar range of colours would be
 interpretable as a strong estimate as there was not much change in the
 estimate after adding the $\delta$ shifts.
+\newpage 
 
 # Discussion
 
