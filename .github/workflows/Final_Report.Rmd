@@ -1719,11 +1719,11 @@ print(vital_plot_impt_k)
 ## Sensitivity analysis
 
 ```{r fig.width=5, fig.height=4, fig.cap="Sensitive analysis for Acupuncture data set"}
-print(SA_acu_all)
+print(SA_acu_plot)
 ```
 
 ```{r fig.width=5, fig.height=4,fig.cap="Sensitive analysis for VITAL data set"}
-print(SA_vital_all_plot)
+print(SA_vital_plot)
 ```
 
 
