@@ -97,7 +97,7 @@ acu_combined <- bind_rows(
 )
 
 #combined plot 
-SA_acu_all<-ggplot(acu_combined, aes(x = estimate, y = delta, color = estimand, shape = estimand)) +
+SA_acu_plot<-ggplot(acu_combined, aes(x = estimate, y = delta, color = estimand, shape = estimand)) +
   geom_point(size = 3, position = position_nudge(y = 0.15)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.3, position = position_nudge(y = 0.15)) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
@@ -196,7 +196,7 @@ SA_vital_cat_plot <- ggplot(vital_cat_combined, aes(x = estimate, y = delta)) +
 
 #combining cat and cont vital 
 
-SA_vital_all_plot <- ggplot(vital_all_combined, aes(x = estimate, y = delta, shape = estimand, colour = estimand)
+SA_vital_plot <- ggplot(vital_all_combined, aes(x = estimate, y = delta, shape = estimand, colour = estimand)
 ) + geom_point( data = subset(vital_all_combined, estimand == "Categorical"),
   size = 4, position = position_nudge(y = -0.15)
 ) + geom_errorbarh(data = subset(vital_all_combined, estimand == "Categorical"), aes(xmin = conf.low, xmax = conf.high),
