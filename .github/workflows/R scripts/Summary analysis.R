@@ -19,9 +19,7 @@ vital_summary<-vital_wide %>%
       vitdactive == 1 & fishoilactive == 0 ~ "Vitamin D only",
       vitdactive == 0 & fishoilactive == 1 ~ "Fish Oil only",
       vitdactive == 1 & fishoilactive == 1 ~ "Both")) %>%
-  select(-c(Subject_ID, vitdactive, fishoilactive,
-            matches("stiffness_"),
-            matches("function_"))) %>%
+  select(group, sex, bmi, currsmk, ageyr, Aspirin, pain_base, pain_yr1, pain_yr2, pain_yr3, pain_yr4) %>%
   tbl_summary(
     by = group,
     statistic = list(all_continuous() ~ "{mean} ({sd})",
@@ -31,7 +29,7 @@ vital_summary<-vital_wide %>%
   ) %>%
   as_kable_extra(
     format = "latex",
-    caption = "VITAL data overview"
+    caption = "VITAL missing data overview (part)"
   ) %>%  kableExtra::kable_styling(latex_options = "hold_position")
 
 # Missing plot

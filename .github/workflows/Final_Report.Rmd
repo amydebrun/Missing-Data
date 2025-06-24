@@ -502,7 +502,7 @@ cat("\\end{table}")
 ```
 
 ```{r results= 'asis', warning = FALSE}
-knitr::asis_output(vital_summary)
+vital_summary
 ```
 
 Figure 2.x shows the summary statistics of the VITAL data. It provides
