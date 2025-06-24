@@ -32,6 +32,7 @@ header-includes:
   - \usepackage{float}
   - \floatplacement{figure}{H}
   - \usepackage{makecell}
+  - \usepackage{caption}
 editor_options: 
   markdown: 
     wrap: 72
@@ -1709,11 +1710,11 @@ print(vital_plot_impt_k)
 
 ## Sensitivity analysis
 
-```{r fig.width=5, fig.height=4, fig.pos='H', fig.cap="Sensitive analysis for Acupuncture data set"}
+```{r fig.width=5, fig.height=4, fig.cap="Sensitive analysis for Acupuncture data set"}
 print(SA_acu_all)
 ```
 
-```{r fig.width=5, fig.height=4,fig.pos='H',   fig.cap="Sensitive analysis for VITAL data set"}
+```{r fig.width=5, fig.height=4,fig.cap="Sensitive analysis for VITAL data set"}
 print(SA_vital_all_plot)
 ```
 
@@ -1746,27 +1747,27 @@ departures from the MAR assumption.
 
 \newpage
 
-```{r fig.width=4, fig.height=2,fig.pos='H',   fig.cap="original acu estimand"}
+```{r fig.width=4, fig.height=2,  fig.cap="original acu estimand"}
 print(cat_heatmap_acu_plot)
 ```
 
-```{r fig.width=4, fig.height=2,fig.pos='H',   fig.cap="changed acu estimand"}
+```{r fig.width=4, fig.height=2,  fig.cap="changed acu estimand"}
 print(cont_heatmap_acu_plot)
 ```
 
-```{r fig.width=4, fig.height=2,fig.pos='H',   fig.cap="original fishoil estimand"}
+```{r fig.width=4, fig.height=2,   fig.cap="original fishoil estimand"}
 print(cat_heatmap_fishoil_plot)
 ```
 
-```{r fig.width=4, fig.height=2,fig.pos='H',   fig.cap="changed fishoil estimand"}
+```{r fig.width=4, fig.height=2,  fig.cap="changed fishoil estimand"}
 print(cont_heatmap_fishoil_plot)
 ```
 
-```{r fig.width=4, fig.height=2, fig.pos='H',  fig.cap="original vitd estimand"}
+```{r fig.width=4, fig.height=2,fig.cap="original vitd estimand"}
 print(cat_heatmap_vitd_plot)
 ```
 
-```{r fig.width=4, fig.height=2, fig.pos='H',  fig.cap="changed vitd estimand"}
+```{r fig.width=4, fig.height=2, fig.cap="changed vitd estimand"}
 print(cont_heatmap_vitd_plot)
 ```
 
