@@ -105,7 +105,7 @@ SA_acu_all<-ggplot(acu_combined, aes(x = estimate, y = delta, color = estimand, 
   scale_shape_manual(values = c("Categorical" = 16, "Continuous" = 17)) + 
   scale_colour_manual(values=c("Categorical"="#a80050", "Continuous"="lawngreen"))+
   labs(
-    title = "Acupuncture trial δ-Adjustment",
+    title = "",
     x = "Estimates",
     y = "Delta"
   ) +
@@ -210,7 +210,7 @@ SA_vital_all_plot <- ggplot(vital_all_combined, aes(x = estimate, y = delta, sha
   scale_shape_manual(values = c("Continuous" = 17, "Categorical" = 16)) +
   scale_color_manual(values = c("Continuous" = "lawngreen", "Categorical" = "#a80050")) +
   labs(
-    title = "VITAL δ-Adjustment",
+    title = "",
     x = "Estimates",
     y = "Delta"
   ) +

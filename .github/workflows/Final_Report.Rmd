@@ -1578,19 +1578,21 @@ $\delta$ = -0.5*SD, -0.25*SD, 0 , 0.25*SD, 0.5*SD\$
 
 Applying these to both datasets, our chosen $\delta$ values are;
 
-*Original Estimand* -
-$\delta_\mathrm{Acupuncture-original} = -6.859139,-3.429569,0,3.429569,6.859139$ -
-$\delta_\mathrm{Acu-control-original} = -8.505446,-4.252723,0,4.252723,8.505446$ -
-$\delta_\mathrm{VITAL-fishoil-original} = -9.569774,-4.784887,0,4.784887,9.569774$ -
-$\delta_\mathrm{VITAL-vitd-original} = -9.624281,-4.812141,0,4.812141,9.624281$ -
-$\delta_\mathrm{VITAL-control-original} = -9.147397,-4.573698,0,4.573698,9.147397$
+*Original Estimand* 
 
-*Changed Estimand* -
-$\delta_\mathrm{Acupuncture-changed} = -7.397829,-3.698915,0,3.698915,7.397829$ -
-$\delta_\mathrm{Acu-control-changed} = -8.660196,-4.330098,0, 4.330098,8.660196$ -
-$\delta_\mathrm{VITAL-fishoil-changed} = -9.783807,-4.891904,0,4.891904,9.783807$ -
-$\delta_\mathrm{VITAL-vitd-changed} = -9.967777,-4.983889,0,4.983889,9.967777$ -
-$\delta_\mathrm{VITAL-control-changed} = -9.646493,-4.823247,0, 4.823247,9.646493$
+- $\delta_\mathrm{Acupuncture-original} = -6.859139,-3.429569,0,3.429569,6.859139$ 
+- $\delta_\mathrm{Acu-control-original} = -8.505446,-4.252723,0,4.252723,8.505446$ 
+- $\delta_\mathrm{VITAL-fishoil-original} = -9.569774,-4.784887,0,4.784887,9.569774$ 
+- $\delta_\mathrm{VITAL-vitd-original} = -9.624281,-4.812141,0,4.812141,9.624281$ 
+- $\delta_\mathrm{VITAL-control-original} = -9.147397,-4.573698,0,4.573698,9.147397$
+
+*Changed Estimand* 
+
+- $\delta_\mathrm{Acupuncture-changed} = -7.397829,-3.698915,0,3.698915,7.397829$ 
+- $\delta_\mathrm{Acu-control-changed} = -8.660196,-4.330098,0, 4.330098,8.660196$ 
+- $\delta_\mathrm{VITAL-fishoil-changed} = -9.783807,-4.891904,0,4.891904,9.783807$ 
+- $\delta_\mathrm{VITAL-vitd-changed} = -9.967777,-4.983889,0,4.983889,9.967777$ 
+- $\delta_\mathrm{VITAL-control-changed} = -9.646493,-4.823247,0, 4.823247,9.646493$
 
 **Sensitivity Analysis; the process**
 
@@ -1621,7 +1623,7 @@ A similar approach is applied to the VITAL trial data in wide format,
 using pain_base, vitdactive, and fishoilactive as predictors, and
 pain_yr4 as the outcome. Following imputation and $\delta$-adjustment,
 we fit the model
-$painyr4_i = \beta_0 + \beta_1 \text{fishoilactive}i + \beta_2 \text{vitdactive}i + \beta_3 \text{painbase}i + \varepsilon_i$,
+$painyr4_i = \beta_0 + \beta_1 \text{fishoilactive}i + \beta_2 \text{vitdactive}i + \beta_3 \text{pain\_base}i + \varepsilon_i$,
 pool the estimates, and extract coefficients for the treatment groups
 (fishoilactive, vitdactive). For the control group, we filter the
 dataset to include only individuals with fishoilactive == 0 and
@@ -1633,12 +1635,20 @@ imputed values, and pooled results are similarly obtained.
 
 We performed sensitivity analyses in a similar fashion to assess the robustness of the treatment effect under our alternative estimand. This process was more computationally intensive, as it required performing multiple imputation on the wide-format data and subsequently transforming it into long format.
 
-For the acupuncture trial, we added $\delta_\mathrm{Acupuncture\text{-}changed}$ values to the imputed data and then used a custom function to convert the data into long format. Due to the repeated measures structure, we employed a linear mixed-effects model to estimate the treatment effect prior to pooling. The substantive model was: $pkscore_{ij} = \beta_0 + \beta_1 group_i + \beta_2 time_{c,ij} + \beta_3 (group_i \times time_{c,ij}) + \beta_4 pk1_i + b_{0i} + \varepsilon_{ij}$
+For the acupuncture trial, we added $\delta_\mathrm{Acupuncture\text{-}changed}$ values to the imputed data and then used a custom function to convert the data into long format. Due to the repeated measures structure, we employed a linear mixed-effects model to estimate the treatment effect prior to pooling. The substantive model was: 
+
+$$pkscore_{ij} = \beta_0 + \beta_1 group_i + \beta_2 time_{c,ij} + \beta_3 (group_i time_{c,ij}) + \beta_4 pk1_i + b_{0i} + \varepsilon_{ij}$$
 
 For the VITAL study, the imputed wide-format data was reshaped into long format using a separate function. The treatment effect was estimated using the following mixed-effects model:
-$pain_{ij} = \beta_0 + \beta_1 fishoilactive_i + \beta_2 vitdactive_i + \beta_3 time_{contin,ij} + \beta_4 (fishoilactive_i \times time_{contin,ij}) + \beta_5 (vitdactive_i \times time_{contin,ij}) + \beta_6 painbase_i + b_{0i} + b_{1i} time_{contin,ij} + \varepsilon_{ij}$. 
-As for the control group, we only includes the baseline knee pain score and time as predictors, so our model here was 
-$\text{pain}_{ij} = \beta_0 + \beta_1 \text{time_contin}_{ij} + \beta_2 \text{pain_base}_i + b_{0i} + \varepsilon_{ij}}$
+
+$$\text{pain}_{ij} = \beta_0 
++ \beta_1 \text{fishoilactive}_{i} \text{time\_contin}_{j}
++ \beta_2 \text{vitdactive}_{i} \text{time\_contin}_{j}
++ \beta_3 \text{pain\_base}_{i}
++ b_{0i} + \varepsilon_{ij}$$
+As for the control group, we only include the baseline knee pain score and time as predictors, so our model here was:
+$$\text{pain}_{ij} = \beta_0 + \beta_1 \text{time\_contin}_{ij} + \beta_2 \text{pain\_base}_i + b_{0i} + \varepsilon_{ij}$$
+\newpage
 
 # Result
 
@@ -1699,17 +1709,17 @@ print(vital_plot_impt_k)
 
 ## Sensitivity analysis
 
-```{r fig.width=5, fig.height=4, fig.cap="Sensitive analysis for Acupuncture data set"}
+```{r fig.width=5, fig.height=4, fig.pos='H', fig.cap="Sensitive analysis for Acupuncture data set"}
 print(SA_acu_all)
 ```
 
-```{r fig.width=5, fig.height=4,  fig.cap="Sensitive analysis for VITAL data set"}
+```{r fig.width=5, fig.height=4,fig.pos='H',   fig.cap="Sensitive analysis for VITAL data set"}
 print(SA_vital_all_plot)
 ```
 
 The forest plot aims to illustrate the robustness of the estimated
 treatment effects under varying missing data assumptions using $\delta$
-adjustment sensitivity analysis. In figure x which shows the acupuncture
+adjustment sensitivity analysis. In figure 23 which shows the acupuncture
 trial results, we can observe the conditional expectation of headache
 severity at the final time point of 12 months given the baseline
 headache severity and acupuncture treatment under different $\delta$
@@ -1717,7 +1727,7 @@ shifts. Similarly we can also observe the conditional expectation of
 headache severity at the final time point in the control group, given
 baseline headache severity only and no treatment.
 
-Figure Y shows the VITAL results after applying the sensitivity
+Figure 24 shows the VITAL results after applying the sensitivity
 analysis. In the fish oil panel, we observe the conditional expectation
 of knee pain score at 4 years given baseline knee pain score and fish
 oil treatment under the different $\delta$ shifts. The vitamin D panel
@@ -1736,27 +1746,27 @@ departures from the MAR assumption.
 
 \newpage
 
-```{r fig.width=4, fig.height=2, fig.cap="original acu estimand"}
+```{r fig.width=4, fig.height=2,fig.pos='H',   fig.cap="original acu estimand"}
 print(cat_heatmap_acu_plot)
 ```
 
-```{r fig.width=4, fig.height=2, fig.cap="changed acu estimand"}
+```{r fig.width=4, fig.height=2,fig.pos='H',   fig.cap="changed acu estimand"}
 print(cont_heatmap_acu_plot)
 ```
 
-```{r fig.width=4, fig.height=2, fig.cap="original fishoil estimand"}
+```{r fig.width=4, fig.height=2,fig.pos='H',   fig.cap="original fishoil estimand"}
 print(cat_heatmap_fishoil_plot)
 ```
 
-```{r fig.width=4, fig.height=2, fig.cap="changed fishoil estimand"}
+```{r fig.width=4, fig.height=2,fig.pos='H',   fig.cap="changed fishoil estimand"}
 print(cont_heatmap_fishoil_plot)
 ```
 
-```{r fig.width=4, fig.height=2, fig.cap="original vitd estimand"}
+```{r fig.width=4, fig.height=2, fig.pos='H',  fig.cap="original vitd estimand"}
 print(cat_heatmap_vitd_plot)
 ```
 
-```{r fig.width=4, fig.height=2, fig.cap="changed vitd estimand"}
+```{r fig.width=4, fig.height=2, fig.pos='H',  fig.cap="changed vitd estimand"}
 print(cont_heatmap_vitd_plot)
 ```
 
