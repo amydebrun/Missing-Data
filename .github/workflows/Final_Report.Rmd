@@ -383,7 +383,7 @@ Variables `pk2` and `pk5` are the headache severity scores at 3 months
 and 12 months.
 
 ```{r results='asis', echo=FALSE}
-acu_summary
+knitr::asis_output(acu_summary)
 ```
 
 Table 2.x are the summary statistics of the acupuncture trial data.
@@ -501,8 +501,8 @@ print(
 cat("\\end{table}")
 ```
 
-```{r results= 'asis', warning = FALSE, eval=FALSE}
-print(vital_summary)
+```{r results= 'asis', warning = FALSE}
+knitr::asis_output(vital_summary)
 ```
 
 Figure 2.x shows the summary statistics of the VITAL data. It provides

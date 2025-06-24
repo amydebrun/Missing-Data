@@ -9,9 +9,8 @@ acu_summary <- acu_wide %>% tbl_summary(
 ) %>%
   as_kable_extra(
     format = "latex",
-    caption = "Acupuncture data overview",
-    hold_position = TRUE
-  )
+    caption = "Acupuncture data overview"
+  ) %>%  kableExtra::kable_styling(latex_options = "hold_position")
 
 vital_summary<-vital_wide %>% 
   mutate(
@@ -32,9 +31,8 @@ vital_summary<-vital_wide %>%
   ) %>%
   as_kable_extra(
     format = "latex",
-    caption = "VITAL data overview",
-    hold_position = TRUE
-  )
+    caption = "VITAL data overview"
+  ) %>%  kableExtra::kable_styling(latex_options = "hold_position")
 
 # Missing plot
 acu_miss_plot <- gg_miss_var(acu_wide) 
