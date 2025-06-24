@@ -22,7 +22,7 @@ keywords:
   - Sensitivity Analysis
   - Multiple Imputation
   - Missingness Mechanisms
-bibliography: Missing_data_references.bib
+bibliography: Missing_data_reference.bib
 biblio-style: unsrt
 output: rticles::arxiv_article
 keep_tex: true
