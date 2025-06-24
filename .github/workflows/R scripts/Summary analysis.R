@@ -9,7 +9,8 @@ acu_summary <- acu_wide %>% tbl_summary(
 ) %>%
   as_kable_extra(
     format = "latex",
-    caption = "Acupuncture data overview"
+    caption = "Acupuncture data overview",
+    hold_position = TRUE
   )
 
 vital_summary<-vital_wide %>% 
@@ -29,8 +30,11 @@ vital_summary<-vital_wide %>%
     missing = "ifany",
     missing_text = "Missing"
   ) %>%
-  as_kable_extra(format = "latex", booktabs = TRUE) %>%
-  kable_styling(latex_options = c("hold_position", "scale_down"))
+  as_kable_extra(
+    format = "latex",
+    caption = "VITAL data overview",
+    hold_position = TRUE
+  )
 
 # Missing plot
 acu_miss_plot <- gg_miss_var(acu_wide) 
