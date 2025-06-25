@@ -194,7 +194,6 @@ delta_results_cont_vitd
 ```{r}
 SA_vital_plot
 SA_acu_plot
-
 ```
 
 ```{r}
