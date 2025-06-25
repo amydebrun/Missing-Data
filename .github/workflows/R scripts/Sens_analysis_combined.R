@@ -101,7 +101,10 @@ SA_acu_plot<-ggplot(acu_combined, aes(x = estimate, y = delta, color = estimand,
   geom_point(size = 3) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.3) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
-  facet_wrap(~ treatment) +
+  facet_wrap(~ treatment, labeller = labeller(treatment = c(
+    "Acupuncture"="Acupuncture treatment effects",
+    "Control" = "Expected headache pain in placebo"
+  ))) +
   scale_shape_manual(values = c("Categorical" = 16, "Continuous" = 17)) + 
   scale_colour_manual(values=c("Categorical"="#a80050", "Continuous"="lawngreen"))+
   labs(
@@ -206,7 +209,11 @@ SA_vital_plot <- ggplot(vital_all_combined, aes(x = estimate, y = delta, shape =
 ) + geom_errorbarh(data = subset(vital_all_combined, estimand == "Continuous"),
   aes(xmin = conf.low, xmax = conf.high), height = 0.4, position = position_nudge(y = 0.15)
 ) + geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
-  facet_wrap(~ treatment) +
+  facet_wrap(~ treatment, labeller = labeller(treatment = c(
+    "Vitamin D"="VitD treatment effects",
+    "Fish Oil"="FishOil treatment effects",
+    "Control" = "Expected knee pain in placebo"
+  ))) +
   scale_shape_manual(values = c("Continuous" = 17, "Categorical" = 16)) +
   scale_color_manual(values = c("Continuous" = "lawngreen", "Categorical" = "#a80050")) +
   labs(

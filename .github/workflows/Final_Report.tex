@@ -1764,10 +1764,10 @@ modification of the imputation process. For each value in the vector
 of the final headache severity score (pk5) by adding the corresponding
 \(\delta\). A linear regression model,
 \(pk5_i = \beta_0 + \beta_1 \text{group}_i + \beta_2 pk1_i + \varepsilon_i\),
-is fitted to each imputed dataset, and the estimates are pooled. We
-extract the coefficient for the treatment group, our estimand of
-interest, along with its standard error, confidence interval, and
-p-value.
+is fitted to each imputed dataset, and the treatment effect estimates
+are pooled. We extract the coefficient for the treatment group, our
+estimand of interest, along with its standard error, confidence
+interval, and p-value.
 
 We then repeat this process using only the control group (group == 0) to
 isolate control group effects, generating the acu\_wide\_placebo
@@ -2233,21 +2233,22 @@ numbers}
 
 The forest plot aims to illustrate the robustness of the estimated
 treatment effects under varying missing data assumptions using
-\(\delta\) adjustment sensitivity analysis. In figure 27 which shows the
-acupuncture trial results, we can observe the conditional expectation of
-headache severity at the final time point of 12 months given the
-baseline headache severity and acupuncture treatment under different
-\(\delta\) shifts. Similarly we can also observe the conditional
-expectation of headache severity at the final time point in the control
-group, given baseline headache severity only and no treatment.
+\(\delta\) adjustment sensitivity analysis while comparing both
+estimands. In \emph{figure 27} which shows the acupuncture trial
+results, we can observe how the treatment effect of acupuncture changes
+under the \(\delta\) shifts. In the control panel which is our
+reference, we can see the expected headache severity score at the final
+time point conditional on the baseline headache severity in the control
+group.
 
-Figure 28 shows the VITAL results after applying the sensitivity
+\emph{Figure 28} shows the VITAL results after applying the sensitivity
 analysis. In the fish oil panel, we observe the conditional expectation
 of knee pain score at 4 years given baseline knee pain score and fish
 oil treatment under the different \(\delta\) shifts. The vitamin D panel
-shows similar conditional expectation, but the control group shows the
-conditional expectation of knee pain score given baseline knee pain
-score and no treatment.
+shows similar conditional expectation. For the control group, we can see
+the expected knee pain score at the final time point conditional on the
+baseline knee pain. The continuous estimand \(pain\) conditions on
+continuous time as well as baseline knee pain.
 
 The error bars represent the 95\% confidence intervals.
 
