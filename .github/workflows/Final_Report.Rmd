@@ -226,7 +226,7 @@ missing data is fundamentally untestable. Since the true values of
 missing observations are never observed, we cannot definitively
 determine which missingness assumption holds in practice. There is
 limited hypothesis test available to see whether data is MCAR (*Little's
-MCAR test*) [@little_statistical_2002]. It is a likelihood-ratio test that groups missing data
+MCAR test*) [@noauthor_test_nodate]. It is a likelihood-ratio test that groups missing data
 patterns, estimates the expected means under a multivariate normal model
 using maximum likelihood, and computes a chi-square statistic to assess
 model fit. The decision lies under the hypotheses;
