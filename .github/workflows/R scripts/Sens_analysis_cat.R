@@ -111,12 +111,29 @@ delta_results_cat_placebo <- data.frame()
 for (i in seq_along(imp.all.undamped_cat_placebo)) {
   imp_cat <- imp.all.undamped_cat_placebo[[i]]
   d <- acu_control_delta[i]
-  fit_cat <- with(imp_cat, lm(pk5 ~ group + pk1))
+  fit_cat <- with(imp_cat, lm(pk5 ~ pk1))
   pooled_cat <- pool(fit_cat)
-  est_cat <- tidy(pooled_cat, conf.int = TRUE) %>%
-    filter(term == "(Intercept)") %>%  
-    select(estimate, std.error, conf.low, conf.high, p.value) %>%
-    mutate(acu_control_delta = d)
+  mean_pk1 <- mean(complete(imp_cat, action = 1)$pk1, na.rm = TRUE)
+  pooled_summary <- summary(pooled_cat, conf.int = TRUE)
+  
+  intercept_est <- pooled_summary$estimate[pooled_summary$term == "(Intercept)"]
+  slope_est <- pooled_summary$estimate[pooled_summary$term == "pk1"]
+  
+  var_int <- pooled_summary$std.error[pooled_summary$term == "(Intercept)"]^2
+  var_slope <- pooled_summary$std.error[pooled_summary$term == "pk1"]^2
+  cov_int_slope <- 0  
+  
+  est_val <- intercept_est + slope_est * mean_pk1
+  var_val <- var_int + (mean_pk1^2) * var_slope + 2 * mean_pk1 * cov_int_slope
+  se_val <- sqrt(var_val)
+  
+  est_cat <- data.frame(
+    estimate = est_val,
+    std.error = se_val,
+    conf.low = est_val - 1.96 * se_val,
+    conf.high = est_val + 1.96 * se_val,
+    acu_control_delta = d
+  )
   delta_results_cat_placebo <- bind_rows(delta_results_cat_placebo, est_cat)
 }
 
@@ -279,11 +296,23 @@ for (i in seq_along(imp.all.undamped_cat)) {
   d <- vital_control_delta[i]
   fit_cat <- with(imp_cat, lm(pain_yr4 ~ pain_base))
   pooled_cat<- pool(fit_cat)
-  est_cat <- tidy(pooled_cat, conf.int = TRUE) %>%
-    filter(term == "(Intercept)") %>%  
-    select(estimate, std.error, conf.low, conf.high, p.value) %>%
-    mutate(vital_control_delta = d)
-  
+  pooled_summary <- summary(pooled_cat, conf.int = TRUE)
+  intercept_est <- pooled_summary$estimate[pooled_summary$term == "(Intercept)"]
+  slope_est <- pooled_summary$estimate[pooled_summary$term == "pain_base"]
+  var_int <- pooled_summary$std.error[pooled_summary$term == "(Intercept)"]^2
+  var_slope <- pooled_summary$std.error[pooled_summary$term == "pain_base"]^2
+  cov_int_slope <- 0  
+  mean_pain_base <- mean(complete(imp_cat, action = 1)$pain_base, na.rm = TRUE)
+  est_val <- intercept_est + slope_est * mean_pain_base
+  var_val <- var_int + (mean_pain_base^2) * var_slope + 2 * mean_pain_base * cov_int_slope
+  se_val <- sqrt(var_val)
+  est_cat <- data.frame(
+    estimate = est_val,
+    std.error = se_val,
+    conf.low = est_val - 1.96 * se_val,
+    conf.high = est_val + 1.96 * se_val,
+    vital_control_delta = d
+  )
   delta_results_cat_vital_placebo <- bind_rows(delta_results_cat_vital_placebo, est_cat)
 }
 

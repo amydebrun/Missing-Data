@@ -55,8 +55,6 @@ load("report_plots2.RData")
 
 ## Missing data in longitudinal study
 
-*Longitudinal Study Design*
-
 Longitudinal studies are research designs in which data are collected
 from the same participants at multiple time points. They provide
 valuable insights into how variables change over time—often over several
@@ -130,8 +128,6 @@ biased estimates and inaccurate conclusions. Missing data mechanisms
 appear to be mentioned first by Donald Rubin in 1976. We can formally
 define these mechanisms using the following notation;
 
-
-
 -   $R$ represents a missing data indicator which when $R=1$ indicates
     observed data and $R=0$ indicates unobserved
 -   $X$ represents data that is always observed
@@ -160,8 +156,6 @@ and $X_2$, which are pre-randomised variables, and outcome variable $Y$
 MCAR_dag
 ```
 
-
-
 **Missing At Random**
 
 $\quad P(R = 1 \mid Y, X) = P(R = 1 \mid X)$
@@ -175,7 +169,11 @@ MAR is a more realistic mechanism than MCAR and requires more intensive
 handling methods. Below shows 2 DAGs that shows a general example of a
 randomised treatment $L$ on response variable $Y$, which potentially
 contains missing data. $X_1$ and $X_2$ are baseline variables, recorded
-pre-randomisation. The first DAG shows the MAR mechanism conditioned on
+pre-randomisation. 
+
+We included two DAGs to highlight that the MAR assumption is incomplete unless we specify the variables it is conditional on. MAR simply means that the probability of missingness depends only on observed data, but which observed variables matter can vary across studies. The two DAGs show different scenarios where missingness is MAR, each conditioned on a different set of variables. This distinction is important in practice because the validity of statistical methods under MAR depends on correctly identifying and including the relevant observed variables in the analysis.
+
+The first DAG shows the MAR mechanism conditioned on
 both baseline variables; missingness indicator $R_Y$ is influenced by
 baseline variables $X_1$ and $X_2$. The second DAG is similar, but shows
 the data is MAR conditional on randomised treatment $L$ and baseline
@@ -183,7 +181,6 @@ variable $X_1$. $X_2$ no longer influences the missingness indicator
 $R_Y$, but $R_Y$ is still conditioned on $L$ and $X_1$, showing the MAR
 assumption still holds given these variables.
 
-We include two DAGs to highlight that the MAR assumption is incomplete unless we specify the variables it is conditional on. MAR simply means that the probability of missingness depends only on observed data, but which observed variables matter can vary across studies. The two DAGs show different scenarios where missingness is MAR, each conditioned on a different set of variables. This distinction is important in practice because the validity of statistical methods under MAR depends on correctly identifying and including the relevant observed variables in the analysis.
 
 ```{r fig.width=5, fig.height=4, echo=FALSE, fig.align='center', fig.cap="Missing at Random conditional on L, \\ensuremath{X_1}, and \\ensuremath{X_2}"}
 MAR_dag1
@@ -220,11 +217,10 @@ outcome.
 MNAR_dag1
 ```
 
-
-
 ```{r fig.width=5, fig.height=4, echo=FALSE, fig.align='center', fig.cap="Missing not at Random conditional on L, \\ensuremath{X_2}"}
 MNAR_dag2
 ```
+
 Although these considerations are important, the mechanism underlying
 missing data is fundamentally untestable. Since the true values of
 missing observations are never observed, we cannot definitively
@@ -248,6 +244,7 @@ test is also vulnerable to Type 1 error (false positive result) and Type
 violations with its low statistical power, even if the MCAR assumption
 holds.
 
+\newpage
 
 ## Different missing data patterns
 
@@ -293,7 +290,7 @@ despite the use of established handling methods, there remains room for
 improvement in how missing data are addressed in clinical study reports
 and in the selection of appropriate methods.
 
-In [@powney_review_2014] reviewed 100 longitudinal clinical trials
+[@powney_review_2014] reviewed 100 longitudinal clinical trials
 conducted between 2005 and 2012 and found that only 44 reported an
 adequate method to handle missing data, while 30 used potentially
 inadequate methods.
@@ -310,7 +307,7 @@ for handling it. The most popular approach was complete case analysis
 (CCA) used in 13 studies, followed by multiple imputation (MI) in 2
 studies.
 
-Complete case analysis was also the predominant method in a systematic
+CCA was also the predominant method in a systematic
 review of 229 observational studies from the United Network for Organ
 Sharing (UNOS) database [@baker_systematic_2025]. Forty-one studies used
 CCA, 22 reported MI, and notably, 31 studies removed covariates due to
@@ -329,8 +326,7 @@ different settings.
 ## Acupuncture Data
 
 Our first dataset contains results from a clinical trial determining the
-effects of acupuncture therapy on chronic headache in primary care
-*(Vickers et al 2004)*. Vickers released the dataset from the study in
+effects of acupuncture therapy on chronic headache in primary care . Vickers released the dataset from the study in
 2006 and is publicly available to download in excel format from
 <https://pmc.ncbi.nlm.nih.gov/articles/PMC1489946/>. The study design
 for the acupuncture trial is a longitudinal randomised controlled trial
@@ -394,7 +390,7 @@ cat("\\end{table}")
 ```
 
 Variables `pk2` and `pk5` are the headache severity scores at 3 months
-and 12 months. Which are the outcomes of interest in this project.
+and 12 months. These are the outcomes of interest in this project.
 
 ```{r results='asis', echo=FALSE}
 knitr::asis_output(acu_summary)
@@ -429,22 +425,30 @@ The Vitamin D and Omega-3 trial (VITAL) was a nationwide clinical trial
 sponsored by Brigham and Women's Hospital in Boston to determine the
 effects of daily doses of 2000 IU vitamin D and 1 gram of omega-3 fatty
 acids (fishoil) on preventing cancer and cardiovascular disease (CVD).
+
 This was a 2x2 factorial designed longitudinal randomised controlled
 trial in which 25,871 adults were randomised to 4 possible combinations
 of treatment; fish oil, vitamin D, both treatments, an a control group
-with no treatment. The results of the vitamin D group said that it did
+with no treatment. 
+
+The results of the vitamin D group said that it did
 not lower cancer development significantly neither did it cause any
 meaningful reuction in cardiovascular disease. As for the fish-oil
 intervention lowered risk of heart attack by 28% and risk of heart
 attack fatality by 50%, but no reduction in stroke or non-heart disease
 cardiovascular fatalities. Fish oil did not reduce occurence in breast
-or prostate cancer or cancer-deaths. For our research, we are analysing
-the results of an ancillary study which uses data from VITAL. MacFarlane
+or prostate cancer or cancer-deaths. 
+
+For our research, we are analysing
+the results of an ancillary study which uses data from VITAL. 
+MacFarlane
 et al (2020) conducted a study using VITAL on the therapeutic effects of
 vitamin D and fishoil on osteoarthritic knee pain. 1,398 participants in
 the study was randomised to 4 possible treatment combinations.
 Participants were randomised to receive either omega-3 oils or vitamin
-D, both treatments, or randomised to the placebo group. A knee pain
+D, both treatments, or randomised to the placebo group. 
+
+A knee pain
 scale grading index Western Ontario and McMaster Osteoarthritis Index
 (WOMAC) is used to record knee pain score at baseline and annually for 4
 time-points post randomisation. Results showed that there was no
@@ -457,7 +461,7 @@ table shows the sample size per treatment group.
 
 |              | **Vitamin D**            | **Placebo** |
 |--------------|--------------------------|-------------|
-| **Fish Oil** | N = 342 *(not analysed)* | N = 353     |
+| **Fish Oil** | N = 342                  | N = 353     |
 | **Placebo**  | N = 332                  | N = 371     |
 
 ### Data Overview
@@ -561,12 +565,13 @@ print(acu_miss_perc_group)
 print(acu_miss_pattern_plot)
 ```
 
-*Figure 15* shows the missing data pattern from baseline to the final follow up time point in
-the treatment group and control group. Pattern (1,1,1) is shown at the top row which represents the participants that had observed 
-throughout the three time points (shown as light green). 136 participants followed this pattern (56.5% of the participants). 
-(1,1,0) is in the second row. This represents the participants that had observed headache severity scores at baseline and
-at 3 months, but was not observed at the final time point (light green at baseline and 3 months, but dark green at 
-final time point). Only 17 followed this pattern (7.1% of the participants). 
+*Figure 15* shows the missing data pattern in both treatment groups of the acupuncture trial.
+Pattern (1,1,1) is shown in the top row which represents the participants that had observed throughout the three time points
+(shown as light green). In both treatment groups this is the most common missing data pattern, 136 participants following this pattern in
+the control group and 159 in the treatment group. The next common missing data pattern is (1,0,0), which
+represents when participants had an observed headache severity score at baseline, but were not oobserved 
+at the two follow up points (light green at baseline, dark green at 3 months and 12 months). 39 participants
+followed this patten in the control group and 30 in the treatment group. The pattern is similar in both treatment groups. 
 
 ### VITAL data
 
@@ -595,9 +600,7 @@ print(vital_miss_perc_group_plot)
 groups, they are mostly similar with little anomalies. As this dataset
 has more time-points recorded than the acupuncture trial data, and more
 treatment groups, there are more possible missing data patterns to
-observe. The most common data pattern still stands as (1,1,1,1,1) in
-which data is observed at all time-points (shown in light green blocks in the first
-row of each group).
+observe. The top row in each group (panel) shows the pattern (1,1,1,1,1) which shows that the knee pain score is observed from baseline to the final time point. 113 of participants follow this pattern in the control group (8.1% of the total sample size)
 
 ```{r fig.width=7, fig.height=9,fig.align='center', fig.cap="Missing data patterns across 4 treatment groups in VITAL data."}
 print(vital_miss_pattern)

@@ -229,6 +229,7 @@ vital_miss_perc_group_plot
 vital_miss_pattern
 ```
 ```{r}
+
 acu_pk125_plot 
 vital_pain_plot
 ```

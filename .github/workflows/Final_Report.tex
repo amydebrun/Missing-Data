@@ -132,13 +132,6 @@ Missing Data}
 \floatplacement{figure}{H}
 \usepackage{makecell}
 \usepackage{caption}
-\usepackage{booktabs}
-\usepackage{caption}
-\usepackage{longtable}
-\usepackage{colortbl}
-\usepackage{array}
-\usepackage{anyfontsize}
-\usepackage{multirow}
 \begin{document}
 \maketitle
 
@@ -169,8 +162,6 @@ between the methods across both datasets.
    \and
     Missingness Mechanisms
   }
-
-\newpage
 
 \section{Introduction}\label{introduction}
 
@@ -259,8 +250,6 @@ biased estimates and inaccurate conclusions. Missing data mechanisms
 appear to be mentioned first by Donald Rubin in 1976. We can formally
 define these mechanisms using the following notation;
 
-\newpage
-
 \begin{itemize}
 \tightlist
 \item
@@ -285,11 +274,11 @@ not bias the result although data is rarely MCAR. This can occur due to
 system failure and some data is deleted accidentally, or else there is
 issues with the treatment system and data cannot be recorded. The DAG
 below visualises an example of this mechanism based on a randomised
-trial with randomisation variable \(L\). Missing indicator \(R_Y\),
-which denotes whether the outcome is observed (\(R_Y = 1\)) or missing
-(\(R_Y = 0\)), is independent from the observed baseline variables
-\(X_1\) and \(X_2\), which are pre-randomised variables, and outcome
-variable \(Y\) (which potentially contains missing data).
+trial with randomised treatment variable \(L\). Missing indicator
+\(R_Y\), which denotes whether the outcome is observed (\(R_Y = 1\)) or
+missing (\(R_Y = 0\)), is independent from the observed baseline
+variables \(X_1\) and \(X_2\), which are pre-randomised variables, and
+outcome variable \(Y\) (which potentially contains missing data).
 
 \begin{figure}
 
@@ -299,8 +288,6 @@ variable \(Y\) (which potentially contains missing data).
 
 \caption{Missing Completely At Random}\label{fig:unnamed-chunk-1}
 \end{figure}
-
-\newpage
 
 \textbf{Missing At Random}
 
@@ -315,14 +302,25 @@ MAR is a more realistic mechanism than MCAR and requires more intensive
 handling methods. Below shows 2 DAGs that shows a general example of a
 randomised treatment \(L\) on response variable \(Y\), which potentially
 contains missing data. \(X_1\) and \(X_2\) are baseline variables,
-recorded pre-randomisation. The first DAG shows the MAR mechanism
-conditioned on both baseline variables; missingness indicator \(R_Y\) is
-influenced by baseline variables \(X_1\) and \(X_2\). The second DAG is
-similar, but shows the data is MAR conditional on randomised treatment
-\(L\) and baseline variable \(X_1\). \(X_2\) no longer influences the
-missingness indicator \(R_Y\), but \(R_Y\) is still conditioned on \(L\)
-and \(X_1\), showing the MAR assumption still holds given these
-variables.
+recorded pre-randomisation.
+
+We included two DAGs to highlight that the MAR assumption is incomplete
+unless we specify the variables it is conditional on. MAR simply means
+that the probability of missingness depends only on observed data, but
+which observed variables matter can vary across studies. The two DAGs
+show different scenarios where missingness is MAR, each conditioned on a
+different set of variables. This distinction is important in practice
+because the validity of statistical methods under MAR depends on
+correctly identifying and including the relevant observed variables in
+the analysis.
+
+The first DAG shows the MAR mechanism conditioned on both baseline
+variables; missingness indicator \(R_Y\) is influenced by baseline
+variables \(X_1\) and \(X_2\). The second DAG is similar, but shows the
+data is MAR conditional on randomised treatment \(L\) and baseline
+variable \(X_1\). \(X_2\) no longer influences the missingness indicator
+\(R_Y\), but \(R_Y\) is still conditioned on \(L\) and \(X_1\), showing
+the MAR assumption still holds given these variables.
 
 \begin{figure}
 
@@ -341,8 +339,6 @@ variables.
 
 \caption{Missing at Random conditional on L and \ensuremath{X_1}}\label{fig:unnamed-chunk-3}
 \end{figure}
-
-\newpage
 
 \textbf{Missing Not At Random}
 
@@ -382,24 +378,23 @@ conditional on \(X_2\) only as it influences the missingness indicator
 \caption{Missing not at Random conditional on L, \ensuremath{X_2}}\label{fig:unnamed-chunk-5}
 \end{figure}
 
-\newpage
-
 Although these considerations are important, the mechanism underlying
 missing data is fundamentally untestable. Since the true values of
 missing observations are never observed, we cannot definitively
 determine which missingness assumption holds in practice. There is
 limited hypothesis test available to see whether data is MCAR
-(\emph{Little's MCAR test}). It is a likelihood-ratio test that groups
-missing data patterns, estimates the expected means under a multivariate
-normal model using maximum likelihood, and computes a chi-square
-statistic to assess model fit. The decision lies under the hypotheses;
+(\emph{Little's MCAR test}) (Little and Rubin 2002). It is a
+likelihood-ratio test that groups missing data patterns, estimates the
+expected means under a multivariate normal model using maximum
+likelihood, and computes a chi-square statistic to assess model fit. The
+decision lies under the hypotheses;
 
 \begin{itemize}
 \tightlist
 \item
-  \(H_0\): Data is MCAR
+  \(H_0\): Data is MCAR; \emph{against}
 \item
-  \(H_1\): Data is MAR or MNAR
+  \(H_a\): Data is MAR or MNAR;
 \end{itemize}
 
 If the p-value resulting from the chi-square distribution is greater
@@ -416,10 +411,10 @@ holds.
 patterns}\label{different-missing-data-patterns}
 
 A missing data pattern describes the pattern of missing data among the
-observed data. As described by Little \& Rubin (2014), it's important to
-remark the missing data patterns of the data set prior to data handling
-as some handling methods are intended for certain classified patterns.
-The following table summarises some missing data patterns.
+observed data. As described by (Little and Rubin 2002), it's important
+to remark the missing data patterns of the data set prior to data
+handling as some handling methods are intended for certain classified
+patterns. The following table summarises some missing data patterns.
 
 \begin{table}[H]
 \centering
@@ -445,31 +440,29 @@ despite the use of established handling methods, there remains room for
 improvement in how missing data are addressed in clinical study reports
 and in the selection of appropriate methods.
 
-In \emph{2014, Powney et al.} reviewed 100 longitudinal clinical trials
+In (Powney et al. 2014) reviewed 100 longitudinal clinical trials
 conducted between 2005 and 2012 and found that only 44 reported an
 adequate method to handle missing data, while 30 used potentially
 inadequate methods.
 
-\emph{Spineli et al.~(2015)} examined 190 systematic reviews published
-after 2009 to investigate how missing data were reported in randomized
-controlled trials. Although 175 of these reviews mentioned missing data,
-only 61 discussed its implications.
+(Spineli, Pandis, and Salanti 2015) examined 190 systematic reviews
+published after 2009 to investigate how missing data were reported in
+randomized controlled trials. Although 175 of these reviews mentioned
+missing data, only 61 discussed its implications.
 
-\emph{Hunt et al.~(2021)} reviewed 62 pharmacoepidemiologic
-multi-database studies from 2018 to 2019 to assess missing data
-reporting and handling. Thirty-five studies reported missing data, but
-only 19 described methods for handling it. The most popular approach was
-complete case analysis (CCA) used in 13 studies, followed by multiple
-imputation (MI) in 2 studies.
+(Hunt et al. 2021) reviewed 62 pharmacoepidemiologic multi-database
+studies from 2018 to 2019 to assess missing data reporting and handling.
+Thirty-five studies reported missing data, but only 19 described methods
+for handling it. The most popular approach was complete case analysis
+(CCA) used in 13 studies, followed by multiple imputation (MI) in 2
+studies.
 
 Complete case analysis was also the predominant method in a systematic
 review of 229 observational studies from the United Network for Organ
-Sharing (UNOS) database \emph{(Baker et al., 2025)}. Forty-one studies
-used CCA, 22 reported MI, and notably, 31 studies removed covariates due
-to missing values---an action that could introduce further bias
-depending on the covariates' relationship with other predictors.
-
-\newpage
+Sharing (UNOS) database (Baker et al. 2025). Forty-one studies used CCA,
+22 reported MI, and notably, 31 studies removed covariates due to
+missing values---an action that could introduce further bias depending
+on the covariates' relationship with other predictors.
 
 \section{Clinical Trial Data}\label{clinical-trial-data}
 
@@ -501,7 +494,7 @@ medication use, which compares to 23\% in the control group.
 
 \subsubsection{Data Overview}\label{data-overview}
 
-13 variables were recorded during the acupuncture trial.
+14 variables were recorded during the acupuncture trial.
 
 \begin{table}[H]
 \centering
@@ -533,7 +526,8 @@ f5 & headache frequency 1 year\\
 \end{table}
 
 Variables \texttt{pk2} and \texttt{pk5} are the headache severity scores
-at 3 months and 12 months.
+at 3 months and 12 months. These are the outcomes of interest in this
+project.
 
 \begin{table}[!h]
 \centering
@@ -582,9 +576,8 @@ These consist of 2 columns; column 0 showing control group statistics
 and column 1 showing treatment group statistics. The continous variables
 show the mean value (standard deviation) and the categorical variables
 show the count(percentage). Note pk2 and pk5 are post randomisation
-variables and contain missing data.
-
-\newpage
+variables and they are the only two variables in the dataset that
+contain missing values.
 
 \begin{figure}
 
@@ -613,39 +606,43 @@ variables and contain missing data.
 \caption{These plots show the distribution of the headache severity score at the three measured time-points. Over the three time-points we can see a generally positively skewed distribution with most headache severity scores ranging between 0 and 35. There appears to be minimal difference in headache severity score over the treatment group, and the control group appears to have a lower headache severity score overall. The 3 month and 12 month time-point distributions are incomplete due to the missing values.}\label{fig:unnamed-chunk-11}
 \end{figure}
 
-\newpage
-
 \subsection{VITAL data}\label{vital-data}
 
 The Vitamin D and Omega-3 trial (VITAL) was a nationwide clinical trial
 sponsored by Brigham and Women's Hospital in Boston to determine the
 effects of daily doses of 2000 IU vitamin D and 1 gram of omega-3 fatty
 acids (fishoil) on preventing cancer and cardiovascular disease (CVD).
+
 This was a 2x2 factorial designed longitudinal randomised controlled
 trial in which 25,871 adults were randomised to 4 possible combinations
 of treatment; fish oil, vitamin D, both treatments, an a control group
-with no treatment. The results of the vitamin D group said that it did
-not lower cancer development significantly neither did it cause any
-meaningful reuction in cardiovascular disease. As for the fish-oil
-intervention lowered risk of heart attack by 28\% and risk of heart
-attack fatality by 50\%, but no reduction in stroke or non-heart disease
-cardiovascular fatalities. Fish oil did not reduce occurence in breast
-or prostate cancer or cancer-deaths. For our research, we are analysing
-the results of an ancillary study which uses data from VITAL. MacFarlane
-et al (2020) conducted a study using VITAL on the therapeutic effects of
-vitamin D and fishoil on osteoarthritic knee pain. 1,398 participants in
-the study was randomised to 4 possible treatment combinations.
-Participants were randomised to receive either omega-3 oils or vitamin
-D, both treatments, or randomised to the placebo group. A knee pain
-scale grading index Western Ontario and McMaster Osteoarthritis Index
-(WOMAC) is used to record knee pain score at baseline and annually for 4
-time-points post randomisation. Results showed that there was no
-significant change in knee pain score between both treatment groups and
-the control group. For this research project, we assumed that that the
-participants were only randomised to either receive the fish oil
-treatment, vitamin D treatment or the placebo. We did not include the
-interaction between vitamin D and fish oil in our models. The below
-table shows the sample size per treatment group.
+with no treatment.
+
+The results of the vitamin D group said that it did not lower cancer
+development significantly neither did it cause any meaningful reuction
+in cardiovascular disease. As for the fish-oil intervention lowered risk
+of heart attack by 28\% and risk of heart attack fatality by 50\%, but
+no reduction in stroke or non-heart disease cardiovascular fatalities.
+Fish oil did not reduce occurence in breast or prostate cancer or
+cancer-deaths.
+
+For our research, we are analysing the results of an ancillary study
+which uses data from VITAL. MacFarlane et al (2020) conducted a study
+using VITAL on the therapeutic effects of vitamin D and fishoil on
+osteoarthritic knee pain. 1,398 participants in the study was randomised
+to 4 possible treatment combinations. Participants were randomised to
+receive either omega-3 oils or vitamin D, both treatments, or randomised
+to the placebo group.
+
+A knee pain scale grading index Western Ontario and McMaster
+Osteoarthritis Index (WOMAC) is used to record knee pain score at
+baseline and annually for 4 time-points post randomisation. Results
+showed that there was no significant change in knee pain score between
+both treatment groups and the control group. For this research project,
+we assumed that that the participants were only randomised to either
+receive the fish oil treatment, vitamin D treatment or the placebo. We
+did not include the interaction between vitamin D and fish oil in our
+models. The below table shows the sample size per treatment group.
 
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
@@ -654,14 +651,15 @@ table shows the sample size per treatment group.
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\textbf{Fish Oil} & N = 342 \emph{(not analysed)} & N = 353 \\
+\textbf{Fish Oil} & N = 342 & N = 353 \\
 \textbf{Placebo} & N = 332 & N = 371 \\
 \end{longtable}
 
 \subsubsection{Data Overview}\label{data-overview-1}
 
-There are x variables recorded in the VITAL data, the following table
-refers to a subset of the variables that we frequently use.
+There are 31 variables recorded in the VITAL data, the following table
+refers to a subset of the variables that we frequently used in this
+project.
 
 \begin{table}[H]
 \centering
@@ -691,76 +689,56 @@ kneepainfreq & Frequency of knee pain\\
 \end{tabular}
 \end{table}
 
-\begin{table}[!t]
-\fontsize{12.0pt}{14.4pt}\selectfont
-\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcccc}
-\toprule
-\textbf{Characteristic} & \textbf{Both}\\
-N = 342\textsuperscript{\textit{1}} & \textbf{Fish Oil only}\\
-N = 353\textsuperscript{\textit{1}} & \textbf{Neither}\\
-N = 371\textsuperscript{\textit{1}} & \textbf{Vitamin D only}\\
-N = 332\textsuperscript{\textit{1}} \\ 
-\midrule\addlinespace[2.5pt]
-Sex 1-male,2-female &  &  &  &  \\ 
-    1 & 111(32\%) & 120(34\%) & 123(33\%) & 124(37\%) \\ 
-    2 & 231(68\%) & 233(66\%) & 248(67\%) & 208(63\%) \\ 
-Body mass index at randomization, kg/m2 & 32 (7) & 32 (7) & 32 (8) & 31 (7) \\ 
-    Missing & 8 & 11 & 14 & 12 \\ 
-Current smoking 1-yes,0-no & 26(7.8\%) & 33(9.4\%) & 30(8.2\%) & 22(6.8\%) \\ 
-    Missing & 7 & 2 & 3 & 8 \\ 
-Age at randomization to VITAL study,years & 67 (7) & 67 (7) & 68 (7) & 67 (6) \\ 
-Baseline Aspirin use 1-yes,0-no & 156(46\%) & 165(47\%) & 176(48\%) & 155(48\%) \\ 
-    Missing & 6 & 5 & 6 & 7 \\ 
-WOMAC Pain score at baseline & 37 (19) & 37 (18) & 37 (19) & 36 (18) \\ 
-    Missing & 48 & 57 & 45 & 40 \\ 
-WOMAC Pain score at year 1 & 32 (19) & 31 (20) & 33 (20) & 33 (21) \\ 
-    Missing & 182 & 162 & 184 & 153 \\ 
-WOMAC Pain score at year 2 & 32 (20) & 31 (20) & 30 (20) & 32 (20) \\ 
-    Missing & 47 & 46 & 48 & 47 \\ 
-WOMAC Pain score at year 3 & 32 (21) & 31 (19) & 31 (19) & 28 (19) \\ 
-    Missing & 78 & 95 & 90 & 82 \\ 
-WOMAC Pain score at year 4 & 30 (20) & 30 (19) & 29 (18) & 28 (19) \\ 
-    Missing & 129 & 149 & 145 & 126 \\ 
-Have you had a knee replacement surgery? (1=Yes, 2=No) &  &  &  &  \\ 
-    1 & 43(13\%) & 47(14\%) & 52(14\%) & 53(16\%) \\ 
-    2 & 293(87\%) & 300(86\%) & 316(86\%) & 271(84\%) \\ 
-    Missing & 6 & 6 & 3 & 8 \\ 
-Unilateral knee pain 1=Yes 0=No & 200(71\%) & 198(69\%) & 223(72\%) & 200(71\%) \\ 
-    Missing & 61 & 68 & 61 & 49 \\ 
-Bilateral knee pain 1=Yes 0=No & 81(29\%) & 87(31\%) & 87(28\%) & 83(29\%) \\ 
-    Missing & 61 & 68 & 61 & 49 \\ 
-Frequency of knee pain 1=Never 2=<1 day/wk 3=1\textasciitilde{}2 days/wk 4=3\textasciitilde{}6 days/wk 5=daily &  &  &  &  \\ 
-    1 & 1(0.3\%) & 1(0.3\%) & 2(0.6\%) & 1(0.3\%) \\ 
-    2 & 16(5.4\%) & 19(6.4\%) & 11(3.3\%) & 16(5.4\%) \\ 
-    3 & 44(15\%) & 27(9.0\%) & 34(10\%) & 31(10\%) \\ 
-    4 & 58(20\%) & 57(19\%) & 68(21\%) & 57(19\%) \\ 
-    5 & 169(57\%) & 185(62\%) & 201(61\%) & 181(61\%) \\ 
-    9 & 7(2.4\%) & 10(3.3\%) & 14(4.2\%) & 10(3.4\%) \\ 
-    Missing & 47 & 54 & 41 & 36 \\ 
-Tylenol use at baseline 1=never 2=occational 3=daily 9=missing &  &  &  &  \\ 
-    1 & 108(37\%) & 137(46\%) & 145(44\%) & 135(46\%) \\ 
-    2 & 91(31\%) & 84(28\%) & 110(33\%) & 95(32\%) \\ 
-    3 & 53(18\%) & 41(14\%) & 38(12\%) & 30(10\%) \\ 
-    9 & 43(15\%) & 37(12\%) & 37(11\%) & 36(12\%) \\ 
-    Missing & 47 & 54 & 41 & 36 \\ 
-Nsaids use at baseline 1=never 2=occational 3=daily 9=missing &  &  &  &  \\ 
-    1 & 62(21\%) & 65(22\%) & 69(21\%) & 73(25\%) \\ 
-    2 & 98(33\%) & 101(34\%) & 98(30\%) & 94(32\%) \\ 
-    3 & 110(37\%) & 107(36\%) & 134(41\%) & 111(38\%) \\ 
-    9 & 25(8.5\%) & 26(8.7\%) & 29(8.8\%) & 18(6.1\%) \\ 
-    Missing & 47 & 54 & 41 & 36 \\ 
-Stronger med use at baseline 1=never 2=occational 3=daily 9=missing &  &  &  &  \\ 
-    1 & 178(60\%) & 193(65\%) & 205(62\%) & 186(63\%) \\ 
-    2 & 40(14\%) & 41(14\%) & 43(13\%) & 47(16\%) \\ 
-    3 & 46(16\%) & 36(12\%) & 50(15\%) & 40(14\%) \\ 
-    9 & 31(11\%) & 29(9.7\%) & 32(9.7\%) & 23(7.8\%) \\ 
-    Missing & 47 & 54 & 41 & 36 \\ 
-TKR 1=yes 0=No & 64(19\%) & 82(23\%) & 74(20\%) & 76(23\%) \\ 
-\bottomrule
-\end{tabular*}
-\begin{minipage}{\linewidth}
-\textsuperscript{\textit{1}}n(\%); Mean (SD)\\
-\end{minipage}
+\begin{table}[!h]
+\centering
+\caption{VITAL missing data overview (part)}
+\centering
+\begin{tabular}[t]{l|c|c|c|c}
+\hline
+\textbf{Characteristic} & \makecell[c]{\textbf{Both}\ \ \\N = 342} & \makecell[c]{\textbf{Fish Oil only}\ \ \\N = 353} & \makecell[c]{\textbf{Neither}\ \ \\N = 371} & \makecell[c]{\textbf{Vitamin D only}\ \ \\N = 332}\\
+\hline
+Sex 1-male,2-female &  &  &  & \\
+\hline
+\hspace{1em}1 & 111(32\%) & 120(34\%) & 123(33\%) & 124(37\%)\\
+\hline
+\hspace{1em}2 & 231(68\%) & 233(66\%) & 248(67\%) & 208(63\%)\\
+\hline
+Body mass index at randomization, kg/m2 & 32 (7) & 32 (7) & 32 (8) & 31 (7)\\
+\hline
+\hspace{1em}Missing & 8 & 11 & 14 & 12\\
+\hline
+Current smoking 1-yes,0-no & 26(7.8\%) & 33(9.4\%) & 30(8.2\%) & 22(6.8\%)\\
+\hline
+\hspace{1em}Missing & 7 & 2 & 3 & 8\\
+\hline
+Age at randomization to VITAL study,years & 67 (7) & 67 (7) & 68 (7) & 67 (6)\\
+\hline
+Baseline Aspirin use 1-yes,0-no & 156(46\%) & 165(47\%) & 176(48\%) & 155(48\%)\\
+\hline
+\hspace{1em}Missing & 6 & 5 & 6 & 7\\
+\hline
+WOMAC Pain score at baseline & 37 (19) & 37 (18) & 37 (19) & 36 (18)\\
+\hline
+\hspace{1em}Missing & 48 & 57 & 45 & 40\\
+\hline
+WOMAC Pain score at year 1 & 32 (19) & 31 (20) & 33 (20) & 33 (21)\\
+\hline
+\hspace{1em}Missing & 182 & 162 & 184 & 153\\
+\hline
+WOMAC Pain score at year 2 & 32 (20) & 31 (20) & 30 (20) & 32 (20)\\
+\hline
+\hspace{1em}Missing & 47 & 46 & 48 & 47\\
+\hline
+WOMAC Pain score at year 3 & 32 (21) & 31 (19) & 31 (19) & 28 (19)\\
+\hline
+\hspace{1em}Missing & 78 & 95 & 90 & 82\\
+\hline
+WOMAC Pain score at year 4 & 30 (20) & 30 (19) & 29 (18) & 28 (19)\\
+\hline
+\hspace{1em}Missing & 129 & 149 & 145 & 126\\
+\hline
+\multicolumn{5}{l}{\rule{0pt}{1em}\textsuperscript{1} n(\%); Mean (SD)}\\
+\end{tabular}
 \end{table}
 
 \emph{Table 6} shows the summary statistics of partial VITAL data. It
@@ -811,7 +789,7 @@ an incomplete distribution due to missing data.}
 
 \subsection{Missing Data Summary}\label{missing-data-summary}
 
-\textbf{Acupuncture Data}
+\subsubsection{Acupuncture Data}\label{acupuncture-data-1}
 
 The summary statistics of the acupuncture trial data shows that all
 baseline variables have been observed. It appears two post-randomisation
@@ -838,13 +816,6 @@ missing data in the control group.
 group}
 \end{figure}
 
-If we investigate the missing data pattern in more detail, we can see
-that the pattern is similar in both groups. In the plot below, we can
-see that the pattern in which the three headache severity scores
-\(pk1\), \(pk2\) and \(pk5\) are observed (1,1,1) followed by the
-pattern in which both post-randomised headache severity scores contain
-missing data (1,0,0).
-
 \begin{figure}
 \centering
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-20-1.pdf}}
@@ -852,14 +823,28 @@ missing data (1,0,0).
 0=missing)}
 \end{figure}
 
-\textbf{VITAL data}
+\emph{Figure 15} shows the missing data pattern in both treatment groups
+of the acupuncture trial. Pattern (1,1,1) is shown in the top row which
+represents the participants that had observed throughout the three time
+points (shown as light green). In both treatment groups this is the most
+common missing data pattern, 136 participants following this pattern in
+the control group and 159 in the treatment group. The next common
+missing data pattern is (1,0,0), which represents when participants had
+an observed headache severity score at baseline, but were not oobserved
+at the two follow up points (light green at baseline, dark green at 3
+months and 12 months). 39 participants followed this patten in the
+control group and 30 in the treatment group. The pattern is similar in
+both treatment groups.
+
+\subsubsection{VITAL data}\label{vital-data-1}
 
 The summary statistics of the VITAL data showed, unlike the acupuncture
 trial data, there are also baseline variables that contain missing data
 as well as the post randomised variables. A non-monotic multivariate
-pattern appears to show here as there is a great proportion of missing
+pattern appears to show here as there is a lower proportion of missing
 data in the knee pain score at the first year post randomisation, which
-drastically decreases in year 2, then steadily increases again.
+drastically increase in year 2, then drop back to a lower level in year
+3, and steadily increases afterwards.
 
 \begin{figure}
 
@@ -869,8 +854,6 @@ drastically decreases in year 2, then steadily increases again.
 
 \caption{Non-monotonic pattern across out knee pain scores in VITAL data.}\label{fig:unnamed-chunk-21}
 \end{figure}
-
-\newpage
 
 Recall that the VITAL data set contains 4 different combinations of
 treatment. Separating this out in the plot below we can see the
@@ -887,15 +870,14 @@ post randomisation containing the most missing data.
 \caption{Percentage of missing data across baseline and 4 follow-up time points. Non-monotonic pattern appears similar in 4 randomised groups.}\label{fig:unnamed-chunk-22}
 \end{figure}
 
-\emph{Figure 18} shows the possible missing data patterns in the 4
+\emph{Figure 18} below shows the possible missing data patterns in the 4
 combinatory groups, they are mostly similar with little anomalies. As
 this dataset has more time-points recorded than the acupuncture trial
 data, and more treatment groups, there are more possible missing data
-patterns to observe. The most common data pattern still stands as
-(1,1,1,1,1) in which data is observed at all time-points (shown in light
-green blocks in the first row of each group).
-
-\newpage
+patterns to observe. The top row in each group (panel) shows the pattern
+(1,1,1,1,1) which shows that the knee pain score is observed from
+baseline to the final time point. 113 of participants follow this
+pattern in the control group (8.1\% of the total sample size)
 
 \begin{figure}
 
@@ -906,35 +888,35 @@ green blocks in the first row of each group).
 \caption{Missing data patterns across 4 treatment groups in VITAL data.}\label{fig:unnamed-chunk-23}
 \end{figure}
 
-\newpage
-
 \section{Methods}\label{methods}
 
 \subsection{Anchoring methods}\label{anchoring-methods}
 
 We began our analysis with basic methods to serve as a comparison
 benchmark for more advanced techniques. As previously mentioned, these
-included complete case analysis, LOCF, and the mean observation method.
-Each of these approaches was used to anchor the results and provide a
-reference point for evaluating the performance of more robust models.
+included complete case analysis, last observation carried forward, and
+the mean observation method. Each of these approaches was used to anchor
+the results and provide a reference point for evaluating the performance
+of more robust models.
 
-\subsubsection{Complete case analysis}\label{complete-case-analysis}
+\subsubsection{Complete case analysis
+(CCA)}\label{complete-case-analysis-cca}
 
 For both datasets, given that our estimand is the mean difference in
 pain scores at the end of the study, we fit a model regressing the final
 pain score on treatment group and baseline pain score. CCA can yield
 valid inferences when the data are MCAR, or when the outcome is MAR
-conditional on the variables included in the model. In our analysis, we
-adjust for treatment group and baseline pain score. To ensure
-comparability across methods and to reduce computational burden, we did
-not include additional covariates in any of the analyses.
+conditional on the variables included in the model. Note, in our
+analysis, we adjust for treatment group and baseline pain score only. To
+ensure comparability across methods and to reduce computational burden,
+we did not include additional covariates in any of the analyses.
 
 We applied the following models for each dataset:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# For acupuncture data set}
-\NormalTok{acu\_CAA }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(pk5 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ group }\SpecialCharTok{+}\NormalTok{ pk1 , }\AttributeTok{data =}\NormalTok{ acu\_wide)}
+\NormalTok{acu\_CCA }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(pk5 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ group }\SpecialCharTok{+}\NormalTok{ pk1 , }\AttributeTok{data =}\NormalTok{ acu\_wide)}
 \CommentTok{\# For VITAL data set}
 \NormalTok{vital\_complete }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(pain\_yr4 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ fishoilactive }\SpecialCharTok{+}\NormalTok{ vitdactive }\SpecialCharTok{+}\NormalTok{ pain\_base, }\AttributeTok{data =}\NormalTok{ vital\_wide)}
 \end{Highlighting}
@@ -957,17 +939,14 @@ missing data in these variables could still induce bias, particularly if
 the missingness is related to the outcome.
 
 In the acupuncture dataset, although there is no missingness in baseline
-variables, CCA has further limitations. While intermediate outcomes such
-as the 3-month pain score or post-randomisation variables like pain
-frequency may contain valuable information, they are not included in our
-models. This is not due to a limitation of CCA or LME itself, but
-because including post-randomisation variables would violate the goal of
-estimating the total effect of randomisation. However, these variables
-can still contribute indirectly through MI. Rather than adjusting for
-them in the model, MI treats repeated and related measures as part of a
-multivariate distribution within each individual, allowing partially
-observed variables to help impute missing values without compromising
-the target estimand.
+variables, CCA will fail to leverage information from intermediate
+outcomes such as the 3-month pain score or post-randomisation variables
+like pain frequency. However, these variables can contribute indirectly
+through Multiple imputation (MI) as will be introduced later on. Rather
+than adjusting for them in the model, MI treats repeated and related
+measures as part of a multivariate distribution within each individual,
+allowing partially observed variables to help impute missing values
+without compromising the target estimand.
 
 In rare cases---such as when the sole interest is in estimating the mean
 difference between groups at the end of the study, and there are no
@@ -1020,15 +999,15 @@ the population.
 The key issue is that we aim to include as much relevant information as
 possible in the set of predictors X to make the MAR assumption more
 plausible and robust. As discussed above, more statistically principled
-methods---such as multiple imputation or mixed-effects models---allow us
-to incorporate a broader set of variables and handle missingness more
-effectively. However, it is important to note that the MAR assumption is
-fundamentally untestable. Therefore, to assess the robustness of our
-conclusions, we must perform sensitivity analyses, which are presented
-in later sections.
+methods---such as multiple imputation or linear mixed-effects
+models---allow us to incorporate a broader set of variables and handle
+missingness more effectively. However, it is important to note that the
+MAR assumption is fundamentally untestable. Therefore, to assess the
+robustness of our conclusions, we must perform sensitivity analyses,
+which are presented in later sections.
 
-\subsubsection{Last observation carry
-forward}\label{last-observation-carry-forward}
+\subsubsection{Last observation carry forward
+(LOCF)}\label{last-observation-carry-forward-locf}
 
 LOCF is a simple imputation method that fills in missing values based on
 the last observed outcome for each subject. It relies on assumptions
@@ -1039,7 +1018,7 @@ such as when the treatment effect has plateaued or when patients are
 expected to remain in a steady state.
 
 However, this assumption is not convincing in either of the datasets
-analyzed here. In both the Acupuncture and VITAL trials, pain score are
+analyzed here. In both the Acupuncture and VITAL study, pain score are
 unlikely to be stabilized throughout, and the outcomes display trends
 over time, making the LOCF assumption potentially misleading and
 unsuitable for accurate estimation of treatment effects.
@@ -1058,11 +1037,11 @@ assuming data are MCAR, since it ignores potential bias introduced by
 the missingness and oversimplifies individual variation.
 
 As with LOCF, this assumption is not convincing in either of the data
-sets analyzed here. In both the Acupuncture and VITAL trials, pain
-scores vary over time, and individual trajectories differ. Replacing
-missing values with the average observed value at each time point
-disregards this variation and may lead to underestimated variability and
-biased treatment effect estimates.
+sets analyzed here. In both the Acupuncture and VITAL study, pain scores
+vary over time, and individual trajectories differ. Replacing missing
+values with the average observed value at each time point disregards
+this variation and may lead to underestimated variability and biased
+treatment effect estimates.
 
 \subsection{Changing imputation
 methods}\label{changing-imputation-methods}
@@ -1076,14 +1055,13 @@ as LOCF or mean imputation.
 While methods like LME can utilize most available observed data and
 yield unbiased estimates under the MAR assumption without imputation,
 they cannot incorporate other post-randomization variables that are not
-part of the model (e.g., pain frequency in the acupuncture data set). In
-contrast, MI allows the inclusion of such auxiliary information during
-the imputation process.
+part of the model (e.g., headache frequency in the acupuncture data
+set). In contrast, MI allows the inclusion of such post-randomized
+information during the imputation process.
 
 In most realistic scenarios, doing no imputation or applying single
 imputation methods is likely to introduce bias and underestimate
-uncertainty, especially when missingness is related to unobserved
-outcomes. Thus, more flexible approaches---such as MI combined with
+uncertainty. Thus, more flexible approaches---such as MI combined with
 appropriate modeling---are generally preferred for robust inference in
 the presence of missing data.
 
@@ -1128,8 +1106,8 @@ have complex missingness patterns across multiple variables. A brief
 comparison of joint modeling versus FCS is included below to justify
 this decision.
 
-While we used five imputations (K = 5) for our MI procedure in this
-analysis, we also discuss the considerations involved in choosing the
+While we used five imputations (K = 5) mostly for our MI procedure in
+this report, we also discuss the considerations involved in choosing the
 number of imputations. These include factors such as the proportion of
 missing data, computational cost, and the desired precision of standard
 errors and confidence intervals.
@@ -1137,9 +1115,10 @@ errors and confidence intervals.
 \paragraph{Rubin's rules}\label{rubins-rules}
 
 Once multiple imputed datasets are generated, Rubin's rules
-(\emph{(Rubin1987) Multiple Imputation for Nonresponse in Surveys} 1987)
-are used to combine the parameter estimates and associated uncertainty
-across the K imputed datasets. The steps are as follows:
+(\emph{({Rubin1987}) {Multiple} {Imputation} for {Nonresponse} in
+{Surveys}} 1987) are used to combine the parameter estimates and
+associated uncertainty across the K imputed datasets. The steps are as
+follows:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -1363,7 +1342,8 @@ results pooled using Rubin's rules. FCS is widely used in practice due
 to its flexibility and implementation in tools like the mice package in
 R.
 
-\paragraph{FCS VS joint modelling}\label{fcs-vs-joint-modelling}
+\paragraph{Fully conditional specification VS joint
+modelling}\label{fully-conditional-specification-vs-joint-modelling}
 
 Generally, under the assumption of a multivariate normal distribution,
 the joint distribution uniquely determines the full set of conditional
@@ -1383,8 +1363,7 @@ sample size.
 
 However, these concerns do not apply in our project, as our datasets
 have moderate dimensionality and sufficient sample size. Therefore, we
-opted to use Fully Conditional Specification (FCS) for multiple
-imputation.
+opted to use FCS for multiple imputation.
 
 We adopted the FCS approach using the mice package in R to perform
 multiple imputation throughout this project. One advantage of FCS is its
@@ -1434,9 +1413,9 @@ following sessions.
 
 The classic advice for multiple imputation is to use a low number of
 imputations, typically between 3 and 5, when the proportion of missing
-information is moderate. As discussed in (\emph{(Rubin1987) Multiple
-Imputation for Nonresponse in Surveys} 1987), the argument for choosing
-a small K is based on the total variance
+information is moderate. As discussed in (\emph{({Rubin1987}) {Multiple}
+{Imputation} for {Nonresponse} in {Surveys}} 1987), the argument for
+choosing a small K is based on the total variance
 estimate:\(T_{K} = (1 + \frac{\gamma0}{K}) T_{\infty}\)
 
 where \(T_{K}\) is the variance with K imputations, \(T_{\infty}\) is
@@ -1485,7 +1464,7 @@ statistical efficiency.
 
 In some situations---such as when estimating variance components or when
 dealing with highly uncertain estimands---using a very high number of
-imputations (e.g.,K=200) may be warranted to approximate the full
+imputations (e.g.~K=200) may be warranted to approximate the full
 posterior distribution.
 
 The main drawback of increasing K is that it leads to longer
@@ -1493,9 +1472,8 @@ computational time. However, this is generally the only limitation, and
 it becomes manageable with modern computing resources. Moreover,
 starting with a high number of imputations gives greater flexibility: we
 can always test the stability or sensitivity of our results by
-re-analyzing a subset of the imputations (e.g., comparing the
-performance at K=5,10,20) without needing to re-run the entire
-imputation process.
+re-analyzing a subset of the imputations (e.g.~comparing the performance
+at K=5,10,20) without needing to re-run the entire imputation process.
 
 Thus, while K=3-5 is often sufficient under moderate missingness and
 when the focus is on point estimates, using a larger K can improve
@@ -1554,7 +1532,7 @@ As discussed earlier, LME has the advantage of leveraging all available
 observed data, even in the presence of missingness. In fact, under
 certain conditions, LME can yield valid inferences without requiring
 multiple imputation, as long as the missingness mechanism is ignorable
-(e.g., MAR) and auxiliary variables are not essential.
+(e.g., MAR) and post-randomized variables are not essential.
 
 Moreover, even with fully observed data---either originally complete or
 completed through imputation---LME remains a superior choice in many
@@ -1673,23 +1651,181 @@ ID & Time & Outcome \\
 1003 & 3 & 8.1 \\
 \end{longtable}
 
-\subsection{Examing using forest plot}\label{examing-using-forest-plot}
+\subsection{Sensitivity analysis}\label{sensitivity-analysis}
+
+Sensitivity analysis is recommended by the National Research Council
+(2010) as a best practice for handling missing data; however, it is
+rarely conducted in practice. This may reflect an underappreciation of
+the impact of missing data in many studies, as well as the complexity
+and specialised expertise required to perform such analyses.
+
+A systematic review by Fiero et al.~(2016) examined 86 cluster
+randomised trials published between 2013 and 2014. Among the 80 trials
+that reported missing outcome data, only 14 (18\%) reported conducting a
+sensitivity analysis.
+
+In our study, we implemented multiple imputation with \(\delta\)
+-adjustment as our sensitivity analysis approach. In this method, a
+constant shift \(\delta\) is added to the imputed values after the
+initial imputation step. This enables us to explore a range of plausible
+scenarios by re-estimating the treatment effect under different
+assumptions about the missing data mechanism. By applying these shift
+parameters, we can model situations in which participants with missing
+data are assumed to have systematically better or worse outcomes than
+those observed, thereby testing the stability of our conclusions when
+relaxing the MAR assumption conditional on other variables.
+
+The shift can be broken down in to:
+
+\[\delta = \delta_\mathrm{MAR} + \delta_\mathrm{MNAR}\] where;
+
+\begin{itemize}
+\tightlist
+\item
+  \(\delta_\mathrm{MAR}\): mean difference caused by the predictors in
+  the imputation models
+\item
+  \(\delta_\mathrm{MNAR}\): mean difference caused by an additional
+  non-ignorable part of the imputation model.
+\end{itemize}
+
+Essentially, \(\delta\) is the mean difference between the imputed
+values and the true values that we did not observe.
+
+Deciding which \(\delta\) values are suitable is subjective. There are
+two \(\delta\) paramters we are considering for the treatment arm and
+cotrol arm. We need to include \(\delta\) = 0 as that assumes the data
+is MAR which acts as our baseline, and we add the non-zero \(\delta\)
+values to test the sensitivity to the MNAR assumption. We decided to
+base our \(\delta\) values on the standard deviations of the outcome
+variables of interest. The standard deviation of the headache severity
+score at the final time point in the treatment group is \emph{13.72} and
+\emph{17.01} in the control group. The standard deviation of the knee
+pain score at the final time point in the fishoil group is \emph{19.14},
+\emph{19.25} in the vitamin D group, and \emph{18.29} in the control
+group. These statistics are based on the data in the original wide
+format. We also extracted the standard deviation of the outcome
+variables in the long format in which the estimand is continous. We
+decided an increasing and decreasing multiples of these values should
+suffice;
+
+\(\delta\) = -0.5\emph{SD, -0.25}SD, 0 , 0.25\emph{SD, 0.5}SD
+
+Applying these to both datasets, our chosen \(\delta\) values are;
+
+\emph{Original Estimand}
+
+\begin{itemize}
+\tightlist
+\item
+  \(\delta_\mathrm{Acupuncture-original} = -6.86, -3.43, 0, 3.43, 6.86\)\\
+\item
+  \(\delta_\mathrm{Acu-control-original} = -8.51, -4.25, 0, 4.25, 8.51\)\\
+\item
+  \(\delta_\mathrm{VITAL-fishoil-original} = -9.57, -4.78, 0, 4.78, 9.57\)\\
+\item
+  \(\delta_\mathrm{VITAL-vitd-original} = -9.62, -4.81, 0, 4.81, 9.62\)\\
+\item
+  \(\delta_\mathrm{VITAL-control-original} = -9.15, -4.57, 0, 4.57, 9.15\)
+\end{itemize}
+
+\emph{Changed Estimand}
+
+\begin{itemize}
+\tightlist
+\item
+  \(\delta_\mathrm{Acupuncture-changed} = -7.40, -3.70, 0, 3.70, 7.40\)\\
+\item
+  \(\delta_\mathrm{Acu-control-changed} = -8.66, -4.33, 0, 4.33, 8.66\)\\
+\item
+  \(\delta_\mathrm{VITAL-fishoil-changed} = -9.78, -4.89, 0, 4.89, 9.78\)\\
+\item
+  \(\delta_\mathrm{VITAL-vitd-changed} = -9.97, -4.98, 0, 4.98, 9.97\)\\
+\item
+  \(\delta_\mathrm{VITAL-control-changed} = -9.65, -4.82, 0, 4.82, 9.65\)
+\end{itemize}
+
+To outlines the application of the \(\delta\)-adjustment sensitivity
+analysis. We begin with the acupuncture trial and its original
+categorical estimand, specifying the predictor variables for multiple
+imputation as the treatment group and baseline headache severity score
+(pk1). These are used to generate a predictor matrix for imputation. An
+initial imputation run extracts the post object, which allows manual
+modification of the imputation process. For each value in the vector
+\(\delta_\mathrm{Acupuncture-original}\), we adjust the imputed values
+of the final headache severity score (pk5) by adding the corresponding
+\(\delta\). A linear regression model,
+\(pk5_i = \beta_0 + \beta_1 \text{group}_i + \beta_2 pk1_i + \varepsilon_i\),
+is fitted to each imputed dataset, and the estimates are pooled. We
+extract the coefficient for the treatment group, our estimand of
+interest, along with its standard error, confidence interval, and
+p-value.
+
+We then repeat this process using only the placebo group (group == 0) to
+isolate control group effects, generating the acu\_wide\_placebo
+dataset. Here, \(\delta_\mathrm{Acu-control-original}\) values are added
+to the imputed pk5 values, and the pooled regression estimates are
+filtered for the intercept term, representing the average outcome in the
+control group.
+
+A similar approach is applied to the VITAL study data in wide format,
+using pain\_base, vitdactive, and fishoilactive as predictors, and
+pain\_yr4 as the outcome. Following imputation and
+\(\delta\)-adjustment, we fit the model
+\(painyr4_i = \beta_0 + \beta_1 \text{fishoilactive}i + \beta_2 \text{vitdactive}i + \beta_3 \text{pain\_base}i + \varepsilon_i\),
+pool the estimates, and extract coefficients for the treatment groups
+(fishoilactive, vitdactive). For the control group, we filter the
+dataset to include only individuals with fishoilactive == 0 and
+vitdactive == 0, forming vital\_wide\_placebo. Here,
+\(\delta\mathrm{VITAL-fishoil-original}\),
+\(\delta\mathrm{VITAL-vitd-original}\), and
+\(\delta\mathrm{VITAL-control-original}\) are added to the respective
+imputed values, and pooled results are similarly obtained.
+
+We performed sensitivity analyses in a similar fashion to assess the
+robustness of the treatment effect under our alternative estimand. This
+process was more computationally intensive, as it required performing
+multiple imputation on the wide-format data and subsequently
+transforming it into long format.
+
+For the acupuncture trial, we added
+\(\delta_\mathrm{Acupuncture\text{-}changed}\) values to the imputed
+data and then used a custom function to convert the data into long
+format. Due to the repeated measures structure, we employed a linear
+mixed-effects model to estimate the treatment effect prior to pooling.
+The substantive model was:
+
+\[pkscore_{ij} = \beta_0 + \beta_1 group_i + \beta_2 time_{c,ij} + \beta_3 (group_i time_{c,ij}) + \beta_4 pk1_i + b_{0i} + \varepsilon_{ij}\]
+
+For the VITAL study, the imputed wide-format data was reshaped into long
+format using a separate function. The treatment effect was estimated
+using the following mixed-effects model:
+
+\[\text{pain}_{ij} = \beta_0 
++ \beta_1 \text{fishoilactive}_{i} \text{time\_contin}_{j}
++ \beta_2 \text{vitdactive}_{i} \text{time\_contin}_{j}
++ \beta_3 \text{pain\_base}_{i}
++ b_{0i} + \varepsilon_{ij}\] As for the control group, we only include
+the baseline knee pain score and time as predictors, so our model here
+was:
+\[\text{pain}_{ij} = \beta_0 + \beta_1 \text{time\_contin}_{ij} + \beta_2 \text{pain\_base}_i + b_{0i} + \varepsilon_{ij}\]
+
+\section{Examing outcome by plots}\label{examing-outcome-by-plots}
 
 To visually compare how our estimand (treatment effect) changes across
-different missing data methods, we present results using a series of
-forest plots. These plots allow us to directly assess the impact of each
-imputation or modeling strategy on the estimated effect and its
+different missing data methods, we mostly present results using a series
+of forest plots. These plots allow us to directly assess the impact of
+each imputation or modeling strategy on the estimated effect and its
 confidence interval.
 
 The same process was applied to both the Acupuncture and VITAL datasets.
-For the VITAL trial, which follows a 2×2 factorial design, we simplify
+For the VITAL study, which follows a 2×2 factorial design, we simplify
 the analysis---as previously discussed---by treating fish oil and
 vitamin D as if they were tested in two separate randomized controlled
-trials. This means we ignore potential interaction effects between the
-two treatments and estimate their effects independently, which allows
-for a more straightforward comparison across methods.
+trials. Which allows for a more straightforward comparison across
+methods.
 
-\subsubsection{Change imputation method and substantive
+\subsection{Change imputation method and substantive
 model}\label{change-imputation-method-and-substantive-model}
 
 We evaluated the impact of missing data by systematically varying both
@@ -1698,26 +1834,25 @@ doing that, we try to isolate the effects of changing either the
 imputation strategy or the analysis model, and highlights the practical
 impact of each decision on the resulting treatment effect estimates.
 
-First, as described earlier, we applied three anchoring methods:
-Complete Case Analysis (CAA), Last Observation Carried Forward (LOCF),
-and mean imputation. Each was followed by multiple linear regression to
-estimate the treatment effect.
+First, as described earlier, we applied three anchoring methods: CCA,
+LOCF, and mean imputation. Each was followed by multiple linear
+regression to estimate the treatment effect.
 
-Next, we performed Multiple Imputation (MI) using the predictive mean
-matching method with 5 imputations, again analyzing the imputed datasets
-using multiple linear regression---maintaining consistency with the
-anchoring models for fair comparison.
+Next, we performed MI using the predictive mean matching method with 5
+imputations, again analyzing the imputed datasets using multiple linear
+regression---maintaining consistency with the anchoring models for fair
+comparison.
 
-Then, we changed the substantive model to a linear mixed-effects model
-(LME), without performing any imputation. This approach uses all
-available observed data and accounts for repeated measurements, offering
-a more efficient use of the data under the MAR assumption.
+Then, we changed the substantive model to a LME, without performing any
+imputation. This approach uses all available observed data and accounts
+for repeated measurements, offering a more efficient use of the data
+under the MAR assumption.
 
 Finally, we combined both improvements: we performed MI using predictive
 mean matching with 5 imputations, and analyzed the completed datasets
 using the LME model.
 
-\subsubsection{Change estimand}\label{change-estimand}
+\subsection{Change estimand}\label{change-estimand}
 
 Assuming our primary objective remains to estimate the mean difference
 in pain scores at the final timepoint for both datasets, we now explore
@@ -1725,20 +1860,18 @@ how this estimand can be more efficiently estimated by incorporating
 interim outcome data.
 
 In the previous section, we applied six different methods, two of which
-used Linear Mixed-Effects (LME) models as the substantive model.
-However, in those implementations, time was treated as a categorical
-variable. This approach limited our ability to take full advantage of
-the repeated measures structure, as it did not model the underlying
-trajectory of pain over time.
+used LME models as the substantive model. However, in those
+implementations, time was treated as a categorical variable. This
+approach limited our ability to take full advantage of the repeated
+measures structure, as it did not model the underlying trajectory of
+pain over time.
 
 To address this, we revise the estimand by treating time as a continuous
 variable. This allows us to model individual pain trajectories across
 the study period, thereby leveraging all available interim outcome data.
-As a result, we improve the precision of the estimated treatment effect
-at the final timepoint---even in the presence of missing data.
 
-\paragraph{Original Estimand (Categoricl
-Time)}\label{original-estimand-categoricl-time}
+\subsubsection{Original Estimand (Categorical
+Time)}\label{original-estimand-categorical-time}
 
 \emph{Acupuncture data set}
 
@@ -1781,7 +1914,7 @@ randomisation. The estimand of interest is the mean difference in knee
 pain scores at 4 years, conditional on baseline pain. This is modelled
 using the following linear regression:
 
-\[painyear4_i = \beta_0 + \beta_1 fishoilactive_i + \beta_2 vitdactive_i + \beta_3 painbase_i + \varepsilon_i\]
+\[painyr4_i = \beta_0 + \beta_1 fishoilactive_i + \beta_2 vitdactive_i + \beta_3 painbase_i + \varepsilon_i\]
 
 where
 
@@ -1814,7 +1947,7 @@ where
   \(\varepsilon\): residual error term for individual \(i\)
 \end{itemize}
 
-\paragraph{Changed Estimand (Continuous
+\subsubsection{Changed Estimand (Continuous
 Time)}\label{changed-estimand-continuous-time}
 
 To better utilise repeated measures in both datasets, we revise the
@@ -1879,9 +2012,11 @@ where
 
 The revised LME model for the VITAL dataset is specified as:
 
-\[
-pain_{ij} = \beta_0 + \beta_1 fishoilactive_i + \beta_2 vitdactive_i + \beta_3 time_{contin,ij} + \beta_4 (fishoilactive_i \times time_{contin,ij}) + \beta_5 (vitdactive_i \times time_{contin,ij}) + \beta_6 painbase_i + b_{0i} + b_{1i} time_{contin,ij} + \varepsilon_{ij}
-\]
+\begin{align*}
+pain_{ij} &= \beta_0 + \beta_1\, fishoilactive_i + \beta_2\, vitdactive_i + \beta_3\, time_{contin,ij} \\
+&\quad + \beta_4\, (fishoilactive_i \times time_{contin,ij}) + \beta_5\, (vitdactive_i \times time_{contin,ij}) \\
+&\quad + \beta_6\, painbase_i + b_{0i} + b_{1i}\, time_{contin,ij} + \varepsilon_{ij}
+\end{align*}
 
 where
 
@@ -1928,7 +2063,7 @@ where
   \(j\)
 \end{itemize}
 
-\subsubsection{Change FSC methods}\label{change-fsc-methods}
+\subsection{Change FSC methods}\label{change-fsc-methods}
 
 Even within the FCS (Fully Conditional Specification) framework, there
 are multiple imputation strategies we can explore. We begin with
@@ -1956,8 +2091,7 @@ missing values by randomly sampling from the observed values of the same
 variable. This method does not rely on any model or predictor variables,
 and instead preserves the marginal distribution of the variable.
 
-\subsubsection{Change imputation
-numbers}\label{change-imputation-numbers}
+\subsection{Change imputation numbers}\label{change-imputation-numbers}
 
 As discussed above, there are various arguments for choosing a higher
 number of imputations based on the fraction of missing information and
@@ -1969,164 +2103,14 @@ missing data, we increased K from the default 5 to 20 and 25. For the
 VITAL dataset, which has around 50\% missingness, we increased K from 5
 to 20 and then to 50.
 
-\subsubsection{Sensitivity analysis}\label{sensitivity-analysis}
+\subsection{Sensitivity analysis}\label{sensitivity-analysis-1}
 
 As mentioned in our introduction, missing data mechanisms are
 unverifiable. While it is most common to assume that data are MAR, in
 reality, the mechanism could fall under MNAR. We conducted a sensitivity
 analysis to assess the robustness of the estimated treatment effect
-under alternative missingness assumptions. Sensitivity analysis is
-recommended by the National Research Council (2010) as a best practice
-for handling missing data; however, it is rarely conducted in practice.
-This may reflect an underappreciation of the impact of missing data in
-many studies, as well as the complexity and specialised expertise
-required to perform such analyses.
+under alternative missingness assumptions.
 
-A systematic review by Fiero et al.~(2016) examined 86 cluster
-randomised trials published between 2013 and 2014. Among the 80 trials
-that reported missing outcome data, only 14 (18\%) reported conducting a
-sensitivity analysis.
-
-In our study, we implemented multiple imputation with \(\delta\)
--adjustment as our sensitivity analysis approach. In this method, a
-constant shift \(\delta\) is added to the imputed values after the
-initial imputation step. This enables us to explore a range of plausible
-scenarios by re-estimating the treatment effect under different
-assumptions about the missing data mechanism. By applying these shift
-parameters, we can model situations in which participants with missing
-data are assumed to have systematically better or worse outcomes than
-those observed, thereby testing the stability of our conclusions when
-relaxing the MAR assumption conditional on other variables.
-
-The shift can be broken down in to:
-
-\[\delta = \delta_\mathrm{MAR} + \delta_\mathrm{MNAR}\] where; -
-\(\delta_\mathrm{MAR}\): mean difference caused by the predictors in the
-imputation models - \(\delta_\mathrm{MNAR}\): mean difference caused by
-an additional non-ignorable part of the imputation model.
-
-Essentially, \(\delta\) is the mean difference between the imputed
-values and the true values that we did not observe.
-
-Deciding which \(\delta\) values are suitable is subjective. There are
-two \(\delta\) paramters we are considering for the treatment arm and
-cotrol arm. We need to include \(\delta\) = 0 as that assumes the data
-is MAR which acts as our baseline, and we add the non-zero \(\delta\)
-values to test the sensitivity to the MNAR assumption. We decided to
-base our \(\delta\) values on the standard deviations of the outcome
-variables of interest. The standard deviation of the headache severity
-score at the final time point in the treatment group is \emph{13.71828}
-and \emph{17.01089} in the control group. The standard deviation of the
-knee pain score at the final time point in the fishoil group is
-\emph{19.13955}, \emph{19.24856} in the vitamin D group, and
-\emph{18.29479} in the control group. These statistics are based on the
-data in the original wide format. We also extracted the standard
-deviation of the outcome variables in the long format in which the
-estimand is continous. We decided an increasing and decreasing multiples
-of these values should suffice;
-
-\(\delta\) = -0.5\emph{SD, -0.25}SD, 0 , 0.25\emph{SD, 0.5}SD\$
-
-Applying these to both datasets, our chosen \(\delta\) values are;
-
-\emph{Original Estimand}
-
-\begin{itemize}
-\tightlist
-\item
-  \(\delta_\mathrm{Acupuncture-original} = -6.859139,-3.429569,0,3.429569,6.859139\)
-\item
-  \(\delta_\mathrm{Acu-control-original} = -8.505446,-4.252723,0,4.252723,8.505446\)
-\item
-  \(\delta_\mathrm{VITAL-fishoil-original} = -9.569774,-4.784887,0,4.784887,9.569774\)
-\item
-  \(\delta_\mathrm{VITAL-vitd-original} = -9.624281,-4.812141,0,4.812141,9.624281\)
-\item
-  \(\delta_\mathrm{VITAL-control-original} = -9.147397,-4.573698,0,4.573698,9.147397\)
-\end{itemize}
-
-\emph{Changed Estimand}
-
-\begin{itemize}
-\tightlist
-\item
-  \(\delta_\mathrm{Acupuncture-changed} = -7.397829,-3.698915,0,3.698915,7.397829\)
-\item
-  \(\delta_\mathrm{Acu-control-changed} = -8.660196,-4.330098,0, 4.330098,8.660196\)
-\item
-  \(\delta_\mathrm{VITAL-fishoil-changed} = -9.783807,-4.891904,0,4.891904,9.783807\)
-\item
-  \(\delta_\mathrm{VITAL-vitd-changed} = -9.967777,-4.983889,0,4.983889,9.967777\)
-\item
-  \(\delta_\mathrm{VITAL-control-changed} = -9.646493,-4.823247,0, 4.823247,9.646493\)
-\end{itemize}
-
-\textbf{Sensitivity Analysis; the process}
-
-This section outlines the application of the \(\delta\)-adjustment
-sensitivity analysis. We begin with the acupuncture trial and its
-original categorical estimand, specifying the predictor variables for
-multiple imputation as the treatment group and baseline headache
-severity score (pk1). These are used to generate a predictor matrix for
-imputation. An initial imputation run extracts the post object, which
-allows manual modification of the imputation process. For each value in
-the vector \(\delta_\mathrm{Acupuncture-original}\), we adjust the
-imputed values of the final headache severity score (pk5) by adding the
-corresponding \(\delta\). A linear regression model,
-\(pk5_i = \beta_0 + \beta_1 \text{group}_i + \beta_2 pk1_i + \varepsilon_i\),
-is fitted to each imputed dataset, and the estimates are pooled. We
-extract the coefficient for the treatment group, our estimand of
-interest, along with its standard error, confidence interval, and
-p-value.
-
-We then repeat this process using only the placebo group (group == 0) to
-isolate control group effects, generating the acu\_wide\_placebo
-dataset. Here, \(\delta_\mathrm{Acu-control-original}\) values are added
-to the imputed pk5 values, and the pooled regression estimates are
-filtered for the intercept term, representing the average outcome in the
-control group.
-
-A similar approach is applied to the VITAL trial data in wide format,
-using pain\_base, vitdactive, and fishoilactive as predictors, and
-pain\_yr4 as the outcome. Following imputation and
-\(\delta\)-adjustment, we fit the model
-\(painyr4_i = \beta_0 + \beta_1 \text{fishoilactive}i + \beta_2 \text{vitdactive}i + \beta_3 \text{pain\_base}i + \varepsilon_i\),
-pool the estimates, and extract coefficients for the treatment groups
-(fishoilactive, vitdactive). For the control group, we filter the
-dataset to include only individuals with fishoilactive == 0 and
-vitdactive == 0, forming vital\_wide\_placebo. Here,
-\(\delta\mathrm{VITAL-fishoil-original}\),
-\(\delta\mathrm{VITAL-vitd-original}\), and
-\(\delta\mathrm{VITAL-control-original}\) are added to the respective
-imputed values, and pooled results are similarly obtained.
-
-We performed sensitivity analyses in a similar fashion to assess the
-robustness of the treatment effect under our alternative estimand. This
-process was more computationally intensive, as it required performing
-multiple imputation on the wide-format data and subsequently
-transforming it into long format.
-
-For the acupuncture trial, we added
-\(\delta_\mathrm{Acupuncture\text{-}changed}\) values to the imputed
-data and then used a custom function to convert the data into long
-format. Due to the repeated measures structure, we employed a linear
-mixed-effects model to estimate the treatment effect prior to pooling.
-The substantive model was:
-
-\[pkscore_{ij} = \beta_0 + \beta_1 group_i + \beta_2 time_{c,ij} + \beta_3 (group_i time_{c,ij}) + \beta_4 pk1_i + b_{0i} + \varepsilon_{ij}\]
-
-For the VITAL study, the imputed wide-format data was reshaped into long
-format using a separate function. The treatment effect was estimated
-using the following mixed-effects model:
-
-\[\text{pain}_{ij} = \beta_0 
-+ \beta_1 \text{fishoilactive}_{i} \text{time\_contin}_{j}
-+ \beta_2 \text{vitdactive}_{i} \text{time\_contin}_{j}
-+ \beta_3 \text{pain\_base}_{i}
-+ b_{0i} + \varepsilon_{ij}\] As for the control group, we only include
-the baseline knee pain score and time as predictors, so our model here
-was:
-\[\text{pain}_{ij} = \beta_0 + \beta_1 \text{time\_contin}_{ij} + \beta_2 \text{pain\_base}_i + b_{0i} + \varepsilon_{ij}\]
 \newpage
 
 \section{Result}\label{result}
@@ -2141,7 +2125,7 @@ principled approaches.
 \centering
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-25-1.pdf}}
 \caption{Acupuncture data set analysed with different methods; CCA =
-complete case analysis; LOCR = last observation carry forward; MO = mean
+complete case analysis; LOCF = last observation carry forward; MO = mean
 observation; MI = multiple imputation with linear regression; LME =
 linear mixed-effects model without imputation; MI+LME = multiple
 imputation followed by linear mixed-effects model.}
@@ -2151,7 +2135,7 @@ imputation followed by linear mixed-effects model.}
 \centering
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-26-1.pdf}}
 \caption{VITAL data set analysed with different methods; CCA = complete
-case analysis; LOCR = last observation carry forward; MO = mean
+case analysis; LOCF = last observation carry forward; MO = mean
 observation; MI = multiple imputation with linear regression; LME =
 linear mixed-effects model without imputation; MI+LME = multiple
 imputation followed by linear mixed-effects model.}
@@ -2211,8 +2195,9 @@ using 5 imputations.
 
 Next, we assess the impact of changing the number of imputations, using
 predictive mean method. As introduced in the previous session, we used
-\(K=5\), \(K=20\), and \(K=100*\lambda\) (Which is 25 and 50 for
-Acupuncture and VITAL data sets accordingly).
+\(K=5\), \(K=20\), and \(K=100*\lambda\) (\(\lambda\) is the percentage
+of cases with missing, which is 0.25 and 0.5 for Acupuncture and VITAL
+data sets accordingly).
 
 \begin{figure}
 \centering
@@ -2227,9 +2212,9 @@ numbers}
 \caption{VITAL data set analysed with different imputation numbers}
 \end{figure}
 
-\newpage
+\subsection{Sensitivity analysis}\label{sensitivity-analysis-2}
 
-\subsection{Sensitivity analysis}\label{sensitivity-analysis-1}
+\subsubsection{Forest plot}\label{forest-plot}
 
 \begin{figure}
 \centering
@@ -2268,7 +2253,9 @@ where the missing data are systematically better or worse than the
 observed ones. Positive \(\delta\) values imply better unobserved
 outcomes while negative values imply worse. The consistency of estimates
 across the \(\delta\) values suggests the treatment effect is robust to
-departures from the MAR assumption. \newpage
+departures from the MAR assumption.
+
+\subsubsection{Heatmap}\label{heatmap}
 
 \begin{figure}
 \centering
@@ -2276,8 +2263,11 @@ departures from the MAR assumption. \newpage
 \caption{Original \& changed estimand in acupuncture trial}
 \end{figure}
 
+\begin{figure}
+\centering
 \pandocbounded{\includegraphics[keepaspectratio]{Final_Report_files/figure-latex/unnamed-chunk-36-1.pdf}}
-\newpage
+\caption{Original \& changed estimand in fishoil group}
+\end{figure}
 
 \begin{figure}
 \centering
@@ -2293,7 +2283,7 @@ changed estimand (heatmaps on the right handside) The aim here is to
 show the robustness of the initial estimated treatment effect when
 assumed under a different mechanism. A similar range of colours would be
 interpretable as a strong estimate as there was not much change in the
-estimate after adding the \(\delta\) shifts. \newpage 
+estimate after adding the \(\delta\) shifts.
 
 \section{Discussion}\label{discussion}
 
@@ -2305,10 +2295,10 @@ However, several points are worth noting:
 
 \begin{itemize}
 \item
-  In Figures 1 and 2, we observe that methods involving multiple
+  In Figures 19 and 20, we observe that methods involving multiple
   imputation (MI) show more variation in the estimated treatment
   effects. This is expected, as MI leverages all available observed
-  data, while the other four methods (CAA, LOCF, MO, and LME without
+  data, while the other four methods (CCA, LOCF, MO, and LME without
   imputation) use only a subset---typically including only group and
   baseline pain score.
 \item
@@ -2342,7 +2332,7 @@ For example:
   unbiased results even without imputation---if the assumptions are met.
   However, in the Acupuncture dataset, its utility is limited due to the
   small number of timepoints and its inability to incorporate other
-  post-randomisation variables like pain frequency.
+  post-randomization variables like pain frequency.
 \item
   In the VITAL dataset, although there are more timepoints, baseline
   pain scores are sometimes missing. As a result, when fitting LME
@@ -2353,8 +2343,8 @@ For example:
   post-randomisation variables into an LME model by extending the
   covariance structure, this approach is complex and less flexible. In
   contrast, using MI provides a more straightforward way to incorporate
-  auxiliary post-randomisation information during the imputation step,
-  without requiring modifications to the model structure.
+  post-randomisation information during the imputation step, without
+  requiring modifications to the model structure.
 \end{itemize}
 
 \subsection{Limitations of the
@@ -2389,11 +2379,7 @@ available data.
 \subsection{Future work}\label{future-work}
 
 In addition, there are methodological aspects that could be improved or
-explored further in future work. These include choices related to model
-specification, variable adjustment, and the diversity of imputation
-techniques employed. Addressing these areas could enhance the robustness
-and generalizability of findings, especially in more complex or
-data-rich clinical contexts.
+explored further in future work.
 
 \begin{itemize}
 \item
@@ -2421,47 +2407,84 @@ data-rich clinical contexts.
   interacts with MI and influences treatment effect estimates.
 \end{itemize}
 
+\newpage
+
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-baker_systematic_2025}
+Baker, William L., Timothy E. Moore, Eric Baron, Michelle Kittleson,
+William F. Parker, and Abhishek Jaiswal. 2025. {``A Systematic Review of
+Reporting and Handling of Missing Data in Observational Studies Using
+the {UNOS} Database.''} \emph{The Journal of Heart and Lung
+Transplantation} 44 (3): 462--68.
+\url{https://doi.org/10.1016/j.healun.2024.10.023}.
+
 \bibitem[\citeproctext]{ref-bodner_bodner2008what_2008}
-Bodner, Todd E. 2008. {``(Bodner2008)what Improves with Increased
-Missing Data Imputations?''} \emph{Structural Equation Modeling: A
-Multidisciplinary Journal} 15 (4): 651--75.
+Bodner, Todd E. 2008. {``({Bodner2008}){What} {Improves} with
+{Increased} {Missing} {Data} {Imputations}?''} \emph{Structural Equation
+Modeling: A Multidisciplinary Journal} 15 (4): 651--75.
 \url{https://doi.org/10.1080/10705510802339072}.
 
 \bibitem[\citeproctext]{ref-carpenter_multiple_2023}
 Carpenter, James R., Jonathan W. Bartlett, Tim P. Morris, Angela M.
 Wood, Matteo Quartagno, and Michael G. Kenward. 2023. \emph{Multiple
-Imputation and Its Application}. 2nd ed. Statistics in Practice. Wiley.
+{Imputation} and Its {Application}}. 2nd ed. Statistics in {Practice}.
+Wiley.
 \url{https://onlinelibrary.wiley.com/doi/book/10.1002/9781119756118}.
 
 \bibitem[\citeproctext]{ref-graham_how_2007}
 Graham, John W., Allison E. Olchowski, and Tamika D. Gilreath. 2007.
-{``How Many Imputations Are Really Needed? Some Practical Clarifications
-of Multiple Imputation Theory.''} \emph{Prevention Science: The Official
-Journal of the Society for Prevention Research} 8 (3): 206--13.
-\url{https://doi.org/10.1007/s11121-007-0070-9}.
+{``How Many Imputations Are Really Needed? {Some} Practical
+Clarifications of Multiple Imputation Theory.''} \emph{Prevention
+Science: The Official Journal of the Society for Prevention Research} 8
+(3): 206--13. \url{https://doi.org/10.1007/s11121-007-0070-9}.
+
+\bibitem[\citeproctext]{ref-hunt_systematic_2021}
+Hunt, Nicholas B., Helga Gardarsdottir, Marloes T. Bazelier, Olaf H.
+Klungel, and Romin Pajouheshnia. 2021. {``A Systematic Review of How
+Missing Data Are Handled and Reported in Multi‐database
+Pharmacoepidemiologic Studies.''} \emph{Pharmacoepidemiology and Drug
+Safety} 30 (7): 819--26. \url{https://doi.org/10.1002/pds.5245}.
+
+\bibitem[\citeproctext]{ref-little_statistical_2002}
+Little, Roderick J. A., and Donald B. Rubin. 2002. \emph{Statistical
+{Analysis} with {Missing} {Data}}. Newy York, UNITED STATES: John Wiley
+\& Sons, Incorporated.
+\url{http://ebookcentral.proquest.com/lib/nuig/detail.action?docID=1775204}.
+
+\bibitem[\citeproctext]{ref-powney_review_2014}
+Powney, Matthew, Paula Williamson, Jamie Kirkham, and Ruwanthi
+Kolamunnage-Dona. 2014. {``A Review of the Handling of Missing
+Longitudinal Outcome Data in Clinical Trials.''} \emph{Trials} 15
+(June): 237. \url{https://doi.org/10.1186/1745-6215-15-237}.
 
 \bibitem[\citeproctext]{ref-royston_royston2004multiple_2004}
-Royston, Patrick. 2004. {``(Royston2004)multiple Imputation of Missing
-Values.''} \emph{The Stata Journal} 4 (3): 227--41.
+Royston, Patrick. 2004. {``({Royston2004}){Multiple} {Imputation} of
+{Missing} {Values}.''} \emph{The Stata Journal} 4 (3): 227--41.
 \url{https://doi.org/10.1177/1536867X0400400301}.
 
 \bibitem[\citeproctext]{ref-noauthor_rubin1987_1987}
-\emph{(Rubin1987) Multiple Imputation for Nonresponse in Surveys}. 1987.
-John Wiley \& Sons, Ltd.
+\emph{({Rubin1987}) {Multiple} {Imputation} for {Nonresponse} in
+{Surveys}}. 1987. John Wiley \& Sons, Ltd.
 \url{https://doi.org/10.1002/9780470316696.fmatter}.
 
-\bibitem[\citeproctext]{ref-white_multiple_2011-1}
+\bibitem[\citeproctext]{ref-spineli_reporting_2015}
+Spineli, Loukia M., Nikolaos Pandis, and Georgia Salanti. 2015.
+{``Reporting and Handling Missing Outcome Data in Mental Health: A
+Systematic Review of {Cochrane} Systematic Reviews and Meta-Analyses.''}
+\emph{Research Synthesis Methods} 6 (2): 175--87.
+\url{https://doi.org/10.1002/jrsm.1131}.
+
+\bibitem[\citeproctext]{ref-white_multiple_2011}
 White, Ian R., Patrick Royston, and Angela M. Wood. 2011. {``Multiple
-Imputation Using Chained Equations: Issues and Guidance for Practice.''}
-\emph{Statistics in Medicine} 30 (4): 377--99.
+Imputation Using Chained Equations: {Issues} and Guidance for
+Practice.''} \emph{Statistics in Medicine} 30 (4): 377--99.
 \url{https://doi.org/10.1002/sim.4067}.
 
 \end{CSLReferences}
 
 \bibliographystyle{unsrt}
-\bibliography{Missing\_data\_references.bib}
+\bibliography{reference\_final.bib}
 
 
 \end{document}
