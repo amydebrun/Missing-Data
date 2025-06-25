@@ -1,4 +1,8 @@
-
+library(dplyr)
+library(mice)
+library(tidyr)
+library(lme4)
+library(broom.mixed)
 #standard deviations vital
 vital_fish<-vital_long%>%
   filter(fishoilactive==1 & vitdactive==0)
@@ -210,7 +214,7 @@ for (i in seq_along(vital_control_delta)) {
   cov_int_base <- 0
   cov_int_time <- 0
   cov_base_time <- 0
-  complete_data <- complete(imp_wide, action = 1) %>%
+  complete_data <- complete(imp_wide,  action = "long", include = TRUE) %>%
     to_long_format_vital_mice_SA()
   mean_base <- mean(complete_data$pain_base, na.rm = TRUE)
   mean_time <- mean(complete_data$time_contin, na.rm = TRUE)
