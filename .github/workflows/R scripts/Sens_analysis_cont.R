@@ -202,13 +202,24 @@ for (i in seq_along(vital_control_delta)) {
   pooled_cont <- pool(fit_list)
   pooled_summary <- tidy(pooled_cont, conf.int = TRUE)
   intercept_est <- pooled_summary$estimate[pooled_summary$term == "(Intercept)"]
-  slope_est <- pooled_summary$estimate[pooled_summary$term == "pain_base"]
+  slope_base  <- pooled_summary$estimate[pooled_summary$term == "pain_base"]
+  slope_time <- pooled_summary$estimate[pooled_summary$term == "time_contin"]
   var_int <- pooled_summary$std.error[pooled_summary$term == "(Intercept)"]^2
-  var_slope <- pooled_summary$std.error[pooled_summary$term == "pain_base"]^2
-  cov_int_slope <- 0
-  mean_pain_base <- mean(complete(imp_wide, action = 1)$pain_base, na.rm = TRUE)
-  est_val <- intercept_est + slope_est * mean_pain_base
-  var_val <- var_int + (mean_pain_base^2) * var_slope + 2 * mean_pain_base * cov_int_slope
+  var_base  <- pooled_summary$std.error[pooled_summary$term == "pain_base"]^2
+  var_time <- pooled_summary$std.error[pooled_summary$term == "time_contin"]^2
+  cov_int_base <- 0
+  cov_int_time <- 0
+  cov_base_time <- 0
+  complete_data <- complete(imp_wide, action = 1)
+  mean_base <- mean(complete_data$pain_base, na.rm = TRUE)
+  mean_time <- mean(complete_data$time_contin, na.rm = TRUE)
+  est_val <- intercept_est + slope_base * mean_base + slope_time * mean_time
+  var_val <- var_int + 
+    (mean_base^2) * var_base +
+    (mean_time^2) * var_time +
+    2 * mean_base * cov_int_base +
+    2 * mean_time * cov_int_time +
+    2 * mean_base * mean_time * cov_base_time
   se_val <- sqrt(var_val)
   est_cont <- data.frame(
     estimate = est_val,

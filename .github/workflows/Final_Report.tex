@@ -168,8 +168,6 @@ between the methods across both datasets.
 \subsection{Missing data in longitudinal
 study}\label{missing-data-in-longitudinal-study}
 
-\emph{Longitudinal Study Design}
-
 Longitudinal studies are research designs in which data are collected
 from the same participants at multiple time points. They provide
 valuable insights into how variables change over time---often over
@@ -407,6 +405,8 @@ test is also vulnerable to Type 1 error (false positive result) and Type
 violations with its low statistical power, even if the MCAR assumption
 holds.
 
+\newpage
+
 \subsection{Different missing data
 patterns}\label{different-missing-data-patterns}
 
@@ -440,10 +440,9 @@ despite the use of established handling methods, there remains room for
 improvement in how missing data are addressed in clinical study reports
 and in the selection of appropriate methods.
 
-In (Powney et al. 2014) reviewed 100 longitudinal clinical trials
-conducted between 2005 and 2012 and found that only 44 reported an
-adequate method to handle missing data, while 30 used potentially
-inadequate methods.
+(Powney et al. 2014) reviewed 100 longitudinal clinical trials conducted
+between 2005 and 2012 and found that only 44 reported an adequate method
+to handle missing data, while 30 used potentially inadequate methods.
 
 (Spineli, Pandis, and Salanti 2015) examined 190 systematic reviews
 published after 2009 to investigate how missing data were reported in
@@ -457,10 +456,10 @@ for handling it. The most popular approach was complete case analysis
 (CCA) used in 13 studies, followed by multiple imputation (MI) in 2
 studies.
 
-Complete case analysis was also the predominant method in a systematic
-review of 229 observational studies from the United Network for Organ
-Sharing (UNOS) database (Baker et al. 2025). Forty-one studies used CCA,
-22 reported MI, and notably, 31 studies removed covariates due to
+CCA was also the predominant method in a systematic review of 229
+observational studies from the United Network for Organ Sharing (UNOS)
+database (Baker et al 2025) (Baker et al. 2025). Forty-one studies used
+CCA, 22 reported MI, and notably, 31 studies removed covariates due to
 missing values---an action that could introduce further bias depending
 on the covariates' relationship with other predictors.
 
@@ -475,8 +474,10 @@ different settings.
 
 Our first dataset contains results from a clinical trial determining the
 effects of acupuncture therapy on chronic headache in primary care
-\emph{(Vickers et al 2004)}. Vickers released the dataset from the study
-in 2006 and is publicly available to download in excel format from
+(Vickers et al.~2004) ({``Acupuncture for Chronic Headache in Primary
+Care: Large, Pragmatic, Randomised Trial {\textbar} {The} {BMJ}''}
+n.d.). Vickers released the dataset from the study in 2006 and is
+publicly available to download in excel format from
 \url{https://pmc.ncbi.nlm.nih.gov/articles/PMC1489946/}. The study
 design for the acupuncture trial is a longitudinal randomised controlled
 trial with two follow up time points. 401 participants were gathered
@@ -579,6 +580,8 @@ show the count(percentage). Note pk2 and pk5 are post randomisation
 variables and they are the only two variables in the dataset that
 contain missing values.
 
+\newpage
+
 \begin{figure}
 
 {\centering \includegraphics{Final_Report_files/figure-latex/unnamed-chunk-9-1} 
@@ -627,12 +630,13 @@ Fish oil did not reduce occurence in breast or prostate cancer or
 cancer-deaths.
 
 For our research, we are analysing the results of an ancillary study
-which uses data from VITAL. MacFarlane et al (2020) conducted a study
-using VITAL on the therapeutic effects of vitamin D and fishoil on
-osteoarthritic knee pain. 1,398 participants in the study was randomised
-to 4 possible treatment combinations. Participants were randomised to
-receive either omega-3 oils or vitamin D, both treatments, or randomised
-to the placebo group.
+which uses data from VITAL. MacFarlane et al (2020)
+{[}@\{noauthor\_effects\_nodate{]} conducted a study using VITAL on the
+therapeutic effects of vitamin D and fishoil on osteoarthritic knee
+pain. 1,398 participants in the study was randomised to 4 possible
+treatment combinations. Participants were randomised to receive either
+omega-3 oils or vitamin D, both treatments, or randomised to the placebo
+group.
 
 A knee pain scale grading index Western Ontario and McMaster
 Osteoarthritis Index (WOMAC) is used to record knee pain score at
@@ -1052,12 +1056,13 @@ the modeling step. In our anchoring methods, we either did not perform
 imputation---as in CCA---or relied on single imputation techniques, such
 as LOCF or mean imputation.
 
-While methods like LME can utilize most available observed data and
-yield unbiased estimates under the MAR assumption without imputation,
-they cannot incorporate other post-randomization variables that are not
-part of the model (e.g., headache frequency in the acupuncture data
-set). In contrast, MI allows the inclusion of such post-randomized
-information during the imputation process.
+While methods such as using a linear mixed effects model can utilize
+most available observed data and yield unbiased estimates under the MAR
+assumption without imputation, they cannot incorporate other
+post-randomization variables that are not part of the model (e.g.,
+headache frequency in the acupuncture data set). In contrast, MI allows
+the inclusion of such post-randomized information during the imputation
+process.
 
 In most realistic scenarios, doing no imputation or applying single
 imputation methods is likely to introduce bias and underestimate
@@ -1128,7 +1133,7 @@ follows:
   the following steps for now)
 \item
   Fit the substantive model (e.g., a linear model or mixed-effects
-  model) to each imputed dataset, obtaining Parameter estimate
+  model) to each imputed dataset, obtaining parameter estimate
   \(\hat{\beta}_{k}\) and Variance estimate \(\hat{\sigma}_{k}^{2}\) for
   each k=1,2,\ldots,K
 \item
@@ -1234,11 +1239,11 @@ properly handle the complex, arbitrary missing data structure.
 
 \paragraph{Joint modelling}\label{joint-modelling}
 
-When the missing data pattern is non-monotonic, as in the VITAL dataset,
-sequential regression is no longer appropriate. Instead, we can apply
-joint modeling, which makes no assumption about the missingness pattern
-but assumes the missing data mechanism is ignorable (typically, Missing
-At Random).
+When the missing data pattern is non-monotonic, as the knee pain scores
+in the VITAL dataset, sequential regression is no longer appropriate.
+Instead, we can apply joint modeling, which makes no assumption about
+the missingness pattern but assumes the missing data mechanism is
+ignorable (typically, Missing At Random).
 
 Under joint modeling, we assume that the complete multivariate outcome
 vector follows a multivariate normal distribution: \begin{align*}
@@ -1432,10 +1437,10 @@ In this project, we chose to use K=5 imputations for multiple
 imputation, following the classical recommendation to use a low number
 of imputations when the proportion of missing information is moderate.
 
-\textbf{Chosse \textgreater20 imputations}
+\textbf{Choose \textgreater20 imputations}
 
 While early guidelines recommended using a low number of imputations
-(typically K=3-5) for moderate missingness, more recent research argue
+(typically K=3,4,5) for moderate missingness, more recent research argue
 that increasing K beyond this range can yield important gains in
 statistical efficiency.
 
@@ -1654,15 +1659,16 @@ ID & Time & Outcome \\
 \subsection{Sensitivity analysis}\label{sensitivity-analysis}
 
 Sensitivity analysis is recommended by the National Research Council
-(2010) as a best practice for handling missing data; however, it is
-rarely conducted in practice. This may reflect an underappreciation of
-the impact of missing data in many studies, as well as the complexity
-and specialised expertise required to perform such analyses.
+(2010) {[}@\{noauthor\_prevention\_nodate{]} as a best practice for
+handling missing data; however, it is rarely conducted in practice. This
+may reflect an underappreciation of the impact of missing data in many
+studies, as well as the complexity and specialised expertise required to
+perform such analyses.
 
-A systematic review by Fiero et al.~(2016) examined 86 cluster
-randomised trials published between 2013 and 2014. Among the 80 trials
-that reported missing outcome data, only 14 (18\%) reported conducting a
-sensitivity analysis.
+A systematic review by Fiero et al. (Fiero et al. 2016) examined 86
+cluster randomised trials published between 2013 and 2014. Among the 80
+trials that reported missing outcome data, only 14 (18\%) reported
+conducting a sensitivity analysis.
 
 In our study, we implemented multiple imputation with \(\delta\)
 -adjustment as our sensitivity analysis approach. In this method, a
@@ -1675,7 +1681,9 @@ data are assumed to have systematically better or worse outcomes than
 those observed, thereby testing the stability of our conclusions when
 relaxing the MAR assumption conditional on other variables.
 
-The shift can be broken down in to:
+The shift can be broken down in
+to(\emph{Https://Stefvanbuuren.name/Fimd/Sec-Nonignorable.html\#sec:nonignorable}
+n.d.):
 
 \[\delta = \delta_\mathrm{MAR} + \delta_\mathrm{MNAR}\] where;
 
@@ -1745,8 +1753,8 @@ Applying these to both datasets, our chosen \(\delta\) values are;
   \(\delta_\mathrm{VITAL-control-changed} = -9.65, -4.82, 0, 4.82, 9.65\)
 \end{itemize}
 
-To outlines the application of the \(\delta\)-adjustment sensitivity
-analysis. We begin with the acupuncture trial and its original
+To outline the application of the \(\delta\)-adjustment sensitivity
+analysis, we begin with the acupuncture trial and its original
 categorical estimand, specifying the predictor variables for multiple
 imputation as the treatment group and baseline headache severity score
 (pk1). These are used to generate a predictor matrix for imputation. An
@@ -1761,12 +1769,15 @@ extract the coefficient for the treatment group, our estimand of
 interest, along with its standard error, confidence interval, and
 p-value.
 
-We then repeat this process using only the placebo group (group == 0) to
+We then repeat this process using only the control group (group == 0) to
 isolate control group effects, generating the acu\_wide\_placebo
 dataset. Here, \(\delta_\mathrm{Acu-control-original}\) values are added
-to the imputed pk5 values, and the pooled regression estimates are
-filtered for the intercept term, representing the average outcome in the
-control group.
+to the imputed pk5 values, and after applying
+\(pk5_i = \beta_0 + \beta_1pk1_i + \varepsilon_i\) to each dataset (as
+there is no group term), we estimate the headache severity score under
+the control group. The model is used to compute the expected headache
+severity score after 12 months given mean baseline headache severity
+score.
 
 A similar approach is applied to the VITAL study data in wide format,
 using pain\_base, vitdactive, and fishoilactive as predictors, and
@@ -1921,7 +1932,7 @@ where
 \begin{itemize}
 \tightlist
 \item
-  \(pain_yr4_i\): knee pain score for individual \(i\) at 4 years
+  \(painyr4_i\): knee pain score for individual \(i\) at 4 years
   post-randomization
 \item
   \(fishoilactive_i\): binary indicator for fish oil treatment (1 =
@@ -2103,14 +2114,6 @@ missing data, we increased K from the default 5 to 20 and 25. For the
 VITAL dataset, which has around 50\% missingness, we increased K from 5
 to 20 and then to 50.
 
-\subsection{Sensitivity analysis}\label{sensitivity-analysis-1}
-
-As mentioned in our introduction, missing data mechanisms are
-unverifiable. While it is most common to assume that data are MAR, in
-reality, the mechanism could fall under MNAR. We conducted a sensitivity
-analysis to assess the robustness of the estimated treatment effect
-under alternative missingness assumptions.
-
 \newpage
 
 \section{Result}\label{result}
@@ -2175,7 +2178,7 @@ variable.}
 \subsection{Changing imputation methods and imputation
 numbers}\label{changing-imputation-methods-and-imputation-numbers}
 
-In this session. We keep our estimand treating time as a categorical
+In this section, we keep our estimand treating time as a categorical
 variable and using multiple linear regression as substantive model.
 
 We first compared different imputation methods within the FCS framework,
@@ -2212,7 +2215,7 @@ numbers}
 \caption{VITAL data set analysed with different imputation numbers}
 \end{figure}
 
-\subsection{Sensitivity analysis}\label{sensitivity-analysis-2}
+\subsection{Sensitivity analysis}\label{sensitivity-analysis-1}
 
 \subsubsection{Forest plot}\label{forest-plot}
 
@@ -2411,6 +2414,11 @@ explored further in future work.
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-noauthor_acupuncture_nodate-1}
+{``Acupuncture for Chronic Headache in Primary Care: Large, Pragmatic,
+Randomised Trial {\textbar} {The} {BMJ}.''} n.d. Accessed June 25, 2025.
+\url{https://www-bmj-com.nuigalway.idm.oclc.org/content/328/7442/744.long}.
+
 \bibitem[\citeproctext]{ref-baker_systematic_2025}
 Baker, William L., Timothy E. Moore, Eric Baron, Michelle Kittleson,
 William F. Parker, and Abhishek Jaiswal. 2025. {``A Systematic Review of
@@ -2432,12 +2440,23 @@ Wood, Matteo Quartagno, and Michael G. Kenward. 2023. \emph{Multiple
 Wiley.
 \url{https://onlinelibrary.wiley.com/doi/book/10.1002/9781119756118}.
 
+\bibitem[\citeproctext]{ref-fiero_statistical_2016}
+Fiero, Mallorie H., Shuang Huang, Eyal Oren, and Melanie L. Bell. 2016.
+{``Statistical Analysis and Handling of Missing Data in Cluster
+Randomized Trials: A Systematic Review.''} \emph{Trials} 17 (1): 72.
+\url{https://doi.org/10.1186/s13063-016-1201-z}.
+
 \bibitem[\citeproctext]{ref-graham_how_2007}
 Graham, John W., Allison E. Olchowski, and Tamika D. Gilreath. 2007.
 {``How Many Imputations Are Really Needed? {Some} Practical
 Clarifications of Multiple Imputation Theory.''} \emph{Prevention
 Science: The Official Journal of the Society for Prevention Research} 8
 (3): 206--13. \url{https://doi.org/10.1007/s11121-007-0070-9}.
+
+\bibitem[\citeproctext]{ref-noauthor_httpsstefvanbuurennamefimdsec-nonignorablehtmlsecnonignorable_nodate}
+\emph{Https://Stefvanbuuren.name/Fimd/Sec-Nonignorable.html\#sec:nonignorable}.
+n.d. Accessed June 13, 2025.
+\url{https://stefvanbuuren.name/fimd/sec-nonignorable.html\#sec:nonignorable}.
 
 \bibitem[\citeproctext]{ref-hunt_systematic_2021}
 Hunt, Nicholas B., Helga Gardarsdottir, Marloes T. Bazelier, Olaf H.

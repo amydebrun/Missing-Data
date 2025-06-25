@@ -1311,12 +1311,12 @@ data are assumed to have systematically better or worse outcomes than
 those observed, thereby testing the stability of our conclusions when
 relaxing the MAR assumption conditional on other variables.
 
-The shift can be broken down in to[@noauthor_httpsstefvanbuurennamefimdsec-nonignorablehtmlsecnonignorable_nodate]:
+The shift can be broken down in to:
 
 $$\delta = \delta_\mathrm{MAR} + \delta_\mathrm{MNAR}$$ where; 
 
 - $\delta_\mathrm{MAR}$: mean difference caused by the predictors in the imputation models 
-- $\delta_\mathrm{MNAR}$: mean difference caused by an additional non-ignorable part of the imputation model. 
+- $\delta_\mathrm{MNAR}$: mean difference caused by an additional non-ignorable part of the imputation model.[@noauthor_httpsstefvanbuurennamefimdsec-nonignorablehtmlsecnonignorable_nodate]
 
 Essentially, $\delta$ is the mean difference between the imputed values
 and the true values that we did not observe.
