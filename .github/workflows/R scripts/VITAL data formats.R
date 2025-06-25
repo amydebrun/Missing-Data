@@ -1,6 +1,6 @@
 # Vital data wide 
-data_vitalkp <- read_sas("vitalkneepain111623.sas7bdat", NULL)
-data_main <- read_sas("VITAL_trial_NEJM_2022.sas7bdat", NULL)
+data_vitalkp <- read_sas("Data/vitalkneepain111623.sas7bdat", NULL)
+data_main <- read_sas("Data/VITAL_trial_NEJM_2022.sas7bdat", NULL)
 vital_wide <- data_main %>%
   select(Subject_ID, vitdactive, fishoilactive,
          sex, bmi, currsmk, ageyr, Aspirin) %>%
