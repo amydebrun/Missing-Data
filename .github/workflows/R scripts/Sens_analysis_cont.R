@@ -210,7 +210,8 @@ for (i in seq_along(vital_control_delta)) {
   cov_int_base <- 0
   cov_int_time <- 0
   cov_base_time <- 0
-  complete_data <- complete(imp_wide, action = 1)
+  complete_data <- complete(imp_wide, action = 1) %>%
+    to_long_format_vital_mice_SA()
   mean_base <- mean(complete_data$pain_base, na.rm = TRUE)
   mean_time <- mean(complete_data$time_contin, na.rm = TRUE)
   est_val <- intercept_est + slope_base * mean_base + slope_time * mean_time
