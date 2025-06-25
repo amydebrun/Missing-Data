@@ -164,7 +164,7 @@ delta_results_cont_acu_placebo_plot <- ggplot(delta_results_cont_acu_placebo, ae
 
 
 
-##VITAL FISHOIL
+##VITAL
 
 #continuous placebo
  
