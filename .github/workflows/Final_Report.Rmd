@@ -51,8 +51,6 @@ load("report_plots1.RData")
 load("report_plots2.RData")
 ```
 
-\newpage
-
 # Introduction
 
 ## Missing data in longitudinal study
@@ -132,7 +130,7 @@ biased estimates and inaccurate conclusions. Missing data mechanisms
 appear to be mentioned first by Donald Rubin in 1976. We can formally
 define these mechanisms using the following notation;
 
-\newpage
+
 
 -   $R$ represents a missing data indicator which when $R=1$ indicates
     observed data and $R=0$ indicates unobserved
@@ -162,7 +160,7 @@ and $X_2$, which are pre-randomised variables, and outcome variable $Y$
 MCAR_dag
 ```
 
-\newpage
+
 
 **Missing At Random**
 
@@ -189,12 +187,12 @@ assumption still holds given these variables.
 MAR_dag1
 ```
 
-\newpage
+
 ```{r fig.width=5, fig.height=4, echo=FALSE, fig.align='center', fig.cap="Missing at Random conditional on L and \\ensuremath{X_1}"}
 MAR_dag2
 ```
 
-\newpage
+
 
 **Missing Not At Random**
 
@@ -220,7 +218,7 @@ outcome.
 MNAR_dag1
 ```
 
-\newpage
+
 
 ```{r fig.width=5, fig.height=4, echo=FALSE, fig.align='center', fig.cap="Missing not at Random conditional on L, \\ensuremath{X_2}"}
 MNAR_dag2
@@ -247,7 +245,7 @@ test is also vulnerable to Type 1 error (false positive result) and Type
 2 error (false negative result) as the test may not detect MCAR
 violations with its low statistical power, even if the MCAR assumption
 holds.
-\newpage
+
 
 ## Different missing data patterns
 
@@ -317,7 +315,7 @@ CCA, 22 reported MI, and notably, 31 studies removed covariates due to
 missing values—an action that could introduce further bias depending on
 the covariates' relationship with other predictors.
 
-\newpage
+
 
 # Clinical Trial Data
 
@@ -407,13 +405,13 @@ show the mean value (standard deviation) and the categorical variables
 show the count(percentage). Note pk2 and pk5 are post randomisation
 variables and contain missing data.
 
-\newpage
 
-```{r fig.width=5, fig.height=3, fig.align='center', fig.cap="The distribution of sex in both treatment groups of the acupuncture trial data. The participants are predominantly female."}
+
+```{r fig.width=5, fig.height=3.5, fig.align='center', fig.cap="The distribution of sex in both treatment groups of the acupuncture trial data. The participants are predominantly female."}
 print(acu_sex_plot)
 ```
 
-```{r fig.width=5, fig.height=3, fig.align='center',fig.cap="The distribution of age in both treatment groups. Both distributions are negatively skewed, predominantly middle aged and older."}
+```{r fig.width=5, fig.height=3.5, fig.align='center',fig.cap="The distribution of age in both treatment groups. Both distributions are negatively skewed, predominantly middle aged and older."}
 print(acu_age_plot)
 ```
 
@@ -421,7 +419,7 @@ print(acu_age_plot)
 print(acu_pk125_plot)
 ```
 
-\newpage
+
 
 ## VITAL data
 
@@ -513,22 +511,22 @@ treatment combination group. Note here that the VITAL data contains
 missing baseline (i.e. `pain_base`) data as well as post-randomisation
 data.
 
-\newpage
 
-```{r fig.width=5, fig.height=3, fig.align='center', warning=FALSE, fig.cap="The distribution of age in each treatment group, which appear to be normal/ positive skewed distributions."}
+
+```{r fig.width=5, fig.height=4, fig.align='center', warning=FALSE, fig.cap="The distribution of age in each treatment group, which appear to be normal/ positive skewed distributions."}
 print(age_vital_plot)
 ```
 
-```{r fig.width=5, fig.height=3, fig.align='center', warning=FALSE, fig.cap="The distribution of body mass index in each treatment group, these appear to be positively skewed with a BMI between 20 and 40. This shows a range between healthy weighted and obese participants."}
+```{r fig.width=5, fig.height=4, fig.align='center', warning=FALSE, fig.cap="The distribution of body mass index in each treatment group, these appear to be positively skewed with a BMI between 20 and 40. This shows a range between healthy weighted and obese participants."}
 print(bmi_vital_plot)
 ```
-\newpage
+
 
 ```{r fig.width=4, fig.height=3, fig.align='center', warning=FALSE, fig.cap="The distribution of males and females in the VITAL data. Similar to the acupuncture trial, the participants are predominantly female."}
 print(sex_vital_plot)
 ```
 
-```{r fig.width=4, fig.height=4, warning=FALSE, fig.cap="The distribution of the knee pain from baseline until 4 years post randomisation. In all treatment groups it appears that the distributions follow a positive/ near normal distribution and skews more positive as time goes on. This occurs in all groups. Each time-point has an incomplete distribution due to missing data."}
+```{r fig.width=6, fig.height=8, warning=FALSE, fig.cap="The distribution of the knee pain from baseline until 4 years post randomisation. In all treatment groups it appears that the distributions follow a positive/ near normal distribution and skews more positive as time goes on. This occurs in all groups. Each time-point has an incomplete distribution due to missing data."}
 print(vital_pain_plot)
 ```
 
@@ -556,6 +554,7 @@ missing data in the control group.
 ```{r fig.width=5, fig.height=3, fig.cap="Higher percentage of missing data (dark green) in control group"}
 print(acu_miss_perc_group)
 ```
+
 ```{r fig.width=5, fig.height=3, fig.cap="Missing data pattern is similar in both groups (1=observed, 0=missing)"}
 print(acu_miss_pattern_plot)
 ```
@@ -580,15 +579,13 @@ drastically decreases in year 2, then steadily increases again.
 print(vital_miss_perc_plot)
 ```
 
-\newpage 
-
 Recall that the VITAL data set contains 4 different combinations of
 treatment. Separating this out in the plot below we can see the
 percentage of missing data in each knee pain time point variable in each
 group. The proportion appears to be similar in each group with year 2
 post randomisation containing the most missing data.
 
-```{r fig.width=5, fig.height=3, fig.align='center',fig.cap="Percentage of missing data across baseline and 4 follow-up time points. Non-monotonic pattern appears similar in 4 randomised groups."}
+```{r fig.width=5, fig.height=4, fig.align='center',fig.cap="Percentage of missing data across baseline and 4 follow-up time points. Non-monotonic pattern appears similar in 4 randomised groups."}
 print(vital_miss_perc_group_plot)
 ```
 
@@ -600,13 +597,9 @@ observe. The most common data pattern still stands as (1,1,1,1,1) in
 which data is observed at all time-points (shown in light green blocks in the first
 row of each group).
 
-\newpage
-
 ```{r fig.width=7, fig.height=9,fig.align='center', fig.cap="Missing data patterns across 4 treatment groups in VITAL data."}
 print(vital_miss_pattern)
 ```
-
-\newpage
 
 # Methods
 
@@ -1410,8 +1403,6 @@ where
 -   $\beta_3$: effect of baseline pain on the 4-year outcome
 -   $\varepsilon$: residual error term for individual $i$
 
-\newpage 
-
 #### Changed Estimand (Continuous Time)
 
 To better utilise repeated measures in both datasets, we revise the
@@ -1493,8 +1484,6 @@ where
 -   $b_{1i}$: random slope for time for individual $i$
 -   $\varepsilon_{ij}$: residual error term for individual $i$ at time
     $j$
-    
-\newpage
 
 ### Change FSC methods
 
@@ -1664,6 +1653,7 @@ $$\text{pain}_{ij} = \beta_0
 + b_{0i} + \varepsilon_{ij}$$
 As for the control group, we only include the baseline knee pain score and time as predictors, so our model here was:
 $$\text{pain}_{ij} = \beta_0 + \beta_1 \text{time\_contin}_{ij} + \beta_2 \text{pain\_base}_i + b_{0i} + \varepsilon_{ij}$$
+
 \newpage
 
 # Result
@@ -1723,15 +1713,15 @@ print(acu_plot_imp_k)
 print(vital_plot_impt_k)
 ```
 
-\newpage 
-
 ## Sensitivity analysis
 
-```{r fig.width=5, fig.height=4, fig.cap="Sensitive analysis for Acupuncture data set"}
+### Forest plot
+
+```{r fig.width=5, fig.height=3, fig.cap="Sensitive analysis for Acupuncture data set"}
 print(SA_acu_plot)
 ```
 
-```{r fig.width=5, fig.height=4,fig.cap="Sensitive analysis for VITAL data set"}
+```{r fig.width=5, fig.height=3,fig.cap="Sensitive analysis for VITAL data set"}
 print(SA_vital_plot)
 ```
 
@@ -1762,19 +1752,20 @@ observed ones. Positive $\delta$ values imply better unobserved outcomes
 while negative values imply worse. The consistency of estimates across
 the $\delta$ values suggests the treatment effect is robust to
 departures from the MAR assumption.
-\newpage
 
-```{r fig.width=7, fig.height=4, fig.cap="Original & changed estimand in acupuncture trial "}
+### Heatmap
+
+```{r fig.width=7, fig.height=3, fig.cap="Original & changed estimand in acupuncture trial "}
 library(patchwork)
 print(cat_heatmap_acu_plot + cont_heatmap_acu_plot)
 ```
 
-```{r fig.width=7, fig.height=4, fig.cap="Original & changed estimand in fishoil group"}
+```{r fig.width=7, fig.height=3, fig.cap="Original & changed estimand in fishoil group"}
 print(cat_heatmap_fishoil_plot + cont_heatmap_fishoil_plot)
 ```
-\newpage
 
-```{r fig.width=7, fig.height=4, fig.cap="Original & changed estimand in vitamin D group"}
+
+```{r fig.width=7, fig.height=3, fig.cap="Original & changed estimand in vitamin D group"}
 print(cat_heatmap_vitd_plot + cont_heatmap_vitd_plot)
 ```
 
@@ -1786,7 +1777,6 @@ show the robustness of the initial estimated treatment effect when
 assumed under a different mechanism. A similar range of colours would be
 interpretable as a strong estimate as there was not much change in the
 estimate after adding the $\delta$ shifts.
-\newpage 
 
 # Discussion
 
