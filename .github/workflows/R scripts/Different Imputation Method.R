@@ -234,7 +234,7 @@ acu_plot_imp <- ggplot(acu_impt_result, aes(x = estimate, y = Method, xmin = con
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color = "black") + 
   facet_wrap(~ group)+
   labs(
-    x = "Mean differnce in pain score by the end of study",
+    x = "Mean difference in pain score by the end of study",
     y = "Method") +
   theme_minimal() + 
   theme(
@@ -254,7 +254,7 @@ vital_plot_impt <- ggplot(vital_impt_result_all, aes(x = estimate, y = Method, x
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +
   facet_wrap(~ treatment, scales = "free_x") +
   labs(
-    x = "Mean differnce in pain score by the end of study",
+    x = "Mean difference in pain score by the end of study",
     y = "Method") +
   theme_minimal() + 
   theme(
@@ -374,7 +374,7 @@ acu_plot_imp_k <- ggplot(acu_impt_k_result, aes(x = estimate, y = Method, xmin =
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4, color = "black") + 
   facet_wrap(~ group)+
   labs(
-    x = "Mean differnce in pain score by the end of study",
+    x = "Mean difference in pain score by the end of study",
     y = "Imputation number K") +
   theme_minimal() + 
   theme(
@@ -394,7 +394,7 @@ vital_plot_impt_k <- ggplot(vital_impt_k_result_all, aes(x = estimate, y = Metho
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.4) +
   facet_wrap(~ treatment, scales = "free_x") +
   labs(
-    x = "Mean differnce in pain score by the end of study",
+    x = "Mean difference in pain score by the end of study",
     y = "Imputation number K") +
   theme_minimal() + 
   theme(
