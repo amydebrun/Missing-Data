@@ -1286,6 +1286,147 @@ Below is a simple schematic to illustrate the reshaping process. Here,
 | 1003 | 2    | 6.2     |
 | 1003 | 3    | 8.1     |
 
+## Change estimand
+
+In this report, we have also tested how changing estimand would affect our conclusion for both data sets.
+
+### Original Estimand (Categorical Time)
+
+
+*Acupuncture data set*
+
+The goal of the original acupuncture study was to estimate the effect of
+acupuncture therapy versus general care on chronic headache severity.
+The estimand of interest is the mean difference in headache scores at 12
+months, conditional on baseline severity. This can be expressed with the
+following linear regression model:
+
+$$pk5_i = \beta_0 + \beta_1 group_i + \beta_2 pk1_i + \varepsilon_i$$
+where
+
+-   $pk5_i$: headache pain score of individual $i$ at 12 months.
+-   $pk1_i$: adjusted baseline headache pain score of individual $i$
+-   $group_i$: binary indicator of treatment assignment (1 =
+    acupuncture, 0 = control)
+-   $\beta_0$: intercept, representing the expected 12-month pain score
+    for a control participant with zero baseline pain
+-   $\beta_1$: treatment effect of acupuncture relative to control; this
+    is the estimand of interest
+-   $\beta_2$: effect of baseline headache severity on the 12-month
+    outcome
+-   $\varepsilon_i$: residual error term for individual $i$
+
+*VITAL data set*
+
+In the VITAL study, the primary aim was to evaluate the effects of
+vitamin D and fish oil supplementation on knee pain four years after
+randomisation. The estimand of interest is the mean difference in knee
+pain scores at 4 years, conditional on baseline pain. This is modelled
+using the following linear regression:
+
+$$painyr4_i = \beta_0 + \beta_1 fishoilactive_i + \beta_2 vitdactive_i + \beta_3 painbase_i + \varepsilon_i$$
+
+where
+
+-   $painyr4_i$: knee pain score for individual $i$ at 4 years
+    post-randomization
+-   $fishoilactive_i$: binary indicator for fish oil treatment (1 =
+    active, 0 = placebo)
+-   $vitdactive_i$: binary indicator for vitamin D treatment (1 =
+    active, 0 = placebo)
+-   $painbase_i$: baseline knee pain score for individual $i$
+-   $\beta_0$: intercept, representing the expected 4-year pain score
+    for a participant receiving neither treatment and with zero baseline
+    pain
+-   $\beta_1$: effect of fish oil supplementation; this is the estimand
+    of interest in the fish oil analysis
+-   $\beta_2$: effect of vitamin D supplementation; this is the estimand
+    of interest in the vitamin D analysis
+-   $\beta_3$: effect of baseline pain on the 4-year outcome
+-   $\varepsilon$: residual error term for individual $i$
+
+### Changed Estimand (Continuous Time)
+
+To better utilise repeated measures in both datasets, we revise the
+estimand using a Linear Mixed-Effects (LME) model with time treated as a
+continuous variable.
+
+To ensure that the intercept represents the estimated treatment effect
+specifically at the end of follow-up, we re-center the time variable: -
+In the acupuncture study, we define $time_c = time - 12$ (in months), so
+that time zero corresponds to month 12, which is the end of study. - In
+the VITAL study, we define $time_{contin} = time - 4$ (in years), so
+that time zero corresponds to year 4, which is the end of study.
+
+With this centering, the model intercept represents the mean pain score
+at the end of the study, and the coefficient for the treatment group
+becomes the estimand of interest.
+
+*Acupuncture data set*
+
+The revised LME model for the acupuncture dataset is specified as below.
+Note we did not allowing random slop as there are only 2 data collecting
+time points here:
+
+$$pkscore_{ij} = \beta_0 + \beta_1 group_i + \beta_2 time_{c,ij} + \beta_3 (group_i \times time_{c,ij}) + \beta_4 pk1_i + b_{0i} + \varepsilon_{ij}$$
+
+where
+
+-   $pkscore_{ij}$: headache pain score for individual $i$ at time $j$
+-   $group_i$: binary indicator of treatment assignment (1 =
+    acupuncture, 0 = control)
+-   $time_{c,ij}$: time in months since baseline, centered at 12 months
+    ($time_c = time - 12$)
+-   $pk1_i$: adjusted baseline headache pain score of individual $i$
+-   $\beta_0$: intercept, representing the expected pain score at 12
+    months (end of study) for the control group with zero baseline pain
+-   $\beta_1$: treatment effect of acupuncture relative to control at 12
+    months; this is the estimand of interest
+-   $\beta_2$: average rate of change in pain over time in the control
+    group
+-   $\beta_3$: treatment-time interaction effect
+-   $\beta_4$: effect of baseline headache pain
+-   $b_{0i}$: random intercept for individual $i$
+-   $\varepsilon_{ij}$: residual error term for individual $i$ at time
+    $j$
+
+*VITAL data set*
+
+The revised LME model for the VITAL dataset is specified as:
+
+\begin{align*}
+pain_{ij} &= \beta_0 + \beta_1\, fishoilactive_i + \beta_2\, vitdactive_i + \beta_3\, time_{contin,ij} \\
+&\quad + \beta_4\, (fishoilactive_i \times time_{contin,ij}) + \beta_5\, (vitdactive_i \times time_{contin,ij}) \\
+&\quad + \beta_6\, painbase_i + b_{0i} + b_{1i}\, time_{contin,ij} + \varepsilon_{ij}
+\end{align*}
+
+where
+
+-   $pain_{ij}$: knee pain score for individual $i$ at time $j$
+-   $fishoilactive_i$: binary indicator for fish oil treatment (1 =
+    active, 0 = placebo)
+-   $vitdactive_i$: binary indicator for vitamin D treatment (1 =
+    active, 0 = placebo)
+-   $time_{contin,ij}$: time in years since baseline, centered at 4
+    years ($time_{contin} = time - 4$)
+-   $painbase_i$: baseline knee pain score for individual $i$
+-   $\beta_0$: intercept, representing the expected pain score at 4
+    years (end of study) for a participant receiving neither treatment
+    and with zero baseline pain
+-   $\beta_1$: effect of fish oil at 4 years; this is the estimand of
+    interest in the fish oil analysis
+-   $\beta_2$: effect of vitamin D at 4 years; this is the estimand of
+    interest in the vitamin D analysis
+-   $\beta_3$: average rate of change in pain over time in the placebo
+    group
+-   $\beta_4$: fish oil-time interaction effect
+-   $\beta_5$: vitamin D-time interaction effect
+-   $\beta_6$: effect of baseline knee pain
+-   $b_{0i}$: random intercept for individual $i$
+-   $b_{1i}$: random slope for time for individual $i$
+-   $\varepsilon_{ij}$: residual error term for individual $i$ at time
+    $j$
+
 ## Sensitivity analysis
 
 Sensitivity analysis is
@@ -1466,143 +1607,6 @@ To address this, we revise the estimand by treating time as a continuous
 variable. This allows us to model individual pain trajectories across
 the study period, thereby leveraging all available interim outcome data.
 
-### Original Estimand (Categorical Time)
-
-
-*Acupuncture data set*
-
-The goal of the original acupuncture study was to estimate the effect of
-acupuncture therapy versus general care on chronic headache severity.
-The estimand of interest is the mean difference in headache scores at 12
-months, conditional on baseline severity. This can be expressed with the
-following linear regression model:
-
-$$pk5_i = \beta_0 + \beta_1 group_i + \beta_2 pk1_i + \varepsilon_i$$
-where
-
--   $pk5_i$: headache pain score of individual $i$ at 12 months.
--   $pk1_i$: adjusted baseline headache pain score of individual $i$
--   $group_i$: binary indicator of treatment assignment (1 =
-    acupuncture, 0 = control)
--   $\beta_0$: intercept, representing the expected 12-month pain score
-    for a control participant with zero baseline pain
--   $\beta_1$: treatment effect of acupuncture relative to control; this
-    is the estimand of interest
--   $\beta_2$: effect of baseline headache severity on the 12-month
-    outcome
--   $\varepsilon_i$: residual error term for individual $i$
-
-*VITAL data set*
-
-In the VITAL study, the primary aim was to evaluate the effects of
-vitamin D and fish oil supplementation on knee pain four years after
-randomisation. The estimand of interest is the mean difference in knee
-pain scores at 4 years, conditional on baseline pain. This is modelled
-using the following linear regression:
-
-$$painyr4_i = \beta_0 + \beta_1 fishoilactive_i + \beta_2 vitdactive_i + \beta_3 painbase_i + \varepsilon_i$$
-
-where
-
--   $painyr4_i$: knee pain score for individual $i$ at 4 years
-    post-randomization
--   $fishoilactive_i$: binary indicator for fish oil treatment (1 =
-    active, 0 = placebo)
--   $vitdactive_i$: binary indicator for vitamin D treatment (1 =
-    active, 0 = placebo)
--   $painbase_i$: baseline knee pain score for individual $i$
--   $\beta_0$: intercept, representing the expected 4-year pain score
-    for a participant receiving neither treatment and with zero baseline
-    pain
--   $\beta_1$: effect of fish oil supplementation; this is the estimand
-    of interest in the fish oil analysis
--   $\beta_2$: effect of vitamin D supplementation; this is the estimand
-    of interest in the vitamin D analysis
--   $\beta_3$: effect of baseline pain on the 4-year outcome
--   $\varepsilon$: residual error term for individual $i$
-
-### Changed Estimand (Continuous Time)
-
-To better utilise repeated measures in both datasets, we revise the
-estimand using a Linear Mixed-Effects (LME) model with time treated as a
-continuous variable.
-
-To ensure that the intercept represents the estimated treatment effect
-specifically at the end of follow-up, we re-center the time variable: -
-In the acupuncture study, we define $time_c = time - 12$ (in months), so
-that time zero corresponds to month 12, which is the end of study. - In
-the VITAL study, we define $time_{contin} = time - 4$ (in years), so
-that time zero corresponds to year 4, which is the end of study.
-
-With this centering, the model intercept represents the mean pain score
-at the end of the study, and the coefficient for the treatment group
-becomes the estimand of interest.
-
-*Acupuncture data set*
-
-The revised LME model for the acupuncture dataset is specified as below.
-Note we did not allowing random slop as there are only 2 data collecting
-time points here:
-
-$$pkscore_{ij} = \beta_0 + \beta_1 group_i + \beta_2 time_{c,ij} + \beta_3 (group_i \times time_{c,ij}) + \beta_4 pk1_i + b_{0i} + \varepsilon_{ij}$$
-
-where
-
--   $pkscore_{ij}$: headache pain score for individual $i$ at time $j$
--   $group_i$: binary indicator of treatment assignment (1 =
-    acupuncture, 0 = control)
--   $time_{c,ij}$: time in months since baseline, centered at 12 months
-    ($time_c = time - 12$)
--   $pk1_i$: adjusted baseline headache pain score of individual $i$
--   $\beta_0$: intercept, representing the expected pain score at 12
-    months (end of study) for the control group with zero baseline pain
--   $\beta_1$: treatment effect of acupuncture relative to control at 12
-    months; this is the estimand of interest
--   $\beta_2$: average rate of change in pain over time in the control
-    group
--   $\beta_3$: treatment-time interaction effect
--   $\beta_4$: effect of baseline headache pain
--   $b_{0i}$: random intercept for individual $i$
--   $\varepsilon_{ij}$: residual error term for individual $i$ at time
-    $j$
-
-*VITAL data set*
-
-The revised LME model for the VITAL dataset is specified as:
-
-\begin{align*}
-pain_{ij} &= \beta_0 + \beta_1\, fishoilactive_i + \beta_2\, vitdactive_i + \beta_3\, time_{contin,ij} \\
-&\quad + \beta_4\, (fishoilactive_i \times time_{contin,ij}) + \beta_5\, (vitdactive_i \times time_{contin,ij}) \\
-&\quad + \beta_6\, painbase_i + b_{0i} + b_{1i}\, time_{contin,ij} + \varepsilon_{ij}
-\end{align*}
-
-where
-
--   $pain_{ij}$: knee pain score for individual $i$ at time $j$
--   $fishoilactive_i$: binary indicator for fish oil treatment (1 =
-    active, 0 = placebo)
--   $vitdactive_i$: binary indicator for vitamin D treatment (1 =
-    active, 0 = placebo)
--   $time_{contin,ij}$: time in years since baseline, centered at 4
-    years ($time_{contin} = time - 4$)
--   $painbase_i$: baseline knee pain score for individual $i$
--   $\beta_0$: intercept, representing the expected pain score at 4
-    years (end of study) for a participant receiving neither treatment
-    and with zero baseline pain
--   $\beta_1$: effect of fish oil at 4 years; this is the estimand of
-    interest in the fish oil analysis
--   $\beta_2$: effect of vitamin D at 4 years; this is the estimand of
-    interest in the vitamin D analysis
--   $\beta_3$: average rate of change in pain over time in the placebo
-    group
--   $\beta_4$: fish oil-time interaction effect
--   $\beta_5$: vitamin D-time interaction effect
--   $\beta_6$: effect of baseline knee pain
--   $b_{0i}$: random intercept for individual $i$
--   $b_{1i}$: random slope for time for individual $i$
--   $\varepsilon_{ij}$: residual error term for individual $i$ at time
-    $j$
-
 ## Change FSC methods
 
 Even within the FCS (Fully Conditional Specification) framework, there
@@ -1642,6 +1646,10 @@ For the Acupuncture dataset, where approximately 25% of cases have
 missing data, we increased K from the default 5 to 20 and 25. For the
 VITAL dataset, which has around 50% missingness, we increased K from 5
 to 20 and then to 50.
+
+## Sensitive analysis
+
+At last, we performed sensitivity analysis , and present the results by forest plots and heat maps.
 
 \newpage
 
