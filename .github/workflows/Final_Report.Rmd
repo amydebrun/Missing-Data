@@ -1356,8 +1356,8 @@ Applying these to both datasets, our chosen $\delta$ values are;
 - $\delta_\mathrm{VITAL-vitd-changed} = -9.97, -4.98, 0, 4.98, 9.97$  
 - $\delta_\mathrm{VITAL-control-changed} = -9.65, -4.82, 0, 4.82, 9.65$
 
-To outlines the application of the $\delta$-adjustment
-sensitivity analysis. We begin with the acupuncture trial and its
+To outline the application of the $\delta$-adjustment
+sensitivity analysis, we begin with the acupuncture trial and its
 original categorical estimand, specifying the predictor variables for
 multiple imputation as the treatment group and baseline headache
 severity score (pk1). These are used to generate a predictor matrix for
@@ -1375,7 +1375,7 @@ p-value.
 We then repeat this process using only the control group (group == 0) to
 isolate control group effects, generating the acu_wide_placebo dataset.
 Here, $\delta_\mathrm{Acu-control-original}$ values are added to the
-imputed pk5 values, and after applying $pk5_i = \beta_0 + \beta_1pk1_i + \varepsilon_i$ to each dataset (as there is no group term), we estimate the headhache severity score
+imputed pk5 values, and after applying $pk5_i = \beta_0 + \beta_1pk1_i + \varepsilon_i$ to each dataset (as there is no group term), we estimate the headache severity score under the control group. The model is used to compute the expected headache severity score after 12 months given mean baseline headache severity score. 
 
 A similar approach is applied to the VITAL study data in wide format,
 using pain_base, vitdactive, and fishoilactive as predictors, and
@@ -1504,7 +1504,7 @@ $$painyr4_i = \beta_0 + \beta_1 fishoilactive_i + \beta_2 vitdactive_i + \beta_3
 
 where
 
--   $pain_yr4_i$: knee pain score for individual $i$ at 4 years
+-   $painyr4_i$: knee pain score for individual $i$ at 4 years
     post-randomization
 -   $fishoilactive_i$: binary indicator for fish oil treatment (1 =
     active, 0 = placebo)
@@ -1643,14 +1643,6 @@ missing data, we increased K from the default 5 to 20 and 25. For the
 VITAL dataset, which has around 50% missingness, we increased K from 5
 to 20 and then to 50.
 
-## Sensitivity analysis
-
-As mentioned in our introduction, missing data mechanisms are
-unverifiable. While it is most common to assume that data are MAR, in
-reality, the mechanism could fall under MNAR. We conducted a sensitivity
-analysis to assess the robustness of the estimated treatment effect
-under alternative missingness assumptions. 
-
 \newpage
 
 # Result
@@ -1683,7 +1675,7 @@ print(vital_plot_compare)
 
 ## Changing imputation methods and imputation numbers
 
-In this session. We keep our estimand treating time as a categorical
+In this section, we keep our estimand treating time as a categorical
 variable and using multiple linear regression as substantive model.
 
 We first compared different imputation methods within the FCS framework,

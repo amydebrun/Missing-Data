@@ -177,7 +177,7 @@ acu_plot_compare <- ggplot(acu_compare_result,
   scale_shape_manual(values = c("categorical" = 16, "continuous" = 17)) + 
   scale_colour_manual(values=c("categorical"="#a80050", "continuous"="lawngreen"))+
   labs(
-    x = "Mean differnce in pain score by the end of study",
+    x = "Mean difference in pain score by the end of study",
     y = "Method") +
   theme_minimal() + 
   theme(
@@ -203,7 +203,7 @@ vital_plot_compare <- ggplot(vital_result_all,
   scale_shape_manual(values = c("categorical" = 16, "continuous" = 17)) + 
   scale_colour_manual(values=c("categorical"="#a80050", "continuous"="lawngreen"))+
   labs(
-    x = "Mean differnce in pain score by the end of study",
+    x = "Mean difference in pain score by the end of study",
     y = "Method") +
   theme_minimal() + 
   theme(
