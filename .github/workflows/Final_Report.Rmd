@@ -309,7 +309,7 @@ studies.
 
 CCA was also the predominant method in a systematic
 review of 229 observational studies from the United Network for Organ
-Sharing (UNOS) database [@baker_systematic_2025]. Forty-one studies used
+Sharing (UNOS) database (Baker et al 2025) [@baker_systematic_2025]. Forty-one studies used
 CCA, 22 reported MI, and notably, 31 studies removed covariates due to
 missing values—an action that could introduce further bias depending on
 the covariates' relationship with other predictors.
@@ -326,7 +326,7 @@ different settings.
 ## Acupuncture Data
 
 Our first dataset contains results from a clinical trial determining the
-effects of acupuncture therapy on chronic headache in primary care . Vickers released the dataset from the study in
+effects of acupuncture therapy on chronic headache in primary care (Vickers et al. 2004) [@noauthor_acupuncture_nodate-1]. Vickers released the dataset from the study in
 2006 and is publicly available to download in excel format from
 <https://pmc.ncbi.nlm.nih.gov/articles/PMC1489946/>. The study design
 for the acupuncture trial is a longitudinal randomised controlled trial
@@ -403,7 +403,7 @@ show the mean value (standard deviation) and the categorical variables
 show the count(percentage). Note pk2 and pk5 are post randomisation
 variables and they are the only two variables in the dataset that contain missing values.
 
-
+\newpage
 
 ```{r fig.width=5, fig.height=3.5, fig.align='center', fig.cap="The distribution of sex in both treatment groups of the acupuncture trial data. The participants are predominantly female."}
 print(acu_sex_plot)
@@ -442,7 +442,7 @@ or prostate cancer or cancer-deaths.
 For our research, we are analysing
 the results of an ancillary study which uses data from VITAL. 
 MacFarlane
-et al (2020) conducted a study using VITAL on the therapeutic effects of
+et al (2020) [@{noauthor_effects_nodate] conducted a study using VITAL on the therapeutic effects of
 vitamin D and fishoil on osteoarthritic knee pain. 1,398 participants in
 the study was randomised to 4 possible treatment combinations.
 Participants were randomised to receive either omega-3 oils or vitamin
@@ -758,7 +758,7 @@ the modeling step. In our anchoring methods, we either did not perform
 imputation—as in CCA—or relied on single imputation techniques, such as
 LOCF or mean imputation.
 
-While methods like LME can utilize most available observed data and
+While methods such as using a linear mixed effects model can utilize most available observed data and
 yield unbiased estimates under the MAR assumption without imputation,
 they cannot incorporate other post-randomization variables that are not
 part of the model (e.g., headache frequency in the acupuncture data set). In
@@ -830,7 +830,7 @@ as follows:
     focus on the following steps for now)
 
 2.  Fit the substantive model (e.g., a linear model or mixed-effects
-    model) to each imputed dataset, obtaining Parameter estimate
+    model) to each imputed dataset, obtaining parameter estimate
     $\hat{\beta}_{k}$ and Variance estimate $\hat{\sigma}_{k}^{2}$ for
     each k=1,2,...,K
 
@@ -920,7 +920,7 @@ properly handle the complex, arbitrary missing data structure.
 
 #### Joint modelling
 
-When the missing data pattern is non-monotonic, as in the VITAL dataset,
+When the missing data pattern is non-monotonic, as the knee pain scores in the VITAL dataset,
 sequential regression is no longer appropriate. Instead, we can apply
 joint modeling, which makes no assumption about the missingness pattern
 but assumes the missing data mechanism is ignorable (typically, Missing
@@ -1102,10 +1102,10 @@ In this project, we chose to use K=5 imputations for multiple
 imputation, following the classical recommendation to use a low number
 of imputations when the proportion of missing information is moderate.
 
-**Chosse \>20 imputations**
+**Choose \>20 imputations**
 
 While early guidelines recommended using a low number of imputations
-(typically K=3-5) for moderate missingness, more recent research argue
+(typically K=3,4,5) for moderate missingness, more recent research argue
 that increasing K beyond this range can yield important gains in
 statistical efficiency.
 
@@ -1289,13 +1289,13 @@ Below is a simple schematic to illustrate the reshaping process. Here,
 ## Sensitivity analysis
 
 Sensitivity analysis is
-recommended by the National Research Council (2010) as a best practice
+recommended by the National Research Council (2010) [@{noauthor_prevention_nodate] as a best practice
 for handling missing data; however, it is rarely conducted in practice.
 This may reflect an underappreciation of the impact of missing data in
 many studies, as well as the complexity and specialised expertise
 required to perform such analyses.
 
-A systematic review by Fiero et al. (2016) examined 86 cluster
+A systematic review by Fiero et al. [@fiero_statistical_2016] examined 86 cluster
 randomised trials published between 2013 and 2014. Among the 80 trials
 that reported missing outcome data, only 14 (18%) reported conducting a
 sensitivity analysis.
@@ -1311,12 +1311,12 @@ data are assumed to have systematically better or worse outcomes than
 those observed, thereby testing the stability of our conclusions when
 relaxing the MAR assumption conditional on other variables.
 
-The shift can be broken down in to:
+The shift can be broken down in to[@noauthor_httpsstefvanbuurennamefimdsec-nonignorablehtmlsecnonignorable_nodate]:
 
 $$\delta = \delta_\mathrm{MAR} + \delta_\mathrm{MNAR}$$ where; 
 
 - $\delta_\mathrm{MAR}$: mean difference caused by the predictors in the imputation models 
-- $\delta_\mathrm{MNAR}$: mean difference caused by an additional non-ignorable part of the imputation model.
+- $\delta_\mathrm{MNAR}$: mean difference caused by an additional non-ignorable part of the imputation model. 
 
 Essentially, $\delta$ is the mean difference between the imputed values
 and the true values that we did not observe.
@@ -1372,12 +1372,10 @@ extract the coefficient for the treatment group, our estimand of
 interest, along with its standard error, confidence interval, and
 p-value.
 
-We then repeat this process using only the placebo group (group == 0) to
+We then repeat this process using only the control group (group == 0) to
 isolate control group effects, generating the acu_wide_placebo dataset.
 Here, $\delta_\mathrm{Acu-control-original}$ values are added to the
-imputed pk5 values, and the pooled regression estimates are filtered for
-the intercept term, representing the average outcome in the control
-group.
+imputed pk5 values, and after applying $pk5_i = \beta_0 + \beta_1pk1_i + \varepsilon_i$ to each dataset (as there is no group term), we estimate the headhache severity score
 
 A similar approach is applied to the VITAL study data in wide format,
 using pain_base, vitdactive, and fishoilactive as predictors, and
