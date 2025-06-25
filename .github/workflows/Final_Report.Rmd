@@ -183,6 +183,8 @@ variable $X_1$. $X_2$ no longer influences the missingness indicator
 $R_Y$, but $R_Y$ is still conditioned on $L$ and $X_1$, showing the MAR
 assumption still holds given these variables.
 
+We include two DAGs to highlight that the MAR assumption is incomplete unless we specify the variables it is conditional on. MAR simply means that the probability of missingness depends only on observed data, but which observed variables matter can vary across studies. The two DAGs show different scenarios where missingness is MAR, each conditioned on a different set of variables. This distinction is important in practice because the validity of statistical methods under MAR depends on correctly identifying and including the relevant observed variables in the analysis.
+
 ```{r fig.width=5, fig.height=4, echo=FALSE, fig.align='center', fig.cap="Missing at Random conditional on L, \\ensuremath{X_1}, and \\ensuremath{X_2}"}
 MAR_dag1
 ```
@@ -233,8 +235,8 @@ patterns, estimates the expected means under a multivariate normal model
 using maximum likelihood, and computes a chi-square statistic to assess
 model fit. The decision lies under the hypotheses;
 
--   $H_0$: Data is MCAR
--   $H_1$: Data is MAR or MNAR
+-   $H_0$: Data is MCAR; *against*
+-   $H_a$: Data is MAR or MNAR;
 
 If the p-value resulting from the chi-square distribution is greater
 than 0.05, we fail to reject the null hypothesis. It is limited as it
@@ -291,7 +293,7 @@ despite the use of established handling methods, there remains room for
 improvement in how missing data are addressed in clinical study reports
 and in the selection of appropriate methods.
 
-In *2014, Powney et al.* reviewed 100 longitudinal clinical trials
+In [@powney_review_2014] reviewed 100 longitudinal clinical trials
 conducted between 2005 and 2012 and found that only 44 reported an
 adequate method to handle missing data, while 30 used potentially
 inadequate methods.
