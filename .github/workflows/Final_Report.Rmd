@@ -22,7 +22,7 @@ keywords:
   - Sensitivity Analysis
   - Multiple Imputation
   - Missingness Mechanisms
-bibliography: Missing_Data_Reference_0625.bib
+bibliography: reference_final.bib
 biblio-style: unsrt
 output: rticles::arxiv_article
 keep_tex: true
@@ -230,7 +230,7 @@ missing data is fundamentally untestable. Since the true values of
 missing observations are never observed, we cannot definitively
 determine which missingness assumption holds in practice. There is
 limited hypothesis test available to see whether data is MCAR (*Little's
-MCAR test*). It is a likelihood-ratio test that groups missing data
+MCAR test*) [@little_statistical_2002]. It is a likelihood-ratio test that groups missing data
 patterns, estimates the expected means under a multivariate normal model
 using maximum likelihood, and computes a chi-square statistic to assess
 model fit. The decision lies under the hypotheses;
@@ -252,7 +252,7 @@ holds.
 ## Different missing data patterns
 
 A missing data pattern describes the pattern of missing data among the
-observed data. As described by [@little_statistical_2002-1], it's important to
+observed data. As described by [@little_statistical_2002], it's important to
 remark the missing data patterns of the data set prior to data handling
 as some handling methods are intended for certain classified patterns.
 The following table summarises some missing data patterns.
@@ -298,12 +298,12 @@ conducted between 2005 and 2012 and found that only 44 reported an
 adequate method to handle missing data, while 30 used potentially
 inadequate methods.
 
-*Spineli et al. (2015)* examined 190 systematic reviews published after
+[@spineli_reporting_2015] examined 190 systematic reviews published after
 2009 to investigate how missing data were reported in randomized
 controlled trials. Although 175 of these reviews mentioned missing data,
 only 61 discussed its implications.
 
-*Hunt et al. (2021)* reviewed 62 pharmacoepidemiologic multi-database
+[@hunt_systematic_2021] reviewed 62 pharmacoepidemiologic multi-database
 studies from 2018 to 2019 to assess missing data reporting and handling.
 Thirty-five studies reported missing data, but only 19 described methods
 for handling it. The most popular approach was complete case analysis
@@ -312,7 +312,7 @@ studies.
 
 Complete case analysis was also the predominant method in a systematic
 review of 229 observational studies from the United Network for Organ
-Sharing (UNOS) database *(Baker et al., 2025)*. Forty-one studies used
+Sharing (UNOS) database [@baker_systematic_2025]. Forty-one studies used
 CCA, 22 reported MI, and notably, 31 studies removed covariates due to
 missing values—an action that could introduce further bias depending on
 the covariates' relationship with other predictors.
@@ -536,7 +536,7 @@ print(vital_pain_plot)
 
 ## Missing Data Summary
 
-**Acupuncture Data**
+### Acupuncture Data
 
 The summary statistics of the acupuncture trial data shows that all
 baseline variables have been observed. It appears two post-randomisation
@@ -545,7 +545,7 @@ as a multivariate monotonic pattern as the percentage of missing data
 increases at each follow up time point, which is common in longitudinal
 studies. We can visualise this in the plot below.
 
-```{r fig.width=5, fig.height=3, fig.cap="Proportion of missing data in outcome variables $pk2$ and $pk5$. This follows a monotonic missing data pattern."}
+```{r fig.width=5, fig.height=2.5, fig.cap="Proportion of missing data in outcome variables $pk2$ and $pk5$. This follows a monotonic missing data pattern."}
 print(acu_miss_perc_plot)
 ```
 
@@ -553,7 +553,7 @@ If we separate the acupuncture trial data into the treatment group and
 control group, we can observe that there is a higher percentage of
 missing data in the control group.
 
-```{r fig.width=5, fig.height=3, fig.cap="Higher percentage of missing data (dark green) in control group"}
+```{r fig.width=5, fig.height=2.5, fig.cap="Higher percentage of missing data (dark green) in control group"}
 print(acu_miss_perc_group)
 ```
 
@@ -568,7 +568,7 @@ throughout the three time points (shown as light green). 136 participants follow
 at 3 months, but was not observed at the final time point (light green at baseline and 3 months, but dark green at 
 final time point). Only 17 followed this pattern (7.1% of the participants). 
 
-**VITAL data**
+### VITAL data
 
 The summary statistics of the VITAL data showed, unlike the acupuncture
 trial data, there are also baseline variables that contain missing data
@@ -587,7 +587,7 @@ percentage of missing data in each knee pain time point variable in each
 group. The proportion appears to be similar in each group with year 2
 post randomisation containing the most missing data.
 
-```{r fig.width=5, fig.height=4, fig.align='center',fig.cap="Percentage of missing data across baseline and 4 follow-up time points. Non-monotonic pattern appears similar in 4 randomised groups."}
+```{r fig.width=5, fig.height=3, fig.align='center',fig.cap="Percentage of missing data across baseline and 4 follow-up time points. Non-monotonic pattern appears similar in 4 randomised groups."}
 print(vital_miss_perc_group_plot)
 ```
 
@@ -1064,7 +1064,7 @@ fraction of missing information for the parameter of interest.
 Unfortunately, $\gamma_{0}$ is typically unknown in advance, including
 in our project.
 
-To address this, [@white_multiple_2011-1] proposed a simple and
+To address this, [@white_multiple_2011] proposed a simple and
 conservative strategy: using the proportion of complete cases in the
 dataset as a proxy for $1-\gamma_{0}$, thereby estimating $\gamma_{0}$
 conservatively. This approach allows for an informed yet practical
@@ -1143,7 +1143,7 @@ processing time.
 
 $K \approx 100\lambda$
 
-A widely cited rule of thumb proposed by [@white_multiple_2011-1]
+A widely cited rule of thumb proposed by [@white_multiple_2011]
 recommends choosing the number of imputations based on the fraction of
 incomplete cases in the dataset, denoted as $\lambda$. Specifically,
 they suggest setting:$K \approx 100\lambda$
