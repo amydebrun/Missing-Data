@@ -1893,3 +1893,5 @@ data-rich clinical contexts.
     using MI, as a fuller set of covariates was used during MI. Future
     work could explore how more complex substantive model specifications
     interacts with MI and influences treatment effect estimates.
+    
+  \newpage
