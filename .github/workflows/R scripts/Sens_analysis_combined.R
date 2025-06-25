@@ -98,8 +98,8 @@ acu_combined <- bind_rows(
 
 #combined plot 
 SA_acu_plot<-ggplot(acu_combined, aes(x = estimate, y = delta, color = estimand, shape = estimand)) +
-  geom_point(size = 3, position = position_nudge(y = 0.15)) +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.3, position = position_nudge(y = 0.15)) +
+  geom_point(size = 3) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.3) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
   facet_wrap(~ treatment) +
   scale_shape_manual(values = c("Categorical" = 16, "Continuous" = 17)) + 
