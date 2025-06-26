@@ -23,8 +23,8 @@ All the remaining documents are used to support the execution of the above two f
 **2. Data**
   - Contains the raw data for both acupuncture and VITAL studies
   
-3. Backup Codes (folder)
+3. Backup Codes
   - Contains codes that may be used in the future
   
-4. Outdated (folder)
+4. Outdated
   - Codes are not likely to be used anymore
