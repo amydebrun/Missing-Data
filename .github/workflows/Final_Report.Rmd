@@ -1214,84 +1214,9 @@ continuous variable, rather than as a categorical factor, which can
 improve interpretability and statistical power. This modeling choice
 will be explored further in a later section.
 
-## Data Wrangling
-
-Both the Acupuncture and VITAL datasets originate in wide format, where
-each subject's repeated measurements are stored in separate columns.
-While this format is convenient for some operations, it is not directly
-compatible with LME, which require the data to be transformed into long
-format—with one row per observation per time point.
-
-In our project, both datasets have a balanced longitudinal design, with
-follow-up measurements taken at regular, pre-specified intervals. This
-is not always the case in real-world studies, where irregular or missing
-time points can complicate analysis. The balanced structure in our data
-allows for a more straightforward imputation of partially observed
-follow-up outcomes using a multivariate distribution, making the MI
-process more reliable and easier to implement.
-
-To address these differing requirements, the following general approach
-was used for both data sets:
-
-1.  Perform MI in wide format using the `mice()` function, treating the
-    repeated measures as separate but related variables.
-2.  Convert the imputed wide data sets to long format, which allows time
-    to be included as a continuous variable in the LME model.
-3.  Fit LME models on the long-format data to model outcome trajectories
-    over time while appropriately accounting for missing values and
-    repeated measures.
-
-This strategy allows us to use multiple imputation methods compatible
-with the multivariate normal assumption across time points, while still
-leveraging the advantages of LME models in the analysis stage.
-
-The balanced longitudinal design of both studies further supports this
-approach: each subject was planned to have the same number of repeated
-measurements at roughly equal intervals (monthly in the Acupuncture
-study and yearly in the VITAL study). This regular measurement structure
-allows partially observed follow-up outcomes to be imputed more reliably
-using a multivariate framework.
-
-Below is a simple schematic to illustrate the reshaping process. Here,
-`Outcome1/2/3` represent repeated outcomes across three timepoints, and
-`x` indicates a missing value:
-
-**Original data (wide format):**
-
-| ID   | Outcome1 | Outcome2 | Outcome3 |
-|------|----------|----------|----------|
-| 1001 | 2.5      | 3.5      | x        |
-| 1002 | 4.5      | x        | 6.3      |
-| 1003 | 3.3      | 6.2      | 8.1      |
-
-**Completed data after multiple imputation (still wide format):**
-
-| ID   | Outcome1 | Outcome2 | Outcome3 |
-|------|----------|----------|----------|
-| 1001 | 2.5      | 3.5      | 4.5      |
-| 1002 | 4.5      | 5.2      | 6.3      |
-| 1003 | 3.3      | 6.2      | 8.1      |
-
-**Transformed data (long format):**
-
-| ID   | Time | Outcome |
-|------|------|---------|
-| 1001 | 1    | 2.5     |
-| 1001 | 2    | 3.5     |
-| 1001 | 3    | 4.5     |
-| 1002 | 1    | 4.5     |
-| 1002 | 2    | 5.2     |
-| 1002 | 3    | 6.3     |
-| 1003 | 1    | 3.3     |
-| 1003 | 2    | 6.2     |
-| 1003 | 3    | 8.1     |
-
-## Change estimand
-
-In this report, we have also tested how changing estimand would affect our conclusion for both data sets.
+In this report, we also examined how redefining the estimand—by treating time as a continuous variable and leveraging repeated measures—impacts the estimated treatment effects in both datasets.
 
 ### Original Estimand (Categorical Time)
-
 
 *Acupuncture data set*
 
@@ -1426,6 +1351,78 @@ where
 -   $b_{1i}$: random slope for time for individual $i$
 -   $\varepsilon_{ij}$: residual error term for individual $i$ at time
     $j$
+
+## Data Wrangling
+
+Both the Acupuncture and VITAL datasets originate in wide format, where
+each subject's repeated measurements are stored in separate columns.
+While this format is convenient for some operations, it is not directly
+compatible with LME, which require the data to be transformed into long
+format—with one row per observation per time point.
+
+In our project, both datasets have a balanced longitudinal design, with
+follow-up measurements taken at regular, pre-specified intervals. This
+is not always the case in real-world studies, where irregular or missing
+time points can complicate analysis. The balanced structure in our data
+allows for a more straightforward imputation of partially observed
+follow-up outcomes using a multivariate distribution, making the MI
+process more reliable and easier to implement.
+
+To address these differing requirements, the following general approach
+was used for both data sets:
+
+1.  Perform MI in wide format using the `mice()` function, treating the
+    repeated measures as separate but related variables.
+2.  Convert the imputed wide data sets to long format, which allows time
+    to be included as a continuous variable in the LME model.
+3.  Fit LME models on the long-format data to model outcome trajectories
+    over time while appropriately accounting for missing values and
+    repeated measures.
+
+This strategy allows us to use multiple imputation methods compatible
+with the multivariate normal assumption across time points, while still
+leveraging the advantages of LME models in the analysis stage.
+
+The balanced longitudinal design of both studies further supports this
+approach: each subject was planned to have the same number of repeated
+measurements at roughly equal intervals (monthly in the Acupuncture
+study and yearly in the VITAL study). This regular measurement structure
+allows partially observed follow-up outcomes to be imputed more reliably
+using a multivariate framework.
+
+Below is a simple schematic to illustrate the reshaping process. Here,
+`Outcome1/2/3` represent repeated outcomes across three timepoints, and
+`x` indicates a missing value:
+
+**Original data (wide format):**
+
+| ID   | Outcome1 | Outcome2 | Outcome3 |
+|------|----------|----------|----------|
+| 1001 | 2.5      | 3.5      | x        |
+| 1002 | 4.5      | x        | 6.3      |
+| 1003 | 3.3      | 6.2      | 8.1      |
+
+**Completed data after multiple imputation (still wide format):**
+
+| ID   | Outcome1 | Outcome2 | Outcome3 |
+|------|----------|----------|----------|
+| 1001 | 2.5      | 3.5      | 4.5      |
+| 1002 | 4.5      | 5.2      | 6.3      |
+| 1003 | 3.3      | 6.2      | 8.1      |
+
+**Transformed data (long format):**
+
+| ID   | Time | Outcome |
+|------|------|---------|
+| 1001 | 1    | 2.5     |
+| 1001 | 2    | 3.5     |
+| 1001 | 3    | 4.5     |
+| 1002 | 1    | 4.5     |
+| 1002 | 2    | 5.2     |
+| 1002 | 3    | 6.3     |
+| 1003 | 1    | 3.3     |
+| 1003 | 2    | 6.2     |
+| 1003 | 3    | 8.1     |
 
 ## Sensitivity analysis
 
@@ -1649,7 +1646,7 @@ to 20 and then to 50.
 
 ## Sensitive analysis
 
-At last, we performed sensitivity analysis , and present the results by forest plots and heat maps.
+Finally, we conducted a sensitivity analysis to assess the robustness of our treatment effect estimates under potential violations of the Missing At Random (MAR) assumption. Following recommendations from the literature, we implemented a $\delta$-adjustment approach after multiple imputation, systematically shifting imputed values by a range of plausible deviations. These shifts, applied separately for each treatment arm and based on fractions of the outcome’s standard deviation, simulate Missing Not At Random (MNAR) scenarios. We used both linear regression and linear mixed-effects models—depending on whether the analysis was in wide or long format—and extracted the treatment effect at each $\delta$ level. Results are summarised in forest plots and heat maps to visually examine how conclusions change across different missing data assumptions.
 
 \newpage
 
@@ -1718,7 +1715,7 @@ print(vital_plot_impt_k)
 print(SA_acu_plot)
 ```
 
-```{r fig.width=5, fig.height=3,fig.cap="Sensitive analysis for VITAL data set"}
+```{r fig.width=7, fig.height=3,fig.cap="Sensitive analysis for VITAL data set"}
 print(SA_vital_plot)
 ```
 
