@@ -309,7 +309,7 @@ studies.
 
 CCA was also the predominant method in a systematic
 review of 229 observational studies from the United Network for Organ
-Sharing (UNOS) database (Baker et al 2025) [@baker_systematic_2025]. Forty-one studies used
+Sharing (UNOS) database [@baker_systematic_2025]. Forty-one studies used
 CCA, 22 reported MI, and notably, 31 studies removed covariates due to
 missing values—an action that could introduce further bias depending on
 the covariates' relationship with other predictors.
@@ -423,8 +423,8 @@ print(acu_pk125_plot)
 
 The Vitamin D and Omega-3 trial (VITAL) was a nationwide clinical trial
 sponsored by Brigham and Women's Hospital in Boston to determine the
-effects of daily doses of 2000 IU vitamin D and 1 gram of omega-3 fatty
-acids (fishoil) on preventing cancer and cardiovascular disease (CVD).
+effects of daily doses of vitamin D (2000 IU) and 1 gram of omega-3 fatty
+acids (fish oil) on preventing cancer and cardiovascular disease (CVD).
 
 This was a 2x2 factorial designed longitudinal randomised controlled
 trial in which 25,871 adults were randomised to 4 possible combinations
@@ -1736,6 +1736,7 @@ oil treatment under the different $\delta$ shifts. The vitamin D panel
 shows similar conditional expectation. For the control group, we 
 can see the expected knee pain score at the final time point conditional
 on the baseline knee pain. The continuous estimand $pain$ conditions on continuous time as well as baseline knee pain. 
+Consistency in the treatment effect estimates across the different $\delta$ shifts shows robustness in the effect per estimand. 
 
 The error bars represent the 95% confidence intervals.
 
@@ -1762,14 +1763,9 @@ print(cat_heatmap_fishoil_plot + cont_heatmap_fishoil_plot)
 print(cat_heatmap_vitd_plot + cont_heatmap_vitd_plot)
 ```
 
-We created heatmaps plotting the $\delta$ values for both the control
-group and treatment group to visualise the change in treatment effect
-when varying the $\delta$ adjustments under MNAR. We are comparing both the original estimand (heatmap on the left handside) and
-the changed estimand (heatmaps on the right handside) The aim here is to
-show the robustness of the initial estimated treatment effect when
-assumed under a different mechanism. A similar range of colours would be
-interpretable as a strong estimate as there was not much change in the
-estimate after adding the $\delta$ shifts.
+We created heatmaps plotting the $\delta$ values for both the treatment and control groups to visualize changes in the estimated treatment effect under a range of MNAR (Missing Not At Random) assumptions. These plots compare both the original estimand (left-hand heatmap) and the changed estimand (right-hand heatmap), allowing us to assess the robustness of the original treatment effect to departures from the MAR assumption.
+Each cell in the heatmap corresponds to a specific pair of $\delta$ values (treatment and control) and displays the resulting treatment effect through color gradient—light green indicating smaller effects and purple indicating larger effects. The narrow range of treatment effects suggests a degree of robustness.
+In Figure 29, in the heatmap corresponding to the continuous estimand for the acupuncture data, we observe a smooth gradient from purple to green, indicating a gradual and stable shift in treatment effect values. This consistency implies robustness to the MNAR assumption. In contrast, *Figure 30* (continous estimand) shows slightly more variation, reflecting some sensitivity to the $\delta$ shifts. However, the overall effect remains stable within a range (approximately −34.0 to −34.75), suggesting that the treatment effect remains qualitatively consistent across plausible MNAR scenarios. 
 
 # Discussion
 
