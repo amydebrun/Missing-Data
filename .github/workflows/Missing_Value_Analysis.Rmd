@@ -59,25 +59,6 @@ acu_sex_plot
 
 ```{r}
 # VITAL
-vital_summary<-vital_wide %>% 
-  mutate(
-    group = case_when(
-      vitdactive == 0 & fishoilactive == 0 ~ "Neither",
-      vitdactive == 1 & fishoilactive == 0 ~ "Vitamin D only",
-      vitdactive == 0 & fishoilactive == 1 ~ "Fish Oil only",
-      vitdactive == 1 & fishoilactive == 1 ~ "Both")) %>%
-  select(-c(Subject_ID, vitdactive, fishoilactive,
-            matches("stiffness_"),
-            matches("function_"))) %>%
-  tbl_summary(
-    by = group,
-    statistic = list(all_continuous() ~ "{mean} ({sd})",
-                     all_categorical() ~ "{n}({p}%)"),
-    missing = "ifany",
-    missing_text = "Missing"
-  ) %>%
-  as_gt() %>%             
-  gt::as_latex() 
 vital_summary
 vital_miss_plot
 vital_wide_miss_plot
